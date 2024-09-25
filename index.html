@@ -1,266 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Xinru Qiu</title>
-        <link rel="canonical" href="https://xqiu625.github.io/">
-    </head>
-<body>
-
-<style>
-    body {
-        font-family: 'Roboto', sans-serif;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        color: #333;
-        line-height: 1.8;
-    }
-    .container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 30px;
-        background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 15px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    }
-    h1, h2, h3 {
-        color: #1a5f7a;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
-    .profile-header {
-        text-align: center;
-        margin-bottom: 40px;
-    }
-    .profile-image {
-        border-radius: 50%;
-        width: 220px;
-        height: 220px;
-        object-fit: cover;
-        border: 8px solid #6c8cc0;
-        box-shadow: 0 0 20px rgba(57, 88, 136, 0.2);
-        transition: transform 0.3s ease;
-    }
-    .profile-image:hover {
-        transform: scale(1.05);
-    }
-    .section {
-        background-color: white;
-        border-radius: 12px;
-        padding: 25px;
-        margin-bottom: 30px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s ease;
-    }
-    .section:hover {
-        transform: translateY(-5px);
-    }
-    .skill-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-    .skill-item {
-        background-color: #1a5f7a;
-        color: white;
-        padding: 8px 15px;
-        border-radius: 25px;
-        font-size: 0.95em;
-        transition: background-color 0.3s ease;
-    }
-    .skill-item:hover {
-        background-color: #2D87C8;
-    }
-    a {
-        color: #2D87C8;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-    a:hover {
-        color: #1a5f7a;
-        text-decoration: underline;
-    }
-    @media (max-width: 768px) {
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xinru Qiu</title>
+    <link rel="canonical" href="https://xqiu625.github.io/">
+    <meta name="google-site-verification" content="VXYdhVMM_fTmzLpNv6e73W_ElcbRB2DtD7T-erkzUG0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://xqiu625.github.io/css/main.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.8;
+        }
         .container {
-            padding: 20px;
-            margin: 20px auto;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3, h4, h5 {
+            color: #1a5f7a;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
         }
         .profile-image {
-            width: 180px;
-            height: 180px;
+            border-radius: 50%;
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border: 8px solid #6c8cc0;
+            box-shadow: 0 0 20px rgba(57, 88, 136, 0.2);
+            transition: transform 0.3s ease;
         }
-    }
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+        .content {
+            text-align: left;
+        }
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .skill-item {
+            background-color: #1a5f7a;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease;
+        }
+        .skill-item:hover {
+            background-color: #2D87C8;
+        }
+        a {
+            color: #2D87C8;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #1a5f7a;
+            text-decoration: underline;
+        }
+        .navbar-default {
+            background-color: #35424a;
+            border-color: #e8491d;
+        }
+        .navbar-default .navbar-nav > li > a {
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 20px;
+            transition: color 0.3s ease;
+        }
+        .navbar-default .navbar-nav > li > a:hover {
+            color: #e8491d;
+        }
+        .navbar-toggle {
+            border-color: #ffffff;
+        }
+        .navbar-toggle .icon-bar {
+            background-color: #ffffff;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+            .profile-image {
+                width: 180px;
+                height: 180px;
+            }
+            .navbar-default .navbar-nav > li > a {
+                font-size: 18px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand visible-xs" href="#">Xinru Qiu</a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/publication/">Research</a></li>
+                    <li><a href="/talk/">Talks</a></li>
+                    <li><a href="/teaching/">Teaching</a></li>
+                    <li><a href="/misc/">Misc.</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-</style>
+    <main>
+        <div class="container">
+            <div class="profile-header">
+                <h2>Xinru Qiu</h2>
+                <h5>xinru.qiu@ucr.edu</h5>
+                <img src="/photo_2.jpg" alt="Xinru Qiu" class="profile-image">
+            </div>
+            
+            <div class="content">
+                <p>Hi! I am currently a Bioinformatics Postdoctoral Researcher at the University of California, Riverside.</p>
+                <p>I obtained my PhD in Bioinformatics from University of California, Riverside (UCR) in 2023, advised by Professor <a href="https://profiles.ucr.edu/app/home/profile/adamg">Adam Godzik</a>. Here are my <a href="/files/">CV</a>, <a href="https://github.com/xqiu625">Github</a>, and <a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ">Google Scholar</a> pages.</p>
 
+                <hr>
+                
+                <section class="research-interests">
+                    <h4 id="research-interests">Research interests</h4>
+                    <p>My research focuses on computational biology and bioinformatics, with an emphasis on the following areas:</p>
+                    <ul>
+                        <li><b>Computational Biology and Machine Learning</b>: Applying advanced machine learning techniques and single-cell transcriptomics to identify disease-specific signatures and biomarkers in conditions like COVID-19, sepsis, and autoimmune disorders.</li>
+                        <li><b>Bioinformatics and Data Analysis</b>: Analyzing large-scale genomic and transcriptomic datasets to uncover patterns in immune cell populations and their dynamics across various diseases.</li>
+                        <li><b>AI in Structural Biology</b>: Exploring the applications of AI technologies like AlphaFold2 for protein structure prediction and its implications in drug discovery and development.</li>
+                        <li><b>Systems Biology Approaches</b>: Integrating multi-omics data to understand complex biological systems and disease mechanisms, with a focus on immune responses and inflammation.</li>
+                        <li><b>Translational Bioinformatics</b>: Leveraging computational findings to identify potential biomarkers, therapeutic targets, and personalized treatment strategies, particularly in immunology and oncology.</li>
+                    </ul>
+                </section>
 
-<html lang="en-us">
-    <head> 
-        
-<meta name="google-site-verification" content="VXYdhVMM_fTmzLpNv6e73W_ElcbRB2DtD7T-erkzUG0" />
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title> Xinru Qiu </title>
-        
-        <style>
+                <section class="education">
+                    <h4 id="education">Education</h4>
+                    <ul>
+                        <li>Ph.D, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, University of California, Riverside, 2018 - 2023.</li>
+                        <li>M.S. <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, University of Southern California, 2013 - 2015.</li>
+                        <li>B.S. <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, Jilin University, 2009 - 2013.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </main>
 
-
-    html body {
-        font-family: 'Lato', sans-serif;
-        background-color: white;
-    }
-
-    :root {
-        --accent: #2D87C8;
-        --border-width:  0 ;
-    }
-
-</style>
-
-
-<link rel="stylesheet" href="https://xqiu625.github.io/css/main.css">
-
-
-
-
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-
-
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"> 
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
- 
+    <footer>
+        <p class="copyright text-muted">© 2024 Xinru Qiu. All rights reserved.</p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
-    
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/scala.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/swift.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-
-
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
-<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
- <meta name="generator" content="Hugo 0.127.0">
-        
-            <link href="/index.xml" rel="alternate" type="application/rss&#43;xml" title="Xinru Qiu" />
-            <link href="/index.xml" rel="feed" type="application/rss&#43;xml" title="Xinru Qiu" />
-        
-
-        
-            <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G1BQ8MYLZ"></script>
-            <script>
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments)};
-              gtag('js', new Date());
-              gtag('config', 'G-3G1BQ8MYLZ');
-            </script>
-        
-
-        
-            <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        
-
-        
-
-    </head>
-
-    <body>
-        
-
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">Xinru Qiu</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
-                    
-                        <ul class="nav navbar-nav">
-                            
-                                <li><a href="/">Home</a></li>
-                            
-                                <li><a href="/publication/">Research</a></li>
-                            
-                                <li><a href="/talk/">Talks</a></li>
-                            
-                                <li><a href="/teaching/">Teaching</a></li>
-                            
-                                <li><a href="/misc/">Misc.</a></li>
-                            
-                        </ul>
-                    
-                    
-                </div>
-            </div>
-        </nav>
-
-
-<main>
-
-    <div class="container">
-        <div class="profile-header">
-            <h2>Xinru Qiu</h2>
-            <h5>xinru.qiu@ucr.edu</h5>
-            <img src="/photo_2.jpg" alt="Xinru Qiu" class="profile-image">
-        </div>
-
-<p style="margin-top: 0px; margin-bottom: 10px;"></p> 
-<p>Hi! I am currently a Bioinformatics Postdoctoral Researcher at the University of California, Riverside. </p>
-<p>I obtained my PhD in Bioinformatics from University of California, Riverside (UCR) in 2023, advised by Professor <a href="https://profiles.ucr.edu/app/home/profile/adamg">Adam Godzik</a>. Here are my <a href="/files/">CV</a>, <a href="https://github.com/xqiu625">Github</a>, and <a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ">Google Scholar</a> pages.</p>
-<p style="margin-top: 0px; margin-bottom: 35px;"></p> 
-<hr>
-<h4 id="research-interests">Research interests</h4>
-<p>My research focuses on computational biology and bioinformatics, with an emphasis on the following areas:</p>
-<ul>
-    <li><strong>Computational Biology and Machine Learning</strong>: Applying advanced machine learning techniques and single-cell transcriptomics to identify disease-specific signatures and biomarkers in conditions like COVID-19, sepsis, and autoimmune disorders.</li>
-    <li><strong>Bioinformatics and Data Analysis</strong>: Analyzing large-scale genomic and transcriptomic datasets to uncover patterns in immune cell populations and their dynamics across various diseases.</li>
-    <li><strong>AI in Structural Biology</strong>: Exploring the applications of AI technologies like AlphaFold2 for protein structure prediction and its implications in drug discovery and development.</li>
-    <li><strong>Systems Biology Approaches</strong>: Integrating multi-omics data to understand complex biological systems and disease mechanisms, with a focus on immune responses and inflammation.</li>
-    <li></strong>Translational Bioinformatics</strong>: Leveraging computational findings to identify potential biomarkers, therapeutic targets, and personalized treatment strategies, particularly in immunology and oncology.</li>
-</ul>
-
-
-<h4 id="education">Education</h4>
-<ul>
-<li>Ph.D, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, University of California, Riverside, 2018 - 2023.</li>
-<li>M.S. <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, University of Southern California, 2013 - 2015.</li>
-<li>B.S. <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, Jilin University, 2009 - 2013.</li>
-</ul>
-<hr>
-</div>
-
-</main>
-
-        <footer>
-            <p class="copyright text-muted">© 2024 Xinru Qiu. All rights reserved. </p>
-        </footer>
-
-        
-
-        
-    </body>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3G1BQ8MYLZ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-3G1BQ8MYLZ');
+    </script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
 </html>
