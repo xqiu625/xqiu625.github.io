@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xinru Qiu</title>
-    <link rel="canonical" href="https://xinruqiu.github.io/">
+    <link rel="canonical" href="https://xqiu625.github.io/">
     <script>
-        // Redirect from old domain to new domain
-        if (window.location.hostname === "xqiu625.github.io") {
-            window.location.replace("https://xinruqiu.github.io" + window.location.pathname + window.location.search + window.location.hash);
+        // Redirect from new domain to old domain
+        if (window.location.hostname === "xinruqiu.github.io") {
+            window.location.replace("https://xqiu625.github.io" + window.location.pathname + window.location.search + window.location.hash);
         }
     </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://xinruqiu.github.io/css/main.css">
+    <link rel="stylesheet" href="https://xqiu625.github.io/css/main.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/haskell.min.js"></script>
@@ -38,14 +38,124 @@
     </script>
     <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <style>
-        /* ... (CSS remains unchanged) ... */
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #c2dbcf 0%, #f5db81 100%);
+            color: #395888;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(57, 88, 136, 0.1);
+        }
+        h1, h2, h3, h4, h5 {
+            color: #395888;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+            background-color: #f5bdc8;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        .profile-image {
+            border-radius: 50%;
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border: 8px solid #6c8cc0;
+            box-shadow: 0 0 20px rgba(57, 88, 136, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(57, 88, 136, 0.05);
+            transition: transform 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .skill-item {
+            background-color: #6c8cc0;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            transition: background-color 0.3s ease;
+        }
+        .skill-item:hover {
+            background-color: #395888;
+        }
+        a {
+            color: #6c8cc0;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #395888;
+            text-decoration: underline;
+        }
+        .navbar-default {
+            background-color: #395888;
+            border-color: #6c8cc0;
+        }
+        .navbar-default .navbar-nav > li > a {
+            color: #000000;  /* Changed to black */
+            font-weight: bold;  /* Made bold */
+            font-size: 18px;  /* Increased font size */
+            padding: 15px 20px;  /* Increased padding for larger click area */
+        }
+        .navbar-default .navbar-nav > li > a:hover {
+            color: #f5bdc8;
+        }
+        hr {
+            border-top: 1px solid #6c8cc0;
+        }
+        footer {
+            background-color: #395888;
+            color: #f5db81;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+            .profile-image {
+                width: 180px;
+                height: 180px;
+            }
+            .navbar-default .navbar-nav > li > a {
+                padding: 10px 15px;
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a class="navbar-brand visible-xs" href="#">Xinru Qiu</a>
+                <a class="navbar-brand visible-xs" href="#" style="color: #000000; font-weight: bold; font-size: 18px;">Xinru Qiu</a>
                 <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -74,7 +184,7 @@
 
             <div class="content">
                 <p>Hi! I am currently a Bioinformatics Postdoctoral Researcher at the University of California, Riverside.</p>
-                <p>I obtained my PhD in Bioinformatics from University of California, Riverside (UCR) in 2023, advised by Professor <a href="https://profiles.ucr.edu/app/home/profile/adamg">Adam Godzik</a>. Here are my <a href="/files/">CV</a>, <a href="https://github.com/xinruqiu">Github</a>, and <a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ">Google Scholar</a> pages.</p>
+                <p>I obtained my PhD in Bioinformatics from University of California, Riverside (UCR) in 2023, advised by Professor <a href="https://profiles.ucr.edu/app/home/profile/adamg">Adam Godzik</a>. Here are my <a href="/files/">CV</a>, <a href="https://github.com/xqiu625">Github</a>, and <a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ">Google Scholar</a> pages.</p>
                 <hr>
                 <h4 id="research-interests">Research interests</h4>
                 <p>My research focuses on computational biology and bioinformatics, with an emphasis on the following areas:</p>
@@ -97,7 +207,7 @@
     </main>
 
     <footer>
-        <p class="copyright text-muted">© All rights reserved.</p>
+        <p class="copyright">© All rights reserved.</p>
     </footer>
 </body>
 </html>
