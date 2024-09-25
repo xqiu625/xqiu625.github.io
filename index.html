@@ -1,4 +1,88 @@
 <!DOCTYPE html>
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        color: #333;
+        line-height: 1.8;
+    }
+    .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    h1, h2, h3 {
+        color: #1a5f7a;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+    .profile-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    .profile-image {
+        border-radius: 50%;
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border: 8px solid #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+    .profile-image:hover {
+        transform: scale(1.05);
+    }
+    .section {
+        background-color: white;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+    .section:hover {
+        transform: translateY(-5px);
+    }
+    .skill-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    .skill-item {
+        background-color: #1a5f7a;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 25px;
+        font-size: 0.95em;
+        transition: background-color 0.3s ease;
+    }
+    .skill-item:hover {
+        background-color: #2D87C8;
+    }
+    a {
+        color: #2D87C8;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    a:hover {
+        color: #1a5f7a;
+        text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+        .container {
+            padding: 20px;
+            margin: 20px auto;
+        }
+        .profile-image {
+            width: 180px;
+            height: 180px;
+        }
+    }
+
 <style>
     body {
         font-family: 'Lato', sans-serif;
