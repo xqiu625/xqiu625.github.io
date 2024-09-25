@@ -87,24 +87,31 @@
             text-decoration: underline;
         }
         .navbar-default {
-            background-color: #35424a;
-            border-color: #e8491d;
+            background-color: #ffffff;
+            border-color: #e7e7e7;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .navbar-default .navbar-nav > li > a {
-            color: #ffffff;
+            color: #666666;
             font-size: 20px;
             font-weight: bold;
             padding: 15px 20px;
             transition: color 0.3s ease;
         }
-        .navbar-default .navbar-nav > li > a:hover {
-            color: #e8491d;
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: #333333;
+            background-color: #f8f8f8;
         }
         .navbar-toggle {
-            border-color: #ffffff;
+            border-color: #666666;
         }
         .navbar-toggle .icon-bar {
-            background-color: #ffffff;
+            background-color: #666666;
+        }
+        .navbar-default .navbar-brand {
+            color: #666666;
+            font-weight: bold;
         }
         @media (max-width: 768px) {
             .container {
