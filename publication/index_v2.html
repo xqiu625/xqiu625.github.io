@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xinru Qiu - Highlighted Projects</title>
+    <title>Xinru Qiu - Talks and Posters</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -24,9 +22,6 @@
             background-color: #ffffff;
             border-bottom: 1px solid #e7e7e7;
             padding: 10px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
         .navbar-nav {
             list-style-type: none;
@@ -47,55 +42,34 @@
         h1, h2, h3, h4 {
             color: #1a5f7a;
         }
-        main {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        .content {
+            margin-top: 20px;
         }
-        .paper {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .presentation {
             margin-bottom: 30px;
-            padding: 20px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e7e7e7;
         }
-        .paper-title {
-            font-size: 1.5em;
+        .presentation:last-child {
+            border-bottom: none;
+        }
+        .presentation-title {
+            font-weight: bold;
+            font-size: 1.2em;
             margin-bottom: 10px;
         }
-        .paper-links {
-            margin-bottom: 20px;
+        .presentation-details {
+            margin-bottom: 10px;
         }
-        .button {
-            display: inline-block;
-            padding: 8px 16px;
-            margin-right: 10px;
-            background-color: #1a5f7a;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 4px;
-            font-size: 14px;
+        .presentation-type {
+            font-weight: bold;
+            color: #1a5f7a;
         }
-        .paper-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+        .presentation-venue {
+            font-style: italic;
         }
-        .paper-figure {
-            max-width: 300px;
-            height: auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .paper-content {
-            flex: 1;
-            min-width: 300px;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #f5f7fa;
-            margin-top: 40px;
+        .presentation-date {
+            color: #666;
         }
     </style>
 </head>
@@ -127,7 +101,7 @@
             </div>
 
             <div class="paper-details">
-                <img src="/api/placeholder/300/200" alt="Platelet subpopulations" class="paper-figure">
+                <img src="platelet.jpeg" alt="Platelet subpopulations" class="paper-figure">
                 <div class="paper-content">
                     <h3>Key Findings:</h3>
                     <ul>
@@ -173,7 +147,7 @@
             </div>
 
             <div class="paper-details">
-                <img src="/api/placeholder/300/200" alt="Sepsis study" class="paper-figure">
+                <img src="sepsis.png" alt="Sepsis study" class="paper-figure">
                 <div class="paper-content">
                     <h3>Key Findings:</h3>
                     <ul>
@@ -216,7 +190,7 @@
             </div>
 
             <div class="paper-details">
-                <img src="/api/placeholder/300/200" alt="AI for drug discovery" class="paper-figure">
+                <img src="ai_for_drug.jpeg" alt="AI for drug discovery" class="paper-figure">
                 <div class="paper-content">
                     <h3>Key Findings:</h3>
                     <ul>
