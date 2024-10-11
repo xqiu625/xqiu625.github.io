@@ -1,88 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xinru Qiu - Research Projects</title>
+    <title>Xinru Qiu - Talks and Posters</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             line-height: 1.6;
-            color: #1a1a1a;
-            background-color: #ffffff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        nav {
-            margin-bottom: 20px;
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
         }
-        nav a {
-            margin-right: 10px;
-            text-decoration: none;
-            color: #0056b3;
-        }
-        .paper {
-            margin-bottom: 40px;
-            border: 1px solid #dee2e6;
-            padding: 20px;
-            border-radius: 0.25rem;
-            background-color: #f8f9fa;
-        }
-        .paper-title {
-            color: #343a40;
-            margin-top: 0;
-        }
-        .paper-links {
-            margin-bottom: 20px;
-        }
-        .button {
-            display: inline-block;
-            padding: 6px 12px;
-            background-color: #0056b3;
-            color: white;
-            text-decoration: none;
-            border-radius: 0.25rem;
-            margin-right: 10px;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #004494;
-        }
-        .paper-details {
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
             display: flex;
-            flex-wrap: wrap;
-            align-items: flex-start;
+            justify-content: center;
         }
-        .paper-figure {
-            width: 300px;
-            height: 300px;
-            object-fit: cover;
-            margin-right: 20px;
-            margin-bottom: 20px;
-            border-radius: 0.25rem;
+        .navbar-nav li {
+            margin: 0 15px;
         }
-        .paper-content {
-            flex: 1;
-            min-width: 300px;
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
         }
-        h3 {
-            color: #343a40;
+        h1, h2, h3, h4 {
+            color: #1a5f7a;
+        }
+        .content {
             margin-top: 20px;
+        }
+        .presentation {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .presentation:last-child {
+            border-bottom: none;
+        }
+        .presentation-title {
+            font-weight: bold;
+            font-size: 1.2em;
             margin-bottom: 10px;
         }
-        ul {
-            padding-left: 20px;
+        .presentation-details {
+            margin-bottom: 10px;
+        }
+        .presentation-type {
+            font-weight: bold;
+            color: #1a5f7a;
+        }
+        .presentation-venue {
+            font-style: italic;
+        }
+        .presentation-date {
+            color: #666;
         }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/publication/">Research</a>
-        <a href="/talk/">Talks</a>
-        <a href="/teaching/">Teaching</a>
-        <a href="/misc/">Misc.</a>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/publication/">Research</a></li>
+                <li><a href="/talk/">Talks</a></li>
+                <li><a href="/teaching/">Teaching</a></li>
+                <li><a href="/misc/">Misc.</a></li>
+            </ul>
+        </div>
     </nav>
 
     <main>
