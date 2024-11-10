@@ -4,20 +4,25 @@ As a computational biologist and machine learning researcher, I bridge the gap b
 
 ## 🧬 Research Focus
 ![Alt text](research_focus.png)
-### Single-Cell Genomics & Disease Mechanisms
-- Pioneering machine learning applications in single-cell transcriptomics
-- Investigating immune cell heterogeneity in inflammatory diseases
-- Developing computational methods for biomarker discovery
 
-### Protein Design & Structural Biology
-- Developing novel approaches using RFDiffusion, ProteinMPNN, and AlphaFold
-- Advancing protein structure prediction for drug discovery
-- Applying machine learning to optimize protein function
+#### 1. Computational Method Development
+- **AI/ML in Biology**: Developing and applying novel machine learning approaches for biological data analysis
+- **Single-Cell Tools**: Creating new computational methods for single-cell data interpretation
+- **Protein Design**: Advancing tools for protein structure prediction and design
+- **Multi-omics Integration**: Building frameworks for integrating diverse biological data types
 
-### Machine Learning & AI Applications
-- Creating deep learning models for biological data analysis
-- Implementing large language models for genomic interpretation
-- Building predictive models for disease progression
+#### 2. Biological Applications
+- **Disease Mechanisms**: Investigating molecular mechanisms of inflammatory diseases
+- **Drug Discovery**: Computational approaches for therapeutic development
+- **Immunology**: Understanding immune cell dynamics and regulation
+- **Biomarker Discovery**: Identifying and validating disease biomarkers
+
+#### 3. Technical Development
+- **Software Tools**: Building user-friendly bioinformatics tools
+- **Pipeline Development**: Creating reproducible analysis workflows
+- **Visualization Tools**: Developing interactive data visualization solutions
+- **Cloud Computing**: Implementing scalable computational solutions
+
 
 ## 🔬 Technical Expertise
 
