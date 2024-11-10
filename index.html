@@ -83,11 +83,10 @@
             margin-top: 20px;
         }
         .research-image {
-            background: #ffffff;
-            border-radius: 10px;
+            background: transparent;
             padding: 20px;
             margin: 20px 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
         }
         .research-image img {
             width: 100%;
@@ -96,6 +95,7 @@
             margin: 0 auto;
             border-radius: 8px;
             transition: transform 0.3s ease;
+            mix-blend-mode: multiply;
         }
 
         .research-image img:hover {
@@ -104,7 +104,7 @@
 
         .research-image .caption {
             text-align: center;
-            color: #666666;
+            color: #333333;
             font-style: italic;
             margin-top: 10px;
             font-size: 0.9em;
