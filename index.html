@@ -82,6 +82,33 @@
         .content {
             margin-top: 20px;
         }
+        .research-image {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .research-image img {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .research-image img:hover {
+            transform: scale(1.02);
+        }
+
+        .research-image .caption {
+            text-align: center;
+            color: #666666;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }       
         @media (max-width: 768px) {
             .profile-container {
                 flex-direction: column;
@@ -93,6 +120,14 @@
             }
             .profile-links {
                 text-align: center;
+            }
+            .research-image {
+                max-width: 900px;
+                margin: 20px auto;
+            }
+            .research-image {
+                padding: 10px;
+                margin: 10px 0;
             }
         }
     </style>
@@ -135,6 +170,9 @@
 
                     <div class="content">
                         <h2>Research interests</h2>
+                        <div class="research-image">
+                            <img src="./research_intro.png" alt="From Data to Therapeutic Insights">
+                        </div>
                         <p>My research focuses on computational biology and bioinformatics, with an emphasis on the following areas:</p>
                         <ul>
                             <li><strong>Computational Biology and Machine Learning</strong>: Applying advanced machine learning techniques and single-cell transcriptomics to identify disease-specific signatures and biomarkers in conditions like COVID-19, sepsis, and autoimmune disorders.</li>
