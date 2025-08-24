@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hypergeometric Distribution Illustrations</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        h1 {
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .figure-section {
+            margin: 40px 0;
+            padding: 20px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            background: #fdfdfd;
+        }
+        .controls {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f4f8;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .controls label {
+            margin: 0 10px;
+            font-weight: bold;
+        }
+        .controls input {
+            margin: 0 5px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+        .ball {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .ball:hover {
+            stroke-width: 3;
+        }
+        .selected {
+            stroke: #2c3e50 !important;
+            stroke-width: 4 !important;
+        }
+        .formula-box {
+            background: #f0f8ff;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            border-radius: 0 5px 5px 0;
+        }
+        .bio-example {
+            background: #f0f9f0;
+            padding: 15px;
+            border-left: 4px solid #27ae60;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+        .comparison-table th {
+            background: #3498db;
+            color: white;
+        }
+        .axis {
+            font-size: 12px;
+        }
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .tooltip {
+            position: absolute;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 4px;
+            pointer-events: none;
+            font-size: 12px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Hypergeometric Distribution Illustrations | 超几何分布可视化</h1>
+        
+        <!-- Figure 1: Box-Ball Sampling Visualization -->
+        <div class="figure-section">
+            <h2>Figure 1: Box-Ball Sampling Model | 盒子小球抽样模型</h2>
+            <div class="controls">
+                <label>Total Balls (N): <input type="range" id="totalBalls" min="20" max="100" value="50"></label>
+                <span id="totalValue">50</span>
+                <label>Red Balls (K): <input type="range" id="redBalls" min="5" max="40" value="20"></label>
+                <span id="redValue">20</span>
+                <label>Sample Size (n): <input type="range" id="sampleSize" min="5" max="20" value="10"></label>
+                <span id="sampleValue">10</span>
+            </div>
+            <div id="boxBallViz"></div>
+            <div class="formula-box">
+                <strong>Formula | 公式:</strong><br>
+                P(X = x) = C(K,x) × C(N-K,n-x) / C(N,n)<br>
+                <div id="formulaValues"></div>
+            </div>
+        </div>
+
+        <!-- Figure 2: Probability Distribution -->
+        <div class="figure-section">
+            <h2>Figure 2: Probability Distribution | 概率分布图</h2>
+            <div id="probDistribution"></div>
+            <div class="bio-example">
+                <strong>🧬 Biology Example | 生物学例子:</strong><br>
+                In scRNA-seq: N = total mRNA molecules, K = gene X molecules, n = captured molecules<br>
+                在单细胞测序中：N = 总mRNA分子数，K = 基因X的分子数，n = 捕获的分子数
+            </div>
+        </div>
+
+        <!-- Figure 3: Comparison with Other Distributions -->
+        <div class="figure-section">
+            <h2>Figure 3: Distribution Comparison | 分布对比</h2>
+            <div id="distributionComparison"></div>
+            <table class="comparison-table">
+                <tr>
+                    <th>Distribution | 分布</th>
+                    <th>Sampling | 抽样方式</th>
+                    <th>Population | 总体</th>
+                    <th>Biology Example | 生物学例子</th>
+                </tr>
+                <tr>
+                    <td>Hypergeometric | 超几何</td>
+                    <td>Without replacement | 无放回</td>
+                    <td>Finite | 有限</td>
+                    <td>scRNA-seq transcript sampling</td>
+                </tr>
+                <tr>
+                    <td>Binomial | 二项</td>
+                    <td>With replacement | 有放回</td>
+                    <td>Finite | 有限</td>
+                    <td>Genotype frequency</td>
+                </tr>
+                <tr>
+                    <td>Poisson | 泊松</td>
+                    <td>Theoretical infinite | 理论无限</td>
+                    <td>Infinite | 无限</td>
+                    <td>Rare mutation counts</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Figure 4: scRNA-seq Application -->
+        <div class="figure-section">
+            <h2>Figure 4: scRNA-seq Application | 单细胞测序应用</h2>
+            <div id="scrnaSeqExample"></div>
+            <div class="bio-example">
+                <strong>🔬 Memento Method Innovation | Memento方法创新:</strong><br>
+                • Traditional: Assumes Poisson distribution (infinite molecules)<br>
+                • Memento: Uses hypergeometric model (finite molecules in each cell)<br>
+                • 传统方法：假设泊松分布（无限分子）<br>
+                • Memento方法：使用超几何模型（每个细胞内分子数有限）
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Global variables
+        let N = 50, K = 20, n = 10;
+        let selectedBalls = [];
+
+        // Update parameter values
+        function updateParameters() {
+            N = parseInt(document.getElementById('totalBalls').value);
+            K = parseInt(document.getElementById('redBalls').value);
+            n = parseInt(document.getElementById('sampleSize').value);
+            
+            document.getElementById('totalValue').textContent = N;
+            document.getElementById('redValue').textContent = K;
+            document.getElementById('sampleValue').textContent = n;
+            
+            // Ensure K <= N and n <= N
+            if (K > N) {
+                K = N;
+                document.getElementById('redBalls').value = K;
+                document.getElementById('redValue').textContent = K;
+            }
+            if (n > N) {
+                n = N;
+                document.getElementById('sampleSize').value = n;
+                document.getElementById('sampleValue').textContent = n;
+            }
+            
+            updateFormula();
+            drawBoxBallViz();
+            drawProbDistribution();
+            drawDistributionComparison();
+            drawScRNASeqExample();
+        }
+
+        // Update formula display
+        function updateFormula() {
+            const x = selectedBalls.filter(d => d).length;
+            document.getElementById('formulaValues').innerHTML = `
+                Current: N=${N}, K=${K}, n=${n}, x=${x}<br>
+                P(X=${x}) = C(${K},${x}) × C(${N-K},${n-x}) / C(${N},${n}) = ${hypergeometricPMF(x, N, K, n).toFixed(4)}
+            `;
+        }
+
+        // Hypergeometric PMF calculation
+        function hypergeometricPMF(x, N, K, n) {
+            if (x < 0 || x > Math.min(K, n) || (n - x) > (N - K)) return 0;
+            return combination(K, x) * combination(N - K, n - x) / combination(N, n);
+        }
+
+        // Combination function
+        function combination(n, k) {
+            if (k > n || k < 0) return 0;
+            if (k === 0 || k === n) return 1;
+            k = Math.min(k, n - k);
+            let result = 1;
+            for (let i = 0; i < k; i++) {
+                result = result * (n - i) / (i + 1);
+            }
+            return result;
+        }
+
+        // Figure 1: Box-Ball Visualization
+        function drawBoxBallViz() {
+            d3.select("#boxBallViz").selectAll("*").remove();
+            
+            const width = 800;
+            const height = 400;
+            const svg = d3.select("#boxBallViz")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Create ball positions in a grid
+            const cols = Math.ceil(Math.sqrt(N));
+            const rows = Math.ceil(N / cols);
+            const ballRadius = Math.min(15, Math.min(width / cols / 2.5, height / rows / 2.5));
+            const startX = 50;
+            const startY = 50;
+            const spacing = ballRadius * 2.5;
+
+            // Generate ball data
+            const balls = [];
+            for (let i = 0; i < N; i++) {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                balls.push({
+                    id: i,
+                    x: startX + col * spacing,
+                    y: startY + row * spacing,
+                    isRed: i < K,
+                    isSelected: selectedBalls[i] || false
+                });
+            }
+
+            // Draw balls
+            svg.selectAll(".ball")
+                .data(balls)
+                .enter()
+                .append("circle")
+                .attr("class", "ball")
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .attr("r", ballRadius)
+                .attr("fill", d => d.isRed ? "#e74c3c" : "#3498db")
+                .attr("stroke", d => d.isSelected ? "#2c3e50" : "#333")
+                .attr("stroke-width", d => d.isSelected ? 4 : 2)
+                .classed("selected", d => d.isSelected)
+                .on("click", function(event, d) {
+                    if (selectedBalls.filter(x => x).length < n || d.isSelected) {
+                        selectedBalls[d.id] = !selectedBalls[d.id];
+                        drawBoxBallViz();
+                        updateFormula();
+                    }
+                })
+                .on("mouseover", function(event, d) {
+                    const tooltip = d3.select("#tooltip");
+                    tooltip.style("display", "block")
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px")
+                        .html(`Ball ${d.id + 1}<br>Color: ${d.isRed ? 'Red' : 'Blue'}<br>Selected: ${d.isSelected ? 'Yes' : 'No'}`);
+                })
+                .on("mouseout", function() {
+                    d3.select("#tooltip").style("display", "none");
+                });
+
+            // Add legend and instructions
+            const legend = svg.append("g").attr("transform", `translate(${width - 200}, 50)`);
+            
+            legend.append("circle").attr("cx", 0).attr("cy", 0).attr("r", 10).attr("fill", "#e74c3c").attr("stroke", "#333").attr("stroke-width", 2);
+            legend.append("text").attr("x", 20).attr("y", 5).text(`Red balls (K=${K})`).style("font-size", "12px");
+            
+            legend.append("circle").attr("cx", 0).attr("cy", 30).attr("r", 10).attr("fill", "#3498db").attr("stroke", "#333").attr("stroke-width", 2);
+            legend.append("text").attr("x", 20).attr("y", 35).text(`Blue balls (${N-K})`).style("font-size", "12px");
+            
+            legend.append("text").attr("x", 0).attr("y", 70).text("Click balls to sample").style("font-size", "12px").style("font-weight", "bold");
+            legend.append("text").attr("x", 0).attr("y", 85).text(`(${selectedBalls.filter(x => x).length}/${n} selected)`).style("font-size", "11px");
+        }
+
+        // Figure 2: Probability Distribution
+        function drawProbDistribution() {
+            d3.select("#probDistribution").selectAll("*").remove();
+            
+            const margin = {top: 20, right: 30, bottom: 60, left: 60};
+            const width = 600 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select("#probDistribution")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Generate data
+            const maxX = Math.min(K, n);
+            const data = [];
+            for (let x = 0; x <= maxX; x++) {
+                data.push({
+                    x: x,
+                    probability: hypergeometricPMF(x, N, K, n)
+                });
+            }
+
+            // Scales
+            const xScale = d3.scaleLinear()
+                .domain([0, maxX])
+                .range([0, width]);
+                
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(data, d => d.probability)])
+                .range([height, 0]);
+
+            // Axes
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+                
+            svg.append("g")
+                .call(d3.axisLeft(yScale));
+
+            // Axis labels
+            svg.append("text")
+                .attr("transform", `translate(${width/2}, ${height + 40})`)
+                .style("text-anchor", "middle")
+                .style("font-size", "14px")
+                .style("font-weight", "bold")
+                .text("Number of Red Balls Drawn (x) | 抽到红球数量");
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .style("font-size", "14px")
+                .style("font-weight", "bold")
+                .text("Probability | 概率");
+
+            // Bars
+            svg.selectAll(".bar")
+                .data(data)
+                .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", d => xScale(d.x) - 15)
+                .attr("width", 30)
+                .attr("y", d => yScale(d.probability))
+                .attr("height", d => height - yScale(d.probability))
+                .attr("fill", "#3498db")
+                .attr("stroke", "#2c3e50")
+                .attr("stroke-width", 1)
+                .on("mouseover", function(event, d) {
+                    d3.select(this).attr("fill", "#e74c3c");
+                    const tooltip = d3.select("#tooltip");
+                    tooltip.style("display", "block")
+                        .style("left", (event.pageX + 10) + "px")
+                        .style("top", (event.pageY - 10) + "px")
+                        .html(`x = ${d.x}<br>P(X = ${d.x}) = ${d.probability.toFixed(4)}`);
+                })
+                .on("mouseout", function() {
+                    d3.select(this).attr("fill", "#3498db");
+                    d3.select("#tooltip").style("display", "none");
+                });
+
+            // Add mean line
+            const mean = n * K / N;
+            svg.append("line")
+                .attr("x1", xScale(mean))
+                .attr("x2", xScale(mean))
+                .attr("y1", 0)
+                .attr("y2", height)
+                .attr("stroke", "#e74c3c")
+                .attr("stroke-width", 2)
+                .attr("stroke-dasharray", "5,5");
+                
+            svg.append("text")
+                .attr("x", xScale(mean) + 5)
+                .attr("y", 15)
+                .text(`Mean = ${mean.toFixed(2)}`)
+                .style("fill", "#e74c3c")
+                .style("font-size", "12px")
+                .style("font-weight", "bold");
+        }
+
+        // Figure 3: Distribution Comparison
+        function drawDistributionComparison() {
+            d3.select("#distributionComparison").selectAll("*").remove();
+            
+            const margin = {top: 20, right: 120, bottom: 60, left: 60};
+            const width = 800 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select("#distributionComparison")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const maxX = Math.min(K, n);
+            const p = K / N; // Success probability for binomial
+            const lambda = n * p; // Lambda for Poisson
+
+            // Generate data for all three distributions
+            const hyperData = [], binomialData = [], poissonData = [];
+            
+            for (let x = 0; x <= maxX; x++) {
+                hyperData.push({x: x, prob: hypergeometricPMF(x, N, K, n), type: 'Hypergeometric'});
+                binomialData.push({x: x, prob: binomialPMF(x, n, p), type: 'Binomial'});
+                poissonData.push({x: x, prob: poissonPMF(x, lambda), type: 'Poisson'});
+            }
+
+            const allData = [...hyperData, ...binomialData, ...poissonData];
+
+            // Scales
+            const xScale = d3.scaleLinear()
+                .domain([0, maxX])
+                .range([0, width]);
+                
+            const yScale = d3.scaleLinear()
+                .domain([0, d3.max(allData, d => d.prob)])
+                .range([height, 0]);
+
+            const colorScale = d3.scaleOrdinal()
+                .domain(['Hypergeometric', 'Binomial', 'Poisson'])
+                .range(['#e74c3c', '#3498db', '#27ae60']);
+
+            // Lines for each distribution
+            const line = d3.line()
+                .x(d => xScale(d.x))
+                .y(d => yScale(d.prob));
+
+            ['Hypergeometric', 'Binomial', 'Poisson'].forEach(type => {
+                const data = type === 'Hypergeometric' ? hyperData : 
+                           type === 'Binomial' ? binomialData : poissonData;
+                           
+                svg.append("path")
+                    .datum(data)
+                    .attr("fill", "none")
+                    .attr("stroke", colorScale(type))
+                    .attr("stroke-width", 3)
+                    .attr("d", line);
+
+                // Points
+                svg.selectAll(`.point-${type}`)
+                    .data(data)
+                    .enter().append("circle")
+                    .attr("class", `point-${type}`)
+                    .attr("cx", d => xScale(d.x))
+                    .attr("cy", d => yScale(d.prob))
+                    .attr("r", 4)
+                    .attr("fill", colorScale(type));
+            });
+
+            // Axes
+            svg.append("g")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
+                
+            svg.append("g")
+                .call(d3.axisLeft(yScale));
+
+            // Axis labels
+            svg.append("text")
+                .attr("transform", `translate(${width/2}, ${height + 40})`)
+                .style("text-anchor", "middle")
+                .style("font-size", "14px")
+                .style("font-weight", "bold")
+                .text("x");
+
+            svg.append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - margin.left)
+                .attr("x", 0 - (height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .style("font-size", "14px")
+                .style("font-weight", "bold")
+                .text("Probability");
+
+            // Legend
+            const legend = svg.append("g")
+                .attr("transform", `translate(${width + 20}, 20)`);
+
+            ['Hypergeometric', 'Binomial', 'Poisson'].forEach((type, i) => {
+                const g = legend.append("g")
+                    .attr("transform", `translate(0, ${i * 25})`);
+                
+                g.append("line")
+                    .attr("x1", 0)
+                    .attr("x2", 20)
+                    .attr("y1", 0)
+                    .attr("y2", 0)
+                    .attr("stroke", colorScale(type))
+                    .attr("stroke-width", 3);
+                    
+                g.append("text")
+                    .attr("x", 25)
+                    .attr("y", 5)
+                    .text(type)
+                    .style("font-size", "12px");
+            });
+        }
+
+        // Binomial PMF
+        function binomialPMF(x, n, p) {
+            return combination(n, x) * Math.pow(p, x) * Math.pow(1 - p, n - x);
+        }
+
+        // Poisson PMF
+        function poissonPMF(x, lambda) {
+            return Math.exp(-lambda) * Math.pow(lambda, x) / factorial(x);
+        }
+
+        // Factorial function
+        function factorial(n) {
+            if (n <= 1) return 1;
+            return n * factorial(n - 1);
+        }
+
+        // Figure 4: scRNA-seq Example
+        function drawScRNASeqExample() {
+            d3.select("#scrnaSeqExample").selectAll("*").remove();
+            
+            const width = 800;
+            const height = 300;
+            const svg = d3.select("#scrnaSeqExample")
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+            // Cell representation
+            const cellRadius = 80;
+            const cellX = 150;
+            const cellY = 150;
+
+            // Draw cell
+            svg.append("circle")
+                .attr("cx", cellX)
+                .attr("cy", cellY)
+                .attr("r", cellRadius)
+                .attr("fill", "#ecf0f1")
+                .attr("stroke", "#34495e")
+                .attr("stroke-width", 3);
+
+            // mRNA molecules in cell
+            const numMolecules = 30; // Reduced for visualization
+            const geneXMolecules = 12; // Red molecules
+            
+            for (let i = 0; i < numMolecules; i++) {
+                const angle = (i / numMolecules) * 2 * Math.PI;
+                const radius = 20 + Math.random() * 50;
+                const x = cellX + radius * Math.cos(angle);
+                const y = cellY + radius * Math.sin(angle);
+                
+                svg.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y)
+                    .attr("r", 3)
+                    .attr("fill", i < geneXMolecules ? "#e74c3c" : "#3498db")
+                    .attr("stroke", "#2c3e50")
+                    .attr("stroke-width", 1);
+            }
+
+            // Labels
+            svg.append("text")
+                .attr("x", cellX)
+                .attr("y", cellY + cellRadius + 20)
+                .attr("text-anchor", "middle")
+                .style("font-size", "14px")
+                .style("font-weight", "bold")
+                .text("Single Cell");
+
+            // Arrow and sampling
+            svg.append("path")
+                .attr("d", "M 250 150 L 350 150")
+                .attr("stroke", "#2c3e50")
+                .attr("stroke-width", 3)
+                .attr("marker-end", "url(#arrowhead)");
+
+            // Arrow marker
+            svg.append("defs").append("marker")
+                .attr("id", "arrowhead")
+                .attr("refX", 6)
+                .attr("refY", 3)
+                .attr("markerWidth", 12)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M 0,0 L 0,6 L 9,3 z")
+                .attr("fill", "#2c3e50");
+
+            svg.append("text")
+                .attr("x", 300)
+                .attr("y", 140)
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .text("Hypergeometric");
+                
+            svg.append("text")
+                .attr("x", 300)
+                .attr("y", 155)
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .text("Sampling");
+
+            // Sampled molecules
+            const sampledX = 450;
+            const sampledY = 150;
+            const sampledCount = 8;
+            const sampledGeneX = 3;
+
+            svg.append("rect")
+                .attr("x", sampledX - 50)
+                .attr("y", sampledY - 30)
+                .attr("width", 100)
+                .attr("height", 60)
+                .attr("fill", "#f8f9fa")
+                .attr("stroke", "#34495e")
+                .attr("stroke-width", 2);
+
+            for (let i = 0; i < sampledCount; i++) {
+                const x = sampledX - 30 + (i % 4) * 15;
+                const y = sampledY - 15 + Math.floor(i / 4) * 15;
+                
+                svg.append("circle")
+                    .attr("cx", x)
+                    .attr("cy", y)
+                    .attr("r", 4)
+                    .attr("fill", i < sampledGeneX ? "#e74c3c" : "#3498db")
+                    .attr("stroke", "#2c3e50")
+                    .attr("stroke-width", 1);
+            }
+
+            svg.append("text")
+                .attr("x", sampledX)
+                .attr("y", sampledY + 50)
+                .attr("text-anchor", "middle")
+                .style("font-size", "14px")
+                .style("font-weight", "bold")
+                .text("Observed UMIs");
+
+            // Statistics box
+            const statsX = 600;
+            const statsY = 80;
+            
+            svg.append("rect")
+                .attr("x", statsX - 60)
+                .attr("y", statsY - 40)
+                .attr("width", 120)
+                .attr("height", 140)
+                .attr("fill", "#fff")
+                .attr("stroke", "#3498db")
+                .attr("stroke-width", 2);
+
+            svg.append("text")
+                .attr("x", statsX)
+                .attr("y", statsY - 25)
+                .attr("text-anchor", "middle")
+                .style("font-size", "12px")
+                .style("font-weight", "bold")
+                .text("Parameters:");
+
+            const params = [
+                `N = ${numMolecules}`,
+                `K = ${geneXMolecules}`,
+                `n = ${sampledCount}`,
+                `x = ${sampledGeneX}`,
+                `P = ${hypergeometricPMF(sampledGeneX, numMolecules, geneXMolecules, sampledCount).toFixed(3)}`
+            ];
+
+            params.forEach((param, i) => {
+                svg.append("text")
+                    .attr("x", statsX)
+                    .attr("y", statsY - 5 + i * 20)
+                    .attr("text-anchor", "middle")
+                    .style("font-size", "11px")
+                    .text(param);
+            });
+        }
+
+        // Event listeners
+        document.getElementById('totalBalls').addEventListener('input', updateParameters);
+        document.getElementById('redBalls').addEventListener('input', updateParameters);
+        document.getElementById('sampleSize').addEventListener('input', updateParameters);
+
+        // Initialize
+        selectedBalls = new Array(N).fill(false);
+        updateParameters();
+    </script>
+</body>
+</html>

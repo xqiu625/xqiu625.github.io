@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI4Bio Concepts Handbook - Xinru Qiu</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .home-link {
+            color: #1a5f7a !important;
+            font-size: 16px !important;
+        }
+        .header {
+            text-align: center;
+            margin: 40px 0;
+        }
+        .header h1 {
+            color: #1a5f7a;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            font-size: 1.2em;
+            color: #666;
+        }
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        .concept-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid;
+        }
+        .concept-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        .card-stats { border-top-color: #e74c3c; }
+        .card-ml { border-top-color: #3498db; }
+        .card-bio { border-top-color: #27ae60; }
+        .card-tools { border-top-color: #f39c12; }
+        .card-apps { border-top-color: #9b59b6; }
+        
+        .concept-card h3 {
+            color: #1a5f7a;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .concept-card .icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+            display: block;
+        }
+        .card-stats .icon { color: #e74c3c; }
+        .card-ml .icon { color: #3498db; }
+        .card-bio .icon { color: #27ae60; }
+        .card-tools .icon { color: #f39c12; }
+        .card-apps .icon { color: #9b59b6; }
+        
+        .concept-list {
+            list-style: none;
+            padding: 0;
+        }
+        .concept-list li {
+            margin-bottom: 8px;
+        }
+        .concept-list a {
+            color: #666;
+            text-decoration: none;
+            padding: 5px 0;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        .concept-list a:hover {
+            color: #1a5f7a;
+        }
+        .coming-soon {
+            color: #999;
+            font-style: italic;
+        }
+        .featured-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .featured-section h2 {
+            color: white;
+            margin-bottom: 15px;
+        }
+        .featured-link {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .featured-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        @media (max-width: 768px) {
+            .concepts-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../" class="home-link"><i class="fas fa-home"></i> Back to Xinru's Homepage</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1>🧬 AI4Bio Concepts Handbook</h1>
+                <p>Interactive visualizations and explanations of key concepts in AI for biology</p>
+                <p><em>Personal knowledge base for computational biology research</em></p>
+            </div>
+
+
+
+            <div class="concepts-grid">
+                <div class="concept-card card-stats">
+                    <i class="fas fa-chart-bar icon"></i>
+                    <h3>📊 Statistical Methods</h3>
+                    <ul class="concept-list">
+                        <li><a href="statistics/distributions.html">Probability Distributions</a></li>
+                        <li><a href="statistics/hypothesis-testing.html" class="coming-soon">Hypothesis Testing (Coming Soon)</a></li>
+                        <li><a href="statistics/bootstrap-methods.html" class="coming-soon">Bootstrap Methods (Coming Soon)</a></li>
+                    </ul>
+                </div>
+
+                <div class="concept-card card-ml">
+                    <i class="fas fa-brain icon"></i>
+                    <h3>🧠 Machine Learning</h3>
+                    <ul class="concept-list">
+                        <li><a href="machine-learning/deep-learning.html" class="coming-soon">Deep Learning (Coming Soon)</a></li>
+                        <li><a href="machine-learning/supervised-learning.html" class="coming-soon">Supervised Learning (Coming Soon)</a></li>
+                        <li><a href="machine-learning/model-evaluation.html" class="coming-soon">Model Evaluation (Coming Soon)</a></li>
+                    </ul>
+                </div>
+
+                <div class="concept-card card-bio">
+                    <i class="fas fa-dna icon"></i>
+                    <h3>🧬 Computational Biology</h3>
+                    <ul class="concept-list">
+                        <li><a href="computational-biology/sequence-analysis.html" class="coming-soon">Sequence Analysis (Coming Soon)</a></li>
+                        <li><a href="computational-biology/structure-biology.html" class="coming-soon">Structural Biology (Coming Soon)</a></li>
+                        <li><a href="computational-biology/systems-biology.html" class="coming-soon">Systems Biology (Coming Soon)</a></li>
+                    </ul>
+                </div>
+
+                <div class="concept-card card-tools">
+                    <i class="fas fa-tools icon"></i>
+                    <h3>💻 Computational Tools</h3>
+                    <ul class="concept-list">
+                        <li><a href="tools/python-bio.html" class="coming-soon">Python for Biology (Coming Soon)</a></li>
+                        <li><a href="tools/r-bioinformatics.html" class="coming-soon">R for Bioinformatics (Coming Soon)</a></li>
+                        <li><a href="tools/visualization.html" class="coming-soon">Data Visualization (Coming Soon)</a></li>
+                    </ul>
+                </div>
+
+                <div class="concept-card card-apps">
+                    <i class="fas fa-flask icon"></i>
+                    <h3>🏥 Applications</h3>
+                    <ul class="concept-list">
+                        <li><a href="applications/drug-discovery.html" class="coming-soon">Drug Discovery (Coming Soon)</a></li>
+                        <li><a href="applications/precision-medicine.html" class="coming-soon">Precision Medicine (Coming Soon)</a></li>
+                        <li><a href="applications/biomarker-discovery.html" class="coming-soon">Biomarker Discovery (Coming Soon)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; margin-top: 40px; color: #666;">
+            <p>Part of <a href="../" style="color: #1a5f7a;">Xinru Qiu's</a> personal knowledge ecosystem</p>
+        </div>
+    </footer>
+</body>
+</html>
