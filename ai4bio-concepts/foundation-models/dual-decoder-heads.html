@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TranscriptFormer Dual Decoder Heads</title>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            color: #1a5f7a;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+        
+        .architecture-diagram {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .component {
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .transformer {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 150px;
+            height: 100px;
+            border: none;
+        }
+        
+        .decoder-gene {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            width: 140px;
+            height: 80px;
+            border: none;
+        }
+        
+        .decoder-count {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            width: 140px;
+            height: 80px;
+            border: none;
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #666;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .explanation-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .card-gene {
+            border-left-color: #e74c3c;
+        }
+        
+        .card-count {
+            border-left-color: #3498db;
+        }
+        
+        .card-joint {
+            border-left-color: #27ae60;
+        }
+        
+        .card h3 {
+            color: #1a5f7a;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .math-formula {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            color: #495057;
+        }
+        
+        .interactive-demo {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .demo-controls {
+            margin: 20px 0;
+        }
+        
+        .demo-button {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .demo-button:hover, .demo-button.active {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .demo-output {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .probability-bar {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            height: 8px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+        
+        .probability-fill {
+            background: white;
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .gene-token {
+            display: inline-block;
+            background: rgba(231, 76, 60, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 2px;
+            font-size: 0.9em;
+        }
+        
+        .count-value {
+            display: inline-block;
+            background: rgba(52, 152, 219, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin: 2px;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .architecture-diagram {
+                flex-direction: column;
+            }
+            .arrow {
+                transform: rotate(90deg);
+            }
+            .explanation-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧬 TranscriptFormer Dual Decoder Heads</h1>
+            <p><strong>Understanding how the model jointly predicts genes and their expression counts</strong></p>
+            <p><em>Core architecture component for generative single-cell modeling</em></p>
+        </div>
+
+        <div class="architecture-diagram">
+            <div class="component transformer" id="transformer">
+                <h4>Transformer<br>Encoder</h4>
+                <p>z<sub>j</sub><sup>(L)</sup></p>
+            </div>
+            
+            <div class="arrow">→</div>
+            
+            <div class="component decoder-gene" id="gene-decoder">
+                <h4>Gene<br>Decoder</h4>
+                <p>Categorical</p>
+            </div>
+            
+            <div class="component decoder-count" id="count-decoder">
+                <h4>Count<br>Decoder</h4>
+                <p>Zero-Truncated<br>Poisson</p>
+            </div>
+        </div>
+
+        <div class="explanation-cards">
+            <div class="card card-gene">
+                <h3>🎯 Gene Decoder Head (Categorical)</h3>
+                <p><strong>Purpose:</strong> Predicts which gene to select next in the cell sentence</p>
+                
+                <div class="math-formula">
+                    ω<sub>j</sub> = softmax(MLP<sub>ω</sub>(z<sub>j</sub><sup>(L)</sup>))
+                </div>
+                
+                <p><strong>Key Properties:</strong></p>
+                <ul>
+                    <li>Output: Probability distribution over entire gene vocabulary (~25K-247K genes)</li>
+                    <li>Architecture: Two-layer MLP + softmax normalization</li>
+                    <li>Loss: Standard categorical cross-entropy</li>
+                    <li>Context-aware: Depends on all previously selected genes</li>
+                </ul>
+                
+                <p><strong>Example Output:</strong></p>
+                <div style="background: #ffeaa7; padding: 10px; border-radius: 8px; margin: 10px 0;">
+                    <span class="gene-token">GAPDH: 0.23</span>
+                    <span class="gene-token">ACTB: 0.18</span>
+                    <span class="gene-token">TP53: 0.12</span>
+                    <span class="gene-token">Others: 0.47</span>
+                </div>
+            </div>
+
+            <div class="card card-count">
+                <h3>📊 Count Decoder Head (Zero-Truncated Poisson)</h3>
+                <p><strong>Purpose:</strong> Predicts expression level (count) for the selected gene</p>
+                
+                <div class="math-formula">
+                    P(c<sub>j</sub> | g<sub>j</sub>, context) = ZTP(λ<sub>j</sub>)
+                </div>
+                
+                <p><strong>Key Properties:</strong></p>
+                <ul>
+                    <li>Output: Expected count value (always > 0)</li>
+                    <li>Architecture: MLP with normalization to total count</li>
+                    <li>Loss: Zero-truncated Poisson negative log-likelihood</li>
+                    <li>Constraint: Counts sum to observed total transcripts in cell</li>
+                </ul>
+                
+                <p><strong>Example Output:</strong></p>
+                <div style="background: #74b9ff; padding: 10px; border-radius: 8px; margin: 10px 0; color: white;">
+                    <span class="count-value">GAPDH: 156</span>
+                    <span class="count-value">ACTB: 89</span>
+                    <span class="count-value">TP53: 23</span>
+                </div>
+            </div>
+
+            <div class="card card-joint">
+                <h3>🔗 Joint Training & Coupling</h3>
+                <p><strong>Why Both Heads Are Essential:</strong></p>
+                
+                <div class="math-formula">
+                    L = L<sub>gene</sub> + L<sub>count</sub>
+                </div>
+                
+                <ul>
+                    <li><strong>Sequential Dependency:</strong> Count decoder uses gene identity from gene decoder</li>
+                    <li><strong>Biological Realism:</strong> Models the fact that different genes have different typical expression levels</li>
+                    <li><strong>Generative Capability:</strong> Can sample both gene identity and count jointly</li>
+                    <li><strong>Context Sensitivity:</strong> Both decoders condition on cell context</li>
+                </ul>
+                
+                <p><strong>Innovation:</strong> Unlike discriminative models that only classify, this architecture can generate realistic cell profiles by sampling from both distributions sequentially.</p>
+            </div>
+        </div>
+
+        <div class="interactive-demo">
+            <h3>🎮 Interactive Generation Demo</h3>
+            <p>See how the dual decoders work together to generate a cell sentence</p>
+            
+            <div class="demo-controls">
+                <button class="demo-button" id="step1">Step 1: Select Gene</button>
+                <button class="demo-button" id="step2">Step 2: Predict Count</button>
+                <button class="demo-button" id="reset">Reset Demo</button>
+            </div>
+            
+            <div class="demo-output" id="demo-display">
+                <div><strong>Cell Sentence Generation:</strong></div>
+                <div id="current-sentence">🧬 [START] → </div>
+                <div id="probabilities" style="margin-top: 15px;"></div>
+            </div>
+        </div>
+
+        <div class="explanation-cards">
+            <div class="card" style="border-left-color: #f39c12;">
+                <h3>🔬 Why Zero-Truncated Poisson?</h3>
+                <p><strong>Biological Motivation:</strong></p>
+                <ul>
+                    <li>Gene expression counts are discrete, non-negative integers</li>
+                    <li>Poisson distribution naturally models count data</li>
+                    <li>Zero-truncation ensures only expressed genes appear in sequences</li>
+                    <li>Captures overdispersion common in single-cell data</li>
+                </ul>
+                
+                <p><strong>Mathematical Form:</strong></p>
+                <div class="math-formula">
+                    P(c = k | λ) = (λ<sup>k</sup> e<sup>-λ</sup>) / (k!(1 - e<sup>-λ</sup>)), k ≥ 1
+                </div>
+            </div>
+
+            <div class="card" style="border-left-color: #9b59b6;">
+                <h3>⚡ Computational Advantages</h3>
+                <p><strong>Efficiency Benefits:</strong></p>
+                <ul>
+                    <li><strong>Shared Encoder:</strong> Single transformer processes both tasks</li>
+                    <li><strong>Parallel Computation:</strong> Both losses computed simultaneously</li>
+                    <li><strong>Parameter Sharing:</strong> Contextualized representations used by both heads</li>
+                    <li><strong>End-to-End Training:</strong> Joint optimization improves both tasks</li>
+                </ul>
+                
+                <p><strong>vs. Separate Models:</strong> 2x more efficient than training gene and count predictors separately</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let cellSentence = [];
+        
+        const geneExamples = [
+            {name: 'GAPDH', prob: 0.23, count: 156},
+            {name: 'ACTB', prob: 0.18, count: 89},
+            {name: 'TP53', prob: 0.12, count: 23},
+            {name: 'MYC', prob: 0.08, count: 45},
+            {name: 'BRCA1', prob: 0.05, count: 12}
+        ];
+        
+        function updateDemo() {
+            const display = document.getElementById('demo-display');
+            const sentence = document.getElementById('current-sentence');
+            const probabilities = document.getElementById('probabilities');
+            
+            if (currentStep === 0) {
+                sentence.innerHTML = '🧬 [START] → ';
+                probabilities.innerHTML = '<em>Ready to generate cell sentence...</em>';
+            } else if (currentStep === 1) {
+                // Show gene selection
+                sentence.innerHTML = '🧬 [START] → <span style="color: #ff7675; font-weight: bold;">[Selecting Gene...]</span>';
+                
+                let probHtml = '<strong>Gene Decoder Probabilities:</strong><br>';
+                geneExamples.forEach(gene => {
+                    probHtml += `
+                        <div style="margin: 5px 0;">
+                            ${gene.name}: ${gene.prob} 
+                            <div class="probability-bar">
+                                <div class="probability-fill" style="width: ${gene.prob * 100}%"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                probabilities.innerHTML = probHtml;
+            } else if (currentStep === 2) {
+                // Show count prediction
+                const selectedGene = geneExamples[0]; // GAPDH wins
+                sentence.innerHTML = `🧬 [START] → <span class="gene-token">${selectedGene.name}</span> → <span style="color: #74b9ff; font-weight: bold;">[Predicting Count...]</span>`;
+                
+                probabilities.innerHTML = `
+                    <strong>Count Decoder Output:</strong><br>
+                    <div style="margin: 10px 0;">
+                        Selected Gene: <span class="gene-token">${selectedGene.name}</span><br>
+                        Zero-Truncated Poisson λ = ${selectedGene.count * 0.8}<br>
+                        Predicted Count: <span class="count-value">${selectedGene.count}</span>
+                    </div>
+                `;
+            }
+        }
+        
+        document.getElementById('step1').addEventListener('click', () => {
+            currentStep = 1;
+            updateDemo();
+            document.querySelector('.demo-button.active')?.classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+        });
+        
+        document.getElementById('step2').addEventListener('click', () => {
+            if (currentStep >= 1) {
+                currentStep = 2;
+                updateDemo();
+                document.querySelector('.demo-button.active')?.classList.remove('active');
+                document.getElementById('step2').classList.add('active');
+            }
+        });
+        
+        document.getElementById('reset').addEventListener('click', () => {
+            currentStep = 0;
+            updateDemo();
+            document.querySelector('.demo-button.active')?.classList.remove('active');
+        });
+        
+        // Initialize
+        updateDemo();
+        
+        // Add hover effects for components
+        document.getElementById('transformer').addEventListener('mouseenter', () => {
+            document.getElementById('transformer').style.transform = 'translateY(-5px) scale(1.05)';
+        });
+        
+        document.getElementById('transformer').addEventListener('mouseleave', () => {
+            document.getElementById('transformer').style.transform = 'translateY(0) scale(1)';
+        });
+    </script>
+</body>
+</html>
