@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protein Language Models for Gene Representation - AI4Bio Concepts</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .home-link {
+            color: #667eea !important;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .paper-ref {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+        .paper-ref a {
+            color: white;
+            text-decoration: underline;
+        }
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .content-section h3 {
+            color: #764ba2;
+            margin-top: 25px;
+        }
+        .concept-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .concept-box.problem {
+            border-left-color: #e74c3c;
+        }
+        .concept-box.solution {
+            border-left-color: #27ae60;
+        }
+        .concept-box.comparison {
+            border-left-color: #f39c12;
+        }
+        .concept-box.implementation {
+            border-left-color: #3498db;
+        }
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .highlight-box strong {
+            color: #856404;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        .visual-diagram {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .pipeline-step {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 8px;
+            position: relative;
+        }
+        .pipeline-step:after {
+            content: '→';
+            position: absolute;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5em;
+            color: #667eea;
+        }
+        .pipeline-step:last-child:after {
+            content: '';
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .code-block .comment {
+            color: #75715e;
+        }
+        .code-block .keyword {
+            color: #f92672;
+        }
+        .code-block .function {
+            color: #a6e22e;
+        }
+        .code-block .string {
+            color: #e6db74;
+        }
+        .protein-sequence {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            letter-spacing: 2px;
+            word-wrap: break-word;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+        }
+        .embedding-viz {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .embedding-box {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            font-size: 0.9em;
+        }
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
+        .tag.high {
+            background: #27ae60;
+        }
+        .tag.medium {
+            background: #f39c12;
+        }
+        .tag.low {
+            background: #e74c3c;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+        ul, ol {
+            line-height: 1.8;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .pipeline-step {
+                display: block;
+                margin: 10px 0;
+            }
+            .pipeline-step:after {
+                content: '↓';
+                position: relative;
+                right: 0;
+                display: block;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> AI4Bio Concepts Handbook</a></li>
+                <li><a href="../../"><i class="fas fa-home"></i> Xinru's Homepage</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-dna"></i> Protein Language Models for Gene Representation</h1>
+                <p>How ESM2 and other protein LMs enable functional gene embeddings beyond sequence homology</p>
+                <div class="paper-ref">
+                    <strong>Key Application:</strong> Rosen, Y. et al. (2024). Toward universal cell embeddings: integrating single-cell RNA-seq datasets across species with SATURN. 
+                    <em>Nature Methods</em> 21, 1492–1500. 
+                    <a href="https://doi.org/10.1038/s41592-024-02191-z" target="_blank">https://doi.org/10.1038/s41592-024-02191-z</a>
+                </div>
+            </div>
+
+            <!-- The Problem -->
+            <div class="content-section">
+                <h2><i class="fas fa-exclamation-circle"></i> The Problem: Genes as Anonymous Columns</h2>
+                
+                <div class="concept-box problem">
+                    <h3>Traditional Gene Representation</h3>
+                    <p>In most machine learning models for genomics, genes are treated as <strong>arbitrary column indices</strong> in an expression matrix:</p>
+                    <ul>
+                        <li><strong>One-hot encoding:</strong> Gene "BRCA1" = position 42 in vocabulary (no semantic meaning)</li>
+                        <li><strong>No biological context:</strong> Model doesn't know BRCA1 is a DNA repair protein</li>
+                        <li><strong>Species-specific vocabularies:</strong> Human BRCA1 ≠ Mouse Brca1 (different columns)</li>
+                        <li><strong>Homolog requirement:</strong> Cross-species analysis restricted to genes with 1:1 orthologs</li>
+                    </ul>
+                </div>
+
+                <h3>Why This Fails for Cross-Species Integration</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">50-80%</div>
+                        <div class="label">Genes lost when subsetting to 1:1 homologs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">~25K</div>
+                        <div class="label">Human genes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">~20K</div>
+                        <div class="label">Mouse genes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">~12K</div>
+                        <div class="label">Shared 1:1 orthologs (Human-Mouse)</div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Core Issue:</strong> 
+                    When integrating 3+ species, you might lose 70-80% of genes because a gene must have an ortholog in EVERY species to be included. This discards biologically important lineage-specific genes.
+                </div>
+            </div>
+
+            <!-- The Solution -->
+            <div class="content-section">
+                <h2><i class="fas fa-lightbulb"></i> The Solution: Protein Language Models</h2>
+                
+                <div class="concept-box solution">
+                    <h3>Paradigm Shift: Genes as Protein Functions</h3>
+                    <p>Instead of treating genes as indices, represent them by <strong>what they encode</strong>—the functional properties of their protein products captured by large language models trained on millions of protein sequences.</p>
+                </div>
+
+                <h3>Pipeline Overview</h3>
+                <div class="visual-diagram">
+                    <div style="margin: 30px 0;">
+                        <div class="pipeline-step">1. Protein Sequence<br><small>Amino acid string</small></div>
+                        <div class="pipeline-step">2. Language Model<br><small>ESM2 transformer</small></div>
+                        <div class="pipeline-step">3. Embedding<br><small>5120-dim vector</small></div>
+                        <div class="pipeline-step">4. Gene Representation<br><small>Functional meaning</small></div>
+                    </div>
+                </div>
+
+                <h3>Example: From Sequence to Embedding</h3>
+                
+                <p><strong>Input: BRCA1 Protein Sequence (partial)</strong></p>
+                <div class="protein-sequence">
+                    MDLSALRVEEVQNVINAMQKILECPICLELIKEPVSTKCDHIFCKFCMLKLLNQKKGPSQCPLCKNDITKRSLQESTVFTKGLIPLLQKM...
+                </div>
+
+                <p><strong>↓ ESM2 Processing ↓</strong></p>
+                
+                <p><strong>Output: 5120-dimensional embedding vector</strong></p>
+                <div class="embedding-viz">
+                    <div class="embedding-box">0.234</div>
+                    <div class="embedding-box">-0.891</div>
+                    <div class="embedding-box">0.445</div>
+                    <div class="embedding-box">0.023</div>
+                    <div class="embedding-box">-0.567</div>
+                    <div class="embedding-box">...</div>
+                    <div class="embedding-box">0.789</div>
+                    <p style="margin-top: 15px; color: #666;">
+                        Each dimension captures aspects of protein structure, function, and evolutionary conservation
+                    </p>
+                </div>
+            </div>
+
+            <!-- ESM2 Architecture -->
+            <div class="content-section">
+                <h2><i class="fas fa-project-diagram"></i> ESM2: The Protein Language Model</h2>
+                
+                <div class="concept-box">
+                    <h3>What is ESM2?</h3>
+                    <p><strong>ESM2 (Evolutionary Scale Modeling 2)</strong> is a transformer-based language model trained on 250 million protein sequences from UniRef. It learns to predict masked amino acids, similar to BERT for text.</p>
+                    
+                    <p><strong>Key Properties:</strong></p>
+                    <ul>
+                        <li><strong>15 billion parameters</strong> (esm2_t48_15B_UR50D variant)</li>
+                        <li><strong>48 transformer layers</strong> with 40 attention heads each</li>
+                        <li><strong>5120-dimensional embeddings</strong> extracted from final layer</li>
+                        <li><strong>Trained on evolutionary data</strong> across all domains of life</li>
+                    </ul>
+                </div>
+
+                <h3>What ESM2 Captures</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>How ESM2 Learns It</th>
+                            <th>Biological Meaning</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>3D Structure</strong></td>
+                            <td>Co-evolution patterns in sequence</td>
+                            <td>Spatially close residues co-vary</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Function</strong></td>
+                            <td>Conservation of catalytic sites</td>
+                            <td>Active site residues highly conserved</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Binding Sites</strong></td>
+                            <td>Interface residue patterns</td>
+                            <td>Protein-protein interaction motifs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Remote Homology</strong></td>
+                            <td>Deep sequence context (48 layers)</td>
+                            <td>Functional similarity despite sequence divergence</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Implementation Code</h3>
+                <div class="code-block">
+<span class="keyword">import</span> torch
+<span class="keyword">from</span> esm <span class="keyword">import</span> pretrained
+
+<span class="comment"># Load ESM2 model</span>
+model, alphabet = pretrained.esm2_t48_15B_UR50D()
+batch_converter = alphabet.get_batch_converter()
+model.eval()  <span class="comment"># Disable dropout for inference</span>
+
+<span class="comment"># Prepare protein sequences</span>
+data = [
+    (<span class="string">"BRCA1"</span>, <span class="string">"MDLSALRVEEVQNVINAMQKILECPICLELIK..."</span>),
+    (<span class="string">"TP53"</span>, <span class="string">"MEEPQSDPSVEPPLSQETFSDLWKLLPEN..."</span>),
+]
+
+batch_labels, batch_strs, batch_tokens = batch_converter(data)
+
+<span class="comment"># Generate embeddings</span>
+<span class="keyword">with</span> torch.no_grad():
+    results = model(batch_tokens, repr_layers=[48])
+    
+<span class="comment"># Extract per-protein embeddings (average over sequence length)</span>
+embeddings = results[<span class="string">"representations"</span>][48].mean(dim=1)
+<span class="comment"># embeddings.shape = (2, 5120) for 2 proteins</span>
+
+<span class="comment"># For genes with multiple isoforms, average their embeddings</span>
+gene_embedding = embeddings.mean(dim=0)  <span class="comment"># Shape: (5120,)</span>
+                </div>
+            </div>
+
+            <!-- Comparison -->
+            <div class="content-section">
+                <h2><i class="fas fa-balance-scale"></i> Sequence Homology vs. Functional Similarity</h2>
+                
+                <div class="concept-box comparison">
+                    <h3>Why Protein Embeddings Beat Sequence Alignment</h3>
+                    
+                    <p><strong>Case Study: SATURN on Frog-Zebrafish Embryogenesis</strong></p>
+                    <p>These species diverged ~350 million years ago—sequence identity is often <50% for orthologs.</p>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Approach</th>
+                            <th>Remote Homology</th>
+                            <th>Gene Coverage</th>
+                            <th>SATURN Performance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>BLASTP</strong></td>
+                            <td>Sequence alignment (local)</td>
+                            <td>Poor (threshold-dependent)</td>
+                            <td>~60% at strict thresholds</td>
+                            <td>Used by SAMap baseline</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ENSEMBL Orthologs</strong></td>
+                            <td>Phylogenetic trees</td>
+                            <td>Good (evolutionary context)</td>
+                            <td>1:1 orthologs only (~40-60%)</td>
+                            <td>Used by Harmony/scVI/Scanorama</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ESM2 Embeddings</strong></td>
+                            <td>Functional similarity (deep learning)</td>
+                            <td>Excellent (captures function)</td>
+                            <td>100% (all genes from both species)</td>
+                            <td><strong>SATURN approach</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">56%</div>
+                        <div class="label">Macrogenes with homolog pairs (top 1 gene/species)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">91.2%</div>
+                        <div class="label">Macrogenes with homolog pairs (top 10 genes/species)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">0.25%</div>
+                        <div class="label">Random baseline (top 1)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">18.8%</div>
+                        <div class="label">Random baseline (top 10)</div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-check-circle"></i> Key Finding:</strong> 
+                    ESM2 embeddings recapture 91% of sequence-based homology PLUS identify functional similarities missed by BLASTP. The remaining 9% of macrogenes group functionally related but non-homologous genes.
+                </div>
+            </div>
+
+            <!-- Applications in SATURN -->
+            <div class="content-section">
+                <h2><i class="fas fa-rocket"></i> Application: SATURN's Macrogene Framework</h2>
+                
+                <div class="concept-box implementation">
+                    <h3>From Protein Embeddings to Macrogenes</h3>
+                    <p>SATURN uses ESM2 embeddings to create <strong>"macrogenes"</strong>—interpretable groups of functionally related genes across species.</p>
+                </div>
+
+                <h3>Three-Step Process</h3>
+                <ol>
+                    <li>
+                        <strong>Cluster Protein Embeddings:</strong> Apply k-means to ESM2 embeddings → centroids = macrogenes
+                        <div class="code-block">
+<span class="comment"># Cluster 247K genes into 2000 macrogenes</span>
+<span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
+
+kmeans = KMeans(n_clusters=2000, random_state=0)
+macrogene_centroids = kmeans.fit(protein_embeddings)  <span class="comment"># Shape: (2000, 5120)</span>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Initialize Gene-to-Macrogene Weights:</strong> Based on distance to centroids
+                        <div class="code-block">
+<span class="comment"># Weight formula: closer genes get higher weights</span>
+W[g, m] = 2 × (log(1 / ranked_distance[g, m] + 1))²
+
+<span class="comment"># Example: if gene g is 3rd closest to macrogene m</span>
+<span class="comment"># W[g, m] = 2 × (log(1/3 + 1))² = 2 × (log(1.33))² ≈ 0.16</span>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Fine-tune Weights During Training:</strong> Weights updated to reflect both protein similarity and gene expression patterns
+                    </li>
+                </ol>
+
+                <h3>Result: Interpretable Cross-Species Gene Modules</h3>
+                <div class="concept-box">
+                    <p><strong>Example Macrogene: "Arhgdi" (Macrophage/Myeloid Progenitor Marker)</strong></p>
+                    <p>Top-weighted genes:</p>
+                    <ul>
+                        <li><strong>Frog:</strong> Arhgdib, Arhgdig, Arhgdia (3 paralogs)</li>
+                        <li><strong>Zebrafish:</strong> arhgdig (ortholog)</li>
+                        <li><strong>Shared function:</strong> Rho protein signal transduction → hematopoietic stem cell regulation</li>
+                    </ul>
+                    <p style="margin-top: 15px;">
+                        <strong>Why this works:</strong> ESM2 embeddings group the frog paralogs with the zebrafish ortholog because they all encode proteins with similar Rho-GTPase binding domains, even though sequence identity may be <60%.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Performance Impact -->
+            <div class="content-section">
+                <h2><i class="fas fa-chart-line"></i> Performance Impact</h2>
+                
+                <h3>SATURN vs. Baselines on Cross-Species Integration</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Gene Representation</th>
+                            <th>Accuracy (Zebrafish→Frog)</th>
+                            <th>Improvement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>SATURN (ESM2)</strong></td>
+                            <td>Protein embeddings</td>
+                            <td><strong>85.8%</strong></td>
+                            <td>—</td>
+                        </tr>
+                        <tr>
+                            <td>SAMap (BLASTP)</td>
+                            <td>Sequence similarity graph</td>
+                            <td>39.2%</td>
+                            <td><span style="color: #27ae60;">+119%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Harmony</td>
+                            <td>One-hot (1:1 homologs only)</td>
+                            <td>32.5%</td>
+                            <td><span style="color: #27ae60;">+164%</span></td>
+                        </tr>
+                        <tr>
+                            <td>scVI</td>
+                            <td>One-hot (1:1 homologs only)</td>
+                            <td>30.1%</td>
+                            <td><span style="color: #27ae60;">+185%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Scanorama</td>
+                            <td>One-hot (1:1 homologs only)</td>
+                            <td>11.2%</td>
+                            <td><span style="color: #27ae60;">+666%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-trophy"></i> Key Result:</strong> 
+                    Using protein language model embeddings instead of one-hot gene encoding improves cross-species cell type prediction by 119-666%, demonstrating that functional gene representation is critical for integration tasks.
+                </div>
+
+                <h3>Robustness to Model Choice</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">85.8%</div>
+                        <div class="label">ESM2 (15B params)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">85.3%</div>
+                        <div class="label">ESM1b (650M params)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">84.9%</div>
+                        <div class="label">ProtXL (3B params)</div>
+                    </div>
+                </div>
+                <p style="text-align: center; color: #666;">
+                    <em>SATURN performance is highly consistent across different protein language models</em>
+                </p>
+            </div>
+
+            <!-- Other Protein LMs -->
+            <div class="content-section">
+                <h2><i class="fas fa-layer-group"></i> Other Protein Language Models</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Parameters</th>
+                            <th>Embedding Dim</th>
+                            <th>Training Data</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>ESM2</strong></td>
+                            <td>150M - 15B</td>
+                            <td>320 - 5120</td>
+                            <td>250M sequences (UniRef)</td>
+                            <td>General-purpose, structure prediction</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ESM1b</strong></td>
+                            <td>650M</td>
+                            <td>1280</td>
+                            <td>250M sequences</td>
+                            <td>Lighter weight, good baseline</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ProtTrans (ProtT5)</strong></td>
+                            <td>3B</td>
+                            <td>1024</td>
+                            <td>BFD + UniRef</td>
+                            <td>Multi-lingual protein tasks</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ProtBERT</strong></td>
+                            <td>420M</td>
+                            <td>1024</td>
+                            <td>UniRef + BFD</td>
+                            <td>BERT-style pre-training</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ankh</strong></td>
+                            <td>450M - 1.5B</td>
+                            <td>768 - 1536</td>
+                            <td>UniRef100 (filtered)</td>
+                            <td>Arabic LLM-inspired architecture</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Choosing a Protein LM</h3>
+                <div class="concept-box">
+                    <p><strong>Decision Criteria:</strong></p>
+                    <ul>
+                        <li><strong>For best performance:</strong> ESM2 (15B) - highest accuracy, most biological signal</li>
+                        <li><strong>For efficiency:</strong> ESM1b or ProtBERT - 10x faster, minimal performance drop</li>
+                        <li><strong>For structure prediction:</strong> ESM2 or ESMFold - trained jointly with structure data</li>
+                        <li><strong>For specialized organisms:</strong> Consider fine-tuning on species-specific proteomes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Advantages & Limitations -->
+            <div class="content-section">
+                <h2><i class="fas fa-balance-scale"></i> Advantages & Limitations</h2>
+                
+                <h3>Advantages of Protein LM Representations</h3>
+                <div class="concept-box solution">
+                    <ul>
+                        <li><strong>No homolog requirement:</strong> Can integrate ANY species, regardless of genomic distance</li>
+                        <li><strong>Captures remote homology:</strong> Identifies functional similarity at <30% sequence identity</li>
+                        <li><strong>Lineage-specific genes:</strong> Species-specific genes not excluded from analysis</li>
+                        <li><strong>Paralogs handled naturally:</strong> Multiple genes with similar function group together</li>
+                        <li><strong>Structure-aware:</strong> ESM2 captures 3D structure information without needing coordinates</li>
+                        <li><strong>Pre-trained:</strong> No need to train embeddings yourself—use off-the-shelf models</li>
+                    </ul>
+                </div>
+
+                <h3>Limitations to Consider</h3>
+                <div class="concept-box problem">
+                    <ul>
+                        <li><strong>Requires reference proteome:</strong> Need high-quality protein sequences for target species</li>
+                        <li><strong>Computational cost:</strong> ESM2-15B embeddings require ~80GB GPU memory</li>
+                        <li><strong>Isoform averaging:</strong> Currently averages over splice variants, losing isoform-specific information</li>
+                        <li><strong>Non-coding RNA:</strong> Cannot represent lncRNAs, miRNAs without protein-coding sequences</li>
+                        <li><strong>Genetic diversity:</strong> Reference proteomes may not capture population-level variation</li>
+                        <li><strong>Intrinsically disordered proteins:</strong> Less informative for proteins without stable structure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Future Directions -->
+            <div class="content-section">
+                <h2><i class="fas fa-arrow-right"></i> Future Directions</h2>
+                
+                <h3>Open Research Questions</h3>
+                <ol>
+                    <li><strong>Can we use protein LMs for non-coding RNA?</strong> 
+                        <ul>
+                            <li>Potential: Use RNA structure prediction models (e.g., RNAfold) → embed structure</li>
+                            <li>Or: Train RNA language models on lncRNA sequences</li>
+                        </ul>
+                    </li>
+                    <li><strong>How to handle alternative splicing?</strong>
+                        <ul>
+                            <li>Instead of averaging isoforms, weight by tissue-specific expression</li>
+                            <li>Create isoform-specific embeddings for splice-aware analysis</li>
+                        </ul>
+                    </li>
+                    <li><strong>Can we personalize embeddings?</strong>
+                        <ul>
+                            <li>Fine-tune ESM2 on patient-specific variants for precision medicine</li>
+                            <li>Incorporate allele-specific protein effects (e.g., missense mutations)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Multi-modal protein representation?</strong>
+                        <ul>
+                            <li>Combine ESM2 (sequence) + AlphaFold (structure) + protein atlas (localization)</li>
+                            <li>Learn joint embeddings for richer biological context</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h3>Emerging Applications</h3>
+                <div class="concept-box">
+                    <ul>
+                        <li><strong>Spatial transcriptomics:</strong> Integrate spatial datasets across species without homolog matching</li>
+                        <li><strong>Multi-omic integration:</strong> Use protein embeddings to link proteomics ↔ transcriptomics</li>
+                        <li><strong>Drug target discovery:</strong> Identify functionally similar proteins across model organisms</li>
+                        <li><strong>Evolutionary genomics:</strong> Study gene function evolution via embedding space trajectories</li>
+                        <li><strong>Synthetic biology:</strong> Design novel proteins by navigating learned embedding space</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Related Concepts -->
+            <div class="content-section">
+                <h2><i class="fas fa-link"></i> Related Concepts</h2>
+                
+                <div class="concept-box">
+                    <h3>In This Handbook:</h3>
+                    <ul>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="self-verification-agents.html">Self-Verification Agents</a> - 
+                            Another application of external knowledge to improve LLM outputs
+                        </li>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="dual-decoder-heads.html">TranscriptFormer Dual Decoder Heads</a> - 
+                            How to represent genes in generative single-cell models
+                        </li>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="attention-mechanisms.html">Attention Mechanisms</a> (Coming Soon) - 
+                            The transformer architecture underlying ESM2
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Related Papers & Resources:</h3>
+                    <ul>
+                        <li><strong>ESM2:</strong> Lin et al. (2023). Evolutionary-scale prediction of atomic-level protein structure with a language model. <em>Science</em></li>
+                        <li><strong>ESM1b:</strong> Rives et al. (2021). Biological structure and function emerge from scaling unsupervised learning to 250 million protein sequences. <em>PNAS</em></li>
+                        <li><strong>ProtTrans:</strong> Elnaggar et al. (2022). ProtTrans: Toward understanding the language of life through self-supervised learning. <em>IEEE TPAMI</em></li>
+                        <li><strong>AlphaFold:</strong> Jumper et al. (2021). Highly accurate protein structure prediction with AlphaFold. <em>Nature</em></li>
+                        <li><strong>SAMap (baseline):</strong> Tarashansky et al. (2021). Mapping single-cell atlases throughout metazoa unravels cell type evolution. <em>eLife</em></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Implementation Guide -->
+            <div class="content-section">
+                <h2><i class="fas fa-code"></i> Quick Start Guide</h2>
+                
+                <h3>Step 1: Install Dependencies</h3>
+                <div class="code-block">
+<span class="comment"># Install ESM package</span>
+pip install fair-esm
+
+<span class="comment"># Or use transformers library</span>
+pip install transformers
+                </div>
+
+                <h3>Step 2: Generate Embeddings for Your Genes</h3>
+                <div class="code-block">
+<span class="keyword">import</span> torch
+<span class="keyword">from</span> esm <span class="keyword">import</span> pretrained
+
+<span class="comment"># Load model (first time will download ~5GB)</span>
+model, alphabet = pretrained.esm2_t48_15B_UR50D()
+batch_converter = alphabet.get_batch_converter()
+model.eval()
+
+<span class="comment"># Your gene-to-protein mapping (from ENSEMBL/NCBI)</span>
+gene_proteins = {
+    <span class="string">"BRCA1"</span>: [<span class="string">"MDLSALRVEEVQNVINAMQKILECPICLELIK..."</span>],  <span class="comment"># Can have multiple isoforms</span>
+    <span class="string">"TP53"</span>: [<span class="string">"MEEPQSDPSVEPPLSQETFSDLWKLLPEN..."</span>],
+    <span class="comment"># ... more genes</span>
+}
+
+gene_embeddings = {}
+<span class="keyword">for</span> gene, protein_sequences <span class="keyword">in</span> gene_proteins.items():
+    isoform_embeddings = []
+    
+    <span class="keyword">for</span> seq <span class="keyword">in</span> protein_sequences:
+        data = [(gene, seq)]
+        _, _, tokens = batch_converter(data)
+        
+        <span class="keyword">with</span> torch.no_grad():
+            results = model(tokens, repr_layers=[48])
+            emb = results[<span class="string">"representations"</span>][48].mean(1)  <span class="comment"># Average over seq length</span>
+            isoform_embeddings.append(emb)
+    
+    <span class="comment"># Average over isoforms</span>
+    gene_embeddings[gene] = torch.stack(isoform_embeddings).mean(0)
+
+<span class="comment"># Save embeddings</span>
+torch.save(gene_embeddings, <span class="string">'gene_embeddings_esm2.pt'</span>)
+                </div>
+
+                <h3>Step 3: Use in Your Analysis</h3>
+                <div class="code-block">
+<span class="keyword">import</span> torch
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
+
+<span class="comment"># Load embeddings</span>
+gene_embeddings = torch.load(<span class="string">'gene_embeddings_esm2.pt'</span>)
+embedding_matrix = torch.stack(list(gene_embeddings.values())).numpy()
+
+<span class="comment"># Example: Cluster into functional modules (macrogenes)</span>
+n_macrogenes = 2000
+kmeans = KMeans(n_clusters=n_macrogenes, random_state=0)
+macrogene_assignments = kmeans.fit_predict(embedding_matrix)
+
+<span class="comment"># Example: Find functionally similar genes across species</span>
+human_brca1_emb = gene_embeddings[<span class="string">"BRCA1"</span>]
+mouse_brca1_emb = gene_embeddings[<span class="string">"Brca1"</span>]
+
+cosine_sim = torch.nn.functional.cosine_similarity(
+    human_brca1_emb, mouse_brca1_emb, dim=0
+)
+print(<span class="string">f"Human BRCA1 ↔ Mouse Brca1 similarity: {cosine_sim:.3f}"</span>)
+                </div>
+            </div>
+
+            <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Handbook</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
+            <p>Part of <a href="../../" style="color: #667eea;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
+        </div>
+    </footer>
+</body>
+</html>
