@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Stage Foundation Model Training - AI4Bio Concepts</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.8;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .home-link {
+            color: #667eea !important;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .paper-ref {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .content-section h3 {
+            color: #764ba2;
+            margin-top: 25px;
+        }
+        .concept-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .concept-box.stage1 {
+            border-left-color: #3498db;
+        }
+        .concept-box.stage2 {
+            border-left-color: #e74c3c;
+        }
+        .concept-box.why {
+            border-left-color: #f39c12;
+        }
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .highlight-box strong {
+            color: #856404;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .comparison-table th {
+            background: #667eea;
+            color: white;
+        }
+        .comparison-table tr:hover {
+            background: #f5f5f5;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        .pipeline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        .stage-box {
+            background: white;
+            border: 3px solid #667eea;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+            min-width: 200px;
+        }
+        .stage-box.stage1 {
+            border-color: #3498db;
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4ebf7 100%);
+        }
+        .stage-box.stage2 {
+            border-color: #e74c3c;
+            background: linear-gradient(135deg, #fce8e8 0%, #f8d7da 100%);
+        }
+        .stage-arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 0 10px;
+        }
+        .visual-diagram {
+            background: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .training-phase {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        .training-phase h4 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .loss-formula {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
+        }
+        .tag.unsupervised {
+            background: #3498db;
+        }
+        .tag.weakly-supervised {
+            background: #e74c3c;
+        }
+        .tag.self-supervised {
+            background: #27ae60;
+        }
+        ul, ol {
+            line-height: 1.8;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .pipeline {
+                flex-direction: column;
+            }
+            .stage-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> AI4Bio Concepts Handbook</a></li>
+                <li><a href="../../"><i class="fas fa-home"></i> Xinru's Homepage</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-layer-group"></i> Two-Stage Foundation Model Training</h1>
+                <p>Why modern foundation models separate unsupervised pretraining from supervised fine-tuning</p>
+                <div class="paper-ref">
+                    <strong>Case Study:</strong> SATURN uses autoencoder pretraining + metric learning fine-tuning to achieve 119% improvement over end-to-end training baselines
+                </div>
+            </div>
+
+            <!-- Core Concept -->
+            <div class="content-section">
+                <h2><i class="fas fa-lightbulb"></i> Core Concept</h2>
+                
+                <div class="concept-box">
+                    <h3>What is Two-Stage Training?</h3>
+                    <p><strong>Two-stage training</strong> splits model development into distinct phases with different objectives:</p>
+                    <ol>
+                        <li><strong>Stage 1 (Pretraining):</strong> Learn general representations from large amounts of <span class="tag unsupervised">unsupervised</span> or <span class="tag self-supervised">self-supervised</span> data</li>
+                        <li><strong>Stage 2 (Fine-tuning):</strong> Adapt representations to specific tasks using <span class="tag weakly-supervised">weakly supervised</span> or supervised signals</li>
+                    </ol>
+                </div>
+
+                <h3>The Pipeline</h3>
+                <div class="pipeline">
+                    <div class="stage-box stage1">
+                        <h4>Stage 1: Pretraining</h4>
+                        <p><strong>Objective:</strong> Learn data structure</p>
+                        <p><strong>Supervision:</strong> Self/Unsupervised</p>
+                        <p><strong>Data:</strong> All available</p>
+                    </div>
+                    
+                    <div class="stage-arrow">→</div>
+                    
+                    <div class="stage-box stage2">
+                        <h4>Stage 2: Fine-tuning</h4>
+                        <p><strong>Objective:</strong> Task-specific optimization</p>
+                        <p><strong>Supervision:</strong> Labeled/Weak labels</p>
+                        <p><strong>Data:</strong> Task-relevant subset</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-star"></i> Key Insight:</strong> 
+                    Separating these stages allows the model to first learn universal data representations (Stage 1) before specializing for specific tasks (Stage 2). This is more effective than trying to learn both simultaneously.
+                </div>
+            </div>
+
+            <!-- Stage 1 Deep Dive -->
+            <div class="content-section">
+                <h2><i class="fas fa-brain"></i> Stage 1: Unsupervised Pretraining</h2>
+                
+                <div class="concept-box stage1">
+                    <h3>Goals of Pretraining</h3>
+                    <ul>
+                        <li><strong>Learn data structure:</strong> Discover patterns, clusters, and relationships in raw data</li>
+                        <li><strong>Initialize weights:</strong> Start Stage 2 from a good point, not random initialization</li>
+                        <li><strong>Capture domain knowledge:</strong> Learn biological priors without task-specific labels</li>
+                        <li><strong>Compression:</strong> Create low-dimensional representations that preserve information</li>
+                    </ul>
+                </div>
+
+                <h3>Common Pretraining Objectives</h3>
+                
+                <div class="training-phase">
+                    <h4>1. Autoencoder Reconstruction</h4>
+                    <p><strong>Idea:</strong> Force model to reconstruct input from compressed representation</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = L<sub>reconstruction</sub>(X, Decoder(Encoder(X)))
+                    </div>
+                    <p><strong>Used by:</strong> SATURN (ZINB autoencoder for scRNA-seq), VAE-based models, β-VAE</p>
+                    <p><strong>Why it works:</strong> To reconstruct accurately, encoder must capture important features; decoder forces encoder to retain information</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>2. Contrastive Learning</h4>
+                    <p><strong>Idea:</strong> Similar samples should have similar embeddings, dissimilar samples should be far apart</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = -log( exp(sim(z<sub>i</sub>, z<sub>j</sub>)/τ) / Σ<sub>k</sub> exp(sim(z<sub>i</sub>, z<sub>k</sub>)/τ) )
+                    </div>
+                    <p><strong>Used by:</strong> SimCLR, MoCo, CLIP, many self-supervised vision models</p>
+                    <p><strong>Why it works:</strong> Learns meaningful similarity metrics without explicit labels</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>3. Masked Prediction</h4>
+                    <p><strong>Idea:</strong> Predict masked parts of input from visible context</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = CrossEntropy(X<sub>masked</sub>, Predict(X<sub>visible</sub>))
+                    </div>
+                    <p><strong>Used by:</strong> BERT, GPT, ESM2 (protein language models), Masked Autoencoders</p>
+                    <p><strong>Why it works:</strong> Forces model to understand context and relationships between elements</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>4. Knowledge Regularization</h4>
+                    <p><strong>Idea:</strong> Constrain representations to match external knowledge (e.g., protein similarity)</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = L<sub>reconstruction</sub> + λ × L<sub>knowledge</sub>
+                    </div>
+                    <p><strong>Used by:</strong> SATURN (protein embedding regularization), knowledge-distillation models</p>
+                    <p><strong>Why it works:</strong> Incorporates domain expertise directly into learned representations</p>
+                </div>
+
+                <h3>SATURN Stage 1 Example</h3>
+                <div class="concept-box">
+                    <p><strong>Objective:</strong> Learn universal cell embeddings across species</p>
+                    <p><strong>Architecture:</strong> ZINB Autoencoder (appropriate for sparse scRNA-seq count data)</p>
+                    <p><strong>Regularization:</strong> Gene-to-macrogene weights must reflect protein embedding similarity</p>
+                    <p><strong>Result:</strong> Embeddings capture cell state + gene functional relationships</p>
+                    <p><strong>Training data:</strong> ALL cells from ALL species (335K cells, no labels needed)</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">50</div>
+                        <div class="label">Pretraining epochs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">ZINB</div>
+                        <div class="label">Loss function (Zero-Inflated Negative Binomial)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">τ=1</div>
+                        <div class="label">Regularization weight for protein similarity</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 Deep Dive -->
+            <div class="content-section">
+                <h2><i class="fas fa-crosshairs"></i> Stage 2: Task-Specific Fine-tuning</h2>
+                
+                <div class="concept-box stage2">
+                    <h3>Goals of Fine-tuning</h3>
+                    <ul>
+                        <li><strong>Task adaptation:</strong> Specialize general representations for specific downstream task</li>
+                        <li><strong>Incorporate labels:</strong> Use supervised/weakly supervised signals to improve performance</li>
+                        <li><strong>Calibrate distances:</strong> Adjust embedding space so similar items are close, dissimilar are far</li>
+                        <li><strong>Preserve pretraining:</strong> Don't catastrophically forget what was learned in Stage 1</li>
+                    </ul>
+                </div>
+
+                <h3>Common Fine-tuning Objectives</h3>
+                
+                <div class="training-phase">
+                    <h4>1. Supervised Classification</h4>
+                    <p><strong>Idea:</strong> Add classification head on top of pretrained encoder, train with labeled data</p>
+                    <div class="loss-formula">
+                        L<sub>finetune</sub> = CrossEntropy(y, Classifier(Encoder(X)))
+                    </div>
+                    <p><strong>Used by:</strong> Most transfer learning scenarios (ImageNet → downstream tasks)</p>
+                    <p><strong>Key decision:</strong> Freeze encoder weights or allow fine-tuning? Usually fine-tune with small learning rate</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>2. Metric Learning</h4>
+                    <p><strong>Idea:</strong> Learn distance metrics so embeddings reflect task-relevant similarity</p>
+                    <div class="loss-formula">
+                        L<sub>finetune</sub> = max(D(z<sub>anchor</sub>, z<sub>positive</sub>) - D(z<sub>anchor</sub>, z<sub>negative</sub>) + m, 0)
+                    </div>
+                    <p><strong>Used by:</strong> SATURN (triplet loss), face recognition (FaceNet), few-shot learning</p>
+                    <p><strong>Key decision:</strong> How to mine triplets? SATURN uses semi-hard mining with mutual nearest neighbors</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>3. Prompt Tuning / Prefix Tuning</h4>
+                    <p><strong>Idea:</strong> Keep model frozen, only learn task-specific prompt/prefix vectors</p>
+                    <div class="loss-formula">
+                        L<sub>finetune</sub> = TaskLoss(Model([prompt; X]))
+                    </div>
+                    <p><strong>Used by:</strong> Large language models (GPT, T5), parameter-efficient fine-tuning</p>
+                    <p><strong>Key advantage:</strong> Only train <1% of parameters, can deploy many task-specific prompts from one base model</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>4. Adapter Layers</h4>
+                    <p><strong>Idea:</strong> Insert small trainable modules between frozen pretrained layers</p>
+                    <div class="loss-formula">
+                        L<sub>finetune</sub> = TaskLoss(Model<sub>frozen</sub>(X) + Adapter(Model<sub>frozen</sub>(X)))
+                    </div>
+                    <p><strong>Used by:</strong> Adapter-BERT, LoRA (Low-Rank Adaptation), parameter-efficient NLP</p>
+                    <p><strong>Key advantage:</strong> Preserve pretrained knowledge while adapting to new tasks</p>
+                </div>
+
+                <h3>SATURN Stage 2 Example</h3>
+                <div class="concept-box">
+                    <p><strong>Objective:</strong> Align cell types across species (cross-species integration task)</p>
+                    <p><strong>Architecture:</strong> Triplet margin loss with semi-hard mining</p>
+                    <p><strong>Supervision:</strong> Within-species cell type labels only (no cross-species annotations needed!)</p>
+                    <p><strong>Result:</strong> Cells of same type cluster together across species</p>
+                    <p><strong>Training data:</strong> Same cells as Stage 1, but now using cell type labels</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">30</div>
+                        <div class="label">Fine-tuning epochs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">Triplet</div>
+                        <div class="label">Loss function (margin = 0.2)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">Frozen</div>
+                        <div class="label">Macrogene weights (only encoder fine-tuned)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Why Two Stages? -->
+            <div class="content-section">
+                <h2><i class="fas fa-question-circle"></i> Why Two Stages Beat End-to-End Training</h2>
+                
+                <div class="concept-box why">
+                    <h3>Theoretical Advantages</h3>
+                    <ol>
+                        <li><strong>Optimization landscape:</strong> Easier to optimize two simpler objectives sequentially than one complex joint objective</li>
+                        <li><strong>Sample efficiency:</strong> Pretrain on all data (unlabeled), fine-tune on smaller labeled subset</li>
+                        <li><strong>Transfer learning:</strong> One pretrained model can be fine-tuned for many downstream tasks</li>
+                        <li><strong>Regularization:</strong> Pretraining acts as strong prior, preventing overfitting during fine-tuning</li>
+                    </ol>
+                </div>
+
+                <h3>Empirical Evidence from SATURN</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Training Strategy</th>
+                            <th>Pretraining</th>
+                            <th>Fine-tuning</th>
+                            <th>Accuracy</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #d4edda;">
+                            <td><strong>SATURN (Two-Stage)</strong></td>
+                            <td>✅ ZINB Autoencoder</td>
+                            <td>✅ Metric Learning</td>
+                            <td><strong>85.8%</strong></td>
+                            <td>Best performance</td>
+                        </tr>
+                        <tr>
+                            <td>SAMap (Two-Stage)</td>
+                            <td>✅ Graph Neural Net</td>
+                            <td>✅ Supervised</td>
+                            <td>39.2%</td>
+                            <td>Sequence-based, not functional</td>
+                        </tr>
+                        <tr>
+                            <td>Harmony (Single-Stage)</td>
+                            <td>❌ None</td>
+                            <td>❌ Direct batch correction</td>
+                            <td>32.5%</td>
+                            <td>End-to-end, 1:1 homologs only</td>
+                        </tr>
+                        <tr>
+                            <td>scVI (Single-Stage)</td>
+                            <td>❌ None</td>
+                            <td>❌ Direct VAE training</td>
+                            <td>30.1%</td>
+                            <td>End-to-end, 1:1 homologs only</td>
+                        </tr>
+                        <tr>
+                            <td>Scanorama (Single-Stage)</td>
+                            <td>❌ None</td>
+                            <td>❌ Direct integration</td>
+                            <td>11.2%</td>
+                            <td>End-to-end, 1:1 homologs only</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-chart-line"></i> Performance Gain:</strong> 
+                    SATURN's two-stage approach achieves 119% improvement over the best single-stage baseline (Harmony: 32.5% → SATURN: 85.8%). This demonstrates the power of separating representation learning from task-specific optimization.
+                </div>
+
+                <h3>When End-to-End Might Be Better</h3>
+                <div class="concept-box">
+                    <p><strong>Two-stage training is not always optimal. Consider end-to-end when:</strong></p>
+                    <ul>
+                        <li><strong>Limited data:</strong> If you have <1000 samples, pretraining may overfit</li>
+                        <li><strong>Simple tasks:</strong> Linear classification on well-separated data doesn't need pretraining</li>
+                        <li><strong>Task-specific features:</strong> If task requires very different representations than natural data structure</li>
+                        <li><strong>Computational constraints:</strong> Two-stage training takes ~2x wall-clock time</li>
+                        <li><strong>Online learning:</strong> When model must adapt continuously to streaming data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Design Decisions -->
+            <div class="content-section">
+                <h2><i class="fas fa-cogs"></i> Key Design Decisions</h2>
+                
+                <h3>1. How to Initialize Stage 2?</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th>Pros</th>
+                            <th>Cons</th>
+                            <th>When to Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Use Stage 1 weights</strong></td>
+                            <td>Fast convergence, preserves pretraining</td>
+                            <td>May get stuck in local minimum</td>
+                            <td>Default choice (what SATURN does)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Random initialization</strong></td>
+                            <td>More exploration, avoid bias</td>
+                            <td>Slower convergence, may overfit</td>
+                            <td>When pretraining doesn't help</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Partial initialization</strong></td>
+                            <td>Keep encoder, retrain decoder</td>
+                            <td>Requires architectural decisions</td>
+                            <td>When task needs different output space</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>2. Which Layers to Fine-tune?</h3>
+                <div class="visual-diagram">
+                    <div class="training-phase">
+                        <h4>Option A: Fine-tune All Layers</h4>
+                        <p><strong>SATURN approach:</strong> Update encoder + add metric learning head</p>
+                        <p><strong>Pro:</strong> Maximum task adaptation</p>
+                        <p><strong>Con:</strong> Risk of catastrophic forgetting</p>
+                        <p><strong>Mitigation:</strong> Use small learning rate (10-100x smaller than pretraining)</p>
+                    </div>
+
+                    <div class="training-phase">
+                        <h4>Option B: Freeze Encoder, Train Only Head</h4>
+                        <p><strong>Alternative:</strong> Keep pretrained weights frozen, only train task-specific layers</p>
+                        <p><strong>Pro:</strong> Preserves pretrained knowledge, faster training</p>
+                        <p><strong>Con:</strong> Less task-specific adaptation</p>
+                        <p><strong>Use when:</strong> Pretraining data very similar to task data</p>
+                    </div>
+
+                    <div class="training-phase">
+                        <h4>Option C: Gradual Unfreezing</h4>
+                        <p><strong>Progressive fine-tuning:</strong> Start with frozen encoder, gradually unfreeze layers</p>
+                        <p><strong>Pro:</strong> Balance between adaptation and preservation</p>
+                        <p><strong>Con:</strong> More hyperparameters to tune</p>
+                        <p><strong>Use when:</strong> Large domain shift between pretraining and task</p>
+                    </div>
+                </div>
+
+                <h3>3. How Much Data for Each Stage?</h3>
+                <div class="concept-box">
+                    <p><strong>General Principle:</strong> Use ALL available data for pretraining (labels not needed), subset for fine-tuning (labels required)</p>
+                    
+                    <p><strong>SATURN Example:</strong></p>
+                    <ul>
+                        <li><strong>Stage 1:</strong> All 335,000 cells from 3 species (human, mouse, lemur)</li>
+                        <li><strong>Stage 2:</strong> Same cells, but now using within-species cell type annotations</li>
+                        <li><strong>Key insight:</strong> Same data, different objective functions</li>
+                    </ul>
+
+                    <p><strong>Typical Ratios in Other Domains:</strong></p>
+                    <ul>
+                        <li><strong>NLP:</strong> Pretrain on billions of tokens, fine-tune on thousands</li>
+                        <li><strong>Computer Vision:</strong> Pretrain on ImageNet (1.2M images), fine-tune on task-specific hundreds/thousands</li>
+                        <li><strong>Genomics:</strong> Pretrain on all samples, fine-tune on labeled subset</li>
+                    </ul>
+                </div>
+
+                <h3>4. When to Stop Each Stage?</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">Stage 1</div>
+                        <div class="label">Stop when reconstruction loss plateaus</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">Stage 2</div>
+                        <div class="label">Stop when validation metric plateaus</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">Early Stop</div>
+                        <div class="label">Monitor validation, stop if no improvement for N epochs</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Applications -->
+            <div class="content-section">
+                <h2><i class="fas fa-flask"></i> Applications Beyond SATURN</h2>
+                
+                <h3>Two-Stage Training in Different Domains</h3>
+
+                <div class="training-phase">
+                    <h4>Natural Language Processing</h4>
+                    <p><strong>Stage 1:</strong> Masked language modeling on Wikipedia + Books (BERT, GPT)</p>
+                    <p><strong>Stage 2:</strong> Task-specific fine-tuning (sentiment analysis, question answering, summarization)</p>
+                    <p><strong>Impact:</strong> Foundation of modern NLP (BERT, GPT-3, ChatGPT all use this)</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>Computer Vision</h4>
+                    <p><strong>Stage 1:</strong> Self-supervised contrastive learning (SimCLR, MoCo) or supervised ImageNet pretraining</p>
+                    <p><strong>Stage 2:</strong> Fine-tune for object detection, segmentation, classification on specific datasets</p>
+                    <p><strong>Impact:</strong> Standard practice in CV since 2012 (AlexNet era)</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>Protein Structure Prediction</h4>
+                    <p><strong>Stage 1:</strong> Masked amino acid prediction on 250M sequences (ESM2)</p>
+                    <p><strong>Stage 2:</strong> Fine-tune for structure prediction (AlphaFold), function prediction, binding site identification</p>
+                    <p><strong>Impact:</strong> Enabled breakthrough in protein structure prediction</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>Single-Cell Genomics</h4>
+                    <p><strong>Stage 1:</strong> Variational autoencoder on all cells (scVI, scGPT) or autoencoder (SATURN)</p>
+                    <p><strong>Stage 2:</strong> Fine-tune for cell type classification, perturbation response prediction, trajectory inference</p>
+                    <p><strong>Impact:</strong> Emerging standard for foundation models in biology</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>Drug Discovery</h4>
+                    <p><strong>Stage 1:</strong> Molecular graph representation learning on millions of compounds (ChemBERTa, MolCLR)</p>
+                    <p><strong>Stage 2:</strong> Fine-tune for property prediction (toxicity, solubility), drug-target binding, synthesis prediction</p>
+                    <p><strong>Impact:</strong> Accelerating virtual screening and lead optimization</p>
+                </div>
+            </div>
+
+            <!-- Transferability -->
+            <div class="content-section">
+                <h2><i class="fas fa-exchange-alt"></i> Transferability to Other Problems</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Transferability</th>
+                            <th>Key Considerations</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Two-stage paradigm</strong></td>
+                            <td><span class="tag">Very High</span></td>
+                            <td>Universal principle for any domain with unlabeled data</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Autoencoder pretraining</strong></td>
+                            <td><span class="tag">High</span></td>
+                            <td>Choose reconstruction loss appropriate for data type</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Metric learning fine-tuning</strong></td>
+                            <td><span class="tag">High</span></td>
+                            <td>Works well for similarity-based tasks (retrieval, matching)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Knowledge regularization</strong></td>
+                            <td><span class="tag">Medium-High</span></td>
+                            <td>Requires external knowledge source (graphs, ontologies, LMs)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SATURN-specific architecture</strong></td>
+                            <td><span class="tag">Medium</span></td>
+                            <td>Macrogenes concept adaptable but needs protein embeddings</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Adapting to Your Problem</h3>
+                <div class="concept-box">
+                    <p><strong>Questions to ask:</strong></p>
+                    <ol>
+                        <li><strong>Do I have much more unlabeled data than labeled?</strong> → Two-stage training likely helps</li>
+                        <li><strong>Is there external knowledge I can leverage?</strong> → Add knowledge regularization to Stage 1</li>
+                        <li><strong>Are there multiple downstream tasks?</strong> → Invest in strong Stage 1, reuse for many Stage 2s</li>
+                        <li><strong>Is my task similarity/distance-based?</strong> → Use metric learning in Stage 2</li>
+                        <li><strong>Do I need to preserve pretraining?</strong> → Use small learning rate or freeze lower layers in Stage 2</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Limitations -->
+            <div class="content-section">
+                <h2><i class="fas fa-exclamation-triangle"></i> Limitations & Challenges</h2>
+                
+                <div class="concept-box">
+                    <h3>Computational Cost</h3>
+                    <ul>
+                        <li><strong>2x training time:</strong> Must train model twice (pretraining + fine-tuning)</li>
+                        <li><strong>Hyperparameter tuning:</strong> Twice as many hyperparameters to optimize</li>
+                        <li><strong>Storage:</strong> May need to save multiple checkpoints (best pretrained model, best fine-tuned model)</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Catastrophic Forgetting</h3>
+                    <ul>
+                        <li><strong>Problem:</strong> Fine-tuning can overwrite useful pretrained knowledge</li>
+                        <li><strong>Solution 1:</strong> Use small learning rate in Stage 2 (10-100x smaller than Stage 1)</li>
+                        <li><strong>Solution 2:</strong> Freeze lower layers, only fine-tune top layers</li>
+                        <li><strong>Solution 3:</strong> Elastic weight consolidation (EWC) to penalize changes to important weights</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Negative Transfer</h3>
+                    <ul>
+                        <li><strong>Problem:</strong> Pretraining on wrong data can hurt performance vs. training from scratch</li>
+                        <li><strong>Example:</strong> Pretraining on natural images doesn't help for medical images</li>
+                        <li><strong>Solution:</strong> Ensure pretraining data is similar to downstream task domain</li>
+                        <li><strong>SATURN approach:</strong> Pretrains on same scRNA-seq data as fine-tuning, just different objective</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Related Concepts -->
+            <div class="content-section">
+                <h2><i class="fas fa-link"></i> Related Concepts</h2>
+                
+                <div class="concept-box">
+                    <h3>In This Handbook:</h3>
+                    <ul>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="protein-language-models-gene-representation.html">Protein Language Models for Gene Representation</a> - 
+                            ESM2's pretraining enables SATURN's Stage 1
+                        </li>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="self-verification-agents.html">Self-Verification Agents</a> - 
+                            Another multi-stage approach (generation → verification → modification)
+                        </li>
+                        <li><strong>Machine Learning:</strong> 
+                            <a href="../machine-learning/weakly-supervised-metric-learning.html">Weakly Supervised Metric Learning</a> (Coming Soon) - 
+                            Deep dive into SATURN's Stage 2
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Key Papers:</h3>
+                    <ul>
+                        <li><strong>SATURN:</strong> Rosen et al. (2024). Toward universal cell embeddings. <em>Nature Methods</em></li>
+                        <li><strong>BERT (NLP):</strong> Devlin et al. (2019). BERT: Pre-training of Deep Bidirectional Transformers. <em>NAACL</em></li>
+                        <li><strong>SimCLR (Vision):</strong> Chen et al. (2020). A Simple Framework for Contrastive Learning of Visual Representations. <em>ICML</em></li>
+                        <li><strong>ESM2 (Proteins):</strong> Lin et al. (2023). Evolutionary-scale prediction of atomic-level protein structure. <em>Science</em></li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Handbook</a>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
+            <p>Part of <a href="../../" style="color: #667eea;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
+        </div>
+    </footer>
+</body>
+</html>
