@@ -3,36 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TranscriptFormer Dual Decoder Heads</title>
+    <title>TranscriptFormer Dual Decoder Heads - AI4Bio Concepts</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Lato', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            margin: 0;
-            padding: 20px;
+            line-height: 1.8;
             color: #333;
+            margin: 0;
+            padding: 0;
         }
         .container {
-            max-width: 1200px;
+            max-width: 1000px;
             margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .home-link {
+            color: #667eea !important;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+        }
+        .header p {
+            margin: 5px 0;
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .paper-ref {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+        .content-section {
             background: white;
             border-radius: 15px;
             padding: 30px;
+            margin: 25px 0;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
+        .content-section h2 {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
-        .header h1 {
-            color: #1a5f7a;
-            font-size: 2.2em;
-            margin-bottom: 10px;
-        }
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-            margin: 5px 0;
+        .content-section h3 {
+            color: #764ba2;
+            margin-top: 25px;
         }
         
         .architecture-diagram {
@@ -92,48 +144,54 @@
             align-items: center;
         }
         
-        .explanation-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-top: 40px;
+        .concept-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
         }
         
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            border-left: 5px solid;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        
-        .card-gene {
+        .concept-box.gene {
             border-left-color: #e74c3c;
         }
         
-        .card-count {
+        .concept-box.count {
             border-left-color: #3498db;
         }
         
-        .card-joint {
+        .concept-box.joint {
             border-left-color: #27ae60;
         }
         
-        .card h3 {
-            color: #1a5f7a;
-            margin-bottom: 15px;
-            font-size: 1.3em;
+        .concept-box.theory {
+            border-left-color: #f39c12;
+        }
+        
+        .concept-box.compute {
+            border-left-color: #9b59b6;
         }
         
         .math-formula {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
+            background: #2d2d2d;
+            color: #f8f8f2;
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
             font-family: 'Courier New', monospace;
             text-align: center;
-            color: #495057;
+        }
+        
+        .highlight-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .highlight-box strong {
+            color: #856404;
         }
         
         .interactive-demo {
@@ -206,250 +264,367 @@
             margin: 2px;
             font-size: 0.9em;
         }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-link:hover {
+            background: #764ba2;
+            transform: translateX(-5px);
+        }
+
+        ul, ol {
+            line-height: 1.8;
+        }
         
         @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
             .architecture-diagram {
                 flex-direction: column;
             }
             .arrow {
                 transform: rotate(90deg);
             }
-            .explanation-cards {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🧬 TranscriptFormer Dual Decoder Heads</h1>
-            <p><strong>Understanding how the model jointly predicts genes and their expression counts</strong></p>
-            <p><em>Core architecture component for generative single-cell modeling</em></p>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> AI4Bio Concepts Handbook</a></li>
+                <li><a href="../../"><i class="fas fa-home"></i> Xinru's Homepage</a></li>
+            </ul>
         </div>
+    </nav>
 
-        <div class="architecture-diagram">
-            <div class="component transformer" id="transformer">
-                <h4>Transformer<br>Encoder</h4>
-                <p>z<sub>j</sub><sup>(L)</sup></p>
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-project-diagram"></i> TranscriptFormer Dual Decoder Heads</h1>
+                <p>Understanding how the model jointly predicts genes and their expression counts</p>
+                <div class="paper-ref">
+                    <strong>Source:</strong> Core architecture component for generative single-cell modeling<br>
+                    <em>Part of foundation model design for transcriptomics</em>
+                </div>
             </div>
-            
-            <div class="arrow">→</div>
-            
-            <div class="component decoder-gene" id="gene-decoder">
-                <h4>Gene<br>Decoder</h4>
-                <p>Categorical</p>
-            </div>
-            
-            <div class="component decoder-count" id="count-decoder">
-                <h4>Count<br>Decoder</h4>
-                <p>Zero-Truncated<br>Poisson</p>
-            </div>
-        </div>
 
-        <div class="explanation-cards">
-            <div class="card card-gene">
-                <h3>🎯 Gene Decoder Head (Categorical)</h3>
-                <p><strong>Purpose:</strong> Predicts which gene to select next in the cell sentence</p>
+            <!-- Core Architecture -->
+            <div class="content-section">
+                <h2><i class="fas fa-sitemap"></i> Architecture Overview</h2>
                 
+                <div class="architecture-diagram">
+                    <div class="component transformer" id="transformer">
+                        <h4>Transformer<br>Encoder</h4>
+                        <p>z<sub>j</sub><sup>(L)</sup></p>
+                    </div>
+                    
+                    <div class="arrow">→</div>
+                    
+                    <div class="component decoder-gene" id="gene-decoder">
+                        <h4>Gene<br>Decoder</h4>
+                        <p>Categorical</p>
+                    </div>
+                    
+                    <div class="component decoder-count" id="count-decoder">
+                        <h4>Count<br>Decoder</h4>
+                        <p>Zero-Truncated<br>Poisson</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-lightbulb"></i> Core Innovation:</strong> 
+                    Unlike discriminative models that only classify, this dual-decoder architecture can generate realistic cell profiles by sampling from both gene identity and count distributions sequentially.
+                </div>
+            </div>
+
+            <!-- Gene Decoder -->
+            <div class="content-section">
+                <h2><i class="fas fa-dna"></i> Gene Decoder Head (Categorical)</h2>
+                
+                <div class="concept-box gene">
+                    <h3>Purpose</h3>
+                    <p>Predicts <strong>which gene</strong> to select next in the cell sentence</p>
+                </div>
+
+                <h3>Mathematical Formulation</h3>
                 <div class="math-formula">
                     ω<sub>j</sub> = softmax(MLP<sub>ω</sub>(z<sub>j</sub><sup>(L)</sup>))
                 </div>
                 
-                <p><strong>Key Properties:</strong></p>
+                <h3>Key Properties</h3>
                 <ul>
-                    <li>Output: Probability distribution over entire gene vocabulary (~25K-247K genes)</li>
-                    <li>Architecture: Two-layer MLP + softmax normalization</li>
-                    <li>Loss: Standard categorical cross-entropy</li>
-                    <li>Context-aware: Depends on all previously selected genes</li>
+                    <li><strong>Output:</strong> Probability distribution over entire gene vocabulary (~25K-247K genes)</li>
+                    <li><strong>Architecture:</strong> Two-layer MLP + softmax normalization</li>
+                    <li><strong>Loss:</strong> Standard categorical cross-entropy</li>
+                    <li><strong>Context-aware:</strong> Depends on all previously selected genes</li>
                 </ul>
                 
-                <p><strong>Example Output:</strong></p>
-                <div style="background: #ffeaa7; padding: 10px; border-radius: 8px; margin: 10px 0;">
-                    <span class="gene-token">GAPDH: 0.23</span>
-                    <span class="gene-token">ACTB: 0.18</span>
-                    <span class="gene-token">TP53: 0.12</span>
-                    <span class="gene-token">Others: 0.47</span>
+                <h3>Example Output</h3>
+                <div class="concept-box">
+                    <p><strong>Gene Selection Probabilities:</strong></p>
+                    <div style="background: #ffeaa7; padding: 10px; border-radius: 8px; margin: 10px 0;">
+                        <span class="gene-token">GAPDH: 0.23</span>
+                        <span class="gene-token">ACTB: 0.18</span>
+                        <span class="gene-token">TP53: 0.12</span>
+                        <span class="gene-token">MYC: 0.08</span>
+                        <span class="gene-token">Others: 0.39</span>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        The model assigns highest probability to housekeeping genes like GAPDH and ACTB, which are typically highly expressed in most cells.
+                    </p>
                 </div>
             </div>
 
-            <div class="card card-count">
-                <h3>📊 Count Decoder Head (Zero-Truncated Poisson)</h3>
-                <p><strong>Purpose:</strong> Predicts expression level (count) for the selected gene</p>
+            <!-- Count Decoder -->
+            <div class="content-section">
+                <h2><i class="fas fa-chart-bar"></i> Count Decoder Head (Zero-Truncated Poisson)</h2>
                 
+                <div class="concept-box count">
+                    <h3>Purpose</h3>
+                    <p>Predicts <strong>expression level (count)</strong> for the selected gene</p>
+                </div>
+
+                <h3>Mathematical Formulation</h3>
                 <div class="math-formula">
                     P(c<sub>j</sub> | g<sub>j</sub>, context) = ZTP(λ<sub>j</sub>)
-                </div>
-                
-                <p><strong>Key Properties:</strong></p>
-                <ul>
-                    <li>Output: Expected count value (always > 0)</li>
-                    <li>Architecture: MLP with normalization to total count</li>
-                    <li>Loss: Zero-truncated Poisson negative log-likelihood</li>
-                    <li>Constraint: Counts sum to observed total transcripts in cell</li>
-                </ul>
-                
-                <p><strong>Example Output:</strong></p>
-                <div style="background: #74b9ff; padding: 10px; border-radius: 8px; margin: 10px 0; color: white;">
-                    <span class="count-value">GAPDH: 156</span>
-                    <span class="count-value">ACTB: 89</span>
-                    <span class="count-value">TP53: 23</span>
-                </div>
-            </div>
-
-            <div class="card card-joint">
-                <h3>🔗 Joint Training & Coupling</h3>
-                <p><strong>Why Both Heads Are Essential:</strong></p>
-                
-                <div class="math-formula">
-                    L = L<sub>gene</sub> + L<sub>count</sub>
-                </div>
-                
-                <ul>
-                    <li><strong>Sequential Dependency:</strong> Count decoder uses gene identity from gene decoder</li>
-                    <li><strong>Biological Realism:</strong> Models the fact that different genes have different typical expression levels</li>
-                    <li><strong>Generative Capability:</strong> Can sample both gene identity and count jointly</li>
-                    <li><strong>Context Sensitivity:</strong> Both decoders condition on cell context</li>
-                </ul>
-                
-                <p><strong>Innovation:</strong> Unlike discriminative models that only classify, this architecture can generate realistic cell profiles by sampling from both distributions sequentially.</p>
-            </div>
-        </div>
-
-        <div class="interactive-demo">
-            <h3>🎮 Interactive Generation Demo</h3>
-            <p>See how the dual decoders work together to generate a cell sentence</p>
-            
-            <div class="demo-controls">
-                <button class="demo-button" id="step1">Step 1: Select Gene</button>
-                <button class="demo-button" id="step2">Step 2: Predict Count</button>
-                <button class="demo-button" id="reset">Reset Demo</button>
-            </div>
-            
-            <div class="demo-output" id="demo-display">
-                <div><strong>Cell Sentence Generation:</strong></div>
-                <div id="current-sentence">🧬 [START] → </div>
-                <div id="probabilities" style="margin-top: 15px;"></div>
-            </div>
-        </div>
-
-        <div class="explanation-cards">
-            <div class="card" style="border-left-color: #f39c12;">
-                <h3>🔬 Why Zero-Truncated Poisson?</h3>
-                <p><strong>Biological Motivation:</strong></p>
-                <ul>
-                    <li>Gene expression counts are discrete, non-negative integers</li>
-                    <li>Poisson distribution naturally models count data</li>
-                    <li>Zero-truncation ensures only expressed genes appear in sequences</li>
-                    <li>Captures overdispersion common in single-cell data</li>
-                </ul>
-                
-                <p><strong>Mathematical Form:</strong></p>
-                <div class="math-formula">
+                    <br><br>
                     P(c = k | λ) = (λ<sup>k</sup> e<sup>-λ</sup>) / (k!(1 - e<sup>-λ</sup>)), k ≥ 1
                 </div>
-            </div>
-
-            <div class="card" style="border-left-color: #9b59b6;">
-                <h3>⚡ Computational Advantages</h3>
-                <p><strong>Efficiency Benefits:</strong></p>
+                
+                <h3>Key Properties</h3>
                 <ul>
-                    <li><strong>Shared Encoder:</strong> Single transformer processes both tasks</li>
-                    <li><strong>Parallel Computation:</strong> Both losses computed simultaneously</li>
-                    <li><strong>Parameter Sharing:</strong> Contextualized representations used by both heads</li>
-                    <li><strong>End-to-End Training:</strong> Joint optimization improves both tasks</li>
+                    <li><strong>Output:</strong> Expected count value (always > 0)</li>
+                    <li><strong>Architecture:</strong> MLP with normalization to total count</li>
+                    <li><strong>Loss:</strong> Zero-truncated Poisson negative log-likelihood</li>
+                    <li><strong>Constraint:</strong> Counts sum to observed total transcripts in cell</li>
                 </ul>
                 
-                <p><strong>vs. Separate Models:</strong> 2x more efficient than training gene and count predictors separately</p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentStep = 0;
-        let cellSentence = [];
-        
-        const geneExamples = [
-            {name: 'GAPDH', prob: 0.23, count: 156},
-            {name: 'ACTB', prob: 0.18, count: 89},
-            {name: 'TP53', prob: 0.12, count: 23},
-            {name: 'MYC', prob: 0.08, count: 45},
-            {name: 'BRCA1', prob: 0.05, count: 12}
-        ];
-        
-        function updateDemo() {
-            const display = document.getElementById('demo-display');
-            const sentence = document.getElementById('current-sentence');
-            const probabilities = document.getElementById('probabilities');
-            
-            if (currentStep === 0) {
-                sentence.innerHTML = '🧬 [START] → ';
-                probabilities.innerHTML = '<em>Ready to generate cell sentence...</em>';
-            } else if (currentStep === 1) {
-                // Show gene selection
-                sentence.innerHTML = '🧬 [START] → <span style="color: #ff7675; font-weight: bold;">[Selecting Gene...]</span>';
-                
-                let probHtml = '<strong>Gene Decoder Probabilities:</strong><br>';
-                geneExamples.forEach(gene => {
-                    probHtml += `
-                        <div style="margin: 5px 0;">
-                            ${gene.name}: ${gene.prob} 
-                            <div class="probability-bar">
-                                <div class="probability-fill" style="width: ${gene.prob * 100}%"></div>
-                            </div>
-                        </div>
-                    `;
-                });
-                probabilities.innerHTML = probHtml;
-            } else if (currentStep === 2) {
-                // Show count prediction
-                const selectedGene = geneExamples[0]; // GAPDH wins
-                sentence.innerHTML = `🧬 [START] → <span class="gene-token">${selectedGene.name}</span> → <span style="color: #74b9ff; font-weight: bold;">[Predicting Count...]</span>`;
-                
-                probabilities.innerHTML = `
-                    <strong>Count Decoder Output:</strong><br>
-                    <div style="margin: 10px 0;">
-                        Selected Gene: <span class="gene-token">${selectedGene.name}</span><br>
-                        Zero-Truncated Poisson λ = ${selectedGene.count * 0.8}<br>
-                        Predicted Count: <span class="count-value">${selectedGene.count}</span>
+                <h3>Example Output</h3>
+                <div class="concept-box">
+                    <p><strong>Predicted Expression Counts:</strong></p>
+                    <div style="background: #74b9ff; padding: 10px; border-radius: 8px; margin: 10px 0; color: white;">
+                        <span class="count-value">GAPDH: 156</span>
+                        <span class="count-value">ACTB: 89</span>
+                        <span class="count-value">TP53: 23</span>
+                        <span class="count-value">MYC: 45</span>
                     </div>
-                `;
-            }
-        }
-        
-        document.getElementById('step1').addEventListener('click', () => {
-            currentStep = 1;
-            updateDemo();
-            document.querySelector('.demo-button.active')?.classList.remove('active');
-            document.getElementById('step1').classList.add('active');
-        });
-        
-        document.getElementById('step2').addEventListener('click', () => {
-            if (currentStep >= 1) {
-                currentStep = 2;
-                updateDemo();
-                document.querySelector('.demo-button.active')?.classList.remove('active');
-                document.getElementById('step2').classList.add('active');
-            }
-        });
-        
-        document.getElementById('reset').addEventListener('click', () => {
-            currentStep = 0;
-            updateDemo();
-            document.querySelector('.demo-button.active')?.classList.remove('active');
-        });
-        
-        // Initialize
-        updateDemo();
-        
-        // Add hover effects for components
-        document.getElementById('transformer').addEventListener('mouseenter', () => {
-            document.getElementById('transformer').style.transform = 'translateY(-5px) scale(1.05)';
-        });
-        
-        document.getElementById('transformer').addEventListener('mouseleave', () => {
-            document.getElementById('transformer').style.transform = 'translateY(0) scale(1)';
-        });
-    </script>
-</body>
-</html>
+                    <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                        Count predictions reflect realistic expression levels, with housekeeping genes showing higher counts than regulatory genes.
+                    </p>
+                </div>
+
+                <div class="concept-box theory">
+                    <h3>Why Zero-Truncated Poisson?</h3>
+                    <p><strong>Biological Motivation:</strong></p>
+                    <ul>
+                        <li>Gene expression counts are discrete, non-negative integers</li>
+                        <li>Poisson distribution naturally models count data</li>
+                        <li><strong>Zero-truncation ensures only expressed genes appear in sequences</strong></li>
+                        <li>Captures overdispersion common in single-cell data</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Joint Training -->
+            <div class="content-section">
+                <h2><i class="fas fa-link"></i> Joint Training & Coupling</h2>
+                
+                <div class="concept-box joint">
+                    <h3>Why Both Heads Are Essential</h3>
+                    
+                    <div class="math-formula">
+                        L = L<sub>gene</sub> + L<sub>count</sub>
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Sequential Dependency:</strong> Count decoder uses gene identity from gene decoder</li>
+                        <li><strong>Biological Realism:</strong> Models the fact that different genes have different typical expression levels</li>
+                        <li><strong>Generative Capability:</strong> Can sample both gene identity and count jointly</li>
+                        <li><strong>Context Sensitivity:</strong> Both decoders condition on cell context</li>
+                    </ul>
+                </div>
+
+                <h3>Training Process</h3>
+                <ol>
+                    <li><strong>Forward Pass:</strong> Transformer encodes cell context → Both decoders make predictions</li>
+                    <li><strong>Loss Computation:</strong> Calculate cross-entropy (gene) + ZTP NLL (count)</li>
+                    <li><strong>Backpropagation:</strong> Gradients flow through both heads to shared encoder</li>
+                    <li><strong>Joint Optimization:</strong> Both tasks improve together through shared representations</li>
+                </ol>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-check-circle"></i> Key Advantage:</strong> 
+                    Joint training ensures that gene selection and count prediction are coherent—the model learns that certain genes (like GAPDH) typically have high counts, while others (like transcription factors) have low counts.
+                </div>
+            </div>
+
+            <!-- Interactive Demo -->
+            <div class="content-section">
+                <h2><i class="fas fa-gamepad"></i> Interactive Generation Demo</h2>
+                
+                <div class="interactive-demo">
+                    <h3>🎮 See How Dual Decoders Work Together</h3>
+                    <p>Step through the generation process for a single token in a cell sentence</p>
+                    
+                    <div class="demo-controls">
+                        <button class="demo-button" id="step1">Step 1: Select Gene</button>
+                        <button class="demo-button" id="step2">Step 2: Predict Count</button>
+                        <button class="demo-button" id="reset">Reset Demo</button>
+                    </div>
+                    
+                    <div class="demo-output" id="demo-display">
+                        <div><strong>Cell Sentence Generation:</strong></div>
+                        <div id="current-sentence">🧬 [START] → </div>
+                        <div id="probabilities" style="margin-top: 15px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Computational Advantages -->
+            <div class="content-section">
+                <h2><i class="fas fa-tachometer-alt"></i> Computational Advantages</h2>
+                
+                <div class="concept-box compute">
+                    <h3>Efficiency Benefits</h3>
+                    <ul>
+                        <li><strong>Shared Encoder:</strong> Single transformer processes both tasks</li>
+                        <li><strong>Parallel Computation:</strong> Both losses computed simultaneously during training</li>
+                        <li><strong>Parameter Sharing:</strong> Contextualized representations used by both heads</li>
+                        <li><strong>End-to-End Training:</strong> Joint optimization improves both tasks</li>
+                    </ul>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">2x</div>
+                        <div class="label">More efficient than separate models</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">1</div>
+                        <div class="label">Shared transformer encoder</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">2</div>
+                        <div class="label">Specialized decoder heads</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">~50K</div>
+                        <div class="label">Gene vocabulary size</div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-info-circle"></i> Comparison:</strong> 
+                    Training gene and count predictors separately would require 2x the encoder parameters and 2x the training time, with worse performance due to lack of shared representations.
+                </div>
+            </div>
+
+            <!-- Applications -->
+            <div class="content-section">
+                <h2><i class="fas fa-flask"></i> Applications & Use Cases</h2>
+                
+                <h3>Generation Tasks</h3>
+                <div class="concept-box">
+                    <ul>
+                        <li><strong>Cell State Simulation:</strong> Generate synthetic cells matching specific phenotypes</li>
+                        <li><strong>Perturbation Prediction:</strong> Predict cell response to genetic/drug perturbations</li>
+                        <li><strong>Data Augmentation:</strong> Create realistic training data for downstream tasks</li>
+                        <li><strong>Trajectory Modeling:</strong> Generate intermediate cell states along differentiation paths</li>
+                    </ul>
+                </div>
+
+                <h3>Analysis Tasks</h3>
+                <div class="concept-box">
+                    <ul>
+                        <li><strong>Cell Type Annotation:</strong> Use learned representations for classification</li>
+                        <li><strong>Gene Importance:</strong> Analyze which genes have high prediction probability</li>
+                        <li><strong>Expression Pattern Discovery:</strong> Identify co-expression patterns from count predictions</li>
+                        <li><strong>Quality Control:</strong> Detect anomalous cells based on reconstruction likelihood</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Related Concepts -->
+            <div class="content-section">
+                <h2><i class="fas fa-link"></i> Related Concepts</h2>
+                
+                <div class="concept-box">
+                    <h3>In This Handbook:</h3>
+                    <ul>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="self-verification-agents.html">Self-Verification Agents</a> - 
+                            How LLMs verify their outputs using external knowledge
+                        </li>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="attention-mechanisms.html">Attention Mechanisms</a> (Coming Soon) - 
+                            Understanding transformer architectures
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h3>Key Technical Concepts:</h3>
+                    <ul>
+                        <li><strong>Autoregressive Generation:</strong> Sequential sampling where each token depends on previous tokens</li>
+                        <li><strong>Multi-Task Learning:</strong> Training single model on multiple related tasks with shared representations</li>
+                        <li><strong>Zero-Truncated Distributions:</strong> Statistical distributions excluding zero values</li>
+                        <li><strong>Sequence-to-Sequence Models:</strong> Architectures for generating output sequences from input sequences</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Implementation Notes -->
+            <div class="content-section">
+                <h2><i class="fas fa-code"></i> Implementation Considerations</h2>
+                
+                <h3>Design Decisions</h3>
+                <ol>
+                    <li><strong>Vocabulary Size:</strong> Balance between gene coverage and computational efficiency</li>
+                    <li><strong>MLP Architecture:</strong> Typically 2-layer networks with ReLU activations</li>
+                    <li><strong>Loss Weighting:</strong> May need to balance gene vs. count loss terms</li>
+                    <li><strong>Normalization:</strong> Ensure count predictions sum to observed library size</li>
+                </ol>
+
+                <h3>Common Challenges</h3>
+                <div class="concept-box">
+                    <ul>
+                        <li><strong>Class Imbalance:</strong> Rare genes get low prediction probability (address with sampling strategies)</li>
+                        <li><strong>Count Distribution:</strong> Heavy-tailed expression distributions require careful modeling</li>
+                        <li><strong>Computational Cost:</strong> Large vo
