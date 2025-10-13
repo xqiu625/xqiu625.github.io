@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI4Bio Concepts Handbook - Xinru Qiu</title>
+    <title>AI4Bio Learning Hub - Xinru Qiu</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -48,16 +48,68 @@
         }
         .header {
             text-align: center;
-            margin: 40px 0;
+            margin: 40px 0 20px 0;
         }
         .header h1 {
             color: #1a5f7a;
             font-size: 2.5em;
             margin-bottom: 10px;
         }
-        .header p {
+        .header .subtitle {
             font-size: 1.2em;
             color: #666;
+            margin-bottom: 20px;
+        }
+        .header .description {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1em;
+            color: #555;
+            line-height: 1.8;
+        }
+        .featured-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .featured-section h2 {
+            color: white;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .featured-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .featured-item {
+            background: rgba(255,255,255,0.15);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .featured-item h4 {
+            color: white;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        .featured-item a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-top: 5px;
+            padding: 5px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        .featured-item a:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(3px);
         }
         .concepts-grid {
             display: grid;
@@ -77,10 +129,10 @@
             transform: translateY(-8px);
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
-        .card-stats { border-top-color: #e74c3c; }
-        .card-ml { border-top-color: #3498db; }
         .card-foundation { border-top-color: #667eea; }
-        .card-bio { border-top-color: #27ae60; }
+        .card-singlecell { border-top-color: #27ae60; }
+        .card-ml { border-top-color: #3498db; }
+        .card-stats { border-top-color: #e74c3c; }
         .card-tools { border-top-color: #f39c12; }
         .card-apps { border-top-color: #9b59b6; }
         
@@ -89,15 +141,21 @@
             margin-bottom: 15px;
             font-size: 1.3em;
         }
+        .concept-card .description {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
         .concept-card .icon {
             font-size: 2em;
             margin-bottom: 15px;
             display: block;
         }
-        .card-stats .icon { color: #e74c3c; }
-        .card-ml .icon { color: #3498db; }
         .card-foundation .icon { color: #667eea; }
-        .card-bio .icon { color: #27ae60; }
+        .card-singlecell .icon { color: #27ae60; }
+        .card-ml .icon { color: #3498db; }
+        .card-stats .icon { color: #e74c3c; }
         .card-tools .icon { color: #f39c12; }
         .card-apps .icon { color: #9b59b6; }
         
@@ -132,33 +190,47 @@
             margin-left: 5px;
             font-weight: bold;
         }
-        .featured-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        .priority-badge {
+            display: inline-block;
+            background: #667eea;
             color: white;
+            font-size: 0.7em;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 5px;
+            font-weight: bold;
+        }
+        .cta-section {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            margin: 40px 0;
             text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .featured-section h2 {
-            color: white;
+        .cta-section h3 {
+            color: #1a5f7a;
             margin-bottom: 15px;
         }
-        .featured-link {
+        .cta-section p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .cta-button {
             display: inline-block;
-            background: rgba(255,255,255,0.2);
+            background: #667eea;
             color: white;
-            padding: 12px 25px;
+            padding: 12px 30px;
             border-radius: 25px;
             text-decoration: none;
             font-weight: bold;
-            margin: 10px;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255,255,255,0.3);
+            margin: 0 10px;
         }
-        .featured-link:hover {
-            background: rgba(255,255,255,0.3);
+        .cta-button:hover {
+            background: #764ba2;
             transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
         }
         @media (max-width: 768px) {
             .concepts-grid {
@@ -166,6 +238,9 @@
             }
             .header h1 {
                 font-size: 2em;
+            }
+            .featured-content {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -182,79 +257,136 @@
     <main role="main">
         <div class="container">
             <div class="header">
-                <h1>🧬 AI4Bio Concepts Handbook</h1>
-                <p>Interactive visualizations and explanations of key concepts in AI for biology</p>
-                <p><em>Personal knowledge base for computational biology research</em></p>
+                <h1>🧬 AI4Bio Learning Hub</h1>
+                <p class="subtitle">Interactive deep dives into AI methods for biology</p>
+                <p class="description">
+                    Welcome to my curated collection of tutorials, visualizations, and explanations covering cutting-edge computational methods in biology. 
+                    I focus on areas I'm actively researching: <strong>single-cell foundation models</strong>, <strong>AI-driven drug discovery</strong>, 
+                    and <strong>computational immunology</strong>. Whether you're a researcher, student, or industry professional, I hope these resources 
+                    help you navigate the rapidly evolving AI4Bio landscape.
+                </p>
+            </div>
+
+            <div class="featured-section">
+                <h2>🌟 Featured Content</h2>
+                <div class="featured-content">
+                    <div class="featured-item">
+                        <h4>🤖 Foundation Models for Single-Cell</h4>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.9em; margin-bottom: 10px;">
+                            Deep dive into how transformer architectures are revolutionizing single-cell analysis
+                        </p>
+                        <a href="foundation-models/dual-decoder-heads.html">TranscriptFormer Architecture →</a>
+                    </div>
+                    <div class="featured-item">
+                        <h4>📊 Evaluating Integration Quality</h4>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.9em; margin-bottom: 10px;">
+                            How to properly assess batch correction in single-cell data
+                        </p>
+                        <a href="machine-learning/batch-integration-metrics.html">Integration Metrics →</a>
+                    </div>
+                    <div class="featured-item">
+                        <h4>🧬 Cross-Species Analysis</h4>
+                        <p style="color: rgba(255,255,255,0.9); font-size: 0.9em; margin-bottom: 10px;">
+                            Computational approaches for comparative genomics and evolutionary insights
+                        </p>
+                        <a href="computational-biology/cross-species-integration.html">Learn More →</a>
+                    </div>
+                </div>
             </div>
 
             <div class="concepts-grid">
-                <div class="concept-card card-stats">
-                    <i class="fas fa-chart-bar icon"></i>
-                    <h3>📊 Statistical Methods</h3>
+                <div class="concept-card card-foundation">
+                    <i class="fas fa-robot icon"></i>
+                    <h3>🤖 Foundation Models</h3>
+                    <p class="description">The future of computational biology - how large-scale pre-training is transforming our ability to understand cellular states</p>
                     <ul class="concept-list">
-                        <li><a href="statistics/distributions.html">Probability Distributions</a></li>
-                        <li><a href="statistics/bayesian-compositional-analysis.html">Bayesian Compositional Analysis</a></li>
-                        <li><a href="statistics/bootstrap-methods.html" class="coming-soon">Bootstrap Methods (Coming Soon)</a></li>
+                        <li><a href="foundation-models/dual-decoder-heads.html">TranscriptFormer Dual Decoder Heads <span class="new-badge">NEW</span></a></li>
+                        <li><a href="foundation-models/protein-language-models-gene-representation.html">Protein Language Models for Gene Representation</a></li>
+                        <li><a href="foundation-models/two-stage-pretraining.html">Two-Stage Pretraining Strategies</a></li>
+                        <li><a href="foundation-models/self-verification-agents.html">Self-Verification in Bio Agents</a></li>
+                        <li><a href="foundation-models/scfm-benchmarking.html" class="coming-soon">Benchmarking scFMs <span class="priority-badge">Q1 2025</span></a></li>
+                        <li><a href="foundation-models/fine-tuning-strategies.html" class="coming-soon">Fine-tuning for Rare Cell Types <span class="priority-badge">Q1 2025</span></a></li>
+                    </ul>
+                </div>
+
+                <div class="concept-card card-singlecell">
+                    <i class="fas fa-dna icon"></i>
+                    <h3>🔬 Single-Cell Genomics</h3>
+                    <p class="description">Core methods for analyzing cellular heterogeneity and state transitions</p>
+                    <ul class="concept-list">
+                        <li><a href="computational-biology/cross-species-integration.html">Cross-Species Integration</a></li>
+                        <li><a href="single-cell/trajectory-analysis.html" class="coming-soon">Trajectory Analysis Methods <span class="priority-badge">Q1 2025</span></a></li>
+                        <li><a href="single-cell/cell-communication.html" class="coming-soon">Cell-Cell Communication <span class="priority-badge">Q2 2025</span></a></li>
+                        <li><a href="single-cell/spatial-integration.html" class="coming-soon">Spatial Transcriptomics Integration <span class="priority-badge">Q2 2025</span></a></li>
                     </ul>
                 </div>
 
                 <div class="concept-card card-ml">
                     <i class="fas fa-brain icon"></i>
                     <h3>🧠 Machine Learning</h3>
+                    <p class="description">Practical ML methods for biological data - from optimization to evaluation</p>
                     <ul class="concept-list">
                         <li><a href="machine-learning/batch-integration-metrics.html">Batch Integration Metrics</a></li>
                         <li><a href="machine-learning/bayesian-optimization.html">Bayesian Optimization</a></li>
-                        <li><a href="machine-learning/model-evaluation.html" class="coming-soon">Model Evaluation (Coming Soon)</a></li>
+                        <li><a href="machine-learning/transfer-learning.html" class="coming-soon">Transfer Learning in Biology <span class="priority-badge">Q1 2025</span></a></li>
+                        <li><a href="machine-learning/model-evaluation.html" class="coming-soon">Model Evaluation Best Practices</a></li>
                     </ul>
                 </div>
 
-                <div class="concept-card card-foundation">
-                    <i class="fas fa-robot icon"></i>
-                    <h3>🤖 Foundation Models</h3>
+                <div class="concept-card card-stats">
+                    <i class="fas fa-chart-bar icon"></i>
+                    <h3>📊 Statistical Methods</h3>
+                    <p class="description">Foundational statistical concepts for rigorous computational biology</p>
                     <ul class="concept-list">
-                        <li><a href="foundation-models/dual-decoder-heads.html">TranscriptFormer Dual Decoder Heads</a></li>
-                        <li><a href="foundation-models/self-verification-agents.html">Self-Verification Agents</a></li>
-                        <li><a href="foundation-models/protein-language-models-gene-representation.html">Protein Language Models Gene Representation</a></li>
-                        <li><a href="foundation-models/two-stage-pretraining.html">Two Stage Pretraining</a></li>
-                    </ul>
-                </div>
-
-                <div class="concept-card card-bio">
-                    <i class="fas fa-dna icon"></i>
-                    <h3>🧬 Computational Biology</h3>
-                    <ul class="concept-list">
-                        <li><a href="computational-biology/cross-species-integration.html">Cross-Species Integration</a></li>
-                        <li><a href="computational-biology/structure-biology.html" class="coming-soon">Structural Biology (Coming Soon)</a></li>
-                        <li><a href="computational-biology/systems-biology.html" class="coming-soon">Systems Biology (Coming Soon)</a></li>
-                    </ul>
-                </div>
-
-                <div class="concept-card card-tools">
-                    <i class="fas fa-tools icon"></i>
-                    <h3>💻 Computational Tools</h3>
-                    <ul class="concept-list">
-                        <li><a href="tools/python-bio.html" class="coming-soon">Python for Biology (Coming Soon)</a></li>
-                        <li><a href="tools/r-bioinformatics.html" class="coming-soon">R for Bioinformatics (Coming Soon)</a></li>
-                        <li><a href="tools/visualization.html" class="coming-soon">Data Visualization (Coming Soon)</a></li>
+                        <li><a href="statistics/distributions.html">Probability Distributions</a></li>
+                        <li><a href="statistics/bayesian-compositional-analysis.html">Bayesian Compositional Analysis</a></li>
+                        <li><a href="statistics/multiple-testing.html" class="coming-soon">Multiple Testing Correction <span class="priority-badge">Q2 2025</span></a></li>
+                        <li><a href="statistics/bootstrap-methods.html" class="coming-soon">Bootstrap Methods</a></li>
                     </ul>
                 </div>
 
                 <div class="concept-card card-apps">
                     <i class="fas fa-flask icon"></i>
-                    <h3>🏥 Applications</h3>
+                    <h3>🏥 Drug Discovery Applications</h3>
+                    <p class="description">Translating computational insights into therapeutic development</p>
                     <ul class="concept-list">
-                        <li><a href="applications/drug-discovery.html" class="coming-soon">Drug Discovery (Coming Soon)</a></li>
-                        <li><a href="applications/precision-medicine.html" class="coming-soon">Precision Medicine (Coming Soon)</a></li>
-                        <li><a href="applications/biomarker-discovery.html" class="coming-soon">Biomarker Discovery (Coming Soon)</a></li>
+                        <li><a href="applications/perturbation-prediction.html" class="coming-soon">Predicting Drug Perturbations <span class="priority-badge">Q1 2025</span></a></li>
+                        <li><a href="applications/target-identification.html" class="coming-soon">AI-Driven Target ID <span class="priority-badge">Q2 2025</span></a></li>
+                        <li><a href="applications/biomarker-discovery.html" class="coming-soon">Computational Biomarker Discovery</a></li>
+                        <li><a href="applications/clinical-translation.html" class="coming-soon">From Bench to Bedside</a></li>
                     </ul>
                 </div>
+
+                <div class="concept-card card-tools">
+                    <i class="fas fa-tools icon"></i>
+                    <h3>💻 Tools & Workflows</h3>
+                    <p class="description">Practical guides for computational infrastructure and reproducible research</p>
+                    <ul class="concept-list">
+                        <li><a href="tools/scanpy-vs-seurat.html" class="coming-soon">Scanpy vs Seurat Comparison <span class="priority-badge">Q2 2025</span></a></li>
+                        <li><a href="tools/cloud-computing.html" class="coming-soon">Cloud Computing for Genomics</a></li>
+                        <li><a href="tools/reproducible-workflows.html" class="coming-soon">Reproducible Analysis Workflows</a></li>
+                        <li><a href="tools/visualization.html" class="coming-soon">Advanced Data Visualization</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3>💡 Interested in Collaborating?</h3>
+                <p>I'm always open to discussing research ideas, potential collaborations, or industry opportunities in AI-driven drug discovery and computational biology.</p>
+                <a href="mailto:xinru.reina.qiu@gmail.com" class="cta-button">
+                    <i class="fas fa-envelope"></i> Get in Touch
+                </a>
+                <a href="https://www.linkedin.com/in/xinru-qiu" class="cta-button">
+                    <i class="fab fa-linkedin"></i> Connect on LinkedIn
+                </a>
             </div>
         </div>
     </main>
 
     <footer>
         <div class="container" style="text-align: center; margin-top: 40px; color: #666;">
-            <p>Part of <a href="../" style="color: #1a5f7a;">Xinru Qiu's</a> personal knowledge ecosystem</p>
+            <p>Created and maintained by <a href="../" style="color: #1a5f7a; text-decoration: none; font-weight: bold;">Xinru Qiu</a></p>
+            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025 | <a href="https://github.com/xqiu625" style="color: #666;">View on GitHub</a></p>
         </div>
     </footer>
 </body>
