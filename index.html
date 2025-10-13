@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xinru Qiu</title>
+    <title>Xinru Qiu - Computational Biologist</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -82,11 +82,17 @@
         .content {
             margin-top: 20px;
         }
+        .highlight-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #6c8cc0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
         .research-image {
             background: transparent;
             padding: 20px;
             margin: 20px 0;
-            /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);*/
         }
         .research-image img {
             width: 100%;
@@ -97,18 +103,16 @@
             transition: transform 0.3s ease;
             mix-blend-mode: multiply;
         }
-
         .research-image img:hover {
             transform: scale(1.02);
         }
-
         .research-image .caption {
             text-align: center;
             color: #333333;
             font-style: italic;
             margin-top: 10px;
             font-size: 0.9em;
-        }       
+        }
         @media (max-width: 768px) {
             .profile-container {
                 flex-direction: column;
@@ -158,68 +162,95 @@
                         <li><a href="https://www.researchgate.net/profile/Xinru-Qiu" title="ResearchGate"><i class="fab fa-researchgate"></i>ResearchGate</a></li>
                         <li><a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ" title="Google Scholar"><i class="fas fa-graduation-cap"></i>Google Scholar</a></li>
                         <li><a href="https://profiles.ucr.edu/app/home/profile/xqiu014" title="UCR Profile"><i class="fas fa-school"></i>UCR Profile</a></li>
-
                     </ul>
                 </div>
                 <div class="profile-info">
-                    <h1>Xinru Qiu</h1>
+                    <h1>Xinru Qiu, PhD</h1>
+                    <h3 style="color: #6c8cc0; margin-top: 5px;">Computational Biologist | Single-Cell Genomics × AI/ML</h3>
+                    
                     <div class="content">
-                        <p>Hi! I am currently a Bioinformatics Postdoctoral Researcher at the University of California, Riverside.</p>
-                        <p> </p>As a computational biologist and machine learning researcher, I bridge the gap between complex biological questions and innovative computational solutions. My research combines advanced AI techniques with multi-omics analysis and protein design to drive discoveries in translational medicine.</p>
+                        <p>I translate immune cell biology into therapeutic insights using cutting-edge AI and single-cell genomics.</p>
+
+                        <p>As a Postdoctoral Researcher at UC Riverside (Godzik Lab), I specialize in understanding how immune cells change states in inflammatory diseases and how we can target those transitions for drug discovery. My research combines deep immunology expertise with advanced computational methods including foundation models, machine learning, and large-scale single-cell analysis.</p>
+
                         <div class="research-image">
-                            <img src="./research_focus.png">        
+                            <img src="./research_focus.png" alt="Research Focus">        
                         </div>
-                        <p>I obtained my PhD in Bioinformatics from University of California, Riverside (UCR) in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Here is my <a href="XinruQiu_resume.pdf">resume</a>. </p>
+
+                        <p><strong>Technical expertise:</strong> Single-cell RNA-seq (Seurat, Scanpy, CellRanger), foundation models (Geneformer, scGPT, UCE, scPRINT), Python/R, AI/ML pipelines, cloud computing (GCP, AWS), AlphaFold for protein structure analysis</p>
+
+                        <p>I obtained my PhD in Genetics, Genomics, and Bioinformatics from UC Riverside in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Download my <a href="XinruQiu_resume.pdf">resume</a>.</p>
                     </div>
 
                     <div class="content">
-                        <h2>Research interests</h2>
-                        <div class="research-image">
-                            <img src="./research_intro.png">
-                        </div>
-                            </ul>
-                            <li><strong>Computational Method Development</strong></li>
-                            <ul>
-                                <li>AI/ML in Biology: Developing and applying novel machine learning approaches for biological data analysis</li>
-                                <li>Single-Cell Tools: Creating new computational methods for single-cell data interpretation</li>
-                                <li>Protein Design: Advancing tools for protein structure prediction and design</li>
-                                <li>Multi-omics Integration: Building frameworks for integrating diverse biological data types</li>
-                            </ul>
-                            <li><strong>Biological Applications</strong></li>
-                            <ul>
-                                <li>Disease Mechanisms: Investigating molecular mechanisms of inflammatory diseases</li>
-                                <li>Drug Discovery: Computational approaches for therapeutic development</li>
-                                <li>Immunology: Understanding immune cell dynamics and regulation</li>
-                                <li>Biomarker Discovery: Identifying and validating disease biomarkers</li>
-                            </ul>
-                            <li><strong>Technical Development</strong></li>
-                            <ul>
-                                <li>Software Tools: Building user-friendly bioinformatics tools</li>
-                                <li>Pipeline Development: Creating reproducible analysis workflows</li>
-                                <li>Visualization Tools: Developing interactive data visualization solutions</li>
-                                <li>Cloud Computing: Implementing scalable computational solutions</li>
-                            </ul>
-                        
-                        </ul>
-                    </div>
-
-                    <div class="content">
-                        <h2>Vision & Goals </h2>
+                        <h2>Research Impact</h2>
                         <ul>
-                            <div class="research-image">
-                                <img src="./career_goals.png">        
-                            </div>
+                            <li><strong>16 peer-reviewed publications</strong> (3 first-author) in genomics and computational biology</li>
+                            <li>Developed computational frameworks for analyzing <strong>immune cell plasticity</strong> in COVID-19, sepsis, and autoimmune diseases</li>
+                            <li>Pioneering applications of <strong>foundation models</strong> to predict cellular responses to therapeutic perturbations</li>
+                            <li>Bridged structural biology (AlphaFold) with functional genomics for target identification</li>
+                            <li>Industry experience: Illumina (2022 internship), Vantari Genetics (2015-2018)</li>
                         </ul>
                     </div>
 
+                    <div class="content">
+                        <h2>Current Research Focus</h2>
+                        <div class="research-image">
+                            <img src="./research_intro.png" alt="Research Introduction">
+                        </div>
+                        
+                        <h4>Single-Cell Foundation Models for Drug Discovery</h4>
+                        <p>I'm pushing the frontier of single-cell foundation models to predict how immune cells respond to drugs and genetic perturbations. This work aims to dramatically accelerate target identification and reduce the time from discovery to clinic.</p>
+
+                        <h4>Key Research Areas:</h4>
+                        <ul>
+                            <li><strong>AI-Driven Target Discovery:</strong> Using foundation models to identify novel therapeutic targets in inflammatory diseases</li>
+                            <li><strong>Immune Cell State Transitions:</strong> Mapping how immune cells change states in disease contexts (COVID-19, sepsis, lupus)</li>
+                            <li><strong>Multi-modal Integration:</strong> Combining single-cell transcriptomics, spatial biology, and clinical outcomes</li>
+                            <li><strong>Computational Perturbation Screening:</strong> In silico prediction of cellular responses to therapeutic interventions</li>
+                            <li><strong>Protein Structure-Function:</strong> Integrating AlphaFold predictions with functional genomics</li>
+                        </ul>
+                    </div>
+
+                    <div class="content">
+                        <h2>Technical Skills</h2>
+                        <ul>
+                            <li><strong>Single-Cell Analysis:</strong> Expert in Seurat, Scanpy, CellRanger, Cell Ranger ATAC, trajectory analysis, cell-cell communication</li>
+                            <li><strong>Foundation Models:</strong> Hands-on experience with Geneformer, scGPT, UCE, scPRINT, fine-tuning and transfer learning</li>
+                            <li><strong>Machine Learning:</strong> PyTorch, scikit-learn, deep learning, transfer learning, model optimization</li>
+                            <li><strong>Programming:</strong> Python, R, Bash, version control (Git), reproducible workflows</li>
+                            <li><strong>Cloud & HPC:</strong> AWS, Google Cloud Platform, Slurm, Docker, scalable data processing</li>
+                            <li><strong>Multi-omics:</strong> RNA-seq, ATAC-seq, ChIP-seq, proteomics, spatial transcriptomics</li>
+                            <li><strong>Structural Biology:</strong> AlphaFold, protein structure prediction, structure-function analysis</li>
+                        </ul>
+                    </div>
+
+                    <div class="content">
+                        <h2>Career Vision</h2>
+                        <div class="research-image">
+                            <img src="./career_goals.png" alt="Career Goals">        
+                        </div>
+                        <p>My goal is to become a leader in AI-driven drug discovery, bridging cutting-edge computational methods with translational medicine. I aim to build and lead teams that accelerate the path from biological insight to therapeutic impact.</p>
+                        
+                        <p><strong>Near-term (2025-2028):</strong> Establish expertise in single-cell foundation models through high-impact publications and industry collaborations. Transition to industry roles in computational biology or AI-driven drug discovery.</p>
+                        
+                        <p><strong>Long-term vision:</strong> Lead computational biology teams in biotech or pharma, driving strategic initiatives that combine AI innovation with deep biological understanding to deliver novel therapeutics.</p>
+                    </div>
 
                     <div class="content">
                         <h2>Education</h2>
                         <ul>
-                            <li>Ph.D, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, <a href="https://www.usnews.com/best-colleges/university-of-california-riverside-1316">University of California, Riverside</a>, 2018 - 2023.</li>
-                            <li>M.S. <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, <a href="https://www.usnews.com/best-colleges/university-of-southern-california-1328">University of Southern California</a>, 2013 - 2015.</li>
-                            <li>B.S. <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 - 2013.</li>                            
+                            <li><strong>Ph.D.</strong>, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, <a href="https://www.usnews.com/best-colleges/university-of-california-riverside-1316">University of California, Riverside</a>, 2018 - 2023
+                                <br><em>Dissertation: Computational approaches for understanding immune biology and protein structure</em>
+                            </li>
+                            <li><strong>M.S.</strong>, <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, <a href="https://www.usnews.com/best-colleges/university-of-southern-california-1328">University of Southern California</a>, 2013 - 2015</li>
+                            <li><strong>B.S.</strong>, <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 - 2013</li>                            
                         </ul>
+                    </div>
+
+                    <div class="content">
+                        <h2>Let's Connect</h2>
+                        <p>I'm always interested in discussing AI for biology, single-cell therapeutics, computational immunology, or potential collaborations. Feel free to reach out via <a href="mailto:xinru.reina.qiu@gmail.com">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
                     </div>
                 </div>
             </div>
@@ -228,7 +259,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2024 Xinru Qiu. All rights reserved.</p>
+            <p style="text-align: center; color: #666; padding: 20px 0;">&copy; 2025 Xinru Qiu. All rights reserved.</p>
         </div>
     </footer>
 </body>
