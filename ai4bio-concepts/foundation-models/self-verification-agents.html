@@ -43,11 +43,11 @@
             font-size: 16px;
         }
         .home-link {
-            color: #667eea !important;
+            color: #FCD1D2 !important;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 50%, #DCCBD8 100%);
+            color: #333;
             padding: 40px;
             border-radius: 15px;
             margin: 30px 0;
@@ -56,21 +56,23 @@
         .header h1 {
             margin: 0 0 10px 0;
             font-size: 2.5em;
+            color: #000;
         }
         .header p {
             margin: 5px 0;
             font-size: 1.1em;
-            opacity: 0.9;
+            color: #333;
         }
         .paper-ref {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.6);
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             font-size: 0.95em;
+            color: #333;
         }
         .paper-ref a {
-            color: white;
+            color: #9fB7E6;
             text-decoration: underline;
         }
         .content-section {
@@ -81,52 +83,30 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .content-section h2 {
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
+            color: #FCD1D2;
+            border-bottom: 3px solid #FCD1D2;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
         .content-section h3 {
-            color: #764ba2;
+            color: #DCCBD8;
             margin-top: 25px;
         }
         .concept-box {
             background: #f8f9fa;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #FCD1D2;
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
         }
         .concept-box.architecture {
-            border-left-color: #764ba2;
+            border-left-color: #DCCBD8;
         }
         .concept-box.evaluation {
-            border-left-color: #e74c3c;
+            border-left-color: #FCD1D2;
         }
         .concept-box.knowledge {
-            border-left-color: #27ae60;
-        }
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 10px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-        .code-block .comment {
-            color: #75715e;
-        }
-        .code-block .keyword {
-            color: #f92672;
-        }
-        .code-block .function {
-            color: #a6e22e;
-        }
-        .code-block .string {
-            color: #e6db74;
+            border-left-color: #BCDAEE;
         }
         .highlight-box {
             background: #fff3cd;
@@ -145,7 +125,7 @@
             margin: 20px 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FCD1D2 0%, #DCCBD8 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -162,7 +142,7 @@
         }
         .visual-diagram {
             background: white;
-            border: 2px solid #667eea;
+            border: 2px solid #FCD1D2;
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -170,7 +150,7 @@
         }
         .flow-step {
             display: inline-block;
-            background: #667eea;
+            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 100%);
             color: white;
             padding: 15px 25px;
             margin: 10px;
@@ -184,7 +164,7 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.5em;
-            color: #667eea;
+            color: #FCD1D2;
         }
         .flow-step:last-child:after {
             content: '';
@@ -201,7 +181,7 @@
             border-bottom: 1px solid #ddd;
         }
         .comparison-table th {
-            background: #667eea;
+            background: #FCD1D2;
             color: white;
         }
         .comparison-table tr:hover {
@@ -209,7 +189,7 @@
         }
         .tag {
             display: inline-block;
-            background: #667eea;
+            background: #FCD1D2;
             color: white;
             padding: 5px 12px;
             border-radius: 15px;
@@ -217,13 +197,13 @@
             margin: 5px 5px 5px 0;
         }
         .tag.high {
-            background: #27ae60;
+            background: #BCDAEE;
         }
         .tag.medium {
-            background: #f39c12;
+            background: #FCED92;
         }
         .tag.low {
-            background: #e74c3c;
+            background: #FCD1D2;
         }
         ul, ol {
             line-height: 1.8;
@@ -232,14 +212,14 @@
             display: inline-block;
             margin: 20px 0;
             padding: 10px 20px;
-            background: #667eea;
+            background: #FCD1D2;
             color: white;
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
         .back-link:hover {
-            background: #764ba2;
+            background: #DCCBD8;
             transform: translateX(-5px);
         }
         @media (max-width: 768px) {
@@ -348,28 +328,16 @@
                     <p><strong>Key insight:</strong> Process names are verified <strong>twice</strong>—once directly, then again indirectly through the analytical narratives. This catches inconsistencies and prevents error propagation.</p>
                 </div>
 
-                <h3>Implementation Pattern</h3>
-                <div class="code-block">
-<span class="keyword">def</span> <span class="function">self_verification_agent</span>(claim, gene_symbols):
-    <span class="comment"># 1. Extract relevant entities (e.g., gene names)</span>
-    entities = extract_genes(claim)
-    
-    <span class="comment"># 2. Autonomously select appropriate databases</span>
-    <span class="comment">#    e.g., GO, KEGG, PubMed based on claim type</span>
-    relevant_dbs = select_databases(claim_type, entities)
-    
-    <span class="comment"># 3. Query external knowledge sources via APIs</span>
-    evidence = query_databases(entities, relevant_dbs)
-    
-    <span class="comment"># 4. Generate verification report</span>
-    decision = evaluate_claim(claim, evidence)
-    <span class="comment">#    → "supported", "partially supported", or "refuted"</span>
-    
-    <span class="keyword">return</span> VerificationReport(
-        decision=decision, 
-        evidence=evidence, 
-        reasoning=explain_decision(claim, evidence)
-    )
+                <h3>Self-Verification Process</h3>
+                <div class="concept-box">
+                    <p><strong>The agent follows these steps for each claim:</strong></p>
+                    <ol>
+                        <li><strong>Extract relevant entities:</strong> Identify gene names, pathway terms, or other verifiable elements from the claim</li>
+                        <li><strong>Select appropriate databases:</strong> Autonomously choose which knowledge sources are most relevant (e.g., GO, KEGG, PubMed based on claim type)</li>
+                        <li><strong>Query external knowledge sources:</strong> Use APIs to retrieve evidence from selected databases</li>
+                        <li><strong>Generate verification report:</strong> Evaluate whether claim is "supported", "partially supported", or "refuted" based on retrieved evidence</li>
+                        <li><strong>Provide reasoning:</strong> Explain the decision using the evidence gathered</li>
+                    </ol>
                 </div>
 
                 <h3>Example: Claim Verification</h3>
@@ -561,7 +529,7 @@
 
             <!-- Implementation Considerations -->
             <div class="content-section">
-                <h2><i class="fas fa-code"></i> Implementation Considerations</h2>
+                <h2><i class="fas fa-cogs"></i> Implementation Considerations</h2>
                 
                 <h3>What You Need</h3>
                 <ol>
@@ -598,8 +566,12 @@
                     <h3>In This Handbook:</h3>
                     <ul>
                         <li><strong>Foundation Models:</strong> 
-                            <a href="attention-mechanisms.html">Attention Mechanisms</a> (Coming Soon) - 
-                            Understanding how transformers process information
+                            <a href="dual-decoder-heads.html">TranscriptFormer Dual Decoder Heads</a> - 
+                            Understanding transformer architectures for biological data
+                        </li>
+                        <li><strong>Foundation Models:</strong> 
+                            <a href="two-stage-pretraining.html">Two-Stage Pretraining Strategies</a> - 
+                            Another multi-stage approach to model development
                         </li>
                         <li><strong>Machine Learning:</strong> 
                             <a href="../machine-learning/model-evaluation.html">Model Evaluation</a> (Coming Soon) - 
@@ -652,7 +624,7 @@
 
     <footer>
         <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
-            <p>Part of <a href="../../" style="color: #667eea;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
+            <p>Part of <a href="../../" style="color: #FCD1D2;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
             <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
         </div>
     </footer>
