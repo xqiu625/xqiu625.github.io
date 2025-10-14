@@ -43,11 +43,11 @@
             font-size: 16px;
         }
         .home-link {
-            color: #667eea !important;
+            color: #FCD1D2 !important;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 50%, #DCCBD8 100%);
+            color: #333;
             padding: 40px;
             border-radius: 15px;
             margin: 30px 0;
@@ -56,21 +56,23 @@
         .header h1 {
             margin: 0 0 10px 0;
             font-size: 2.5em;
+            color: #000;
         }
         .header p {
             margin: 5px 0;
             font-size: 1.1em;
-            opacity: 0.9;
+            color: #333;
         }
         .paper-ref {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.6);
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             font-size: 0.95em;
+            color: #333;
         }
         .paper-ref a {
-            color: white;
+            color: #9fB7E6;
             text-decoration: underline;
         }
         .content-section {
@@ -81,33 +83,33 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .content-section h2 {
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
+            color: #FCD1D2;
+            border-bottom: 3px solid #FCD1D2;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
         .content-section h3 {
-            color: #764ba2;
+            color: #DCCBD8;
             margin-top: 25px;
         }
         .concept-box {
             background: #f8f9fa;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #FCD1D2;
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
         }
         .concept-box.problem {
-            border-left-color: #e74c3c;
+            border-left-color: #FCD1D2;
         }
         .concept-box.solution {
-            border-left-color: #27ae60;
+            border-left-color: #BCDAEE;
         }
         .concept-box.comparison {
-            border-left-color: #f39c12;
+            border-left-color: #FCED92;
         }
         .concept-box.implementation {
-            border-left-color: #3498db;
+            border-left-color: #9fB7E6;
         }
         .highlight-box {
             background: #fff3cd;
@@ -126,7 +128,7 @@
             margin: 20px 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FCD1D2 0%, #DCCBD8 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -153,7 +155,7 @@
             border-bottom: 1px solid #ddd;
         }
         .comparison-table th {
-            background: #667eea;
+            background: #FCD1D2;
             color: white;
         }
         .comparison-table tr:hover {
@@ -161,7 +163,7 @@
         }
         .visual-diagram {
             background: white;
-            border: 2px solid #667eea;
+            border: 2px solid #FCD1D2;
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -169,7 +171,7 @@
         }
         .pipeline-step {
             display: inline-block;
-            background: #667eea;
+            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 100%);
             color: white;
             padding: 15px 25px;
             margin: 10px;
@@ -183,33 +185,10 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.5em;
-            color: #667eea;
+            color: #FCD1D2;
         }
         .pipeline-step:last-child:after {
             content: '';
-        }
-        .code-block {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 20px;
-            border-radius: 10px;
-            overflow-x: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            line-height: 1.6;
-            margin: 15px 0;
-        }
-        .code-block .comment {
-            color: #75715e;
-        }
-        .code-block .keyword {
-            color: #f92672;
-        }
-        .code-block .function {
-            color: #a6e22e;
-        }
-        .code-block .string {
-            color: #e6db74;
         }
         .protein-sequence {
             background: #e8f4f8;
@@ -220,7 +199,7 @@
             letter-spacing: 2px;
             word-wrap: break-word;
             margin: 15px 0;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #9fB7E6;
         }
         .embedding-viz {
             background: #f8f9fa;
@@ -231,43 +210,25 @@
         }
         .embedding-box {
             display: inline-block;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #9fB7E6 0%, #DCCBD8 100%);
             color: white;
             padding: 10px 15px;
             margin: 5px;
             border-radius: 5px;
             font-size: 0.9em;
         }
-        .tag {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            margin: 5px 5px 5px 0;
-        }
-        .tag.high {
-            background: #27ae60;
-        }
-        .tag.medium {
-            background: #f39c12;
-        }
-        .tag.low {
-            background: #e74c3c;
-        }
         .back-link {
             display: inline-block;
             margin: 20px 0;
             padding: 10px 20px;
-            background: #667eea;
+            background: #FCD1D2;
             color: white;
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
         .back-link:hover {
-            background: #764ba2;
+            background: #DCCBD8;
             transform: translateX(-5px);
         }
         ul, ol {
@@ -446,36 +407,6 @@
                         </tr>
                     </tbody>
                 </table>
-
-                <h3>Implementation Code</h3>
-                <div class="code-block">
-<span class="keyword">import</span> torch
-<span class="keyword">from</span> esm <span class="keyword">import</span> pretrained
-
-<span class="comment"># Load ESM2 model</span>
-model, alphabet = pretrained.esm2_t48_15B_UR50D()
-batch_converter = alphabet.get_batch_converter()
-model.eval()  <span class="comment"># Disable dropout for inference</span>
-
-<span class="comment"># Prepare protein sequences</span>
-data = [
-    (<span class="string">"BRCA1"</span>, <span class="string">"MDLSALRVEEVQNVINAMQKILECPICLELIK..."</span>),
-    (<span class="string">"TP53"</span>, <span class="string">"MEEPQSDPSVEPPLSQETFSDLWKLLPEN..."</span>),
-]
-
-batch_labels, batch_strs, batch_tokens = batch_converter(data)
-
-<span class="comment"># Generate embeddings</span>
-<span class="keyword">with</span> torch.no_grad():
-    results = model(batch_tokens, repr_layers=[48])
-    
-<span class="comment"># Extract per-protein embeddings (average over sequence length)</span>
-embeddings = results[<span class="string">"representations"</span>][48].mean(dim=1)
-<span class="comment"># embeddings.shape = (2, 5120) for 2 proteins</span>
-
-<span class="comment"># For genes with multiple isoforms, average their embeddings</span>
-gene_embedding = embeddings.mean(dim=0)  <span class="comment"># Shape: (5120,)</span>
-                </div>
             </div>
 
             <!-- Comparison -->
@@ -561,24 +492,10 @@ gene_embedding = embeddings.mean(dim=0)  <span class="comment"># Shape: (5120,)<
                 <h3>Three-Step Process</h3>
                 <ol>
                     <li>
-                        <strong>Cluster Protein Embeddings:</strong> Apply k-means to ESM2 embeddings → centroids = macrogenes
-                        <div class="code-block">
-<span class="comment"># Cluster 247K genes into 2000 macrogenes</span>
-<span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
-
-kmeans = KMeans(n_clusters=2000, random_state=0)
-macrogene_centroids = kmeans.fit(protein_embeddings)  <span class="comment"># Shape: (2000, 5120)</span>
-                        </div>
+                        <strong>Cluster Protein Embeddings:</strong> Apply k-means to ESM2 embeddings to create centroids representing macrogenes (e.g., 247K genes clustered into 2000 macrogenes)
                     </li>
                     <li>
-                        <strong>Initialize Gene-to-Macrogene Weights:</strong> Based on distance to centroids
-                        <div class="code-block">
-<span class="comment"># Weight formula: closer genes get higher weights</span>
-W[g, m] = 2 × (log(1 / ranked_distance[g, m] + 1))²
-
-<span class="comment"># Example: if gene g is 3rd closest to macrogene m</span>
-<span class="comment"># W[g, m] = 2 × (log(1/3 + 1))² = 2 × (log(1.33))² ≈ 0.16</span>
-                        </div>
+                        <strong>Initialize Gene-to-Macrogene Weights:</strong> Based on distance to centroids using the formula: W[g, m] = 2 × (log(1 / ranked_distance[g, m] + 1))²
                     </li>
                     <li>
                         <strong>Fine-tune Weights During Training:</strong> Weights updated to reflect both protein similarity and gene expression patterns
@@ -845,89 +762,13 @@ W[g, m] = 2 × (log(1 / ranked_distance[g, m] + 1))²
                 </div>
             </div>
 
-            <!-- Implementation Guide -->
-            <div class="content-section">
-                <h2><i class="fas fa-code"></i> Quick Start Guide</h2>
-                
-                <h3>Step 1: Install Dependencies</h3>
-                <div class="code-block">
-<span class="comment"># Install ESM package</span>
-pip install fair-esm
-
-<span class="comment"># Or use transformers library</span>
-pip install transformers
-                </div>
-
-                <h3>Step 2: Generate Embeddings for Your Genes</h3>
-                <div class="code-block">
-<span class="keyword">import</span> torch
-<span class="keyword">from</span> esm <span class="keyword">import</span> pretrained
-
-<span class="comment"># Load model (first time will download ~5GB)</span>
-model, alphabet = pretrained.esm2_t48_15B_UR50D()
-batch_converter = alphabet.get_batch_converter()
-model.eval()
-
-<span class="comment"># Your gene-to-protein mapping (from ENSEMBL/NCBI)</span>
-gene_proteins = {
-    <span class="string">"BRCA1"</span>: [<span class="string">"MDLSALRVEEVQNVINAMQKILECPICLELIK..."</span>],  <span class="comment"># Can have multiple isoforms</span>
-    <span class="string">"TP53"</span>: [<span class="string">"MEEPQSDPSVEPPLSQETFSDLWKLLPEN..."</span>],
-    <span class="comment"># ... more genes</span>
-}
-
-gene_embeddings = {}
-<span class="keyword">for</span> gene, protein_sequences <span class="keyword">in</span> gene_proteins.items():
-    isoform_embeddings = []
-    
-    <span class="keyword">for</span> seq <span class="keyword">in</span> protein_sequences:
-        data = [(gene, seq)]
-        _, _, tokens = batch_converter(data)
-        
-        <span class="keyword">with</span> torch.no_grad():
-            results = model(tokens, repr_layers=[48])
-            emb = results[<span class="string">"representations"</span>][48].mean(1)  <span class="comment"># Average over seq length</span>
-            isoform_embeddings.append(emb)
-    
-    <span class="comment"># Average over isoforms</span>
-    gene_embeddings[gene] = torch.stack(isoform_embeddings).mean(0)
-
-<span class="comment"># Save embeddings</span>
-torch.save(gene_embeddings, <span class="string">'gene_embeddings_esm2.pt'</span>)
-                </div>
-
-                <h3>Step 3: Use in Your Analysis</h3>
-                <div class="code-block">
-<span class="keyword">import</span> torch
-<span class="keyword">import</span> numpy <span class="keyword">as</span> np
-<span class="keyword">from</span> sklearn.cluster <span class="keyword">import</span> KMeans
-
-<span class="comment"># Load embeddings</span>
-gene_embeddings = torch.load(<span class="string">'gene_embeddings_esm2.pt'</span>)
-embedding_matrix = torch.stack(list(gene_embeddings.values())).numpy()
-
-<span class="comment"># Example: Cluster into functional modules (macrogenes)</span>
-n_macrogenes = 2000
-kmeans = KMeans(n_clusters=n_macrogenes, random_state=0)
-macrogene_assignments = kmeans.fit_predict(embedding_matrix)
-
-<span class="comment"># Example: Find functionally similar genes across species</span>
-human_brca1_emb = gene_embeddings[<span class="string">"BRCA1"</span>]
-mouse_brca1_emb = gene_embeddings[<span class="string">"Brca1"</span>]
-
-cosine_sim = torch.nn.functional.cosine_similarity(
-    human_brca1_emb, mouse_brca1_emb, dim=0
-)
-print(<span class="string">f"Human BRCA1 ↔ Mouse Brca1 similarity: {cosine_sim:.3f}"</span>)
-                </div>
-            </div>
-
             <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Handbook</a>
         </div>
     </main>
 
     <footer>
         <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
-            <p>Part of <a href="../../" style="color: #667eea;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
+            <p>Part of <a href="../../" style="color: #FCD1D2;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
             <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
         </div>
     </footer>
