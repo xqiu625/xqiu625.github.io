@@ -43,11 +43,11 @@
             font-size: 16px;
         }
         .home-link {
-            color: #667eea !important;
+            color: #FCD1D2 !important;
         }
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #9fB7E6 0%, #BCDAEE 25%, #FCED92 50%, #FCD1D2 75%, #DCCBD8 100%);
+            color: #333;
             padding: 40px;
             border-radius: 15px;
             margin: 30px 0;
@@ -56,18 +56,20 @@
         .header h1 {
             margin: 0 0 10px 0;
             font-size: 2.5em;
+            color: #000;
         }
         .header p {
             margin: 5px 0;
             font-size: 1.1em;
-            opacity: 0.9;
+            color: #333;
         }
         .paper-ref {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.3);
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             font-size: 0.95em;
+            color: #333;
         }
         .content-section {
             background: white;
@@ -77,13 +79,13 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .content-section h2 {
-            color: #667eea;
-            border-bottom: 3px solid #667eea;
+            color: #FCD1D2;
+            border-bottom: 3px solid #FCD1D2;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
         .content-section h3 {
-            color: #764ba2;
+            color: #DCCBD8;
             margin-top: 25px;
         }
         
@@ -113,7 +115,7 @@
         }
         
         .transformer {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #9fB7E6 0%, #BCDAEE 100%);
             color: white;
             width: 150px;
             height: 100px;
@@ -121,7 +123,7 @@
         }
         
         .decoder-gene {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            background: linear-gradient(135deg, #FCD1D2 0%, #DCCBD8 100%);
             color: white;
             width: 140px;
             height: 80px;
@@ -129,7 +131,7 @@
         }
         
         .decoder-count {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            background: linear-gradient(135deg, #BCDAEE 0%, #FCED92 100%);
             color: white;
             width: 140px;
             height: 80px;
@@ -146,30 +148,30 @@
         
         .concept-box {
             background: #f8f9fa;
-            border-left: 5px solid #667eea;
+            border-left: 5px solid #FCD1D2;
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
         }
         
         .concept-box.gene {
-            border-left-color: #e74c3c;
+            border-left-color: #FCD1D2;
         }
         
         .concept-box.count {
-            border-left-color: #3498db;
+            border-left-color: #BCDAEE;
         }
         
         .concept-box.joint {
-            border-left-color: #27ae60;
+            border-left-color: #FCED92;
         }
         
         .concept-box.theory {
-            border-left-color: #f39c12;
+            border-left-color: #9fB7E6;
         }
         
         .concept-box.compute {
-            border-left-color: #9b59b6;
+            border-left-color: #DCCBD8;
         }
         
         .math-formula {
@@ -195,7 +197,7 @@
         }
         
         .interactive-demo {
-            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            background: linear-gradient(135deg, #BCDAEE 0%, #9fB7E6 100%);
             color: white;
             padding: 25px;
             border-radius: 15px;
@@ -247,7 +249,7 @@
         
         .gene-token {
             display: inline-block;
-            background: rgba(231, 76, 60, 0.8);
+            background: rgba(252, 209, 210, 0.8);
             color: white;
             padding: 5px 10px;
             border-radius: 15px;
@@ -257,7 +259,7 @@
         
         .count-value {
             display: inline-block;
-            background: rgba(52, 152, 219, 0.8);
+            background: rgba(188, 218, 238, 0.8);
             color: white;
             padding: 5px 10px;
             border-radius: 15px;
@@ -273,7 +275,7 @@
         }
         
         .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #FCD1D2 0%, #DCCBD8 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -295,7 +297,7 @@
             display: inline-block;
             margin: 20px 0;
             padding: 10px 20px;
-            background: #667eea;
+            background: #FCD1D2;
             color: white;
             text-decoration: none;
             border-radius: 8px;
@@ -303,7 +305,7 @@
         }
         
         .back-link:hover {
-            background: #764ba2;
+            background: #DCCBD8;
             transform: translateX(-5px);
         }
 
@@ -627,4 +629,67 @@
                     <ul>
                         <li><strong>Class Imbalance:</strong> Rare genes get low prediction probability (address with sampling strategies)</li>
                         <li><strong>Count Distribution:</strong> Heavy-tailed expression distributions require careful modeling</li>
-                        <li><strong>Computational Cost:</strong> Large vo
+                        <li><strong>Computational Cost:</strong> Large vocabulary requires efficient softmax implementations</li>
+                        <li><strong>Memory Requirements:</strong> Storing embeddings for all genes can be memory-intensive</li>
+                    </ul>
+                </div>
+            </div>
+
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to AI4Bio Concepts Handbook
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // Interactive Demo
+        let currentStep = 0;
+        const genes = ['GAPDH', 'ACTB', 'TP53', 'MYC'];
+        const counts = [156, 89, 23, 45];
+        
+        document.getElementById('step1').addEventListener('click', function() {
+            currentStep = 1;
+            this.classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            
+            const selectedGene = genes[Math.floor(Math.random() * genes.length)];
+            document.getElementById('current-sentence').innerHTML = 
+                `🧬 [START] → <span class="gene-token">${selectedGene}</span>`;
+            
+            document.getElementById('probabilities').innerHTML = `
+                <strong>Gene Decoder Output:</strong><br>
+                Selected: <span class="gene-token">${selectedGene}</span><br>
+                <small>Probability: ${(Math.random() * 0.3 + 0.1).toFixed(3)}</small>
+            `;
+        });
+        
+        document.getElementById('step2').addEventListener('click', function() {
+            if (currentStep === 0) {
+                alert('Please complete Step 1 first!');
+                return;
+            }
+            currentStep = 2;
+            this.classList.add('active');
+            
+            const count = counts[Math.floor(Math.random() * counts.length)];
+            const geneSentence = document.getElementById('current-sentence').innerHTML;
+            document.getElementById('current-sentence').innerHTML = 
+                geneSentence + ` <span class="count-value">[${count}]</span>`;
+            
+            document.getElementById('probabilities').innerHTML += `
+                <br><br><strong>Count Decoder Output:</strong><br>
+                Predicted count: <span class="count-value">${count}</span><br>
+                <small>λ (rate parameter): ${(count * 0.8).toFixed(2)}</small>
+            `;
+        });
+        
+        document.getElementById('reset').addEventListener('click', function() {
+            currentStep = 0;
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('current-sentence').innerHTML = '🧬 [START] → ';
+            document.getElementById('probabilities').innerHTML = '';
+        });
+    </script>
+</body>
+</html>
