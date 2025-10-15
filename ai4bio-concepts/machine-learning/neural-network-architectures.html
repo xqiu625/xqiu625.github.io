@@ -124,6 +124,9 @@
         .architecture-card:nth-child(4) {
             border-top-color: #C05540;
         }
+        .architecture-card:nth-child(5) {
+            border-top-color: #a04532;
+        }
         .architecture-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 8px 25px rgba(192, 85, 64, 0.2);
@@ -139,6 +142,9 @@
         }
         .architecture-card:nth-child(4):hover {
             box-shadow: 0 8px 25px rgba(192, 85, 64, 0.3);
+        }
+        .architecture-card:nth-child(5):hover {
+            box-shadow: 0 8px 25px rgba(160, 69, 50, 0.3);
         }
         .architecture-card h3 {
             font-size: 1.3em;
@@ -156,6 +162,9 @@
         }
         .architecture-card:nth-child(4) h3 {
             color: #C05540;
+        }
+        .architecture-card:nth-child(5) h3 {
+            color: #a04532;
         }
         .architecture-card .image-container {
             background: white;
@@ -207,6 +216,9 @@
         .architecture-card:nth-child(4) .use-cases {
             background: rgba(192, 85, 64, 0.1);
         }
+        .architecture-card:nth-child(5) .use-cases {
+            background: rgba(160, 69, 50, 0.1);
+        }
         .architecture-card .use-cases h4 {
             font-size: 0.95em;
             margin-bottom: 10px;
@@ -223,6 +235,9 @@
         }
         .architecture-card:nth-child(4) .use-cases h4 {
             color: #C05540;
+        }
+        .architecture-card:nth-child(5) .use-cases h4 {
+            color: #a04532;
         }
         .architecture-card .use-cases ul {
             margin: 0;
@@ -311,6 +326,10 @@
             background: rgba(192, 85, 64, 0.1);
             border-left-color: #C05540;
         }
+        .key-point:nth-child(5) {
+            background: rgba(160, 69, 50, 0.1);
+            border-left-color: #a04532;
+        }
         .key-point h4 {
             margin-top: 0;
             margin-bottom: 10px;
@@ -327,6 +346,9 @@
         }
         .key-point:nth-child(4) h4 {
             color: #C05540;
+        }
+        .key-point:nth-child(5) h4 {
+            color: #a04532;
         }
         .key-point p {
             color: #666;
@@ -410,7 +432,7 @@
                 <p class="subtitle">From Simple Perceptrons to Transformers</p>
                 <p class="intro">
                     Understanding the evolution of neural network architectures is crucial for applying AI to biological problems. 
-                    This guide compares four foundational architectures—MLP, DNN, RNN, and Transformer—exploring their structures, 
+                    This guide compares five foundational architectures—MLP, DNN, CNN, RNN, and Transformer—exploring their structures, 
                     strengths, limitations, and applications in computational biology and drug discovery.
                 </p>
             </div>
@@ -428,6 +450,10 @@
                         <p>Deeper networks can learn more complex hierarchical representations, essential for understanding biological systems</p>
                     </div>
                     <div class="key-point">
+                        <h4><i class="fas fa-th"></i> Local Pattern Detection</h4>
+                        <p>CNNs excel at detecting spatial patterns like DNA motifs and features in medical images through convolution operations</p>
+                    </div>
+                    <div class="key-point">
                         <h4><i class="fas fa-clock"></i> Sequential Processing</h4>
                         <p>Some biological data is inherently sequential (DNA sequences, time-series), requiring specialized architectures</p>
                     </div>
@@ -443,7 +469,7 @@
             </div>
 
             <div class="content-section" id="architectures">
-                <h2>The Four Core Architectures</h2>
+                <h2>The Five Core Architectures</h2>
                 
                 <div class="architectures-grid">
                     <div class="architecture-card">
@@ -478,7 +504,7 @@
                     <div class="architecture-card">
                         <h3><i class="fas fa-layer-group"></i> Deep Neural Network (DNN)</h3>
                         <div class="image-container">
-                            <img src="figures/CNN.png" alt="CNN Architecture">
+                            <img src="figures/DNN.png" alt="DNN Architecture">
                         </div>
                         <div class="description">
                             <p>
@@ -500,6 +526,35 @@
                                 <li>Complex disease phenotype prediction</li>
                                 <li>Drug response modeling</li>
                                 <li>Pathway analysis and gene regulatory networks</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="architecture-card">
+                        <h3><i class="fas fa-th"></i> Convolutional Neural Network (CNN)</h3>
+                        <div class="image-container">
+                            <img src="figures/CNN.png" alt="CNN Architecture">
+                        </div>
+                        <div class="description">
+                            <p>
+                                Specialized networks designed for grid-like data using convolution operations. CNNs apply learnable filters 
+                                to detect local patterns and features, with parameter sharing across spatial locations.
+                            </p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Convolution layers detect local patterns</li>
+                                <li>Pooling layers reduce dimensionality</li>
+                                <li>Parameter sharing through weight reuse</li>
+                                <li>Translation invariance for pattern detection</li>
+                            </ul>
+                        </div>
+                        <div class="use-cases">
+                            <h4>💡 Biology Applications:</h4>
+                            <ul>
+                                <li>Medical image analysis (histopathology, radiology)</li>
+                                <li>DNA/RNA motif discovery and binding site prediction</li>
+                                <li>Protein contact map prediction</li>
+                                <li>Microscopy image segmentation and cell classification</li>
                             </ul>
                         </div>
                     </div>
@@ -573,6 +628,7 @@
                             <th>Feature</th>
                             <th>MLP</th>
                             <th>DNN</th>
+                            <th>CNN</th>
                             <th>RNN</th>
                             <th>Transformer</th>
                         </tr>
@@ -582,11 +638,13 @@
                             <td><strong>Input Type</strong></td>
                             <td>Fixed-size vectors</td>
                             <td>Fixed-size vectors</td>
+                            <td>Grid-like data (images, sequences)</td>
                             <td>Variable-length sequences</td>
                             <td>Variable-length sequences</td>
                         </tr>
                         <tr>
                             <td><strong>Memory</strong></td>
+                            <td>None</td>
                             <td>None</td>
                             <td>None</td>
                             <td>Hidden state (short-term)</td>
@@ -596,6 +654,7 @@
                             <td><strong>Parallelization</strong></td>
                             <td>High</td>
                             <td>High</td>
+                            <td>High</td>
                             <td>Low (sequential)</td>
                             <td>Very High</td>
                         </tr>
@@ -603,11 +662,21 @@
                             <td><strong>Training Speed</strong></td>
                             <td>Fast</td>
                             <td>Moderate</td>
+                            <td>Fast (with GPUs)</td>
                             <td>Slow</td>
                             <td>Fast (with GPUs)</td>
                         </tr>
                         <tr>
+                            <td><strong>Local Patterns</strong></td>
+                            <td>Poor</td>
+                            <td>Moderate</td>
+                            <td>Excellent</td>
+                            <td>Moderate</td>
+                            <td>Good (with position encoding)</td>
+                        </tr>
+                        <tr>
                             <td><strong>Long-range Dependencies</strong></td>
+                            <td>Poor</td>
                             <td>Poor</td>
                             <td>Poor</td>
                             <td>Limited</td>
@@ -617,6 +686,7 @@
                             <td><strong>Parameters</strong></td>
                             <td>Low-Moderate</td>
                             <td>Moderate-High</td>
+                            <td>Low (parameter sharing)</td>
                             <td>Moderate</td>
                             <td>Very High</td>
                         </tr>
@@ -624,13 +694,15 @@
                             <td><strong>Interpretability</strong></td>
                             <td>Moderate</td>
                             <td>Low</td>
+                            <td>Moderate (filter visualization)</td>
                             <td>Low</td>
-                            <td>Moderate (attention)</td>
+                            <td>Moderate (attention maps)</td>
                         </tr>
                         <tr>
                             <td><strong>Best For</strong></td>
-                            <td>Tabular data, classification</td>
+                            <td>Tabular data, simple classification</td>
                             <td>Complex feature learning</td>
+                            <td>Images, local patterns, motifs</td>
                             <td>Short sequences, time-series</td>
                             <td>Long sequences, pre-training</td>
                         </tr>
@@ -645,6 +717,13 @@
                         <li>Your features are pre-computed and fixed-length</li>
                         <li>You need fast training and interpretability</li>
                         <li>You're doing simple classification or regression tasks</li>
+                    </ul>
+                    <p><strong>Use CNNs if:</strong></p>
+                    <ul>
+                        <li>You're working with images (histopathology, microscopy)</li>
+                        <li>You need to detect local patterns or motifs in sequences</li>
+                        <li>You want parameter efficiency through weight sharing</li>
+                        <li>You're analyzing DNA/RNA for binding sites or regulatory elements</li>
                     </ul>
                     <p><strong>Use RNNs (LSTM/GRU) if:</strong></p>
                     <ul>
@@ -672,11 +751,19 @@
                     state-of-the-art results by pre-training on massive biological datasets and fine-tuning for specific tasks.
                 </p>
                 
+                <h3>CNNs in Genomics and Imaging</h3>
+                <p>
+                    CNNs remain the gold standard for image-based biology (histopathology, cell imaging) and continue to be widely used 
+                    for genomic motif discovery. Models like <strong>DeepBind</strong>, <strong>Basset</strong>, and <strong>DeepSEA</strong> 
+                    use CNNs to predict transcription factor binding and chromatin accessibility from DNA sequences.
+                </p>
+                
                 <h3>Hybrid Architectures</h3>
                 <p>
                     Modern approaches often combine architectures. For example, <strong>scBERT</strong> uses Transformer encoders with 
                     MLP heads for cell type classification, while <strong>DeepCRISPR</strong> combines CNNs (for motif detection) with 
-                    RNNs (for sequence modeling).
+                    RNNs (for sequence modeling). <strong>AlphaFold2</strong> uses attention mechanisms inspired by Transformers alongside 
+                    specialized geometric operations.
                 </p>
 
                 <h3>Architecture Search</h3>
@@ -692,6 +779,10 @@
                     <div class="key-point">
                         <h4>Start Simple</h4>
                         <p>Always baseline with an MLP/DNN before moving to complex architectures. Many biological tasks don't require Transformers.</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>CNNs for Local Patterns</h4>
+                        <p>When working with sequences or images, try CNNs first—they're parameter-efficient and excel at detecting motifs and local features.</p>
                     </div>
                     <div class="key-point">
                         <h4>Pre-training Matters</h4>
