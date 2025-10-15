@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neural Network Architectures - AI4Bio Learning Hub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #D0D6D8 100%);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .navbar-nav a:hover {
+            color: #C05540;
+        }
+        .home-link {
+            color: #C05540 !important;
+        }
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .header h1 {
+            color: #C05540;
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .header .intro {
+            max-width: 900px;
+            margin: 0 auto;
+            color: #555;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            color: #C05540;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-left: 4px solid #F7A254;
+            padding-left: 15px;
+        }
+        .content-section h3 {
+            color: #F7A254;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .architectures-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .architecture-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-top: 4px solid;
+        }
+        .architecture-card:nth-child(1) {
+            border-top-color: #F5C883;
+        }
+        .architecture-card:nth-child(2) {
+            border-top-color: #F7C550;
+        }
+        .architecture-card:nth-child(3) {
+            border-top-color: #F7A254;
+        }
+        .architecture-card:nth-child(4) {
+            border-top-color: #C05540;
+        }
+        .architecture-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 25px rgba(192, 85, 64, 0.2);
+        }
+        .architecture-card:nth-child(1):hover {
+            box-shadow: 0 8px 25px rgba(245, 200, 131, 0.3);
+        }
+        .architecture-card:nth-child(2):hover {
+            box-shadow: 0 8px 25px rgba(247, 197, 80, 0.3);
+        }
+        .architecture-card:nth-child(3):hover {
+            box-shadow: 0 8px 25px rgba(247, 162, 84, 0.3);
+        }
+        .architecture-card:nth-child(4):hover {
+            box-shadow: 0 8px 25px rgba(192, 85, 64, 0.3);
+        }
+        .architecture-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+        .architecture-card:nth-child(1) h3 {
+            color: #F5C883;
+        }
+        .architecture-card:nth-child(2) h3 {
+            color: #F7C550;
+        }
+        .architecture-card:nth-child(3) h3 {
+            color: #F7A254;
+        }
+        .architecture-card:nth-child(4) h3 {
+            color: #C05540;
+        }
+        .architecture-card .image-container {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .architecture-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .architecture-card .placeholder {
+            color: #999;
+            font-style: italic;
+            padding: 40px 20px;
+        }
+        .architecture-card .description {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .architecture-card .use-cases {
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .architecture-card:nth-child(1) .use-cases {
+            background: rgba(245, 200, 131, 0.1);
+        }
+        .architecture-card:nth-child(2) .use-cases {
+            background: rgba(247, 197, 80, 0.1);
+        }
+        .architecture-card:nth-child(3) .use-cases {
+            background: rgba(247, 162, 84, 0.1);
+        }
+        .architecture-card:nth-child(4) .use-cases {
+            background: rgba(192, 85, 64, 0.1);
+        }
+        .architecture-card .use-cases h4 {
+            font-size: 0.95em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .architecture-card:nth-child(1) .use-cases h4 {
+            color: #F5C883;
+        }
+        .architecture-card:nth-child(2) .use-cases h4 {
+            color: #F7C550;
+        }
+        .architecture-card:nth-child(3) .use-cases h4 {
+            color: #F7A254;
+        }
+        .architecture-card:nth-child(4) .use-cases h4 {
+            color: #C05540;
+        }
+        .architecture-card .use-cases ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #555;
+            font-size: 0.9em;
+        }
+        .architecture-card .use-cases li {
+            margin-bottom: 5px;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .comparison-table tr:hover {
+            background: rgba(247, 162, 84, 0.05);
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+        .highlight-box h3 {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        .highlight-box p {
+            color: white;
+            margin-bottom: 10px;
+        }
+        .highlight-box ul {
+            color: white;
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+        .highlight-box li {
+            margin-bottom: 8px;
+        }
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .key-point {
+            border-left: 4px solid;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .key-point:nth-child(1) {
+            background: rgba(245, 200, 131, 0.1);
+            border-left-color: #F5C883;
+        }
+        .key-point:nth-child(2) {
+            background: rgba(247, 197, 80, 0.1);
+            border-left-color: #F7C550;
+        }
+        .key-point:nth-child(3) {
+            background: rgba(247, 162, 84, 0.1);
+            border-left-color: #F7A254;
+        }
+        .key-point:nth-child(4) {
+            background: rgba(192, 85, 64, 0.1);
+            border-left-color: #C05540;
+        }
+        .key-point h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .key-point:nth-child(1) h4 {
+            color: #F5C883;
+        }
+        .key-point:nth-child(2) h4 {
+            color: #F7C550;
+        }
+        .key-point:nth-child(3) h4 {
+            color: #F7A254;
+        }
+        .key-point:nth-child(4) h4 {
+            color: #C05540;
+        }
+        .key-point p {
+            color: #666;
+            font-size: 0.95em;
+            margin: 0;
+        }
+        .cta-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .cta-section h3 {
+            color: #C05540;
+            margin-bottom: 15px;
+        }
+        .cta-section p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        .cta-button-primary {
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+        }
+        .cta-button-primary:hover {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(247, 162, 84, 0.4);
+        }
+        .cta-button-secondary {
+            background: #C05540;
+        }
+        .cta-button-secondary:hover {
+            background: #a04532;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(192, 85, 64, 0.4);
+        }
+        @media (max-width: 768px) {
+            .architectures-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                padding: 25px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .content-section {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../index.html" class="home-link"><i class="fas fa-home"></i> Back to Learning Hub</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#architectures">Architectures</a></li>
+                <li><a href="#comparison">Comparison</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-brain"></i> Neural Network Architectures</h1>
+                <p class="subtitle">From Simple Perceptrons to Transformers</p>
+                <p class="intro">
+                    Understanding the evolution of neural network architectures is crucial for applying AI to biological problems. 
+                    This guide compares four foundational architectures—MLP, DNN, RNN, and Transformer—exploring their structures, 
+                    strengths, limitations, and applications in computational biology and drug discovery.
+                </p>
+            </div>
+
+            <div class="content-section" id="overview">
+                <h2>Why Architecture Matters in AI4Bio</h2>
+                <p>
+                    The choice of neural network architecture fundamentally determines what patterns your model can learn and how 
+                    efficiently it can process biological data. Each architecture evolved to solve specific challenges:
+                </p>
+                
+                <div class="key-points">
+                    <div class="key-point">
+                        <h4><i class="fas fa-layer-group"></i> Depth & Capacity</h4>
+                        <p>Deeper networks can learn more complex hierarchical representations, essential for understanding biological systems</p>
+                    </div>
+                    <div class="key-point">
+                        <h4><i class="fas fa-clock"></i> Sequential Processing</h4>
+                        <p>Some biological data is inherently sequential (DNA sequences, time-series), requiring specialized architectures</p>
+                    </div>
+                    <div class="key-point">
+                        <h4><i class="fas fa-eye"></i> Attention Mechanisms</h4>
+                        <p>Modern architectures can focus on relevant features, mimicking how researchers prioritize important biological signals</p>
+                    </div>
+                    <div class="key-point">
+                        <h4><i class="fas fa-tachometer-alt"></i> Computational Efficiency</h4>
+                        <p>Biological datasets are massive—architecture choice impacts training time and resource requirements</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section" id="architectures">
+                <h2>The Four Core Architectures</h2>
+                
+                <div class="architectures-grid">
+                    <div class="architecture-card">
+                        <h3><i class="fas fa-circle"></i> Multi-Layer Perceptron (MLP)</h3>
+                        <div class="image-container">
+                            <div class="placeholder">
+                                <!-- Replace with: <img src="mlp-diagram.png" alt="MLP Architecture"> -->
+                                Place your MLP.png here
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p>
+                                The foundational feedforward neural network with fully connected layers. Data flows in one direction 
+                                from input to output, with each neuron connected to every neuron in the next layer.
+                            </p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Simple, interpretable architecture</li>
+                                <li>Universal function approximator</li>
+                                <li>No memory of previous inputs</li>
+                                <li>Best for tabular, fixed-size inputs</li>
+                            </ul>
+                        </div>
+                        <div class="use-cases">
+                            <h4>💡 Biology Applications:</h4>
+                            <ul>
+                                <li>Predicting drug-target binding affinities</li>
+                                <li>Classifying cell types from gene expression</li>
+                                <li>Protein secondary structure prediction</li>
+                                <li>Clinical outcome prediction from patient data</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="architecture-card">
+                        <h3><i class="fas fa-layer-group"></i> Deep Neural Network (DNN)</h3>
+                        <div class="image-container">
+                            <div class="placeholder">
+                                <!-- Replace with: <img src="dnn-diagram.png" alt="DNN Architecture"> -->
+                                Place your DNN.png here
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p>
+                                An extension of MLPs with many hidden layers (typically 5+). Deeper architectures enable learning of 
+                                hierarchical representations, from simple features to complex patterns.
+                            </p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Hierarchical feature learning</li>
+                                <li>Requires careful initialization and regularization</li>
+                                <li>Can capture non-linear relationships</li>
+                                <li>Vulnerable to vanishing gradients</li>
+                            </ul>
+                        </div>
+                        <div class="use-cases">
+                            <h4>💡 Biology Applications:</h4>
+                            <ul>
+                                <li>Multi-omics data integration</li>
+                                <li>Complex disease phenotype prediction</li>
+                                <li>Drug response modeling</li>
+                                <li>Pathway analysis and gene regulatory networks</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="architecture-card">
+                        <h3><i class="fas fa-sync-alt"></i> Recurrent Neural Network (RNN)</h3>
+                        <div class="image-container">
+                            <div class="placeholder">
+                                <!-- Replace with: <img src="rnn-diagram.png" alt="RNN Architecture"> -->
+                                Place your RNN.png here
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p>
+                                Networks with loops that allow information to persist across time steps. Each unit maintains a hidden 
+                                state that captures information about previous inputs in the sequence.
+                            </p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Processes sequential data naturally</li>
+                                <li>Variable-length input/output</li>
+                                <li>Shares parameters across time steps</li>
+                                <li>Struggles with long-range dependencies</li>
+                            </ul>
+                        </div>
+                        <div class="use-cases">
+                            <h4>💡 Biology Applications:</h4>
+                            <ul>
+                                <li>DNA/RNA sequence motif discovery</li>
+                                <li>Protein sequence modeling</li>
+                                <li>Time-series gene expression analysis</li>
+                                <li>Trajectory inference in single-cell data</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="architecture-card">
+                        <h3><i class="fas fa-bolt"></i> Transformer</h3>
+                        <div class="image-container">
+                            <div class="placeholder">
+                                <!-- Replace with: <img src="transformer-diagram.png" alt="Transformer Architecture"> -->
+                                Place your Transformer.png here
+                            </div>
+                        </div>
+                        <div class="description">
+                            <p>
+                                Revolutionary architecture based on self-attention mechanisms. Processes entire sequences in parallel, 
+                                learning which parts of the input to focus on without sequential processing.
+                            </p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Self-attention captures long-range dependencies</li>
+                                <li>Highly parallelizable (fast training)</li>
+                                <li>Position encoding for sequence order</li>
+                                <li>Foundation of modern large language models</li>
+                            </ul>
+                        </div>
+                        <div class="use-cases">
+                            <h4>💡 Biology Applications:</h4>
+                            <ul>
+                                <li>Protein language models (ESM, ProtTrans)</li>
+                                <li>Single-cell foundation models (scGPT, Geneformer)</li>
+                                <li>Genomic sequence analysis</li>
+                                <li>Multi-modal biological data integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section" id="comparison">
+                <h2>Architecture Comparison</h2>
+                
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>MLP</th>
+                            <th>DNN</th>
+                            <th>RNN</th>
+                            <th>Transformer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Input Type</strong></td>
+                            <td>Fixed-size vectors</td>
+                            <td>Fixed-size vectors</td>
+                            <td>Variable-length sequences</td>
+                            <td>Variable-length sequences</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Memory</strong></td>
+                            <td>None</td>
+                            <td>None</td>
+                            <td>Hidden state (short-term)</td>
+                            <td>Self-attention (global)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parallelization</strong></td>
+                            <td>High</td>
+                            <td>High</td>
+                            <td>Low (sequential)</td>
+                            <td>Very High</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Training Speed</strong></td>
+                            <td>Fast</td>
+                            <td>Moderate</td>
+                            <td>Slow</td>
+                            <td>Fast (with GPUs)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Long-range Dependencies</strong></td>
+                            <td>Poor</td>
+                            <td>Poor</td>
+                            <td>Limited</td>
+                            <td>Excellent</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parameters</strong></td>
+                            <td>Low-Moderate</td>
+                            <td>Moderate-High</td>
+                            <td>Moderate</td>
+                            <td>Very High</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interpretability</strong></td>
+                            <td>Moderate</td>
+                            <td>Low</td>
+                            <td>Low</td>
+                            <td>Moderate (attention)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best For</strong></td>
+                            <td>Tabular data, classification</td>
+                            <td>Complex feature learning</td>
+                            <td>Short sequences, time-series</td>
+                            <td>Long sequences, pre-training</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <h3><i class="fas fa-lightbulb"></i> Choosing the Right Architecture for Biology</h3>
+                    <p><strong>Start with MLPs/DNNs if:</strong></p>
+                    <ul>
+                        <li>You have tabular biological data (gene expression matrices, clinical features)</li>
+                        <li>Your features are pre-computed and fixed-length</li>
+                        <li>You need fast training and interpretability</li>
+                        <li>You're doing simple classification or regression tasks</li>
+                    </ul>
+                    <p><strong>Use RNNs (LSTM/GRU) if:</strong></p>
+                    <ul>
+                        <li>You're working with shorter biological sequences (< 1000 bp)</li>
+                        <li>Temporal dynamics matter (time-course experiments)</li>
+                        <li>You need to model sequential dependencies</li>
+                        <li>You have limited computational resources</li>
+                    </ul>
+                    <p><strong>Choose Transformers if:</strong></p>
+                    <ul>
+                        <li>You're building foundation models for pre-training</li>
+                        <li>You need to capture long-range interactions (full gene sequences, protein domains)</li>
+                        <li>You have large datasets and GPU resources</li>
+                        <li>You want to leverage transfer learning from existing models</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Recent Trends in AI4Bio</h2>
+                <h3>The Transformer Revolution</h3>
+                <p>
+                    Since 2020, Transformers have dominated biological AI applications. Models like <strong>ESM-2</strong> (protein sequences), 
+                    <strong>DNABERT</strong> (genomic sequences), and <strong>scGPT</strong> (single-cell transcriptomics) have achieved 
+                    state-of-the-art results by pre-training on massive biological datasets and fine-tuning for specific tasks.
+                </p>
+                
+                <h3>Hybrid Architectures</h3>
+                <p>
+                    Modern approaches often combine architectures. For example, <strong>scBERT</strong> uses Transformer encoders with 
+                    MLP heads for cell type classification, while <strong>DeepCRISPR</strong> combines CNNs (for motif detection) with 
+                    RNNs (for sequence modeling).
+                </p>
+
+                <h3>Architecture Search</h3>
+                <p>
+                    Neural Architecture Search (NAS) is emerging in computational biology to automatically discover optimal architectures 
+                    for specific biological tasks, reducing the need for manual architecture engineering.
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h2>Implementation Tips</h2>
+                <div class="key-points">
+                    <div class="key-point">
+                        <h4>Start Simple</h4>
+                        <p>Always baseline with an MLP/DNN before moving to complex architectures. Many biological tasks don't require Transformers.</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Pre-training Matters</h4>
+                        <p>For sequence data, leverage pre-trained models (ESM-2, DNABERT) rather than training from scratch.</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Data Preprocessing</h4>
+                        <p>Proper normalization, batch correction, and feature engineering often matter more than architecture choice.</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Regularization</h4>
+                        <p>Biological datasets are often small—use dropout, weight decay, and early stopping to prevent overfitting.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3>📚 Continue Learning</h3>
+                <p>
+                    Explore more machine learning concepts and their applications in computational biology
+                </p>
+                <a href="../index.html" class="cta-button cta-button-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Learning Hub
+                </a>
+                <a href="batch-integration-metrics.html" class="cta-button cta-button-secondary">
+                    Next: Batch Integration <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; margin-top: 40px; color: #666; padding-bottom: 30px;">
+            <p>Part of the <a href="../index.html" style="color: #C05540; text-decoration: none; font-weight: bold;">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                <a href="https://github.com/xqiu625" style="color: #666; margin: 0 10px;"><i class="fab fa-github"></i> GitHub</a> | 
+                <a href="https://www.linkedin.com/in/xinru-qiu" style="color: #666; margin: 0 10px;"><i class="fab fa-linkedin"></i> LinkedIn</a> | 
+                <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #666; margin: 0 10px;"><i class="fas fa-envelope"></i> Email</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
