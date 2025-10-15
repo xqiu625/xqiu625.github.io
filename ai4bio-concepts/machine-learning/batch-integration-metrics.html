@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Batch Integration Evaluation Metrics - AI4Bio Concepts</title>
+    <title>Batch Integration Evaluation Metrics - AI4Bio Learning Hub</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            line-height: 1.8;
+            background: linear-gradient(135deg, #f5f7fa 0%, #D0D6D8 100%);
+            line-height: 1.6;
             color: #333;
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -42,263 +42,378 @@
             font-weight: bold;
             font-size: 16px;
         }
+        .navbar-nav a:hover {
+            color: #C05540;
+        }
         .home-link {
-            color: #3498db !important;
+            color: #C05540 !important;
         }
         .header {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 40px;
+            background: white;
             border-radius: 15px;
+            padding: 40px;
             margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
         }
         .header h1 {
-            margin: 0 0 10px 0;
+            color: #C05540;
             font-size: 2.5em;
+            margin-bottom: 15px;
         }
-        .header p {
-            margin: 5px 0;
-            font-size: 1.1em;
-            opacity: 0.9;
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
         }
-        .paper-ref {
-            background: rgba(255,255,255,0.2);
+        .header .paper-ref {
+            background: rgba(192, 85, 64, 0.1);
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             font-size: 0.95em;
+            border-left: 4px solid #C05540;
         }
         .content-section {
             background: white;
             border-radius: 15px;
-            padding: 30px;
-            margin: 25px 0;
+            padding: 40px;
+            margin: 30px 0;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .content-section h2 {
-            color: #3498db;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+            color: #C05540;
+            font-size: 1.8em;
             margin-bottom: 20px;
+            border-left: 4px solid #F7A254;
+            padding-left: 15px;
         }
         .content-section h3 {
-            color: #2980b9;
-            margin-top: 25px;
+            color: #F7A254;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
         }
         .concept-box {
-            background: #f8f9fa;
-            border-left: 5px solid #3498db;
+            background: rgba(247, 197, 80, 0.1);
+            border-left: 4px solid #F7C550;
             padding: 20px;
             margin: 20px 0;
-            border-radius: 5px;
+            border-radius: 8px;
+        }
+        .concept-box h3 {
+            color: #F7C550;
+            margin-top: 0;
         }
         .concept-box.batch {
-            border-left-color: #e74c3c;
+            background: rgba(192, 85, 64, 0.1);
+            border-left-color: #C05540;
+        }
+        .concept-box.batch h3,
+        .concept-box.batch h4 {
+            color: #C05540;
         }
         .concept-box.bio {
-            border-left-color: #27ae60;
+            background: rgba(245, 200, 131, 0.1);
+            border-left-color: #F5C883;
         }
-        .concept-box.tradeoff {
-            border-left-color: #f39c12;
+        .concept-box.bio h3,
+        .concept-box.bio h4 {
+            color: #F5C883;
         }
         .highlight-box {
-            background: #d1ecf1;
-            border: 1px solid #3498db;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
         }
         .highlight-box strong {
-            color: #0c5460;
+            color: white;
         }
         .warning-box {
-            background: #fff3cd;
-            border: 1px solid #ffc107;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
+            background: rgba(247, 162, 84, 0.1);
+            border: 2px solid #F7A254;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
         }
         .warning-box strong {
-            color: #856404;
-        }
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        .comparison-table th,
-        .comparison-table td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        .comparison-table th {
-            background: #3498db;
-            color: white;
-        }
-        .comparison-table tr:hover {
-            background: #f5f5f5;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .stat-card.batch {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        }
-        .stat-card.bio {
-            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-        }
-        .stat-card .number {
-            font-size: 2em;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .stat-card .label {
-            font-size: 0.9em;
-            opacity: 0.9;
-        }
-        .metric-card {
-            background: white;
-            border: 2px solid #3498db;
-            border-radius: 10px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-        .metric-card h4 {
-            color: #3498db;
-            margin-top: 0;
-            font-size: 1.3em;
-        }
-        .metric-formula {
-            background: #2d2d2d;
-            color: #f8f8f2;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            margin: 15px 0;
-            text-align: center;
-            font-size: 1.1em;
-        }
-        .visual-scale {
-            display: flex;
-            align-items: center;
-            margin: 15px 0;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-        .scale-bar {
-            flex-grow: 1;
-            height: 30px;
-            background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #27ae60 100%);
-            border-radius: 5px;
-            margin: 0 15px;
-            position: relative;
-        }
-        .scale-marker {
-            position: absolute;
-            top: -10px;
-            width: 3px;
-            height: 50px;
-            background: #2c3e50;
-        }
-        .scale-label {
-            font-weight: bold;
-            min-width: 60px;
+            color: #C05540;
         }
         .tradeoff-diagram {
             display: flex;
             justify-content: space-around;
             align-items: center;
             padding: 30px;
-            background: #f8f9fa;
-            border-radius: 10px;
-            margin: 20px 0;
+            background: rgba(208, 214, 216, 0.3);
+            border-radius: 15px;
+            margin: 30px 0;
         }
         .tradeoff-box {
             text-align: center;
-            padding: 20px;
-            border-radius: 10px;
+            padding: 25px;
+            border-radius: 15px;
             flex: 1;
             margin: 0 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .tradeoff-box.batch {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            background: linear-gradient(135deg, #C05540 0%, #a04532 100%);
             color: white;
         }
         .tradeoff-box.bio {
-            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            background: linear-gradient(135deg, #F5C883 0%, #F7C550 100%);
             color: white;
+        }
+        .tradeoff-box h4 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.3em;
         }
         .tradeoff-arrow {
-            font-size: 2em;
-            color: #3498db;
+            font-size: 2.5em;
+            color: #F7A254;
         }
-        .back-link {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 10px 20px;
-            background: #3498db;
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
             color: white;
-            text-decoration: none;
-            border-radius: 8px;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
-        .back-link:hover {
-            background: #2980b9;
-            transform: translateX(-5px);
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(247, 162, 84, 0.3);
         }
-        .score-example {
-            background: white;
-            border: 2px solid #3498db;
-            border-radius: 10px;
+        .stat-card.batch {
+            background: linear-gradient(135deg, #C05540 0%, #a04532 100%);
+        }
+        .stat-card.bio {
+            background: linear-gradient(135deg, #F5C883 0%, #F7C550 100%);
+        }
+        .stat-card .number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .stat-card .label {
+            font-size: 0.95em;
+            opacity: 0.95;
+        }
+        .metric-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid #F7A254;
+        }
+        .metric-card h4 {
+            color: #F7A254;
+            margin-top: 0;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+        .metric-formula {
+            background: #2d2d2d;
+            color: #f8f8f2;
             padding: 20px;
-            margin: 15px 0;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 1.1em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .visual-scale {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(247, 197, 80, 0.1);
+            border-radius: 10px;
+        }
+        .scale-bar {
+            flex-grow: 1;
+            height: 35px;
+            background: linear-gradient(90deg, #C05540 0%, #F7A254 50%, #F5C883 100%);
+            border-radius: 8px;
+            margin: 0 20px;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .scale-marker {
+            position: absolute;
+            top: -10px;
+            width: 3px;
+            height: 55px;
+            background: #2d2d2d;
+        }
+        .scale-label {
+            font-weight: bold;
+            min-width: 70px;
+            color: #555;
         }
         .score-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 15px 0;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
         }
         .score-item {
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            border-left: 4px solid #F7A254;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         .score-item.good {
-            border-left-color: #27ae60;
-            background: #d4edda;
+            border-left-color: #F5C883;
+            background: rgba(245, 200, 131, 0.1);
         }
         .score-item.bad {
-            border-left-color: #e74c3c;
-            background: #f8d7da;
+            border-left-color: #C05540;
+            background: rgba(192, 85, 64, 0.1);
         }
-        ul, ol {
-            line-height: 1.8;
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .comparison-table tr:hover {
+            background: rgba(247, 162, 84, 0.05);
+        }
+        .comparison-table tr.highlight {
+            background: rgba(245, 200, 131, 0.2);
+        }
+        .cta-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .cta-section h3 {
+            color: #C05540;
+            margin-bottom: 15px;
+        }
+        .cta-button {
+            display: inline-block;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        .cta-button-primary {
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+        }
+        .cta-button-primary:hover {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(247, 162, 84, 0.4);
+        }
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .key-point {
+            border-left: 4px solid;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .key-point:nth-child(1) {
+            background: rgba(245, 200, 131, 0.1);
+            border-left-color: #F5C883;
+        }
+        .key-point:nth-child(2) {
+            background: rgba(247, 197, 80, 0.1);
+            border-left-color: #F7C550;
+        }
+        .key-point:nth-child(3) {
+            background: rgba(247, 162, 84, 0.1);
+            border-left-color: #F7A254;
+        }
+        .key-point:nth-child(4) {
+            background: rgba(192, 85, 64, 0.1);
+            border-left-color: #C05540;
+        }
+        .key-point h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .key-point:nth-child(1) h4 {
+            color: #F5C883;
+        }
+        .key-point:nth-child(2) h4 {
+            color: #F7C550;
+        }
+        .key-point:nth-child(3) h4 {
+            color: #F7A254;
+        }
+        .key-point:nth-child(4) h4 {
+            color: #C05540;
+        }
+        .key-point p {
+            color: #666;
+            font-size: 0.95em;
+            margin: 0;
         }
         @media (max-width: 768px) {
+            .header {
+                padding: 25px;
+            }
             .header h1 {
-                font-size: 1.8em;
+                font-size: 2em;
+            }
+            .content-section {
+                padding: 25px;
             }
             .tradeoff-diagram {
                 flex-direction: column;
             }
             .tradeoff-arrow {
                 transform: rotate(90deg);
-                margin: 10px 0;
+                margin: 15px 0;
             }
             .score-grid {
                 grid-template-columns: 1fr;
@@ -310,8 +425,10 @@
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-nav">
-                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> AI4Bio Concepts Handbook</a></li>
-                <li><a href="../../"><i class="fas fa-home"></i> Xinru's Homepage</a></li>
+                <li><a href="../index.html" class="home-link"><i class="fas fa-home"></i> Back to Learning Hub</a></li>
+                <li><a href="#problem">The Problem</a></li>
+                <li><a href="#metrics">Metrics</a></li>
+                <li><a href="#interpretation">Interpretation</a></li>
             </ul>
         </div>
     </nav>
@@ -320,14 +437,14 @@
         <div class="container">
             <div class="header">
                 <h1><i class="fas fa-chart-line"></i> Batch Integration Evaluation Metrics</h1>
-                <p>How to measure success when integrating datasets: balancing batch removal with biological signal preservation</p>
+                <p class="subtitle">Balancing batch removal with biological signal preservation</p>
                 <div class="paper-ref">
-                    <strong>Standard Framework:</strong> SCIB (Luecken et al. 2022) provides comprehensive benchmarking metrics used by SATURN and most integration methods
+                    <strong>📚 Standard Framework:</strong> SCIB (Luecken et al. 2022) provides comprehensive benchmarking metrics used by SATURN and most integration methods
                 </div>
             </div>
 
             <!-- The Problem -->
-            <div class="content-section">
+            <div class="content-section" id="problem">
                 <h2><i class="fas fa-question-circle"></i> The Batch Integration Challenge</h2>
                 
                 <div class="concept-box">
@@ -413,7 +530,7 @@
             </div>
 
             <!-- Batch Removal Metrics -->
-            <div class="content-section">
+            <div class="content-section" id="metrics">
                 <h2><i class="fas fa-eraser"></i> Batch Removal Metrics (40%)</h2>
                 
                 <p><strong>Goal:</strong> Measure how well technical variation is removed—do cells from different batches mix together?</p>
@@ -444,7 +561,7 @@
                         <span class="scale-label">Better</span>
                     </div>
                     <p style="text-align: center; color: #666; font-size: 0.9em;">
-                        <strong>1.0:</strong> Batches perfectly separated | <strong>0.0:</strong> Random mixing | <strong>-1.0:</strong> Batches perfectly anti-separated (ideal)
+                        <strong>1.0:</strong> Batches perfectly separated | <strong>0.0:</strong> Random mixing | <strong>-1.0:</strong> Perfect integration
                     </p>
 
                     <div class="score-grid">
@@ -469,11 +586,9 @@
                     <div class="concept-box batch">
                         <p><strong>What it measures:</strong> Whether cells from different batches are neighbors in the k-nearest neighbor (kNN) graph.</p>
                         
-                        <p><strong>Intuition:</strong> Build a kNN graph (k=15 typical). For each batch, check if it forms a connected component or if it's connected to other batches.</p>
-                        
                         <p><strong>Process:</strong></p>
                         <ol>
-                            <li>Build kNN graph in integrated embedding space</li>
+                            <li>Build kNN graph in integrated embedding space (k=15 typical)</li>
                             <li>For each cell type, check if all batches are in same connected component</li>
                             <li>Score = fraction of cell types where all batches are connected</li>
                         </ol>
@@ -488,23 +603,16 @@
                         </div>
                         <span class="scale-label">Better</span>
                     </div>
-                    <p style="text-align: center; color: #666; font-size: 0.9em;">
-                        <strong>0.0:</strong> Each batch isolated | <strong>0.5:</strong> Half of cell types connected | <strong>1.0:</strong> All cell types connected across batches
-                    </p>
 
                     <div class="score-grid">
                         <div class="score-item bad">
                             <strong>Connectivity = 0.3</strong><br>
-                            <small>Only 30% of cell types are connected across batches</small>
+                            <small>Only 30% of cell types connected across batches</small>
                         </div>
                         <div class="score-item good">
                             <strong>Connectivity = 0.95</strong><br>
-                            <small>95% of cell types are connected across batches</small>
+                            <small>95% of cell types connected across batches</small>
                         </div>
-                    </div>
-
-                    <div class="highlight-box">
-                        <strong>Advantage:</strong> Graph connectivity respects cell type structure—it only checks if batches mix WITHIN each cell type, not globally.
                     </div>
                 </div>
 
@@ -512,7 +620,6 @@
                 <div class="metric-formula">
                     Batch Score = (ASW<sub>batch</sub> + Graph Connectivity) / 2
                 </div>
-                <p style="text-align: center; color: #666;">Both metrics scaled to [0,1] where 1 = best</p>
             </div>
 
             <!-- Bio-Conservation Metrics -->
@@ -525,31 +632,15 @@
                     <h4>1. Normalized Mutual Information (NMI) - Cell Type</h4>
                     
                     <div class="concept-box bio">
-                        <p><strong>What it measures:</strong> How much knowing a cell's cluster assignment tells you about its true cell type (information theory).</p>
-                        
-                        <p><strong>Intuition:</strong> Cluster the integrated embeddings. Do these clusters correspond to biological cell types?</p>
+                        <p><strong>What it measures:</strong> How much knowing a cell's cluster assignment tells you about its true cell type.</p>
                         
                         <p><strong>Key properties:</strong></p>
                         <ul>
-                            <li><strong>0.0:</strong> Cluster labels tell you nothing about cell type (random)</li>
-                            <li><strong>1.0:</strong> Cluster labels perfectly predict cell type (ideal)</li>
-                            <li><strong>Symmetric:</strong> NMI(clusters, cell types) = NMI(cell types, clusters)</li>
+                            <li><strong>0.0:</strong> Cluster labels tell you nothing about cell type</li>
+                            <li><strong>1.0:</strong> Cluster labels perfectly predict cell type</li>
                             <li><strong>Normalized:</strong> Accounts for different numbers of clusters vs. cell types</li>
                         </ul>
                     </div>
-
-                    <div class="visual-scale">
-                        <span class="scale-label">Worse</span>
-                        <div class="scale-bar">
-                            <div class="scale-marker" style="left: 0%;"></div>
-                            <div class="scale-marker" style="left: 50%;"></div>
-                            <div class="scale-marker" style="left: 100%;"></div>
-                        </div>
-                        <span class="scale-label">Better</span>
-                    </div>
-                    <p style="text-align: center; color: #666; font-size: 0.9em;">
-                        <strong>0.0:</strong> No mutual information | <strong>0.5:</strong> Moderate agreement | <strong>1.0:</strong> Perfect agreement
-                    </p>
 
                     <div class="score-grid">
                         <div class="score-item bad">
@@ -569,40 +660,12 @@
                     <div class="concept-box bio">
                         <p><strong>What it measures:</strong> Agreement between cluster assignments and true cell type labels, adjusted for chance.</p>
                         
-                        <p><strong>Intuition:</strong> Do cell pairs that belong to the same cell type also get clustered together?</p>
-                        
                         <p><strong>Key properties:</strong></p>
                         <ul>
-                            <li><strong>-1.0 to 1.0 range</strong> (though typically 0 to 1 in practice)</li>
                             <li><strong>0.0:</strong> Random clustering (no better than chance)</li>
-                            <li><strong>1.0:</strong> Perfect clustering (all cell type pairs correctly grouped)</li>
+                            <li><strong>1.0:</strong> Perfect clustering</li>
                             <li><strong>Adjusted for chance:</strong> Accounts for random agreement</li>
                         </ul>
-                    </div>
-
-                    <div class="visual-scale">
-                        <span class="scale-label">Worse</span>
-                        <div class="scale-bar">
-                            <div class="scale-marker" style="left: 0%;"></div>
-                            <div class="scale-marker" style="left: 50%;"></div>
-                            <div class="scale-marker" style="left: 100%;"></div>
-                        </div>
-                        <span class="scale-label">Better</span>
-                    </div>
-
-                    <div class="score-grid">
-                        <div class="score-item bad">
-                            <strong>ARI = 0.2</strong><br>
-                            <small>Clustering barely better than random</small>
-                        </div>
-                        <div class="score-item good">
-                            <strong>ARI = 0.78</strong><br>
-                            <small>Strong clustering-cell type agreement</small>
-                        </div>
-                    </div>
-
-                    <div class="highlight-box">
-                        <strong>NMI vs. ARI:</strong> Both measure clustering quality, but NMI is based on information theory (entropy) while ARI is based on pair counting. They often agree but can differ for imbalanced datasets.
                     </div>
                 </div>
 
@@ -610,41 +673,11 @@
                     <h4>3. Average Silhouette Width (ASW) - Cell Type</h4>
                     
                     <div class="concept-box bio">
-                        <p><strong>What it measures:</strong> How well-separated cell types are in embedding space. Higher is better (want cell types separated).</p>
+                        <p><strong>What it measures:</strong> How well-separated cell types are. Higher is better (want cell types separated).</p>
                         
-                        <p><strong>Intuition:</strong> Same formula as ASW-Batch, but now we want HIGH scores (cells close to same cell type, far from other cell types).</p>
-                        
-                        <p><strong>Interpretation:</strong></p>
-                        <ul>
-                            <li><strong>Close to 1:</strong> Cell types form tight, well-separated clusters</li>
-                            <li><strong>Close to 0:</strong> Cell types overlap significantly</li>
-                            <li><strong>Negative:</strong> Cell types are mixed (very bad)</li>
-                        </ul>
-                    </div>
-
-                    <div class="visual-scale">
-                        <span class="scale-label">Worse</span>
-                        <div class="scale-bar">
-                            <div class="scale-marker" style="left: 0%;"></div>
-                            <div class="scale-marker" style="left: 50%;"></div>
-                            <div class="scale-marker" style="left: 100%;"></div>
+                        <div class="warning-box">
+                            <strong>Note:</strong> ASW-Batch and ASW-Cell Type measure opposite things! For batch, lower is better. For cell type, higher is better.
                         </div>
-                        <span class="scale-label">Better</span>
-                    </div>
-
-                    <div class="score-grid">
-                        <div class="score-item bad">
-                            <strong>ASW<sub>cell type</sub> = 0.15</strong><br>
-                            <small>Cell types heavily overlap (lost structure)</small>
-                        </div>
-                        <div class="score-item good">
-                            <strong>ASW<sub>cell type</sub> = 0.72</strong><br>
-                            <small>Cell types are well-separated</small>
-                        </div>
-                    </div>
-
-                    <div class="warning-box">
-                        <strong>Note:</strong> ASW-Batch and ASW-Cell Type measure opposite things! For batch, lower is better (want mixing). For cell type, higher is better (want separation).
                     </div>
                 </div>
 
@@ -652,51 +685,37 @@
                 <div class="metric-formula">
                     Bio Score = (NMI + ARI + ASW<sub>cell type</sub>) / 3
                 </div>
-                <p style="text-align: center; color: #666;">All metrics scaled to [0,1] where 1 = best</p>
             </div>
 
-            <!-- The Overall Score -->
+            <!-- Example -->
             <div class="content-section">
-                <h2><i class="fas fa-star"></i> Computing the Overall Score</h2>
+                <h2><i class="fas fa-star"></i> Example: SATURN Performance</h2>
                 
-                <div class="concept-box">
-                    <h3>The Final Formula</h3>
-                    <div class="metric-formula">
-                        Overall = 0.6 × [(NMI + ARI + ASW<sub>cell type</sub>)/3] + 0.4 × [(ASW<sub>batch</sub> + Connectivity)/2]
+                <div class="stats-grid">
+                    <div class="stat-card bio">
+                        <div class="number">82%</div>
+                        <div class="label">Bio-Conservation Score</div>
+                    </div>
+                    <div class="stat-card batch">
+                        <div class="number">83%</div>
+                        <div class="label">Batch Removal Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">82.4%</div>
+                        <div class="label">Overall Score</div>
                     </div>
                 </div>
 
-                <h3>Example: SATURN on Frog-Zebrafish Integration</h3>
-                <div class="score-example">
-                    <h4>SATURN Scores</h4>
-                    
-                    <div class="score-grid">
-                        <div class="score-item" style="border-left-color: #27ae60;">
-                            <strong>Bio-Conservation</strong><br>
-                            NMI = 0.88<br>
-                            ARI = 0.84<br>
-                            ASW<sub>cell type</sub> = 0.75<br>
-                            <strong>Avg Bio = 0.82</strong>
-                        </div>
-                        <div class="score-item" style="border-left-color: #e74c3c;">
-                            <strong>Batch Removal</strong><br>
-                            ASW<sub>batch</sub> = 0.81<br>
-                            Connectivity = 0.84<br>
-                            <strong>Avg Batch = 0.83</strong>
-                        </div>
-                    </div>
-
-                    <div class="metric-formula">
-                        Overall = 0.6 × 0.82 + 0.4 × 0.83 = 0.824
-                    </div>
-
-                    <div class="highlight-box">
-                        <strong><i class="fas fa-check-circle"></i> Interpretation:</strong> 
-                        SATURN achieves 82.4% overall score, with excellent performance in BOTH bio-conservation (82%) and batch removal (83%). This indicates successful integration that preserves cell type structure while mixing species.
-                    </div>
+                <div class="metric-formula">
+                    Overall = 0.6 × 0.82 + 0.4 × 0.83 = 0.824
                 </div>
 
-                <h3>Comparison with Baselines</h3>
+                <div class="highlight-box">
+                    <strong><i class="fas fa-check-circle"></i> Interpretation:</strong> 
+                    SATURN achieves excellent performance in BOTH bio-conservation and batch removal, indicating successful integration that preserves cell type structure while mixing species.
+                </div>
+
+                <h3>Comparison with Other Methods</h3>
                 <table class="comparison-table">
                     <thead>
                         <tr>
@@ -708,7 +727,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="background: #d4edda;">
+                        <tr class="highlight">
                             <td><strong>SATURN</strong></td>
                             <td>0.82</td>
                             <td>0.83</td>
@@ -727,238 +746,103 @@
                             <td>0.37</td>
                             <td>0.81</td>
                             <td>0.546</td>
-                            <td>Good mixing, poor bio preservation</td>
+                            <td>Good mixing, poor bio</td>
                         </tr>
                         <tr>
                             <td>scVI</td>
                             <td>0.41</td>
                             <td>0.78</td>
                             <td>0.558</td>
-                            <td>Good mixing, moderate bio preservation</td>
-                        </tr>
-                        <tr>
-                            <td>Scanorama</td>
-                            <td>0.39</td>
-                            <td>0.67</td>
-                            <td>0.502</td>
-                            <td>Moderate across both dimensions</td>
+                            <td>Good mixing, moderate bio</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- Interpretation Guide -->
-            <div class="content-section">
+            <!-- Interpretation -->
+            <div class="content-section" id="interpretation">
                 <h2><i class="fas fa-book-open"></i> Interpretation Guide</h2>
                 
-                <div class="concept-box tradeoff">
-                    <h3>Understanding Score Patterns</h3>
-                    <p>Different score combinations reveal different integration behaviors:</p>
-                </div>
-
                 <table class="comparison-table">
                     <thead>
                         <tr>
                             <th>Bio Score</th>
                             <th>Batch Score</th>
-                            <th>Overall</th>
                             <th>Interpretation</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr style="background: #d4edda;">
+                        <tr class="highlight">
                             <td><strong>High (>0.7)</strong></td>
                             <td><strong>High (>0.7)</strong></td>
-                            <td><strong>>0.7</strong></td>
                             <td>✅ <strong>Excellent integration</strong></td>
-                            <td>Success! Use for downstream analysis</td>
+                            <td>Success! Use for analysis</td>
                         </tr>
                         <tr>
-                            <td>High (>0.7)</td>
+                            <td>High</td>
                             <td>Low (<0.5)</td>
-                            <td>~0.5-0.6</td>
                             <td>⚠️ <strong>Under-integration</strong></td>
-                            <td>Increase batch correction strength</td>
+                            <td>Increase batch correction</td>
                         </tr>
                         <tr>
                             <td>Low (<0.5)</td>
-                            <td>High (>0.7)</td>
-                            <td>~0.5-0.6</td>
+                            <td>High</td>
                             <td>⚠️ <strong>Over-integration</strong></td>
-                            <td>Decrease batch correction, preserve biology</td>
+                            <td>Decrease batch correction</td>
                         </tr>
-                        <tr style="background: #f8d7da;">
-                            <td>Low (<0.5)</td>
-                            <td>Low (<0.5)</td>
-                            <td><strong><0.5</strong></td>
+                        <tr>
+                            <td>Low</td>
+                            <td>Low</td>
                             <td>❌ <strong>Failed integration</strong></td>
-                            <td>Try different method or parameters</td>
+                            <td>Try different method</td>
                         </tr>
                     </tbody>
                 </table>
-
-                <h3>Common Failure Modes</h3>
-                
-                <div class="metric-card">
-                    <h4>1. Over-integration (High Batch, Low Bio)</h4>
-                    <p><strong>Symptoms:</strong> Batch Score = 0.85, Bio Score = 0.40</p>
-                    <p><strong>Problem:</strong> Method removed too much variation—batches mix well but cell types collapsed together</p>
-                    <p><strong>Example:</strong> All T cell subtypes merge into one cluster</p>
-                    <p><strong>Fix:</strong> Reduce integration strength, use more conservative parameters</p>
-                </div>
-
-                <div class="metric-card">
-                    <h4>2. Under-integration (High Bio, Low Batch)</h4>
-                    <p><strong>Symptoms:</strong> Batch Score = 0.35, Bio Score = 0.75</p>
-                    <p><strong>Problem:</strong> Method didn't remove enough batch effects—cell types preserved but batches don't mix</p>
-                    <p><strong>Example:</strong> Same cell type forms separate clusters in each batch</p>
-                    <p><strong>Fix:</strong> Increase integration strength, ensure batch variable correctly specified</p>
-                </div>
-
-                <div class="metric-card">
-                    <h4>3. Biological Batch Effects (Edge Case)</h4>
-                    <p><strong>Symptoms:</strong> Low Batch Score even though integration is correct</p>
-                    <p><strong>Problem:</strong> "Batch" variable confounds with biology (e.g., different tissues in different batches)</p>
-                    <p><strong>Example:</strong> Batch 1 = liver, Batch 2 = brain (batches SHOULD be separated!)</p>
-                    <p><strong>Fix:</strong> Redefine batch variable to only include technical variation, or interpret low batch score as expected</p>
-                </div>
-            </div>
-
-            <!-- Advanced Metrics -->
-            <div class="content-section">
-                <h2><i class="fas fa-flask"></i> Additional Metrics (Beyond SCIB Core)</h2>
-                
-                <div class="concept-box">
-                    <p>SCIB includes additional metrics for specific use cases. These are NOT included in the overall score but provide extra insight:</p>
-                </div>
-
-                <h3>Trajectory Conservation</h3>
-                <div class="metric-card">
-                    <h4>Purpose:</h4>
-                    <p>Measure if developmental/disease trajectories are preserved after integration</p>
-                    
-                    <h4>When to use:</h4>
-                    <ul>
-                        <li>Time-series or developmental datasets</li>
-                        <li>Disease progression studies</li>
-                        <li>Any continuous biological process</li>
-                    </ul>
-
-                    <h4>How it works:</h4>
-                    <p>Compare trajectory structure (pseudotime ordering, branching) before and after integration using correlation of diffusion pseudotime or trajectory graph structure</p>
-                </div>
-
-                <h3>Cell Cycle Conservation</h3>
-                <div class="metric-card">
-                    <h4>Purpose:</h4>
-                    <p>Ensure cell cycle phase assignments are preserved (integration shouldn't blur G1/S/G2M distinctions)</p>
-                    
-                    <h4>When to use:</h4>
-                    <ul>
-                        <li>When cell cycle is biologically important</li>
-                        <li>Proliferating cell populations (cancer, development)</li>
-                    </ul>
-
-                    <h4>How it works:</h4>
-                    <p>Score cell cycle phases before/after integration, check if phase separation is maintained</p>
-                </div>
-
-                <h3>Highly Variable Gene (HVG) Overlap</h3>
-                <div class="metric-card">
-                    <h4>Purpose:</h4>
-                    <p>Check if integration preserves the most variable genes (should capture biological variation, not technical)</p>
-                    
-                    <h4>When to use:</h4>
-                    <ul>
-                        <li>Gene-level analysis after integration</li>
-                        <li>Verifying that marker genes are still detectable</li>
-                    </ul>
-
-                    <h4>How it works:</h4>
-                    <p>Compare top HVGs before and after integration—high overlap suggests biological variation preserved</p>
-                </div>
             </div>
 
             <!-- Best Practices -->
             <div class="content-section">
                 <h2><i class="fas fa-check-square"></i> Best Practices</h2>
                 
-                <h3>When Running Integration</h3>
-                <div class="concept-box">
-                    <ol>
-                        <li><strong>Always compute BOTH bio and batch metrics</strong> - don't just look at UMAP!</li>
-                        <li><strong>Use multiple runs:</strong> Report mean ± std across 3-30 runs with different random seeds</li>
-                        <li><strong>Check per-cell-type metrics:</strong> Overall scores can hide poor performance on rare cell types</li>
-                        <li><strong>Validate with marker genes:</strong> Check if known markers still cluster correctly</li>
-                        <li><strong>Use held-out validation:</strong> If doing label transfer, split data into train/test</li>
-                    </ol>
-                </div>
-
-                <h3>When Reporting Results</h3>
-                <div class="concept-box">
-                    <ol>
-                        <li><strong>Report all component metrics,</strong> not just overall score</li>
-                        <li><strong>Show UMAP visualizations</strong> colored by: (a) batch, (b) cell type, (c) integration quality</li>
-                        <li><strong>Provide comparison to baselines</strong> (at minimum: no integration, simple batch correction)</li>
-                        <li><strong>Report computational cost</strong> (runtime, memory) alongside accuracy</li>
-                        <li><strong>Make code/data available</strong> for reproducibility</li>
-                    </ol>
-                </div>
-
-                <h3>Common Pitfalls to Avoid</h3>
-                <div class="warning-box">
-                    <ul>
-                        <li><strong>Only reporting overall score</strong> without bio/batch breakdown</li>
-                        <li><strong>Cherry-picking best run</strong> instead of reporting average performance</li>
-                        <li><strong>Not checking rare cell types</strong> (metrics can be dominated by abundant types)</li>
-                        <li><strong>Assuming batch = technical</strong> when it might include biological variation</li>
-                        <li><strong>Over-trusting UMAP</strong> without quantitative validation</li>
-                    </ul>
+                <div class="key-points">
+                    <div class="key-point">
+                        <h4>Always Check Both</h4>
+                        <p>Compute BOTH bio and batch metrics—don't rely on UMAP visualization alone</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Multiple Runs</h4>
+                        <p>Report mean ± std across multiple runs with different random seeds</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Per-Cell-Type Analysis</h4>
+                        <p>Check metrics for rare cell types separately—overall scores can hide poor performance</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Validate with Biology</h4>
+                        <p>Verify that known marker genes still cluster correctly after integration</p>
+                    </div>
                 </div>
             </div>
 
-            <!-- Related Concepts -->
-            <div class="content-section">
-                <h2><i class="fas fa-link"></i> Related Concepts</h2>
-                
-                <div class="concept-box">
-                    <h3>In This Handbook:</h3>
-                    <ul>
-                        <li><strong>Computational Biology:</strong> 
-                            <a href="../computational-biology/cross-species-integration.html">Cross-Species Data Integration</a> - 
-                            These metrics used to evaluate SATURN and other integration methods
-                        </li>
-                        <li><strong>Foundation Models:</strong> 
-                            <a href="../foundation-models/two-stage-pretraining.html">Two-Stage Foundation Model Training</a> - 
-                            Integration metrics help evaluate whether pretraining helps
-                        </li>
-                        <li><strong>Machine Learning:</strong> 
-                            <a href="model-evaluation.html">Model Evaluation</a> (Coming Soon) - 
-                            General principles of evaluation metrics
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="concept-box">
-                    <h3>Key Papers:</h3>
-                    <ul>
-                        <li><strong>SCIB Framework:</strong> Luecken et al. (2022). Benchmarking atlas-level data integration in single-cell genomics. <em>Nature Methods</em></li>
-                        <li><strong>SATURN Application:</strong> Rosen et al. (2024). Toward universal cell embeddings: integrating single-cell RNA-seq datasets across species with SATURN. <em>Nature Methods</em></li>
-                        <li><strong>Original NMI:</strong> Cover & Thomas (1991). Elements of Information Theory. <em>Wiley</em></li>
-                        <li><strong>Adjusted Rand Index:</strong> Hubert & Arabie (1985). Comparing partitions. <em>Journal of Classification</em></li>
-                    </ul>
-                </div>
+            <div class="cta-section">
+                <h3>📚 Continue Learning</h3>
+                <p>Explore related concepts in computational biology and machine learning</p>
+                <a href="../index.html" class="cta-button cta-button-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Learning Hub
+                </a>
             </div>
-
-            <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Handbook</a>
         </div>
     </main>
 
     <footer>
-        <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
-            <p>Part of <a href="../../" style="color: #3498db;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
+        <div class="container" style="text-align: center; margin-top: 40px; color: #666; padding-bottom: 30px;">
+            <p>Part of the <a href="../index.html" style="color: #C05540; text-decoration: none; font-weight: bold;">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                <a href="https://github.com/xqiu625" style="color: #666; margin: 0 10px;"><i class="fab fa-github"></i> GitHub</a> | 
+                <a href="https://www.linkedin.com/in/xinru-qiu" style="color: #666; margin: 0 10px;"><i class="fab fa-linkedin"></i> LinkedIn</a> | 
+                <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #666; margin: 0 10px;"><i class="fas fa-envelope"></i> Email</a>
+            </p>
         </div>
     </footer>
 </body>
