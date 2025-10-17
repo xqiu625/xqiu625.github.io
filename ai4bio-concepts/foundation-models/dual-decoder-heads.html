@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TranscriptFormer Dual Decoder Heads - AI4Bio Concepts</title>
+    <title>Two-Stage Foundation Model Training - AI4Bio Learning Hub</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
             font-family: 'Lato', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #e8d5d9 100%);
-            line-height: 1.8;
+            line-height: 1.6;
             color: #333;
             margin: 0;
             padding: 0;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -42,238 +42,284 @@
             font-weight: bold;
             font-size: 16px;
         }
+        .navbar-nav a:hover {
+            color: #B01C3C;
+        }
         .home-link {
             color: #B01C3C !important;
         }
         .header {
-            background: linear-gradient(135deg, #7D1439 0%, #8F193E 50%, #B01C3C 100%);
-            color: white;
-            padding: 40px;
+            background: white;
             border-radius: 15px;
+            padding: 40px;
             margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(125, 20, 57, 0.15);
             text-align: center;
         }
         .header h1 {
-            margin: 0 0 10px 0;
+            color: #7D1439;
             font-size: 2.5em;
-            color: white;
+            margin-bottom: 15px;
         }
-        .header p {
-            margin: 5px 0;
-            font-size: 1.1em;
-            color: #f0e5e8;
+        .header .subtitle {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
         }
-        .tldr-box {
-            background: rgba(255,255,255,0.15);
-            padding: 20px;
+        .header .paper-ref {
+            background: rgba(125, 20, 57, 0.1);
+            padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
-            border-left: 5px solid #f0e5e8;
-        }
-        .tldr-box h3 {
-            margin-top: 0;
-            color: white;
+            font-size: 0.95em;
+            border-left: 4px solid #B01C3C;
         }
         .content-section {
             background: white;
             border-radius: 15px;
-            padding: 30px;
-            margin: 25px 0;
+            padding: 40px;
+            margin: 30px 0;
             box-shadow: 0 4px 15px rgba(125, 20, 57, 0.15);
         }
         .content-section h2 {
             color: #7D1439;
-            border-bottom: 3px solid #B01C3C;
-            padding-bottom: 10px;
+            font-size: 1.8em;
             margin-bottom: 20px;
+            border-left: 4px solid #8F193E;
+            padding-left: 15px;
         }
         .content-section h3 {
             color: #8F193E;
-            margin-top: 25px;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
         }
-        
-        .analogy-box {
+        .content-section h4 {
+            color: #B01C3C;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+        .concept-box {
+            background: rgba(176, 28, 60, 0.08);
+            border-left: 4px solid #B01C3C;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .concept-box h3 {
+            color: #B01C3C;
+            margin-top: 0;
+        }
+        .concept-box.stage1 {
+            background: rgba(143, 25, 62, 0.08);
+            border-left-color: #8F193E;
+        }
+        .concept-box.stage1 h3 {
+            color: #8F193E;
+        }
+        .concept-box.stage2 {
+            background: rgba(125, 20, 57, 0.08);
+            border-left-color: #7D1439;
+        }
+        .concept-box.stage2 h3 {
+            color: #7D1439;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #8F193E 0%, #B01C3C 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .highlight-box strong {
+            color: white;
+        }
+        .pipeline {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .stage-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(125, 20, 57, 0.08);
+            text-align: center;
+            min-width: 280px;
+            flex: 1;
+            border-top: 4px solid;
+        }
+        .stage-box.stage1 {
+            border-top-color: #8F193E;
+        }
+        .stage-box.stage2 {
+            border-top-color: #7D1439;
+        }
+        .stage-box h4 {
+            color: #B01C3C;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .stage-arrow {
+            font-size: 2.5em;
+            color: #8F193E;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .stat-card {
             background: linear-gradient(135deg, #8F193E 0%, #B01C3C 100%);
             color: white;
             padding: 25px;
             border-radius: 15px;
-            margin: 20px 0;
-        }
-        
-        .analogy-box h3 {
-            color: white;
-            margin-top: 0;
-        }
-        
-        .simple-flow {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 30px 0;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        
-        .flow-step {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
             text-align: center;
-            min-width: 140px;
-            box-shadow: 0 4px 10px rgba(125, 20, 57, 0.1);
+            box-shadow: 0 4px 15px rgba(125, 20, 57, 0.2);
+            transition: all 0.3s ease;
         }
-        
-        .flow-step .number {
-            background: #B01C3C;
-            color: white;
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(143, 25, 62, 0.3);
+        }
+        .stat-card .number {
+            font-size: 2em;
             font-weight: bold;
             margin-bottom: 10px;
         }
-        
-        .flow-arrow {
-            font-size: 2em;
-            color: #8F193E;
+        .stat-card .label {
+            font-size: 0.9em;
+            opacity: 0.95;
         }
-        
-        .comparison-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        .training-phase {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 25px;
             margin: 20px 0;
+            border-left: 4px solid #8F193E;
+            box-shadow: 0 2px 10px rgba(125, 20, 57, 0.05);
         }
-        
-        .comparison-card {
-            background: #f8f9fa;
+        .training-phase h4 {
+            color: #8F193E;
+            margin-top: 0;
+        }
+        .loss-formula {
+            background: #2d2d2d;
+            color: #f8f8f2;
             padding: 20px;
             border-radius: 10px;
-            border-top: 4px solid #B01C3C;
-        }
-        
-        .comparison-card.decoder2 {
-            border-top-color: #7D1439;
-        }
-        
-        .visual-example {
-            background: linear-gradient(135deg, #7D1439 0%, #8F193E 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 15px;
-            margin: 25px 0;
-        }
-        
-        .cell-sentence {
-            background: rgba(255,255,255,0.15);
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
             font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            text-align: center;
             font-size: 1.1em;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
-        
-        .token {
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(125, 20, 57, 0.1);
+        }
+        .comparison-table th {
+            background: linear-gradient(135deg, #8F193E 0%, #7D1439 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        .comparison-table tr:hover {
+            background: rgba(143, 25, 62, 0.05);
+        }
+        .comparison-table tr.highlight {
+            background: rgba(176, 28, 60, 0.1);
+        }
+        .tag {
             display: inline-block;
-            padding: 8px 15px;
-            margin: 5px;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.3);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin: 5px 5px 5px 0;
         }
-        
-        .token.gene {
+        .tag.unsupervised {
+            background: #8F193E;
+        }
+        .tag.weakly-supervised {
             background: #B01C3C;
-            color: white;
         }
-        
-        .token.count {
+        .tag.self-supervised {
             background: #7D1439;
-            color: white;
         }
-        
-        .interactive-demo {
-            background: linear-gradient(135deg, #7D1439 0%, #8F193E 100%);
-            color: white;
+        .cta-section {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            margin: 30px 0;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(125, 20, 57, 0.15);
         }
-        
-        .demo-button {
-            background: rgba(255,255,255,0.2);
+        .cta-section h3 {
+            color: #7D1439;
+            margin-bottom: 15px;
+        }
+        .cta-button {
+            display: inline-block;
             color: white;
-            border: 2px solid white;
-            padding: 12px 25px;
+            padding: 12px 30px;
             border-radius: 25px;
-            margin: 8px;
-            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
             transition: all 0.3s ease;
-            font-size: 1em;
+            margin: 0 10px;
+            background: linear-gradient(135deg, #8F193E 0%, #B01C3C 100%);
+        }
+        .cta-button:hover {
+            background: linear-gradient(135deg, #7D1439 0%, #8F193E 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(143, 25, 62, 0.4);
+        }
+        footer a {
+            color: #B01C3C;
+            text-decoration: none;
             font-weight: bold;
         }
-        
-        .demo-button:hover {
-            background: rgba(255,255,255,0.4);
-            transform: translateY(-2px);
-        }
-        
-        .demo-button.active {
-            background: white;
+        footer a:hover {
             color: #7D1439;
         }
-        
-        .demo-output {
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 25px;
-            margin: 20px 0;
-            min-height: 150px;
-        }
-        
-        .concept-box {
-            background: #f8f9fa;
-            border-left: 5px solid #B01C3C;
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 5px;
-        }
-        
-        .highlight-box {
-            background: #fff3cd;
-            border: 2px solid #B01C3C;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin: 20px 0;
-            padding: 12px 25px;
-            background: #B01C3C;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            font-weight: bold;
-        }
-        
-        .back-link:hover {
-            background: #8F193E;
-            transform: translateX(-5px);
-        }
-
         @media (max-width: 768px) {
-            .comparison-grid {
-                grid-template-columns: 1fr;
+            .header {
+                padding: 25px;
             }
-            .simple-flow {
+            .header h1 {
+                font-size: 2em;
+            }
+            .content-section {
+                padding: 25px;
+            }
+            .pipeline {
                 flex-direction: column;
             }
-            .flow-arrow {
+            .stage-arrow {
                 transform: rotate(90deg);
             }
         }
@@ -283,8 +329,10 @@
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-nav">
-                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> AI4Bio Concepts Handbook</a></li>
-                <li><a href="../../"><i class="fas fa-home"></i> Xinru's Homepage</a></li>
+                <li><a href="../index.html" class="home-link"><i class="fas fa-home"></i> Back to Learning Hub</a></li>
+                <li><a href="#concept">Concept</a></li>
+                <li><a href="#stages">Stages</a></li>
+                <li><a href="#comparison">Comparison</a></li>
             </ul>
         </div>
     </nav>
@@ -292,340 +340,284 @@
     <main role="main">
         <div class="container">
             <div class="header">
-                <h1><i class="fas fa-project-diagram"></i> TranscriptFormer Dual Decoder Heads</h1>
-                <p>How AI generates realistic cell profiles by predicting genes AND their expression levels</p>
-                
-                <div class="tldr-box">
-                    <h3><i class="fas fa-lightbulb"></i> The Big Idea</h3>
-                    <p>Think of it like autocomplete for cells: the model predicts both <strong>which gene</strong> comes next (like suggesting a word) and <strong>how much</strong> it's expressed (like choosing how bold to make that word). Two specialized "heads" work together to make these predictions realistic.</p>
+                <h1><i class="fas fa-layer-group"></i> Two-Stage Foundation Model Training</h1>
+                <p class="subtitle">Why modern foundation models separate unsupervised pretraining from supervised fine-tuning</p>
+                <div class="paper-ref">
+                    <strong>📊 Case Study:</strong> SATURN uses autoencoder pretraining + metric learning fine-tuning to achieve 119% improvement over end-to-end training baselines
                 </div>
             </div>
 
-            <!-- Start with Analogy -->
-            <div class="content-section">
-                <h2><i class="fas fa-book-open"></i> Understanding Through Analogy</h2>
-                
-                <div class="analogy-box">
-                    <h3>🎨 Imagine You're Writing a Recipe</h3>
-                    <p><strong>First Decision:</strong> What ingredient comes next? (flour, sugar, eggs...)</p>
-                    <p><strong>Second Decision:</strong> How much of it? (2 cups, 1 tablespoon, 3 eggs...)</p>
-                    <p>The dual decoder works the same way:</p>
-                    <ul>
-                        <li><strong>Gene Decoder:</strong> Picks which gene (ingredient)</li>
-                        <li><strong>Count Decoder:</strong> Decides how much (quantity)</li>
-                    </ul>
-                    <p>Just like a good recipe needs both the right ingredients AND the right amounts, a realistic cell profile needs both the right genes AND their correct expression levels!</p>
-                </div>
-            </div>
-
-            <!-- Visual Process -->
-            <div class="content-section">
-                <h2><i class="fas fa-stream"></i> How It Works: Step by Step</h2>
-                
-                <div class="simple-flow">
-                    <div class="flow-step">
-                        <div class="number">1</div>
-                        <h4>Input Context</h4>
-                        <p>Previous genes in cell</p>
-                    </div>
-                    
-                    <div class="flow-arrow">→</div>
-                    
-                    <div class="flow-step">
-                        <div class="number">2</div>
-                        <h4>Transformer</h4>
-                        <p>Understands context</p>
-                    </div>
-                    
-                    <div class="flow-arrow">→</div>
-                    
-                    <div class="flow-step">
-                        <div class="number">3</div>
-                        <h4>Gene Decoder</h4>
-                        <p>Picks next gene</p>
-                    </div>
-                    
-                    <div class="flow-arrow">→</div>
-                    
-                    <div class="flow-step">
-                        <div class="number">4</div>
-                        <h4>Count Decoder</h4>
-                        <p>Predicts expression</p>
-                    </div>
-                </div>
-
-                <div class="visual-example">
-                    <h3>📊 Example: Generating a Cell Profile</h3>
-                    <div class="cell-sentence">
-                        <strong>Cell Sentence Being Generated:</strong><br><br>
-                        [START] → 
-                        <span class="token gene">GAPDH</span>
-                        <span class="token count">[156]</span> →
-                        <span class="token gene">ACTB</span>
-                        <span class="token count">[89]</span> →
-                        <span class="token gene">TP53</span>
-                        <span class="token count">[23]</span> → ...
-                    </div>
-                    <p style="margin-top: 15px;">
-                        Each step adds a new <span style="background: #B01C3C; padding: 3px 8px; border-radius: 5px; color: white;">gene</span> with its 
-                        <span style="background: #7D1439; padding: 3px 8px; border-radius: 5px; color: white;">expression count</span>
-                    </p>
-                </div>
-            </div>
-
-            <!-- The Two Decoders -->
-            <div class="content-section">
-                <h2><i class="fas fa-code-branch"></i> The Two Decoder Heads Explained</h2>
-                
-                <div class="comparison-grid">
-                    <div class="comparison-card">
-                        <h3><i class="fas fa-dna"></i> Gene Decoder</h3>
-                        <p><strong>Job:</strong> Pick which gene comes next</p>
-                        <p><strong>How:</strong> Looks at ~50,000 possible genes and assigns each a probability</p>
-                        <p><strong>Output:</strong> One gene (e.g., "GAPDH")</p>
-                        <p><strong>Like:</strong> Autocomplete suggesting words</p>
-                        <div style="margin-top: 15px; padding: 10px; background: #B01C3C; color: white; border-radius: 8px;">
-                            <strong>Example:</strong><br>
-                            GAPDH: 23%<br>
-                            ACTB: 18%<br>
-                            TP53: 12%<br>
-                            Others: 47%
-                        </div>
-                    </div>
-                    
-                    <div class="comparison-card decoder2">
-                        <h3><i class="fas fa-chart-bar"></i> Count Decoder</h3>
-                        <p><strong>Job:</strong> Decide how much it's expressed</p>
-                        <p><strong>How:</strong> Uses statistical model (Zero-Truncated Poisson) to predict realistic counts</p>
-                        <p><strong>Output:</strong> A number (e.g., 156 copies)</p>
-                        <p><strong>Like:</strong> Deciding font size/boldness</p>
-                        <div style="margin-top: 15px; padding: 10px; background: #7D1439; color: white; border-radius: 8px;">
-                            <strong>Example:</strong><br>
-                            For gene GAPDH:<br>
-                            Predicted count: <strong>156</strong><br>
-                            (High because it's a housekeeping gene)
-                        </div>
-                    </div>
-                </div>
-
-                <div class="highlight-box">
-                    <strong><i class="fas fa-check-circle"></i> Why Both Are Needed:</strong>
-                    <p>Different genes have different typical expression levels. GAPDH (housekeeping) might have 150+ copies, while TP53 (regulatory) might have only 20. The model learns these patterns by training both decoders together.</p>
-                </div>
-            </div>
-
-            <!-- Interactive Demo -->
-            <div class="content-section">
-                <h2><i class="fas fa-gamepad"></i> Try It Yourself</h2>
-                
-                <div class="interactive-demo">
-                    <h3>🎮 Interactive Cell Generation Demo</h3>
-                    <p>Click through the steps to see how the dual decoders work together</p>
-                    
-                    <div style="margin: 25px 0;">
-                        <button class="demo-button" id="step1-btn">Step 1: Transformer Encodes Context</button>
-                        <button class="demo-button" id="step2-btn">Step 2: Gene Decoder Picks Gene</button>
-                        <button class="demo-button" id="step3-btn">Step 3: Count Decoder Sets Expression</button>
-                        <button class="demo-button" id="reset-btn">Reset</button>
-                    </div>
-                    
-                    <div class="demo-output" id="demo-display">
-                        <div style="font-size: 1.2em;"><strong>Current Cell Sentence:</strong></div>
-                        <div id="sentence-display" style="margin: 20px 0; font-size: 1.1em;">
-                            🧬 [START] → <span style="color: #aaa;">waiting...</span>
-                        </div>
-                        <div id="decoder-info"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Why This Matters -->
-            <div class="content-section">
-                <h2><i class="fas fa-star"></i> Why This Design Is Powerful</h2>
+            <!-- Core Concept -->
+            <div class="content-section" id="concept">
+                <h2><i class="fas fa-lightbulb"></i> Core Concept</h2>
                 
                 <div class="concept-box">
-                    <h3>🎯 Key Advantages</h3>
+                    <h3>What is Two-Stage Training?</h3>
+                    <p><strong>Two-stage training</strong> splits model development into distinct phases with different objectives:</p>
+                    <ol>
+                        <li><strong>Stage 1 (Pretraining):</strong> Learn general representations from large amounts of <span class="tag unsupervised">unsupervised</span> or <span class="tag self-supervised">self-supervised</span> data</li>
+                        <li><strong>Stage 2 (Fine-tuning):</strong> Adapt representations to specific tasks using <span class="tag weakly-supervised">weakly supervised</span> or supervised signals</li>
+                    </ol>
+                </div>
+
+                <h3>The Pipeline</h3>
+                <div class="pipeline">
+                    <div class="stage-box stage1">
+                        <h4>Stage 1: Pretraining</h4>
+                        <p><strong>Objective:</strong> Learn data structure</p>
+                        <p><strong>Supervision:</strong> Self/Unsupervised</p>
+                        <p><strong>Data:</strong> All available</p>
+                    </div>
                     
-                    <p><strong>1. Biological Realism</strong></p>
-                    <p>By modeling both identity and quantity, generated cells look like real cells under a microscope.</p>
+                    <div class="stage-arrow">→</div>
                     
-                    <p><strong>2. Context Awareness</strong></p>
-                    <p>The model knows that if it already picked several immune genes, it should probably pick more immune genes (and avoid neuron genes).</p>
-                    
-                    <p><strong>3. Efficiency</strong></p>
-                    <p>One shared transformer feeds both decoders, rather than needing two separate models.</p>
-                    
-                    <p><strong>4. Joint Learning</strong></p>
-                    <p>Training both tasks together makes each one better. The gene decoder learns which genes appear together, and the count decoder learns typical expression levels.</p>
+                    <div class="stage-box stage2">
+                        <h4>Stage 2: Fine-tuning</h4>
+                        <p><strong>Objective:</strong> Task-specific optimization</p>
+                        <p><strong>Supervision:</strong> Labeled/Weak labels</p>
+                        <p><strong>Data:</strong> Task-relevant subset</p>
+                    </div>
                 </div>
 
                 <div class="highlight-box">
-                    <strong><i class="fas fa-flask"></i> Real-World Impact:</strong>
-                    <p>This architecture enables scientists to:</p>
+                    <strong><i class="fas fa-star"></i> Key Insight:</strong> 
+                    Separating these stages allows the model to first learn universal data representations (Stage 1) before specializing for specific tasks (Stage 2). This is more effective than trying to learn both simultaneously.
+                </div>
+            </div>
+
+            <!-- Stage 1 Deep Dive -->
+            <div class="content-section" id="stages">
+                <h2><i class="fas fa-brain"></i> Stage 1: Unsupervised Pretraining</h2>
+                
+                <div class="concept-box stage1">
+                    <h3>Goals of Pretraining</h3>
                     <ul>
-                        <li>Simulate rare cell types for research</li>
-                        <li>Predict how cells respond to drugs</li>
-                        <li>Generate training data for other AI models</li>
-                        <li>Model cell differentiation and development</li>
+                        <li><strong>Learn data structure:</strong> Discover patterns, clusters, and relationships in raw data</li>
+                        <li><strong>Initialize weights:</strong> Start Stage 2 from a good point, not random initialization</li>
+                        <li><strong>Capture domain knowledge:</strong> Learn biological priors without task-specific labels</li>
+                        <li><strong>Compression:</strong> Create low-dimensional representations that preserve information</li>
+                    </ul>
+                </div>
+
+                <h3>Common Pretraining Objectives</h3>
+                
+                <div class="training-phase">
+                    <h4>1. Autoencoder Reconstruction</h4>
+                    <p><strong>Idea:</strong> Force model to reconstruct input from compressed representation</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = L<sub>reconstruction</sub>(X, Decoder(Encoder(X)))
+                    </div>
+                    <p><strong>Used by:</strong> SATURN (ZINB autoencoder), VAE-based models, β-VAE</p>
+                    <p><strong>Why it works:</strong> To reconstruct accurately, encoder must capture important features</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>2. Contrastive Learning</h4>
+                    <p><strong>Idea:</strong> Similar samples should have similar embeddings, dissimilar samples should be far apart</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = -log( exp(sim(z<sub>i</sub>, z<sub>j</sub>)/τ) / Σ<sub>k</sub> exp(sim(z<sub>i</sub>, z<sub>k</sub>)/τ) )
+                    </div>
+                    <p><strong>Used by:</strong> SimCLR, MoCo, CLIP</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>3. Masked Prediction</h4>
+                    <p><strong>Idea:</strong> Predict masked parts of input from visible context</p>
+                    <div class="loss-formula">
+                        L<sub>pretrain</sub> = CrossEntropy(X<sub>masked</sub>, Predict(X<sub>visible</sub>))
+                    </div>
+                    <p><strong>Used by:</strong> BERT, GPT, ESM2 (protein language models)</p>
+                </div>
+
+                <h3>SATURN Stage 1 Example</h3>
+                <div class="concept-box">
+                    <p><strong>Objective:</strong> Learn universal cell embeddings across species</p>
+                    <p><strong>Architecture:</strong> ZINB Autoencoder (appropriate for sparse scRNA-seq count data)</p>
+                    <p><strong>Regularization:</strong> Gene-to-macrogene weights must reflect protein embedding similarity</p>
+                    <p><strong>Result:</strong> Embeddings capture cell state + gene functional relationships</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">50</div>
+                        <div class="label">Pretraining epochs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">335K</div>
+                        <div class="label">Training cells</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">ZINB</div>
+                        <div class="label">Loss function</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stage 2 Deep Dive -->
+            <div class="content-section">
+                <h2><i class="fas fa-crosshairs"></i> Stage 2: Task-Specific Fine-tuning</h2>
+                
+                <div class="concept-box stage2">
+                    <h3>Goals of Fine-tuning</h3>
+                    <ul>
+                        <li><strong>Task adaptation:</strong> Specialize general representations for specific downstream task</li>
+                        <li><strong>Incorporate labels:</strong> Use supervised/weakly supervised signals to improve performance</li>
+                        <li><strong>Calibrate distances:</strong> Adjust embedding space so similar items are close</li>
+                        <li><strong>Preserve pretraining:</strong> Don't catastrophically forget what was learned in Stage 1</li>
+                    </ul>
+                </div>
+
+                <h3>Common Fine-tuning Objectives</h3>
+                
+                <div class="training-phase">
+                    <h4>1. Supervised Classification</h4>
+                    <p><strong>Idea:</strong> Add classification head on top of pretrained encoder, train with labeled data</p>
+                    <div class="loss-formula">
+                        L<sub>finetune</sub> = CrossEntropy(y, Classifier(Encoder(X)))
+                    </div>
+                    <p><strong>Used by:</strong> Most transfer learning scenarios</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>2. Metric Learning</h4>
+                    <p><strong>Idea:</strong> Learn distance metrics so embeddings reflect task-relevant similarity</p>
+                    <div class="loss-formula">
+                        L<sub>finetune</sub> = max(D(z<sub>anchor</sub>, z<sub>pos</sub>) - D(z<sub>anchor</sub>, z<sub>neg</sub>) + m, 0)
+                    </div>
+                    <p><strong>Used by:</strong> SATURN (triplet loss), face recognition, few-shot learning</p>
+                </div>
+
+                <h3>SATURN Stage 2 Example</h3>
+                <div class="concept-box">
+                    <p><strong>Objective:</strong> Align cell types across species</p>
+                    <p><strong>Architecture:</strong> Triplet margin loss with semi-hard mining</p>
+                    <p><strong>Supervision:</strong> Within-species cell type labels only</p>
+                    <p><strong>Result:</strong> Cells of same type cluster together across species</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">30</div>
+                        <div class="label">Fine-tuning epochs</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">Triplet</div>
+                        <div class="label">Loss function</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">0.2</div>
+                        <div class="label">Margin parameter</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison -->
+            <div class="content-section" id="comparison">
+                <h2><i class="fas fa-question-circle"></i> Why Two Stages Beat End-to-End Training</h2>
+
+                <h3>Empirical Evidence from SATURN</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Training Strategy</th>
+                            <th>Pretraining</th>
+                            <th>Fine-tuning</th>
+                            <th>Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="highlight">
+                            <td><strong>SATURN (Two-Stage)</strong></td>
+                            <td>✅ ZINB Autoencoder</td>
+                            <td>✅ Metric Learning</td>
+                            <td><strong>85.8%</strong></td>
+                        </tr>
+                        <tr>
+                            <td>SAMap (Two-Stage)</td>
+                            <td>✅ Graph Neural Net</td>
+                            <td>✅ Supervised</td>
+                            <td>39.2%</td>
+                        </tr>
+                        <tr>
+                            <td>Harmony (Single-Stage)</td>
+                            <td>❌ None</td>
+                            <td>❌ Direct</td>
+                            <td>32.5%</td>
+                        </tr>
+                        <tr>
+                            <td>scVI (Single-Stage)</td>
+                            <td>❌ None</td>
+                            <td>❌ Direct VAE</td>
+                            <td>30.1%</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight-box">
+                    <strong><i class="fas fa-chart-line"></i> Performance Gain:</strong> 
+                    SATURN's two-stage approach achieves 119% improvement over the best single-stage baseline (32.5% → 85.8%). This demonstrates the power of separating representation learning from task-specific optimization.
+                </div>
+
+                <h3>When End-to-End Might Be Better</h3>
+                <div class="concept-box">
+                    <p><strong>Consider end-to-end when:</strong></p>
+                    <ul>
+                        <li><strong>Limited data:</strong> If you have <1000 samples, pretraining may overfit</li>
+                        <li><strong>Simple tasks:</strong> Linear classification doesn't need pretraining</li>
+                        <li><strong>Task-specific features:</strong> Task requires very different representations</li>
+                        <li><strong>Computational constraints:</strong> Two-stage takes ~2x wall-clock time</li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Technical Deep Dive (Optional) -->
+            <!-- Applications -->
             <div class="content-section">
-                <h2><i class="fas fa-graduation-cap"></i> For the Technically Curious</h2>
-                
-                <details>
-                    <summary style="cursor: pointer; font-weight: bold; padding: 10px; background: #f8f9fa; border-radius: 5px;">
-                        <i class="fas fa-plus-circle"></i> Mathematical Details
-                    </summary>
-                    <div style="margin-top: 15px;">
-                        <h3>Gene Decoder Formula</h3>
-                        <div style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace;">
-                            ω<sub>j</sub> = softmax(MLP<sub>ω</sub>(z<sub>j</sub><sup>(L)</sup>))
-                        </div>
-                        <p>This creates a probability distribution over all genes based on the transformer's output.</p>
-                        
-                        <h3>Count Decoder Formula</h3>
-                        <div style="background: #2d2d2d; color: #f8f8f2; padding: 15px; border-radius: 8px; font-family: monospace;">
-                            P(c = k | λ) = (λ<sup>k</sup> e<sup>-λ</sup>) / (k!(1 - e<sup>-λ</sup>)), k ≥ 1
-                        </div>
-                        <p>Zero-Truncated Poisson ensures counts are always positive (you can't express 0 copies of a gene that's in the sequence!).</p>
-                    </div>
-                </details>
+                <h2><i class="fas fa-flask"></i> Applications Across Domains</h2>
 
-                <details style="margin-top: 15px;">
-                    <summary style="cursor: pointer; font-weight: bold; padding: 10px; background: #f8f9fa; border-radius: 5px;">
-                        <i class="fas fa-plus-circle"></i> Training Process
-                    </summary>
-                    <div style="margin-top: 15px;">
-                        <ol>
-                            <li><strong>Input:</strong> Real cell profiles from experiments</li>
-                            <li><strong>Forward Pass:</strong> Predict genes and counts</li>
-                            <li><strong>Compute Loss:</strong> Compare predictions to actual data</li>
-                            <li><strong>Backpropagation:</strong> Adjust model weights</li>
-                            <li><strong>Repeat:</strong> Do this millions of times until predictions are accurate</li>
-                        </ol>
-                        <p>The combined loss function is: L = L<sub>gene</sub> + L<sub>count</sub></p>
-                    </div>
-                </details>
-            </div>
+                <div class="training-phase">
+                    <h4>Natural Language Processing</h4>
+                    <p><strong>Stage 1:</strong> Masked language modeling (BERT, GPT)</p>
+                    <p><strong>Stage 2:</strong> Task-specific fine-tuning (sentiment, QA, summarization)</p>
+                </div>
 
-            <!-- Key Takeaways -->
-            <div class="content-section">
-                <h2><i class="fas fa-key"></i> Key Takeaways</h2>
-                
-                <div class="concept-box" style="border-left-color: #8F193E;">
-                    <h3>Remember These Points:</h3>
-                    <ul style="font-size: 1.1em; line-height: 2;">
-                        <li>🎯 <strong>Two decoders, two jobs:</strong> one picks genes, one sets expression levels</li>
-                        <li>🔗 <strong>They work together:</strong> trained jointly with shared knowledge</li>
-                        <li>🧬 <strong>Generates realistic cells:</strong> both identity and quantity matter</li>
-                        <li>⚡ <strong>Efficient design:</strong> one transformer feeds both decoders</li>
-                        <li>🔬 <strong>Powerful applications:</strong> from drug discovery to cell simulation</li>
-                    </ul>
+                <div class="training-phase">
+                    <h4>Computer Vision</h4>
+                    <p><strong>Stage 1:</strong> Self-supervised contrastive learning (SimCLR, MoCo)</p>
+                    <p><strong>Stage 2:</strong> Object detection, segmentation, classification</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>Protein Structure</h4>
+                    <p><strong>Stage 1:</strong> Masked amino acid prediction (ESM2)</p>
+                    <p><strong>Stage 2:</strong> Structure prediction (AlphaFold), function prediction</p>
+                </div>
+
+                <div class="training-phase">
+                    <h4>Single-Cell Genomics</h4>
+                    <p><strong>Stage 1:</strong> Variational autoencoder (scVI, SATURN)</p>
+                    <p><strong>Stage 2:</strong> Cell type classification, trajectory inference</p>
                 </div>
             </div>
 
-            <a href="../index.html" class="back-link">
-                <i class="fas fa-arrow-left"></i> Back to AI4Bio Concepts Handbook
-            </a>
+            <div class="cta-section">
+                <h3>📚 Continue Learning</h3>
+                <p>Explore more foundation model concepts and machine learning techniques</p>
+                <a href="../index.html" class="cta-button">
+                    <i class="fas fa-arrow-left"></i> Back to Learning Hub
+                </a>
+            </div>
         </div>
     </main>
 
-    <script>
-        let demoStep = 0;
-        const genes = [
-            {name: 'GAPDH', count: 156, prob: 0.23},
-            {name: 'ACTB', count: 89, prob: 0.18},
-            {name: 'TP53', count: 23, prob: 0.12},
-            {name: 'MYC', count: 45, prob: 0.15}
-        ];
-        let selectedGene = null;
-
-        function resetDemo() {
-            demoStep = 0;
-            selectedGene = null;
-            document.getElementById('sentence-display').innerHTML = '🧬 [START] → <span style="color: #aaa;">waiting...</span>';
-            document.getElementById('decoder-info').innerHTML = '';
-            document.querySelectorAll('.demo-button').forEach(btn => btn.classList.remove('active'));
-        }
-
-        document.getElementById('step1-btn').addEventListener('click', function() {
-            if (demoStep !== 0) return;
-            demoStep = 1;
-            this.classList.add('active');
-            
-            document.getElementById('decoder-info').innerHTML = `
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.3); border-radius: 8px;">
-                    <strong>🧠 Transformer Processing...</strong><br>
-                    Analyzing context: [START] token<br>
-                    Creating representation vector for both decoders<br>
-                    <div style="margin-top: 10px; color: #90EE90;">✓ Context encoded successfully!</div>
-                </div>
-            `;
-        });
-
-        document.getElementById('step2-btn').addEventListener('click', function() {
-            if (demoStep !== 1) {
-                alert('Please complete Step 1 first!');
-                return;
-            }
-            demoStep = 2;
-            this.classList.add('active');
-            
-            selectedGene = genes[Math.floor(Math.random() * genes.length)];
-            
-            document.getElementById('sentence-display').innerHTML = `
-                🧬 [START] → <span class="token gene">${selectedGene.name}</span>
-            `;
-            
-            document.getElementById('decoder-info').innerHTML = `
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.3); border-radius: 8px;">
-                    <strong>🧬 Gene Decoder Output:</strong><br>
-                    <div style="margin-top: 10px;">
-                        Top predictions:<br>
-                        ${genes.map(g => `
-                            <div style="margin: 5px 0;">
-                                ${g.name}: ${(g.prob * 100).toFixed(1)}% 
-                                ${g.name === selectedGene.name ? '<span style="color: #90EE90;">← Selected!</span>' : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
-        });
-
-        document.getElementById('step3-btn').addEventListener('click', function() {
-            if (demoStep !== 2) {
-                alert('Please complete Steps 1 and 2 first!');
-                return;
-            }
-            demoStep = 3;
-            this.classList.add('active');
-            
-            document.getElementById('sentence-display').innerHTML = `
-                🧬 [START] → 
-                <span class="token gene">${selectedGene.name}</span>
-                <span class="token count">[${selectedGene.count}]</span>
-            `;
-            
-            document.getElementById('decoder-info').innerHTML = `
-                <div style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.3); border-radius: 8px;">
-                    <strong>📊 Count Decoder Output:</strong><br>
-                    <div style="margin-top: 10px;">
-                        Gene: ${selectedGene.name}<br>
-                        Predicted expression count: <strong>${selectedGene.count}</strong><br>
-                        Rate parameter (λ): ${(selectedGene.count * 0.8).toFixed(1)}<br>
-                        <div style="margin-top: 10px; color: #90EE90;">
-                            ✓ Complete! This gene-count pair is now part of the cell profile.
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-
-        document.getElementById('reset-btn').addEventListener('click', resetDemo);
-    </script>
+    <footer>
+        <div class="container" style="text-align: center; margin-top: 40px; color: #666; padding-bottom: 30px;">
+            <p>Part of the <a href="../index.html">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                <a href="https://github.com/xqiu625" style="color: #666; margin: 0 10px;"><i class="fab fa-github"></i> GitHub</a> | 
+                <a href="https://www.linkedin.com/in/xinru-qiu" style="color: #666; margin: 0 10px;"><i class="fab fa-linkedin"></i> LinkedIn</a> | 
+                <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #666; margin: 0 10px;"><i class="fas fa-envelope"></i> Email</a>
+            </p>
+        </div>
+    </footer>
 </body>
 </html>
