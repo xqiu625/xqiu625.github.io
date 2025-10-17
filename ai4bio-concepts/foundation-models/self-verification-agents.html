@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8d5d9 100%);
             line-height: 1.8;
             color: #333;
             margin: 0;
@@ -43,11 +43,11 @@
             font-size: 16px;
         }
         .home-link {
-            color: #FCD1D2 !important;
+            color: #B01C3C !important;
         }
         .header {
-            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 50%, #DCCBD8 100%);
-            color: #333;
+            background: linear-gradient(135deg, #7D1439 0%, #8F193E 50%, #B01C3C 100%);
+            color: white;
             padding: 40px;
             border-radius: 15px;
             margin: 30px 0;
@@ -56,23 +56,23 @@
         .header h1 {
             margin: 0 0 10px 0;
             font-size: 2.5em;
-            color: #000;
+            color: white;
         }
         .header p {
             margin: 5px 0;
             font-size: 1.1em;
-            color: #333;
+            color: #f0e5e8;
         }
         .paper-ref {
-            background: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.15);
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             font-size: 0.95em;
-            color: #333;
+            color: white;
         }
         .paper-ref a {
-            color: #9fB7E6;
+            color: #f0e5e8;
             text-decoration: underline;
         }
         .content-section {
@@ -80,43 +80,43 @@
             border-radius: 15px;
             padding: 30px;
             margin: 25px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(125, 20, 57, 0.15);
         }
         .content-section h2 {
-            color: #FCD1D2;
-            border-bottom: 3px solid #FCD1D2;
+            color: #7D1439;
+            border-bottom: 3px solid #B01C3C;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
         .content-section h3 {
-            color: #DCCBD8;
+            color: #8F193E;
             margin-top: 25px;
         }
         .concept-box {
             background: #f8f9fa;
-            border-left: 5px solid #FCD1D2;
+            border-left: 5px solid #B01C3C;
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
         }
         .concept-box.architecture {
-            border-left-color: #DCCBD8;
+            border-left-color: #8F193E;
         }
         .concept-box.evaluation {
-            border-left-color: #FCD1D2;
+            border-left-color: #B01C3C;
         }
         .concept-box.knowledge {
-            border-left-color: #BCDAEE;
+            border-left-color: #7D1439;
         }
         .highlight-box {
             background: #fff3cd;
-            border: 1px solid #ffc107;
+            border: 2px solid #B01C3C;
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
         }
         .highlight-box strong {
-            color: #856404;
+            color: #7D1439;
         }
         .stats-grid {
             display: grid;
@@ -125,7 +125,7 @@
             margin: 20px 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #FCD1D2 0%, #DCCBD8 100%);
+            background: linear-gradient(135deg, #8F193E 0%, #B01C3C 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -142,7 +142,7 @@
         }
         .visual-diagram {
             background: white;
-            border: 2px solid #FCD1D2;
+            border: 2px solid #B01C3C;
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -150,7 +150,7 @@
         }
         .flow-step {
             display: inline-block;
-            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 100%);
+            background: linear-gradient(135deg, #7D1439 0%, #B01C3C 100%);
             color: white;
             padding: 15px 25px;
             margin: 10px;
@@ -164,7 +164,7 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.5em;
-            color: #FCD1D2;
+            color: #B01C3C;
         }
         .flow-step:last-child:after {
             content: '';
@@ -181,7 +181,7 @@
             border-bottom: 1px solid #ddd;
         }
         .comparison-table th {
-            background: #FCD1D2;
+            background: #B01C3C;
             color: white;
         }
         .comparison-table tr:hover {
@@ -189,7 +189,7 @@
         }
         .tag {
             display: inline-block;
-            background: #FCD1D2;
+            background: #B01C3C;
             color: white;
             padding: 5px 12px;
             border-radius: 15px;
@@ -197,13 +197,13 @@
             margin: 5px 5px 5px 0;
         }
         .tag.high {
-            background: #BCDAEE;
+            background: #7D1439;
         }
         .tag.medium {
-            background: #FCED92;
+            background: #8F193E;
         }
         .tag.low {
-            background: #FCD1D2;
+            background: #B01C3C;
         }
         ul, ol {
             line-height: 1.8;
@@ -212,15 +212,22 @@
             display: inline-block;
             margin: 20px 0;
             padding: 10px 20px;
-            background: #FCD1D2;
+            background: #B01C3C;
             color: white;
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
         .back-link:hover {
-            background: #DCCBD8;
+            background: #8F193E;
             transform: translateX(-5px);
+        }
+        footer a {
+            color: #B01C3C;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #7D1439;
         }
         @media (max-width: 768px) {
             .header h1 {
@@ -382,251 +389,4 @@
                         <tr>
                             <td><strong>Gene-Centric (2)</strong></td>
                             <td>Individual gene functions</td>
-                            <td>NCBI Gene, PubMed</td>
-                            <td>Verify analytical narratives</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Interactions (3)</strong></td>
-                            <td>Protein complexes, PPIs</td>
-                            <td>STRING, CORUM, CTD</td>
-                            <td>Verify gene relationships</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Disease (1)</strong></td>
-                            <td>Gene-disease links</td>
-                            <td>Human Phenotype Ontology</td>
-                            <td>Verify disease associations</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="highlight-box">
-                    <strong><i class="fas fa-check-circle"></i> Key Finding:</strong> 
-                    93% of successfully verified claims used information from at least one database, demonstrating the necessity of multi-database integration.
-                </div>
-
-                <h3>Complementary Coverage Pattern</h3>
-                <div class="concept-box">
-                    <p><strong>Different verification types require different databases:</strong></p>
-                    <ul>
-                        <li><strong>Process names</strong> → g:Profiler & Enrichr (pathway enrichment)</li>
-                        <li><strong>Analytical narratives</strong> → E-utils & AgentAPI (gene functions)</li>
-                    </ul>
-                    <p>This specialization ensures that each type of claim is verified against the most appropriate knowledge source.</p>
-                </div>
-            </div>
-
-            <!-- Evaluation Methodology -->
-            <div class="content-section">
-                <h2><i class="fas fa-chart-line"></i> Evaluation: Beyond Exact Match</h2>
-                
-                <div class="concept-box evaluation">
-                    <h3>Database Masking: Preventing Data Leakage</h3>
-                    <p><strong>Problem:</strong> If your verification database contains the ground truth you're testing against, you're just doing retrieval, not generation.</p>
-                    <p><strong>Solution:</strong> Mask databases that contain ground truth during verification:</p>
-                    <ul>
-                        <li>Testing GO gene sets? → Exclude g:Profiler's GO database</li>
-                        <li>Testing MSigDB gene sets? → Exclude Enrichr's MSigDB_Hallmark_2020</li>
-                    </ul>
-                    <p><strong>Result:</strong> Ensures the agent generates knowledge rather than retrieving memorized annotations.</p>
-                </div>
-
-                <h3>Semantic Similarity: Capturing Functional Equivalence</h3>
-                <div class="concept-box">
-                    <p>Biological concepts have many equivalent phrasings. ROUGE scores (lexical overlap) miss functionally correct predictions.</p>
-                    
-                    <p><strong>Solution:</strong> Use MedCPT (biomedical language model) to measure semantic similarity:</p>
-                    <ul>
-                        <li>"Limb morphogenesis" vs "Limb development" → <strong>92.8% similar</strong></li>
-                        <li>"Peroxisome" vs "Peroxisome protein" → <strong>95.7% similar</strong></li>
-                    </ul>
-
-                    <p><strong>Percentile Ranking:</strong> Compare generated name against 12,320 background terms:</p>
-                    <ul>
-                        <li><strong>76.9%</strong> of GeneAgent names ranked in top 90th percentile</li>
-                        <li><strong>61.0%</strong> in top 98th percentile</li>
-                        <li>Demonstrates specificity: names closer to ground truth than vast majority of alternatives</li>
-                    </ul>
-                </div>
-
-                <h3>Hierarchical Similarity: Ontology-Aware Evaluation</h3>
-                <div class="concept-box">
-                    <p>Generated names may be broader concepts (ancestor terms) that are still scientifically valid.</p>
-                    <p><strong>Finding:</strong> 75.4% of gene sets with 70-90% similarity scores were actually <strong>more similar to ancestor terms</strong> than ground truth.</p>
-                    <p><strong>Example:</strong></p>
-                    <ul>
-                        <li>Ground truth: "Axial mesoderm morphogenesis" (77.2% similarity)</li>
-                        <li>Ancestor: "Mesoderm morphogenesis" (82.9% similarity ↑)</li>
-                    </ul>
-                    <p>This shows the agent correctly identified the broader biological process, which is valuable for interpretation.</p>
-                </div>
-
-                <h3>Hallucination Quantification</h3>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="number">56.0%</div>
-                        <div class="label">GPT-4 accuracy<br>(44% hallucinations)</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">80.7%</div>
-                        <div class="label">GeneAgent accuracy<br>(19.3% hallucinations)</div>
-                    </div>
-                </div>
-                <p style="text-align: center; margin-top: 15px;"><strong>Method:</strong> Compare LLM-generated enrichment terms against significant GSEA results (p ≤ 0.05). Unmatched terms = potential hallucinations.</p>
-            </div>
-
-            <!-- Applicability -->
-            <div class="content-section">
-                <h2><i class="fas fa-arrows-alt"></i> Transferability to Other Domains</h2>
-                
-                <table class="comparison-table">
-                    <thead>
-                        <tr>
-                            <th>Concept</th>
-                            <th>Transferability</th>
-                            <th>Applicable Domains</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Self-Verification Agents</strong></td>
-                            <td><span class="tag high">Very High</span></td>
-                            <td>Any scientific domain with curated databases (chemistry, physics, medicine)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Cascading Verification</strong></td>
-                            <td><span class="tag high">Very High</span></td>
-                            <td>Any multi-level reasoning task (hierarchical classification, nested predictions)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Database Masking</strong></td>
-                            <td><span class="tag high">Very High</span></td>
-                            <td>Any knowledge-grounded AI system requiring fair evaluation</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Multi-Database Synthesis</strong></td>
-                            <td><span class="tag medium">Medium-High</span></td>
-                            <td>Medicine, law, climate science (knowledge-intensive domains)</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Semantic Similarity Evaluation</strong></td>
-                            <td><span class="tag medium">Medium-High</span></td>
-                            <td>Biomedical NLP, ontology-rich domains</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Hallucination Quantification</strong></td>
-                            <td><span class="tag high">Very High</span></td>
-                            <td>Any domain with gold-standard databases or benchmarks</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="highlight-box">
-                    <strong><i class="fas fa-lightbulb"></i> Key Takeaway:</strong> 
-                    The core principles (autonomous verification, multi-source evidence, ontology-aware evaluation) are domain-agnostic. The specific databases and evaluation metrics need to be adapted to your domain.
-                </div>
-            </div>
-
-            <!-- Implementation Considerations -->
-            <div class="content-section">
-                <h2><i class="fas fa-cogs"></i> Implementation Considerations</h2>
-                
-                <h3>What You Need</h3>
-                <ol>
-                    <li><strong>LLM Backend:</strong> GPT-4 or equivalent (Claude, Gemini, open-source models)</li>
-                    <li><strong>Domain Databases:</strong> 3-5 curated knowledge sources with API access</li>
-                    <li><strong>Evaluation Dataset:</strong> 100+ examples with ground truth for validation</li>
-                    <li><strong>Prompt Engineering:</strong> Task-specific prompts for generation, claim extraction, and verification</li>
-                </ol>
-
-                <h3>Limitations & Challenges</h3>
-                <div class="concept-box">
-                    <ul>
-                        <li><strong>Database Coverage:</strong> Agent may reject correct answers if databases lack relevant information</li>
-                        <li><strong>Database Selection:</strong> Agent might query irrelevant databases, leading to incorrect endorsements</li>
-                        <li><strong>Computational Cost:</strong> Multiple API calls add latency (15,903 claims = 19,273 database queries)</li>
-                        <li><strong>Single Model:</strong> GeneAgent only tested with GPT-4; performance with other LLMs unknown</li>
-                    </ul>
-                </div>
-
-                <h3>Open Research Questions</h3>
-                <ol>
-                    <li>How does self-verification scale to other biological tasks (variant interpretation, drug response)?</li>
-                    <li>What's the optimal trade-off between verification thoroughness and efficiency?</li>
-                    <li>Can self-verification work with open-source LLMs (Llama, Mistral)?</li>
-                    <li>How to incorporate rapidly evolving knowledge (new papers published weekly)?</li>
-                </ol>
-            </div>
-
-            <!-- Related Concepts -->
-            <div class="content-section">
-                <h2><i class="fas fa-link"></i> Related Concepts</h2>
-                
-                <div class="concept-box">
-                    <h3>In This Handbook:</h3>
-                    <ul>
-                        <li><strong>Foundation Models:</strong> 
-                            <a href="dual-decoder-heads.html">TranscriptFormer Dual Decoder Heads</a> - 
-                            Understanding transformer architectures for biological data
-                        </li>
-                        <li><strong>Foundation Models:</strong> 
-                            <a href="two-stage-pretraining.html">Two-Stage Pretraining Strategies</a> - 
-                            Another multi-stage approach to model development
-                        </li>
-                        <li><strong>Machine Learning:</strong> 
-                            <a href="../machine-learning/model-evaluation.html">Model Evaluation</a> (Coming Soon) - 
-                            Comprehensive evaluation methodologies
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="concept-box">
-                    <h3>Related Work in Literature:</h3>
-                    <ul>
-                        <li><strong>GeneGPT (Jin et al. 2024):</strong> LLM tool-use for genomics Q&A (predecessor without self-verification)</li>
-                        <li><strong>CRITIC (Gou et al. 2024):</strong> Self-correction via tool-interactive critiquing (general framework)</li>
-                        <li><strong>SPINDOCTOR (Joachimiak et al. 2024):</strong> Gene synopsis summarization (complementary approach)</li>
-                        <li><strong>AutoGen (Wu et al. 2024):</strong> Multi-agent LLM applications (general framework)</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Action Items -->
-            <div class="content-section">
-                <h2><i class="fas fa-tasks"></i> How to Apply This</h2>
-                
-                <div class="concept-box">
-                    <h3>For Your Research:</h3>
-                    <ol>
-                        <li><strong>Identify verifiable claims</strong> in your LLM outputs (predictions, explanations, hypotheses)</li>
-                        <li><strong>Map to knowledge sources</strong> in your domain (databases, ontologies, literature)</li>
-                        <li><strong>Design verification protocol:</strong>
-                            <ul>
-                                <li>What constitutes "supported" vs "refuted"?</li>
-                                <li>How to handle ambiguous or partial matches?</li>
-                                <li>Which databases to prioritize for different claim types?</li>
-                            </ul>
-                        </li>
-                        <li><strong>Implement masking strategy</strong> to prevent data leakage during evaluation</li>
-                        <li><strong>Validate with experts</strong> on a sample (10-20 examples) to ensure correct decisions</li>
-                    </ol>
-                </div>
-
-                <div class="highlight-box">
-                    <strong><i class="fas fa-star"></i> Start Simple:</strong> 
-                    Begin with single-database verification on a small test set (20-50 examples). Once working, expand to multi-database synthesis and larger datasets.
-                </div>
-            </div>
-
-            <a href="../index.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Handbook</a>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
-            <p>Part of <a href="../../" style="color: #FCD1D2;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
-            <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
-        </div>
-    </footer>
-</body>
-</html>
+                            <td>
