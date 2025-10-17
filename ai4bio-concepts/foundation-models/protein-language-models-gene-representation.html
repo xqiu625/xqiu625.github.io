@@ -9,7 +9,7 @@
     <style>
         body {
             font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8d5d9 100%);
             line-height: 1.8;
             color: #333;
             margin: 0;
@@ -43,11 +43,11 @@
             font-size: 16px;
         }
         .home-link {
-            color: #FCD1D2 !important;
+            color: #B01C3C !important;
         }
         .header {
-            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 50%, #DCCBD8 100%);
-            color: #333;
+            background: linear-gradient(135deg, #7D1439 0%, #8F193E 50%, #B01C3C 100%);
+            color: white;
             padding: 40px;
             border-radius: 15px;
             margin: 30px 0;
@@ -56,23 +56,23 @@
         .header h1 {
             margin: 0 0 10px 0;
             font-size: 2.5em;
-            color: #000;
+            color: white;
         }
         .header p {
             margin: 5px 0;
             font-size: 1.1em;
-            color: #333;
+            color: #f0e5e8;
         }
         .paper-ref {
-            background: rgba(255,255,255,0.6);
+            background: rgba(255,255,255,0.15);
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
             font-size: 0.95em;
-            color: #333;
+            color: white;
         }
         .paper-ref a {
-            color: #9fB7E6;
+            color: #f0e5e8;
             text-decoration: underline;
         }
         .content-section {
@@ -80,46 +80,46 @@
             border-radius: 15px;
             padding: 30px;
             margin: 25px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(125, 20, 57, 0.15);
         }
         .content-section h2 {
-            color: #FCD1D2;
-            border-bottom: 3px solid #FCD1D2;
+            color: #7D1439;
+            border-bottom: 3px solid #B01C3C;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
         .content-section h3 {
-            color: #DCCBD8;
+            color: #8F193E;
             margin-top: 25px;
         }
         .concept-box {
             background: #f8f9fa;
-            border-left: 5px solid #FCD1D2;
+            border-left: 5px solid #B01C3C;
             padding: 20px;
             margin: 20px 0;
             border-radius: 5px;
         }
         .concept-box.problem {
-            border-left-color: #FCD1D2;
+            border-left-color: #B01C3C;
         }
         .concept-box.solution {
-            border-left-color: #BCDAEE;
+            border-left-color: #7D1439;
         }
         .concept-box.comparison {
-            border-left-color: #FCED92;
+            border-left-color: #8F193E;
         }
         .concept-box.implementation {
-            border-left-color: #9fB7E6;
+            border-left-color: #B01C3C;
         }
         .highlight-box {
             background: #fff3cd;
-            border: 1px solid #ffc107;
+            border: 2px solid #B01C3C;
             border-radius: 8px;
             padding: 15px;
             margin: 15px 0;
         }
         .highlight-box strong {
-            color: #856404;
+            color: #7D1439;
         }
         .stats-grid {
             display: grid;
@@ -128,7 +128,7 @@
             margin: 20px 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #FCD1D2 0%, #DCCBD8 100%);
+            background: linear-gradient(135deg, #8F193E 0%, #B01C3C 100%);
             color: white;
             padding: 20px;
             border-radius: 10px;
@@ -155,7 +155,7 @@
             border-bottom: 1px solid #ddd;
         }
         .comparison-table th {
-            background: #FCD1D2;
+            background: #B01C3C;
             color: white;
         }
         .comparison-table tr:hover {
@@ -163,7 +163,7 @@
         }
         .visual-diagram {
             background: white;
-            border: 2px solid #FCD1D2;
+            border: 2px solid #B01C3C;
             border-radius: 10px;
             padding: 20px;
             margin: 20px 0;
@@ -171,7 +171,7 @@
         }
         .pipeline-step {
             display: inline-block;
-            background: linear-gradient(135deg, #9fB7E6 0%, #FCD1D2 100%);
+            background: linear-gradient(135deg, #7D1439 0%, #B01C3C 100%);
             color: white;
             padding: 15px 25px;
             margin: 10px;
@@ -185,13 +185,13 @@
             top: 50%;
             transform: translateY(-50%);
             font-size: 1.5em;
-            color: #FCD1D2;
+            color: #B01C3C;
         }
         .pipeline-step:last-child:after {
             content: '';
         }
         .protein-sequence {
-            background: #e8f4f8;
+            background: #fce8ed;
             padding: 15px;
             border-radius: 8px;
             font-family: 'Courier New', monospace;
@@ -199,7 +199,7 @@
             letter-spacing: 2px;
             word-wrap: break-word;
             margin: 15px 0;
-            border-left: 4px solid #9fB7E6;
+            border-left: 4px solid #7D1439;
         }
         .embedding-viz {
             background: #f8f9fa;
@@ -210,7 +210,7 @@
         }
         .embedding-box {
             display: inline-block;
-            background: linear-gradient(135deg, #9fB7E6 0%, #DCCBD8 100%);
+            background: linear-gradient(135deg, #7D1439 0%, #8F193E 100%);
             color: white;
             padding: 10px 15px;
             margin: 5px;
@@ -221,18 +221,25 @@
             display: inline-block;
             margin: 20px 0;
             padding: 10px 20px;
-            background: #FCD1D2;
+            background: #B01C3C;
             color: white;
             text-decoration: none;
             border-radius: 8px;
             transition: all 0.3s ease;
         }
         .back-link:hover {
-            background: #DCCBD8;
+            background: #8F193E;
             transform: translateX(-5px);
         }
         ul, ol {
             line-height: 1.8;
+        }
+        footer a {
+            color: #B01C3C;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #7D1439;
         }
         @media (max-width: 768px) {
             .header h1 {
@@ -768,7 +775,7 @@
 
     <footer>
         <div class="container" style="text-align: center; margin-top: 40px; padding: 20px; color: #666;">
-            <p>Part of <a href="../../" style="color: #FCD1D2;">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
+            <p>Part of <a href="../../">Xinru Qiu's</a> AI4Bio Concepts Handbook</p>
             <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
         </div>
     </footer>
