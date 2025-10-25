@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trajectory Inference Methods - Overview</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .navbar-nav li {
+            margin: 5px 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .navbar-nav a:hover {
+            color: #189177;
+        }
+        .home-link {
+            color: #189177 !important;
+        }
+        .header {
+            background: linear-gradient(135deg, #189177 0%, #48B09E 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(24, 145, 119, 0.3);
+        }
+        .header h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.5em;
+        }
+        .header .subtitle {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+        .content-section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .content-section h2 {
+            color: #189177;
+            border-bottom: 3px solid #189177;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .content-section h3 {
+            color: #0D8A85;
+            margin-top: 25px;
+        }
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+        .method-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+        .method-card:hover {
+            border-color: #189177;
+            box-shadow: 0 4px 12px rgba(24, 145, 119, 0.2);
+            transform: translateY(-3px);
+        }
+        .method-card h4 {
+            color: #189177;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        .method-card .year {
+            display: inline-block;
+            background: #189177;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+        .method-card .journal {
+            font-style: italic;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .method-card .description {
+            color: #555;
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+        .method-card .key-features {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+        .method-card .key-features li {
+            padding-left: 20px;
+            position: relative;
+            margin: 8px 0;
+            font-size: 0.95em;
+            color: #666;
+        }
+        .method-card .key-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .method-card .links {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .method-card .links a {
+            display: inline-block;
+            padding: 6px 12px;
+            margin: 3px;
+            background: #189177;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 0.9em;
+            transition: background 0.3s ease;
+        }
+        .method-card .links a:hover {
+            background: #0D8A85;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .comparison-table th {
+            background: #189177;
+            color: white;
+            font-weight: bold;
+        }
+        .comparison-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .comparison-table tr:hover {
+            background: #f0f7ff;
+        }
+        .yes-icon {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .no-icon {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .decision-tree {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            border-left: 5px solid #189177;
+        }
+        .decision-tree h4 {
+            color: #189177;
+            margin-top: 0;
+        }
+        .decision-option {
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+        .decision-option strong {
+            color: #0D8A85;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 5px solid #e67e22;
+            margin: 20px 0;
+        }
+        .highlight-box h4 {
+            color: #d35400;
+            margin-top: 0;
+        }
+        .feature-highlight {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="navbar-nav">
+            <li><a href="../../index.html" class="home-link">🏠 Home</a></li>
+            <li><a href="../index.html">Learning Hub</a></li>
+            <li><a href="#">Trajectory Inference</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Trajectory Inference Methods</h1>
+            <p class="subtitle">A comprehensive guide to computational tools for reconstructing cellular developmental trajectories</p>
+        </div>
+
+        <div class="content-section">
+            <h2>📋 Overview</h2>
+            <p>Trajectory inference (TI) methods reconstruct the dynamic processes of cellular differentiation, development, and state transitions from single-cell data. These computational approaches allow researchers to understand how cells progress through different states over time, identify key transition points, and discover the genes that drive these changes.</p>
+            
+            <div class="highlight-box">
+                <h4>🎯 Key Considerations</h4>
+                <p>Selecting the right trajectory inference method depends on several factors:</p>
+                <ul>
+                    <li><strong>Dataset size:</strong> From thousands to millions of cells</li>
+                    <li><strong>Data type:</strong> Standard scRNA-seq, spatial, multimodal, or temporal</li>
+                    <li><strong>Experimental design:</strong> Single snapshot vs. multiple timepoints</li>
+                    <li><strong>Biological complexity:</strong> Linear, branching, cyclical, or disconnected trajectories</li>
+                    <li><strong>Computational resources:</strong> Available memory and processing power</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>🔬 Major Method Categories</h2>
+            
+            <h3>1. RNA Velocity-Based Methods</h3>
+            <p>These methods infer future cell states by modeling the relationship between unspliced and spliced mRNA:</p>
+            
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>velocyto</h4>
+                    <span class="year">2018</span>
+                    <p class="journal">Nature</p>
+                    <p class="description">The pioneering RNA velocity method that introduced the concept of using splicing dynamics to predict future cell states.</p>
+                    <ul class="key-features">
+                        <li>First RNA velocity implementation</li>
+                        <li>Steady-state model assumption</li>
+                        <li>Works with standard scRNA-seq protocols</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Estimates RNA velocity by modeling splicing kinetics under steady-state assumptions. Calculates velocity as v = u - γs where u is unspliced mRNA, s is spliced mRNA, and γ is the degradation rate fitted via linear regression. Projects velocities onto PCA/t-SNE/UMAP embeddings to visualize cell state transitions.
+                    </div>
+                    <div class="links">
+                        <a href="http://velocyto.org/" target="_blank">Website</a>
+                        <a href="https://github.com/velocyto-team/velocyto.py" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41586-018-0414-6" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>scVelo</h4>
+                    <span class="year">2020</span>
+                    <p class="journal">Nature Biotechnology</p>
+                    <p class="description">An improved RNA velocity framework with dynamical modeling that accounts for transcriptional induction, repression, and steady-state. Most widely used velocity method.</p>
+                    <ul class="key-features">
+                        <li>Dynamical and stochastic models</li>
+                        <li>Improved accuracy over velocyto</li>
+                        <li>Latent time estimation</li>
+                        <li>Driver gene identification</li>
+                        <li>Compatible with Scanpy ecosystem</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Models RNA velocity using dynamical system of unspliced (u) and spliced (s) mRNA: du/dt = α - βu, ds/dt = βu - γs, where α is transcription rate, β is splicing rate, and γ is degradation rate. Learns gene-specific kinetic parameters via expectation-maximization, then projects velocity vectors onto low-dimensional embeddings.
+                    </div>
+                    <div class="links">
+                        <a href="https://scvelo.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/theislab/scvelo" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41587-020-0591-3" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>veloVI</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">Nature Methods</p>
+                    <p class="description">Probabilistic RNA velocity inference using variational inference with uncertainty quantification.</p>
+                    <ul class="key-features">
+                        <li>Deep generative modeling framework</li>
+                        <li>Accounts for technical noise</li>
+                        <li>Uncertainty estimates for velocity</li>
+                        <li>Better handling of low counts</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Uses variational autoencoders (VAEs) to model splicing dynamics probabilistically. Learns latent variables for transcriptional state and kinetic parameters while accounting for technical noise. Provides uncertainty quantification by sampling from posterior distributions of both velocity direction (intrinsic) and future states (extrinsic).
+                    </div>
+                    <div class="links">
+                        <a href="https://velovi.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/YosefLab/velovi" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41592-023-01994-w" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>UniTVelo</h4>
+                    <span class="year">2022</span>
+                    <p class="journal">Nature Communications</p>
+                    <p class="description">Unified RNA velocity framework using unified latent time modeling across the transcriptome via Radial Basis Functions.</p>
+                    <ul class="key-features">
+                        <li>Unified latent time estimation</li>
+                        <li>Phase portraits for visualization</li>
+                        <li>Top-down time modeling approach</li>
+                        <li>Improved stability in velocity estimates</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Uses Radial Basis Functions (RBFs) to learn a unified latent time shared across all genes, moving from gene-specific to transcriptome-wide temporal modeling. Fits splicing dynamics to this shared time coordinate, improving consistency across genes and reducing over-fitting from noisy gene-specific estimates.
+                    </div>
+                    <div class="links">
+                        <a href="https://unitvelo.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/StatBiomed/UniTVelo" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41467-022-34188-7" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>2. Optimal Transport-Based Methods</h3>
+            <p>These methods use optimal transport theory to match cells across conditions or timepoints:</p>
+            
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>Waddington-OT</h4>
+                    <span class="year">2019</span>
+                    <p class="journal">Cell</p>
+                    <p class="description">Uses optimal transport to infer developmental trajectories and fate probabilities across timepoints.</p>
+                    <ul class="key-features">
+                        <li>Temporal trajectory reconstruction</li>
+                        <li>Fate probability predictions</li>
+                        <li>Perturbation analysis</li>
+                        <li>Requires multiple timepoints</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Computes optimal transport maps between consecutive time points by minimizing Wasserstein distance with entropy regularization (Sinkhorn algorithm). Models development as a sequence of transport maps, allowing computation of cell fate probabilities and ancestor/descendant relationships across temporal data.
+                    </div>
+                    <div class="links">
+                        <a href="https://broadinstitute.github.io/wot/" target="_blank">Documentation</a>
+                        <a href="https://github.com/broadinstitute/wot" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1016/j.cell.2019.01.006" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>MOSCOT</h4>
+                    <span class="year">2025</span>
+                    <p class="journal">Nature (preprint 2023)</p>
+                    <p class="description">Multi-Omics Single-Cell Optimal Transport - the most scalable OT framework, handling over 1.7 million cells with linear time complexity.</p>
+                    <ul class="key-features">
+                        <li>Atlas-scale: handles 500K+ cells efficiently</li>
+                        <li>Multi-omics integration (RNA, ATAC, protein)</li>
+                        <li>Spatial and spatiotemporal mapping</li>
+                        <li>Temporal trajectory inference</li>
+                        <li>Neural OT solvers for speed</li>
+                        <li>Handles unbalanced problems (growth/death)</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Uses entropic Gromov-Wasserstein optimal transport with low-rank factorizations for linear time/memory complexity. Employs neural network parameterizations for transport maps and integrates multiple modalities through fused optimal transport. Supports unbalanced formulations via Kullback-Leibler divergence for modeling cell proliferation/death.
+                    </div>
+                    <div class="links">
+                        <a href="https://moscot-tools.org/" target="_blank">Website</a>
+                        <a href="https://github.com/theislab/moscot" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41586-024-08453-2" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>GENOT</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">NeurIPS 2024</p>
+                    <p class="description">Gene-regulated neural optimal transport with uncertainty quantification for trajectory inference using flow matching.</p>
+                    <ul class="key-features">
+                        <li>Stochastic OT framework</li>
+                        <li>Gene regulatory modeling</li>
+                        <li>Handles unbalanced transport</li>
+                        <li>Cross-modality translation</li>
+                        <li>Uncertainty quantification</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Learns stochastic transport plans using entropic Wasserstein and Gromov-Wasserstein flow matching. Neural networks parameterize velocity fields that interpolate between distributions. Provides uncertainty estimates through stochastic sampling and supports unbalanced formulations for modeling growth dynamics.
+                    </div>
+                    <div class="links">
+                        <a href="https://genot.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/StatBiomed/GENOT" target="_blank">GitHub</a>
+                        <a href="https://proceedings.neurips.cc/paper_files/paper/2024" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>3. Graph-Based & Pseudotime Methods</h3>
+            <p>Traditional approaches that construct trajectories using dimensionality reduction and graph structures:</p>
+            
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>Monocle 3</h4>
+                    <span class="year">2019</span>
+                    <p class="journal">Nature</p>
+                    <p class="description">Advanced trajectory inference framework using UMAP and principal graphs, designed to scale to millions of cells and handle discontinuous trajectories. Used to analyze the Mouse Organogenesis Cell Atlas (2 million cells).</p>
+                    <ul class="key-features">
+                        <li>Ultra-scalable: handles millions of cells efficiently</li>
+                        <li>UMAP-based dimensionality reduction</li>
+                        <li>Discontinuous trajectories and convergent fates</li>
+                        <li>Louvain partitioning for cell communities</li>
+                        <li>Principal graph learning with SimplePPT</li>
+                        <li>Loop detection for cyclical trajectories</li>
+                        <li>Moran's I test for spatial autocorrelation</li>
+                        <li>Pseudotime via geodesic distance</li>
+                        <li>Integrated with Seurat/Scanpy</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> (1) Dimensionality reduction via UMAP for fast embedding of large datasets, (2) Louvain clustering for initial partitioning, (3) Enhanced SimplePPT algorithm learns principal graphs allowing disconnected components and convergent paths, (4) Pseudotime computed as geodesic distance along learned graph from root cells, (5) Differential expression via Moran's I statistic for spatial autocorrelation.
+                    </div>
+                    <div class="links">
+                        <a href="http://cole-trapnell-lab.github.io/monocle-release/monocle3/" target="_blank">Documentation</a>
+                        <a href="https://github.com/cole-trapnell-lab/monocle3" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41586-019-0969-x" target="_blank">Paper</a>
+                        <a href="http://atlas.gs.washington.edu/mouse-rna" target="_blank">MOCA Atlas</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>Monocle 2</h4>
+                    <span class="year">2017</span>
+                    <p class="journal">Nature Methods</p>
+                    <p class="description">Earlier version using reversed graph embedding for trajectory reconstruction. Still widely used for smaller datasets.</p>
+                    <ul class="key-features">
+                        <li>DDRTree algorithm</li>
+                        <li>Branch point identification</li>
+                        <li>Differential expression testing along pseudotime</li>
+                        <li>Works well for less than 50K cells</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Uses DDRTree (Discriminative Dimensionality Reduction via Tree) algorithm which performs reversed graph embedding. Constructs a principal tree in reduced dimensional space that captures branching differentiation paths. Assumes continuous manifold structure without allowing convergence or disconnected components.
+                    </div>
+                    <div class="links">
+                        <a href="https://cole-trapnell-lab.github.io/monocle-release/" target="_blank">Documentation</a>
+                        <a href="https://github.com/cole-trapnell-lab/monocle-release" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/nmeth.4402" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>Slingshot</h4>
+                    <span class="year">2018</span>
+                    <p class="journal">BMC Genomics</p>
+                    <p class="description">Flexible trajectory inference using cluster-based minimum spanning trees and principal curves.</p>
+                    <ul class="key-features">
+                        <li>Works with any dimensionality reduction</li>
+                        <li>Cluster-based approach</li>
+                        <li>Multiple lineage support</li>
+                        <li>Well-integrated with Bioconductor</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Two-stage approach: (1) Constructs minimum spanning tree on cluster centroids to identify lineage structure, (2) Fits simultaneous principal curves through low-dimensional space for each lineage, allowing shared early segments. Assigns cells pseudotime along curves and lineage weights based on proximity.
+                    </div>
+                    <div class="links">
+                        <a href="https://bioconductor.org/packages/slingshot/" target="_blank">Bioconductor</a>
+                        <a href="https://github.com/kstreet13/slingshot" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1186/s12864-018-4772-0" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>PAGA</h4>
+                    <span class="year">2019</span>
+                    <p class="journal">Genome Biology</p>
+                    <p class="description">Partition-based graph abstraction that creates coarse-grained trajectory representations. Exceptionally scalable: 1.3M cells in 90 seconds.</p>
+                    <ul class="key-features">
+                        <li>Graph abstraction approach</li>
+                        <li>Handles complex topologies</li>
+                        <li>Integrated with Scanpy</li>
+                        <li>Good for exploratory analysis</li>
+                        <li>130× faster than UMAP</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Creates partition-based graph where nodes represent cell clusters and edges represent connectivity strength. Computes edge weights using statistical tests on inter-cluster vs. intra-cluster distances. Preserves global topology while allowing multi-resolution analysis through hierarchical clustering. Can initialize UMAP for faster embedding.
+                    </div>
+                    <div class="links">
+                        <a href="https://scanpy.readthedocs.io/en/stable/api/scanpy.tl.paga.html" target="_blank">Documentation</a>
+                        <a href="https://doi.org/10.1186/s13059-019-1663-x" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>4. Hybrid & Multi-Method Approaches</h3>
+            <p>Methods that combine multiple signals or integrate different trajectory inference approaches:</p>
+            
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>CellRank 2</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">Nature Methods</p>
+                    <p class="description">Unified framework combining RNA velocity, pseudotime, gene expression, and experimental time for robust fate predictions. Scales to millions of cells.</p>
+                    <ul class="key-features">
+                        <li>Multi-view learning approach</li>
+                        <li>Combines velocity, pseudotime, and real time</li>
+                        <li>Handles multimodal data</li>
+                        <li>Terminal state identification</li>
+                        <li>Driver gene discovery</li>
+                        <li>Integrated with Scanpy ecosystem</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Modular framework with kernels for different data views (velocity, pseudotime, real time, metabolic labeling). Combines kernels via weighted aggregation into cell-cell transition matrix. Computes fate probabilities using Markov chain analysis and identifies terminal states via eigenvector decomposition. 30× faster than CellRank 1.
+                    </div>
+                    <div class="links">
+                        <a href="https://cellrank.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/theislab/cellrank" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41592-024-02303-9" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>DELVE</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">Nature Communications</p>
+                    <p class="description">Feature selection for trajectory analysis that identifies genes driving dynamic processes.</p>
+                    <ul class="key-features">
+                        <li>Dynamic feature selection</li>
+                        <li>Identifies trajectory-driving genes</li>
+                        <li>Works with velocity or pseudotime</li>
+                        <li>Removes redundant features</li>
+                        <li>Improves downstream analysis</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Unsupervised bottom-up approach identifying dynamic gene/protein modules. Uses graph-based methods to find features that robustly recapitulate cellular trajectories while removing redundancy. Works across modalities (scRNA-seq, mass cytometry, imaging) by evaluating feature contribution to trajectory preservation.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/jranek/delve" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41467-024-46773-z" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>5. Specialized Methods</h3>
+            <p>Purpose-built tools for specific biological questions or data types:</p>
+            
+            <div class="method-grid">
+                <div class="method-card">
+                    <h4>CASi</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">Scientific Reports</p>
+                    <p class="description">Discovers novel cell types and subpopulations along developmental trajectories using cross-timepoint analysis.</p>
+                    <ul class="key-features">
+                        <li>Novel cell type discovery</li>
+                        <li>Temporal single-cell data</li>
+                        <li>Handles rare populations</li>
+                        <li>Annotates discovered types</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Neural network architecture for cross-timepoint annotation and automatic feature selection. Detects potentially novel cell types that emerge over developmental time by comparing cell type distributions across timepoints. Uses attention mechanisms to identify discriminative features for each discovered population.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/GreenleafLab/CASi" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41598-024-58566-x" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>sciCSR</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">Nature Methods (online Nov 2023)</p>
+                    <p class="description">Specialized method for B cell development using class-switch recombination as molecular clock.</p>
+                    <ul class="key-features">
+                        <li>B cell trajectory inference</li>
+                        <li>Uses CSR as temporal marker</li>
+                        <li>High temporal resolution</li>
+                        <li>Links phenotype to maturation</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Leverages class-switch recombination (CSR) events as intrinsic molecular timestamps. Constructs Markov state model of B cell differentiation states based on immunoglobulin isotype expression patterns. Achieves ~0.9 cosine similarity in BCR isotype predictions by modeling CSR dynamics.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/ElliottSeer/sciCSR" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41592-023-02060-1" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>TIGON</h4>
+                    <span class="year">2024</span>
+                    <p class="journal">Nature Machine Intelligence</p>
+                    <p class="description">Models growth dynamics explicitly during trajectory inference to account for proliferation using dynamic unbalanced optimal transport.</p>
+                    <ul class="key-features">
+                        <li>Growth rate modeling</li>
+                        <li>Proliferation-aware trajectories</li>
+                        <li>Birth/death process integration</li>
+                        <li>Corrects for cell cycle effects</li>
+                        <li>Infers gene regulatory networks</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Uses dynamic unbalanced optimal transport based on Wasserstein-Fisher-Rao distance to simultaneously reconstruct trajectories AND model population growth/death. Employs neural ODEs implemented in PyTorch. Learns cell-cell communication and gene regulatory networks while accounting for proliferation dynamics.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/aforr/TIGON" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s42256-023-00763-w" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>PRESCIENT</h4>
+                    <span class="year">2021</span>
+                    <p class="journal">Nature Communications</p>
+                    <p class="description">Learns potential landscapes from temporal single-cell data to predict differentiation trajectories. Developed by Gifford lab at MIT CSAIL.</p>
+                    <ul class="key-features">
+                        <li>Potential landscape modeling</li>
+                        <li>Trajectory perturbation analysis</li>
+                        <li>In silico perturbations</li>
+                        <li>Requires temporal data</li>
+                        <li>Waddington landscape framework</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Models cell differentiation as diffusion over Waddington potential landscapes. Neural networks parameterize potential functions, learning landscape geometry from temporal data. Predicts cell trajectories through gradient descent on learned potentials. Enables in silico perturbation analysis by modifying landscape topography.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/gifford-lab/prescient" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41467-021-23518-w" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>FLOW-MAP</h4>
+                    <span class="year">2020</span>
+                    <p class="journal">Nature Protocols</p>
+                    <p class="description">Trajectory visualization tool optimized for flow and mass cytometry data using force-directed graph layouts.</p>
+                    <ul class="key-features">
+                        <li>Graph-based layout</li>
+                        <li>Optimized for flow/CyTOF</li>
+                        <li>Interactive visualization</li>
+                        <li>Handles large datasets</li>
+                        <li>Force-directed embedding</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Constructs k-nearest neighbor graph with edges constrained to sequential timepoints. Applies ForceAtlas2 force-directed layout algorithm to create 2D visualization preserving temporal ordering. Supports density-dependent downsampling and hierarchical clustering for scalability across variable dataset sizes.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/zunderlab/FLOWMAP" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41596-019-0246-3" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>PHLOWER</h4>
+                    <span class="year">2025</span>
+                    <p class="journal">Nature Methods</p>
+                    <p class="description">Hierarchical lineage tree inference with probabilistic modeling for complex multi-branching developmental systems using Hodge Laplacian decomposition.</p>
+                    <ul class="key-features">
+                        <li>Hierarchical tree structures</li>
+                        <li>Probabilistic framework</li>
+                        <li>Handles uncertainty</li>
+                        <li>Complex lineage relationships (up to 26 branches)</li>
+                        <li>Multimodal RNA+ATAC support</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Uses Hodge Laplacian decomposition on simplicial complexes to infer hierarchical lineage trees. Decompose cell-cell relationships into gradient (hierarchical), curl (cyclical), and harmonic (equilibrium) components. Provides uncertainty quantification through probabilistic modeling. Works with multimodal data (RNA+ATAC).
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/dpeerlab/PHLOWER" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41592-025-02870-5" target="_blank">Paper</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>📊 Detailed Method Comparison</h2>
+            <p>This table provides a comprehensive comparison of key features across different trajectory inference methods:</p>
+            
+            <div style="overflow-x: auto;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Year</th>
+                            <th>Max Scale</th>
+                            <th>Multiple Timepoints</th>
+                            <th>Single Snapshot</th>
+                            <th>Spatial Data</th>
+                            <th>Multimodal</th>
+                            <th>Growth/Death</th>
+                            <th>Key Strength</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Monocle 3</td>
+                            <td>2019</td>
+                            <td>2M+ cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td>Ultra-scalable, discontinuous trajectories, convergent fates</td>
+                        </tr>
+                        <tr>
+                            <td>Monocle 2</td>
+                            <td>2017</td>
+                            <td>~50K cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>DDRTree algorithm, well-established</td>
+                        </tr>
+                        <tr>
+                            <td>MOSCOT</td>
+                            <td>2025</td>
+                            <td>1.7M+ cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td>Most scalable OT, spatial, multimodal</td>
+                        </tr>
+                        <tr>
+                            <td>scVelo</td>
+                            <td>2020</td>
+                            <td>~100K cells</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Dynamic velocity, most popular</td>
+                        </tr>
+                        <tr>
+                            <td>GENOT</td>
+                            <td>2024</td>
+                            <td>Variable</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td>Stochastic OT, uncertainty quantification</td>
+                        </tr>
+                        <tr>
+                            <td>CellRank 2</td>
+                            <td>2024</td>
+                            <td>1.3M+ cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td>Multi-view integration</td>
+                        </tr>
+                        <tr>
+                            <td>veloVI</td>
+                            <td>2024</td>
+                            <td>~50K cells</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Uncertainty quantification</td>
+                        </tr>
+                        <tr>
+                            <td>UniTVelo</td>
+                            <td>2022</td>
+                            <td>~100K cells</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Batch integration</td>
+                        </tr>
+                        <tr>
+                            <td>CASi</td>
+                            <td>2024</td>
+                            <td>~100K cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Novel cell type discovery</td>
+                        </tr>
+                        <tr>
+                            <td>sciCSR</td>
+                            <td>2024</td>
+                            <td>~50K cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>B cell specialization</td>
+                        </tr>
+                        <tr>
+                            <td>Slingshot</td>
+                            <td>2018</td>
+                            <td>~50K cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Flexible, Bioconductor integration</td>
+                        </tr>
+                        <tr>
+                            <td>PAGA</td>
+                            <td>2019</td>
+                            <td>~200K cells</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Graph abstraction, exploratory</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>🗺️ Method Selection Guide</h2>
+            
+
+            <div class="highlight-box" style="margin-top: 30px;">
+                <h4>🎯 Quick Reference Summary</h4>
+                <ul style="line-height: 2; margin: 15px 0;">
+                    <li><strong>Single snapshot:</strong> scVelo (development) | veloVI (uncertainty) | UniTVelo (unified time)</li>
+                    <li><strong>&lt;200K cells + temporal:</strong> GENOT (stochastic/unbalanced) | PRESCIENT (landscape) | Monocle 2</li>
+                    <li><strong>200K-1M cells:</strong> MOSCOT (multimodal/spatial) | Monocle 3 (complex topologies)</li>
+                    <li><strong>&gt;1M cells:</strong> MOSCOT, Monocle 3, CellRank 2, or PAGA (atlas-scale options)</li>
+                    <li><strong>B cells:</strong> sciCSR | <strong>Novel types:</strong> CASi | <strong>Drivers:</strong> DELVE + scVelo</li>
+                    <li><strong>Cross-modality:</strong> GENOT | <strong>Multi-method:</strong> CellRank 2</li>
+                    <li><strong>Growth dynamics:</strong> TIGON or GENOT (unbalanced) | <strong>Visualization:</strong> FLOW-MAP</li>
+                    <li><strong>Complex branching/discontinuous:</strong> Monocle 3 | <strong>Convergent fates:</strong> Monocle 3</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="content-section">
+            <h2>💡 Best Practices</h2>
+            <h3>General Recommendations</h3>
+            <ul>
+                <li><strong>Start simple:</strong> Begin with scVelo for standard scRNA-seq before trying more complex methods</li>
+                <li><strong>Validate predictions:</strong> Use experimental data or known biology to validate trajectory predictions</li>
+                <li><strong>Combine methods:</strong> Tools like CellRank 2 allow integration of multiple signals</li>
+                <li><strong>Consider scale:</strong> For atlas-scale data (>500K cells), use MOSCOT or Monocle 3</li>
+                <li><strong>Quality control:</strong> Ensure high-quality data preprocessing before trajectory inference</li>
+                <li><strong>Assess topology:</strong> Use Monocle 3 for complex branching or disconnected structures</li>
+            </ul>
+
+            <h3>When to Use RNA Velocity vs Optimal Transport vs Graph-Based Methods</h3>
+            <p><strong>RNA Velocity (scVelo, veloVI):</strong></p>
+            <ul>
+                <li>Single timepoint with sufficient sequencing depth</li>
+                <li>Interested in immediate transcriptional dynamics</li>
+                <li>Need to identify driving genes</li>
+                <li>Standard droplet-based scRNA-seq</li>
+            </ul>
+
+            <p><strong>Optimal Transport (MOSCOT, GENOT):</strong></p>
+            <ul>
+                <li>Multiple experimental timepoints available</li>
+                <li>Very large datasets (&gt;200K cells)</li>
+                <li>Spatial or multimodal data</li>
+                <li>Need to model growth/death explicitly</li>
+                <li>Low sequencing depth (insufficient for velocity)</li>
+            </ul>
+
+            <p><strong>Graph-Based (Monocle 3, PAGA, Slingshot):</strong></p>
+            <ul>
+                <li>Complex developmental trajectories with multiple branches</li>
+                <li>Discontinuous trajectories or convergent developmental paths (Monocle 3)</li>
+                <li>Large-scale datasets (100K-2M+ cells with Monocle 3)</li>
+                <li>Exploratory analysis of trajectory topology (PAGA)</li>
+                <li>When data spans multiple timepoints with gaps</li>
+                <li>Need for pseudotime ordering along complex paths</li>
+            </ul>            
+        </div>        
+    </div>
+
+    <footer style="text-align: center; padding: 20px; color: #666;">
+        <p>Part of the AI4Bio Learning Hub by <a href="../../index.html" style="color: #189177;">Xinru Qiu</a></p>
+        <p style="font-size: 0.9em; margin-top: 10px;">Last updated: October 2024 | Includes comprehensive method analysis</p>
+    </footer>
+</body>
+</html>
