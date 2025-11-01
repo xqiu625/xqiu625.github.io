@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comprehensive guide to single-cell perturbation modeling and prediction methods">
+    <title>Single-Cell Perturbation Modeling & Prediction - AI4Bio Learning Hub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== BASE STYLES ===== */
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar-nav li {
+            margin: 5px 15px;
+        }
+
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav a:hover {
+            color: #189177;
+        }
+
+        .home-link {
+            color: #189177 !important;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #189177 0%, #48B09E 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(24, 145, 119, 0.3);
+        }
+
+        .header h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.8em;
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .header .description {
+            font-size: 1.05em;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ===== STATISTICS BAR ===== */
+        .stats-bar {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-left: 3px solid #189177;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #189177;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section h2 {
+            color: #189177;
+            border-bottom: 3px solid #189177;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .content-section h3 {
+            color: #0D8A85;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .content-section ul {
+            line-height: 2;
+        }
+
+        /* ===== PAPER CARDS ===== */
+        .paper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .paper-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .paper-card:hover {
+            border-color: #189177;
+            box-shadow: 0 6px 20px rgba(24, 145, 119, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .paper-card h4 {
+            color: #189177;
+            margin-top: 0;
+            font-size: 1.15em;
+            line-height: 1.4;
+        }
+
+        .paper-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .meta-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .year-badge {
+            background: #189177;
+            color: white;
+        }
+
+        .journal-badge {
+            background: #D0EDE8;
+            color: #0D5A4F;
+        }
+
+        .type-badge {
+            background: #48B09E;
+            color: white;
+        }
+
+        .paper-description {
+            color: #555;
+            line-height: 1.6;
+            margin: 12px 0;
+            font-size: 0.95em;
+        }
+
+        .key-contributions {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .key-contributions li {
+            padding-left: 22px;
+            position: relative;
+            margin: 8px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .key-contributions li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .paper-links {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .paper-links a {
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #189177, #48B09E);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .paper-links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 145, 119, 0.3);
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 30px 0;
+        }
+
+        .timeline:before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(to bottom, #189177, #48B09E);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 70px;
+            padding-bottom: 30px;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 22px;
+            top: 0;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #189177;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #189177;
+        }
+
+        .timeline-item h3 {
+            margin-top: 0;
+            color: #189177;
+        }
+
+        /* ===== HIGHLIGHT & WARNING BOXES ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #189177;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box h4 {
+            color: #189177;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .warning-box h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+
+        /* ===== TABLES ===== */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #189177, #48B09E);
+            color: white;
+            font-weight: bold;
+            position: sticky;
+            top: 0;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table td:first-child {
+            font-weight: bold;
+            color: #189177;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            background: white;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: #189177;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .paper-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table {
+                font-size: 0.85em;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 10px 8px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header .subtitle {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="../index.html" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
+                </li>
+                <li>
+                    <a href="../../">
+                        <i class="fas fa-home"></i> Xinru's Homepage
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <h1>🧬 Single-Cell Perturbation Modeling & Prediction</h1>
+            <div class="subtitle">
+                Computational Methods for Predicting Cellular Responses to Genetic & Chemical Perturbations
+            </div>
+            <p class="description">
+                A comprehensive guide to state-of-the-art approaches combining single-cell transcriptomics,
+                CRISPR screens, and machine learning to predict how cells respond to perturbations.
+                Covering methods from 2016-2025, including recent critical evaluations of foundation models.
+            </p>
+        </header>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">40+</span>
+                <div class="stat-label">Research Papers</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">9</span>
+                <div class="stat-label">Years of Innovation</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100M+</span>
+                <div class="stat-label">Cells Analyzed</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">6</span>
+                <div class="stat-label">Model Categories</div>
+            </div>
+        </div>
+
+        <!-- Core Concepts Section -->
+        <section id="foundations" class="content-section">
+            <h2>🎯 Core Concepts</h2>
+
+            <h3>The Challenge</h3>
+            <p>
+                Understanding how cells respond to perturbations (genetic knockouts, drug treatments, etc.) is
+                fundamental to biology and medicine. However:
+            </p>
+            <ul>
+                <li>
+                    <strong>Experimental Limitations:</strong> Testing all possible perturbations is prohibitively
+                    expensive and time-consuming
+                </li>
+                <li>
+                    <strong>Combinatorial Explosion:</strong> For n genes, there are n(n-1)/2 possible pairwise
+                    combinations - grows exponentially
+                </li>
+                <li>
+                    <strong>Cellular Heterogeneity:</strong> Individual cells respond differently to the same
+                    perturbation
+                </li>
+                <li>
+                    <strong>Context-Dependence:</strong> Effects vary across cell types, conditions, and genetic
+                    backgrounds
+                </li>
+                <li>
+                    <strong>Data Quality:</strong> Single-cell data is sparse, noisy, and affected by batch effects
+                </li>
+            </ul>
+
+            <h3>Key Biological Facts</h3>
+            <ul>
+                <li>
+                    Only <strong>~41% of gene perturbations</strong> have measurable transcriptome-wide effects
+                    (Replogle et al., 2022)
+                </li>
+                <li>
+                    Typical gene perturbation affects <strong>~45 genes</strong>; essential genes affect
+                    <strong>>500 genes</strong>
+                </li>
+                <li>
+                    Perturbation effects exhibit <strong>mixture distributions</strong> - some cells escape
+                    perturbation entirely
+                </li>
+                <li>Most effects are <strong>small</strong>: 86.6% below 0.01 log-fold change</li>
+                <li>
+                    <strong>Network structure matters:</strong> 77.3% of direct regulators (distance 1 in GRN)
+                    confer moderate-to-strong effects
+                </li>
+            </ul>
+
+            <h3>The Opportunity</h3>
+            <p>Computational prediction methods aim to:</p>
+            <ul>
+                <li>Predict cellular responses to <strong>unseen perturbations</strong> without experiments</li>
+                <li>
+                    Model <strong>combinatorial perturbations</strong> (e.g., gene pairs) trained only on
+                    single perturbations
+                </li>
+                <li>
+                    Enable <strong>rational experimental design</strong> by prioritizing promising perturbations
+                </li>
+                <li>Uncover <strong>mechanisms of action</strong> and genetic interactions</li>
+                <li><strong>Accelerate drug discovery</strong> by predicting compound effects</li>
+            </ul>
+        </section>
+
+        <!-- Method Categories Section -->
+        <section id="methods" class="content-section">
+            <h2>📊 Method Categories</h2>
+
+            <h3>1. Variational Autoencoder (VAE) Approaches</h3>
+            <div class="paper-grid">
+                <!-- scGen Card -->
+                <article class="paper-card">
+                    <h4>scGen - Latent Space Arithmetic</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2019</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">VAE</span>
+                    </div>
+                    <p class="paper-description">
+                        Pioneering VAE-based approach using vector arithmetic in latent space for perturbation
+                        prediction. Assumes homogeneous responses and additive perturbation effects.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>First to use VAEs for perturbation prediction</li>
+                        <li>Simple latent arithmetic: perturbed = control + perturbation_vector</li>
+                        <li>Struggles with cell-type-specific and heterogeneous responses</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41592-019-0494-8">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/theislab/scgen">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+
+                <!-- SAMS-VAE Card -->
+                <article class="paper-card">
+                    <h4>SAMS-VAE - Sparse Additive Mechanism Shifts</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">NeurIPS</span>
+                        <span class="meta-badge type-badge">VAE</span>
+                    </div>
+                    <p class="paper-description">
+                        Combines compositionality, disentanglement, and interpretability through sparse global
+                        perturbation variables. Each perturbation targets sparse subset of latent dimensions.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Sparse additive latent perturbation: z_perturbed = z_control + Σ sparse_effects</li>
+                        <li>Disentangled perturbation-specific latent subspaces</li>
+                        <li>Outperforms CPA on combinatorial perturbation tasks</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2311.02794">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/insitro/sams-vae">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+
+                <!-- CPA Card -->
+                <article class="paper-card">
+                    <h4>CPA - Compositional Perturbation Autoencoder</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Mol Sys Bio</span>
+                        <span class="meta-badge type-badge">VAE</span>
+                    </div>
+                    <p class="paper-description">
+                        Conditional VAE with additive composition of perturbation and covariate embeddings.
+                        Predicts counterfactual distributions but requires training data for each perturbation.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Compositional: combines perturbation + cell-type + dose embeddings</li>
+                        <li>Predicts full distributions, not just means</li>
+                        <li><strong>NOTE:</strong> Recent benchmarks show often doesn't outperform linear models</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.embopress.org/doi/full/10.15252/msb.202211517">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/theislab/cpa">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>2. Graph Neural Network Methods</h3>
+            <div class="paper-grid">
+                <!-- GEARS Card -->
+                <article class="paper-card">
+                    <h4>GEARS - Graph-Enhanced Gene Activation/Repression Simulator</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature Biotechnology</span>
+                        <span class="meta-badge type-badge">GNN</span>
+                    </div>
+                    <p class="paper-description">
+                        Integrates dual knowledge graphs (gene coexpression + Gene Ontology perturbation network)
+                        with deep learning. 
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Dual GNN architecture: gene coexpression graph + GO perturbation graph</li>
+                        <li>40% higher precision in predicting genetic interaction subtypes vs baselines</li>
+                        <li>Autofocus direction-aware loss + Bayesian uncertainty quantification</li>
+                        <li>
+                            <strong>Limitation:</strong> Requires genes in GO knowledge graph; degrades for poorly
+                            connected genes
+                        </li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41587-023-01905-6">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/snap-stanford/GEARS">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>3. Optimal Transport Approaches</h3>
+            <div class="paper-grid">
+                <!-- CellOT Card -->
+                <article class="paper-card">
+                    <h4>CellOT - Neural Optimal Transport</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Optimal Transport</span>
+                    </div>
+                    <p class="paper-description">
+                        Uses Input Convex Neural Networks (ICNNs) to learn transport maps between unpaired control
+                        and perturbed cell distributions. Predicts single-cell-level responses.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>ICNNs ensure convexity of transport maps for guaranteed optimality</li>
+                        <li>Handles unpaired data - doesn't need matched control/treated cells</li>
+                        <li>Predicts individual cell trajectories, not just population means</li>
+                        <li>Generalizes to holdout patients and cross-species transfer</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41592-023-01969-x">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/bunnech/cellot">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>4. Transformer & Foundation Models</h3>
+            <div class="paper-grid">
+                <!-- scGPT Card -->
+                <article class="paper-card">
+                    <h4>scGPT - Generative Pretrained Transformer for scRNA-seq</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Transformer</span>
+                    </div>
+                    <p class="paper-description">
+                        Foundation model pretrained on 33+ million cells. Uses masked gene modeling with binned
+                        expression values. Fine-tuned for perturbation prediction with adapter layers.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>100M+ parameters, generative pre-training on massive scale</li>
+                        <li>Gene-specific embeddings + expression value binning</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41592-024-02201-0">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/bowang-lab/scGPT">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+
+                <!-- scFoundation Card -->
+                <article class="paper-card">
+                    <h4>scFoundation - 100M Parameter Foundation Model</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Transformer</span>
+                    </div>
+                    <p class="paper-description">
+                        Large-scale foundation model with read-depth-aware pretraining on 50M cells.
+                        Designed for multiple downstream tasks including perturbation prediction.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>100M parameters trained on diverse cell types and tissues</li>
+                        <li>Read-depth normalization incorporated into architecture</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41592-024-02305-7">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </article>
+
+                <!-- State Card -->
+                <article class="paper-card">
+                    <h4>State: Predicting Cellular Responses Across Diverse Contexts</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv (June 2025)</span>
+                        <span class="meta-badge type-badge">Transformer</span>
+                    </div>
+                    <p class="paper-description">
+                        Set-based transformer trained on 100M+ perturbation cells across 70 cell lines and
+                        167M observational cells. Arc Institute's first virtual cell model using bidirectional
+                        attention over cell populations.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>State Embedding (SE) + State Transition (ST) architecture</li>
+                        <li>50%+ improvement in perturbation effect discrimination on Tahoe-100M</li>
+                        <li>2× accuracy in identifying true differentially expressed genes</li>
+                        <li><strong>NOTE:</strong> Released June 2025 - too recent for independent validation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.biorxiv.org/content/10.1101/2025.06.26.661135v1">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/ArcInstitute/state">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>5. GRN-Based & Physics-Inspired Methods</h3>
+            <div class="paper-grid">
+                <!-- CellOracle Card -->
+                <article class="paper-card">
+                    <h4>CellOracle - GRN-Based Perturbation Prediction</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature</span>
+                        <span class="meta-badge type-badge">GRN</span>
+                    </div>
+                    <p class="paper-description">
+                        Two-stage pipeline: (1) infer base GRN from scATAC-seq, (2) refine with scRNA-seq
+                        using Bayesian/Bagging Ridge regression. Linear propagation through GRN.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Integrates chromatin accessibility (scATAC-seq) for regulatory links</li>
+                        <li>Successfully predicted zebrafish embryogenesis trajectories</li>
+                        <li>Linear assumption: effect propagates through GRN edges</li>
+                        <li>Interpretable - directly maps to biological regulatory networks</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41586-022-05688-9">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/morris-lab/CellOracle">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+
+                <!-- CIPHER Card -->
+                <article class="paper-card">
+                    <h4>CIPHER - Linear Response Theory for Perturbations</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">Statistical Physics</span>
+                    </div>
+                    <p class="paper-description">
+                        Physics-inspired approach using linear response theory: Δx = Σu where Σ is covariance
+                        matrix from control cell fluctuations. Bayesian inference with Horseshoe priors.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Covariance matrix Σ_ij = ⟨δx_i δx_j⟩ from control cells</li>
+                        <li>R² up to 1.0 on synthetic networks with known ground truth</li>
+                        <li>Soft mode analysis reveals ~3 dominant regulatory modules</li>
+                        <li>Interpretable - connects to equilibrium statistical mechanics</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.06.27.661814">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/GoyalLab/CIPHER">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Large-Scale Datasets Section -->
+        <section class="content-section">
+            <h2>📈 Large-Scale Datasets & Platforms (2024-2025)</h2>
+            <p>
+                Industrial-scale perturbation atlases provide massive training data for foundation models.
+                These represent significant experimental advances in scale and throughput.
+            </p>
+
+            <div class="paper-grid">
+                <!-- Tahoe-100M Card -->
+                <article class="paper-card">
+                    <h4>Tahoe-100M: Giga-Scale Single-Cell Perturbation Atlas</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv (Feb 2025)</span>
+                        <span class="meta-badge type-badge">Dataset (100M cells)</span>
+                    </div>
+                    <p class="paper-description">
+                        Largest public perturbation atlas: 100M cells, 50 cancer cell lines, 1,100 drugs.
+                        Vevo Therapeutics' Mosaic platform with Parse GigaLab sequencing. Open-sourced on
+                        Arc Virtual Cell Atlas and HuggingFace.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>SNP-based genetic demultiplexing (>98% accuracy)</li>
+                        <li>1,786 sublibraries, 1.4 trillion reads</li>
+                        <li>Context-dependent drug response across diverse cancer backgrounds</li>
+                        <li><strong>VERIFIED:</strong> Real dataset, publicly available</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.02.20.639398">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://huggingface.co/datasets/tahoebio/Tahoe-100M">
+                            <i class="fas fa-database"></i> HuggingFace
+                        </a>
+                    </div>
+                </article>
+
+                <!-- scPerturb Card -->
+                <article class="paper-card">
+                    <h4>scPerturb: Harmonized Single-Cell Perturbation Data</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Repository</span>
+                    </div>
+                    <p class="paper-description">
+                        Harmonized repository of 44 datasets from 25 publications. 32 CRISPR + 9 drug datasets,
+                        average 160K cells per dataset. Introduces Energy statistics for perturbation quantification.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Standardized processing across diverse experimental platforms</li>
+                        <li>E-statistics framework for perturbation effect quantification</li>
+                        <li>Unified access through scperturb.org</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41592-023-02144-y">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://scperturb.org">
+                            <i class="fas fa-database"></i> Website
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Replogle et al. Card -->
+                <article class="paper-card">
+                    <h4>Replogle et al. 2022: Genome-Wide Perturb-seq</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span>
+                        <span class="meta-badge journal-badge">Cell</span>
+                        <span class="meta-badge type-badge">Dataset</span>
+                    </div>
+                    <p class="paper-description">
+                        Landmark genome-wide study: K562 (>2.5M cells, 9,867 genes targeted with CRISPRi),
+                        RPE1 Essential. Key finding: only 41% of perturbations show measurable transcriptome-wide effects.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>First genome-wide single-cell perturbation screen</li>
+                        <li>Revealed sparsity of perturbation effects</li>
+                        <li>Established standards for large-scale Perturb-seq</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1016/j.cell.2022.05.013">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://gwps.wi.mit.edu">
+                            <i class="fas fa-database"></i> Data Portal
+                        </a>
+                    </div>
+                </article>
+
+                <!-- X-Atlas/Orion Card -->
+                <article class="paper-card">
+                    <h4>X-Atlas/Orion: Genome-Wide Perturb-seq via FiCS Platform</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">Platform (8M cells)</span>
+                    </div>
+                    <p class="paper-description">
+                        Fix-Cryopreserve-ScRNAseq platform achieving 8M cells targeting all human protein-coding genes.
+                        sgRNA abundance as dose-dependent proxy (R=0.91 with KD efficiency).
+                    </p>
+                    <ul class="key-contributions">
+                        <li>DSP fixation + superloading (5x throughput)</li>
+                        <li>Hamilton automation removes operator variability</li>
+                        <li>140+ day cryopreservation stability</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.06.11.659105">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://plus.figshare.com/articles/dataset/29190726">
+                            <i class="fas fa-database"></i> Data
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Mixscale Card -->
+                <article class="paper-card">
+                    <h4>Mixscale: Systematic Reconstruction of Molecular Pathway Signatures</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Cell Biology</span>
+                        <span class="meta-badge type-badge">Method + Dataset</span>
+                    </div>
+                    <p class="paper-description">
+                        Continuous quantification of perturbation strength replacing binary classification. Systematic
+                        pathway profiling across 6 cell lines × 5 signaling contexts (2.6M cells).
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Mixscale scoring: s_i = p_i × (p̄_r - p̄_NT)</li>
+                        <li>Weighted differential expression (wmvReg)</li>
+                        <li>93% replication rate vs 84-89% (standard methods)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41556-025-01622-z">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/satijalab/Mixscale">
+                            <i class="fab fa-github"></i> Code
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Benchmarking Section -->
+        <section class="content-section">
+            <h2>📊 Benchmarking & Evaluation (2024-2025)</h2>
+     
+
+            <div class="paper-grid">
+                <!-- Critical Benchmark Card -->
+                <article class="paper-card">
+                    <h4>Ahlmann-Eltze, Huber & Anders: Critical Benchmark of Foundation Models</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Benchmark</span>
+                    </div>
+                
+                    <ul class="key-contributions">
+                        <li>Linear additive model often has LOWER MSE than foundation models</li>
+                        <li>Detected mode collapse: predictions don't vary across perturbations</li>
+                        <li>For double perturbations, additive baseline outperformed all deep learning</li>
+                        <li><strong>Changed how field evaluates perturbation prediction methods</strong></li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.nature.com/articles/s41592-025-02772-6">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Virtual Cell Challenge Card -->
+                <article class="paper-card">
+                    <h4>Virtual Cell Challenge</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Cell (Commentary)</span>
+                        <span class="meta-badge type-badge">Competition</span>
+                    </div>
+                    <p class="paper-description">
+                        Arc Institute's recurring benchmark competition for perturbation prediction. Aims to
+                        establish rigorous standards like CASP did for protein structure prediction. First
+                        challenge focuses on context generalization (H1 hESC).
+                    </p>
+                    <ul class="key-contributions">
+                        <li>$100K grand prize, sponsored by NVIDIA, 10x Genomics, Ultima</li>
+                        <li>Training data: 500M+ cells from Arc Virtual Cell Atlas</li>
+                        <li>Focus on genetic perturbations (single-gene knockdowns)</li>
+                        <li>Aims to surface best practices and data quality standards</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.cell.com/cell/fulltext/S0092-8674(25)00675-0">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://arcinstitute.org/news/virtual-cell-challenge">
+                            <i class="fas fa-info-circle"></i> Info
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <!-- Key Datasets & Benchmarks Summary -->
+        <section id="benchmarks" class="content-section">
+            <h2>📈 Key Datasets & Benchmarks (Summary)</h2>
+
+            <h3>Major Perturbation Datasets</h3>
+            <ul>
+                <li>
+                    <strong>Replogle et al. 2022 (Cell):</strong> Largest to date - K562 Genome-Wide (>2.5M cells,
+                    9,867 genes targeted with CRISPRi), K562 Essential (~400K cells), RPE1 Essential (~300K cells).
+                    Only 41% of perturbations show measurable effects.
+                </li>
+                <li>
+                    <strong>Norman et al. 2019 (Science):</strong> K562, 287 perturbations (100 single + 131 double
+                    combinations), CRISPRa, 19,264 genes measured. Primary benchmark for combinatorial perturbations.
+                </li>
+                <li>
+                    <strong>Srivatsan et al. 2020 sci-Plex (Science):</strong> Chemical perturbations, 188 compounds
+                    × 4 doses, K562/A549/MCF-7 cell lines, ~650K cells total.
+                </li>
+                <li>
+                    <strong>scPerturb</strong> (Peidli et al., Nature Methods 2024): Harmonized repository of 44
+                    datasets from 25 publications, 32 CRISPR + 9 drug datasets, average 160K cells per dataset.
+                </li>
+            </ul>
+
+            <h3>Standard Evaluation Metrics</h3>
+            <p><strong>Population-Level (Fit-Based):</strong></p>
+            <ul>
+                <li>MSE/RMSE on top 1,000-2,000 most expressed genes</li>
+                <li>Pearson Correlation (PCC) between predicted and observed profiles</li>
+                <li>Pearson Delta (R²): cor(ŷ - y^control, y - y^control)</li>
+                <li>R² Score: Standard regression explained variance</li>
+            </ul>
+
+            <p><strong>Distribution-Based:</strong></p>
+            <ul>
+                <li>Energy Distance: 2·E[||X-Y||] - E[||X-X'||] - E[||Y-Y'||]</li>
+                <li>Wasserstein Distance (W2): Optimal transport cost</li>
+                <li>MMD (Maximum Mean Discrepancy): With RBF kernel</li>
+            </ul>
+
+            <p><strong>Rank-Based (Critical for Mode Collapse Detection):</strong></p>
+            <ul>
+                <li><strong>Rank metric:</strong> Measures how well predictions rank-order cells</li>
+                <li><strong>Transposed-Rank:</strong> More challenging variant</li>
+                <li><strong>Matrix Distance:</strong> Similarity matrix divergence</li>
+                <li><em>These metrics are ESSENTIAL - many papers only report MSE/R² which miss mode collapse</em></li>
+            </ul>
+
+           
+        </section>
+
+        <!-- Emerging Trends Section -->
+        <section id="trends" class="content-section">
+            <h2>🔄 Emerging Trends & Future Directions</h2>
+
+            <div class="timeline">
+                <article class="timeline-item">
+                    <h3>2016-2018: Foundation Era</h3>
+                    <p>
+                        Perturb-seq (Dixit 2016, Adamson 2016) establishes experimental paradigm for pooled
+                        perturbation screens with single-cell readouts. CROP-seq (Datlinger 2017) provides
+                        alternative guide capture method. ~200K cells per study.
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h3>2019-2022: First Computational Methods</h3>
+                    <p>
+                        scGen (2019) pioneers VAE approach. Norman et al. (2019) provide key combinatorial
+                        perturbation dataset. Replogle et al. (2022) scale to genome-wide with >2.5M cells.
+                        CellOracle (2023) leverages GRNs.
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h3>2023: Diverse Methodological Advances</h3>
+                    <p>
+                        Neural OT (CellOT), VAEs (SAMS-VAE, CPA), and GNNs (GEARS) provide alternative frameworks.
+                        Each method claims superiority on different metrics and datasets.
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h3>2024: Foundation Models </h3>
+                    <p>
+                        scFoundation, scGPT adapted for perturbation tasks. 
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h3>2025: Consolidation & New Directions</h3>
+                    <p>
+                        100M+ cell datasets emerging. Physics-inspired methods (CIPHER) and biological
+                        priors (<a href="https://github.com/gefeiwang/scLAMBDA" target="_blank">scLAMBDA</a> with LLM embeddings) show up. Field recognizes need for
+                        proper baselines and evaluation.
+                    </p>
+                </article>
+            </div>
+
+            <div class="highlight-box">
+                <h4>🚀 Key Research Frontiers</h4>
+                <ul>
+                    <li>
+                        <strong>Understanding Why Deep Models Underperform:</strong> Fundamental question - why do
+                        foundation models with 100M+ parameters often fail to beat linear regression?
+                    </li>
+                    <li>
+                        <strong>Proper Evaluation Standards:</strong> Field needs to adopt rank-based metrics and
+                        mandatory baseline comparisons
+                    </li>
+                    <li>
+                        <strong>Temporal Dynamics:</strong> Most methods focus on static endpoints; trajectory-aware
+                        models needed for perturbation kinetics
+                    </li>
+                    <li>
+                        <strong>Combinatorial Perturbations:</strong> Scaling from single-gene to multi-target
+                        perturbations remains challenging
+                    </li>
+                    <li>
+                        <strong>Multi-Modal Integration:</strong> Combining transcriptomics, proteomics, imaging,
+                        and spatial data in unified frameworks
+                    </li>
+                    <li>
+                        <strong>Mechanistic Interpretability:</strong> Moving beyond correlation to causal
+                        understanding of perturbation effects
+                    </li>
+                    <li>
+                        <strong>Primary Tissues:</strong> Most validation on cell lines; primary cells and
+                        in vivo models underexplored
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Method Comparison Table -->
+        <section class="content-section">
+            <h2>📚 Method Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Year</th>
+                        <th>Architecture</th>
+                        <th>Scale</th>
+                        <th>Key Innovation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Perturb-Seq</td>
+                        <td>2016</td>
+                        <td>Experimental</td>
+                        <td>~10K-200K cells</td>
+                        <td>CRISPR + scRNA-seq pooled screens</td>
+                    </tr>
+                    <tr>
+                        <td>scGen</td>
+                        <td>2019</td>
+                        <td>VAE</td>
+                        <td>~50K cells</td>
+                        <td>Latent space vector arithmetic</td>
+                    </tr>
+                    <tr>
+                        <td>CellOT</td>
+                        <td>2023</td>
+                        <td>Neural OT</td>
+                        <td>~50K cells</td>
+                        <td>ICNN transport maps, single-cell predictions</td>
+                    </tr>
+                    <tr>
+                        <td>SAMS-VAE</td>
+                        <td>2023</td>
+                        <td>VAE</td>
+                        <td>~120K cells</td>
+                        <td>Sparse additive mechanism shifts</td>
+                    </tr>
+                    <tr>
+                        <td>CPA</td>
+                        <td>2023</td>
+                        <td>VAE</td>
+                        <td>~100K cells</td>
+                        <td>Compositional perturbation + covariates</td>
+                    </tr>
+                    <tr>
+                        <td>GEARS</td>
+                        <td>2023/2024</td>
+                        <td>GNN</td>
+                        <td>~600K cells</td>
+                        <td>Dual knowledge graphs (GO + coexpression)</td>
+                    </tr>
+                    <tr>
+                        <td>CellOracle</td>
+                        <td>2023</td>
+                        <td>GRN</td>
+                        <td>~100K cells</td>
+                        <td>scATAC-seq informed GRN inference</td>
+                    </tr>
+                    <tr>
+                        <td>scGPT</td>
+                        <td>2024</td>
+                        <td>Transformer (100M)</td>
+                        <td>33M cells pretrain</td>
+                        <td>Generative pretraining (BUT often underperforms)</td>
+                    </tr>
+                    <tr>
+                        <td>scFoundation</td>
+                        <td>2024</td>
+                        <td>Transformer (100M)</td>
+                        <td>50M cells</td>
+                        <td>Read-depth-aware (BUT mode collapse issues)</td>
+                    </tr>
+                    <tr>
+                        <td>CIPHER</td>
+                        <td>2025</td>
+                        <td>Statistical Physics</td>
+                        <td>~1.4M cells</td>
+                        <td>Linear response theory (Δx = Σu)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p style="margin-top: 20px;">
+                <em><strong>Note:</strong> Publication years reflect official journal publication dates.
+                Some papers (e.g., GEARS) appeared online earlier than print publication.</em>
+            </p>
+        </section>
+
+        <!-- Practical Implementation Guide -->
+        <section class="content-section">
+            <h2>💡 Practical Implementation Guide</h2>
+
+            <h3>Choosing the Right Method</h3>
+            <div class="highlight-box">
+                <h4>Decision Framework</h4>
+
+                <p><strong>Step 1: Always implement simple baselines first:</strong></p>
+                <ul>
+                    <li>Additive model: Δ_combo = Δ_gene1 + Δ_gene2</li>
+                    <li>Linear regression with gene features</li>
+                    <li>Mean prediction (no-change model)</li>
+                </ul>
+
+                <p><strong>For Drug Response Prediction:</strong></p>
+                <ul>
+                    <li>Chemical perturbations → CellOT (single-cell), CPA if have dose info</li>
+                    <li>Cross-cell-type generalization → Test on multiple cell lines</li>
+                    <li>Dose-response modeling → Methods that model continuous covariates</li>
+                </ul>
+
+                <p><strong>For Genetic Perturbations:</strong></p>
+                <ul>
+                    <li>Single-gene → GEARS (if genes in GO), CIPHER, or simple linear models</li>
+                    <li>Combinatorial → Test additive baseline first, then GEARS or SAMS-VAE</li>
+                    <li>Genome-wide screens → scGPT/scFoundation </li>
+                </ul>
+
+                <p><strong>For Interpretability:</strong></p>
+                <ul>
+                    <li>Mechanistic understanding → CIPHER (covariance), CellOracle (GRN)</li>
+                    <li>Uncertainty quantification → GEARS (Bayesian), CIPHER (Horseshoe priors)</li>
+                    <li>Avoid black-box transformers if interpretability is priority</li>
+                </ul>
+            </div>
+
+            <h3>Common Pitfalls & Best Practices</h3>
+            <ul>
+                <li>
+                    <strong>Data Quality:</strong> Ensure high UMI counts (>1000), proper doublet removal,
+                    batch correction before modeling. Use established pipelines (Scanpy, Seurat).
+                </li>
+                <li>
+                    <strong>Evaluation:</strong> Use held-out PERTURBATIONS, not held-out cells from
+                    training perturbations. This tests generalization properly.
+                </li>
+                <li>
+                    <strong>Baseline Comparisons:</strong> Always compare against simple linear models.
+                </li>
+                <li>
+                    <strong>Mode Collapse Detection:</strong> Use rank metrics, visualize prediction distributions.
+                    If all predictions look similar, model has collapsed.
+                </li>
+                <li>
+                    <strong>Generalization:</strong> Test cross-dataset, cross-cell-type, and out-of-distribution
+                    generalization. Don't just report in-distribution performance.
+                </li>
+                <li>
+                    <strong>Reproducibility:</strong> Report all hyperparameters, random seeds, preprocessing steps,
+                    and provide code. Use version control.
+                </li>
+                <li>
+                    <strong>Biological Validation:</strong> Computational predictions should be validated with
+                    targeted experiments on key predictions.
+                </li>
+            </ul>
+
+            <h3>Software Ecosystem</h3>
+            <ul>
+                <li><strong><a href="https://scanpy.readthedocs.io/en/stable/" target="_blank">Scanpy</a>:</strong> Standard preprocessing, analysis, visualization (Python)</li>
+                <li><strong><a href="https://scvi-tools.org/" target="_blank">scvi-tools</a>:</strong> Implementations of scVI, scGen, CellOT</li>
+                <li><strong><a href="https://pertpy.readthedocs.io/en/stable/tutorials/notebooks/mixscape.html" target="_blank">Pertpy</a>:</strong> Perturbation-specific analysis (<a href="https://pertpy.readthedocs.io/en/stable/tutorials/notebooks/mixscape.html" target="_blank">Mixscape</a>, <a href="https://github.com/neurorestore/Augur" target="_blank">Augur</a>)</li>
+                <li><strong>Method-specific repos:</strong> GEARS, SAMS-VAE, scGPT, CPA all on GitHub</li>
+                <li><strong><a href="https://github.com/altoslabs/perturbench" target="_blank">PerturBench</a>:</strong> Standardized benchmarking framework (altoslabs, 2024)</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 1.1em;">
+            Part of the <a href="../">AI4Bio Learning Hub</a> by Xinru Qiu
+        </p>
+        <p style="font-size: 0.9em; margin-top: 15px;">
+            Last updated: November 2025 | Fact-checked against 2020-2025 literature
+        </p>
+        <p style="font-size: 0.85em; color: #999; margin-top: 10px;">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #999;">xinru.reina.qiu@gmail.com</a> |
+            <i class="fab fa-github"></i>
+            <a href="https://github.com/xqiu625" style="color: #999;">GitHub</a>
+        </p>
+        <p style="font-size: 0.8em; color: #aaa; margin-top: 15px; font-style: italic;">
+            Fact-checked against Nature Methods, Nature Biotechnology, and other peer-reviewed sources.
+        </p>
+    </footer>
+</body>
+</html>
