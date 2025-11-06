@@ -9,21 +9,80 @@
     <style>
         body {
             font-family: 'Lato', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #D0D6D8 100%);
+            background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 50%, #fef0e0 100%);
             line-height: 1.6;
             color: #333;
             margin: 0;
             padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(247, 200, 131, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(247, 162, 84, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 90%, rgba(192, 85, 64, 0.08) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Animated neural network background */
+        .neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #F7A254 0%, #F7C550 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(247, 162, 84, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(247, 162, 84, 0.3), transparent);
+            transform-origin: 0 0;
         }
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            position: relative;
+            z-index: 1;
         }
         .navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e7e7e7;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, #F5C883, #F7C550, #F7A254, #C05540) 1;
             padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(247, 162, 84, 0.15);
         }
         .navbar-nav {
             list-style-type: none;
@@ -49,22 +108,63 @@
             color: #C05540 !important;
         }
         .header {
-            background: white;
-            border-radius: 15px;
-            padding: 40px;
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 50%, #ffefe0 100%);
+            border-radius: 25px;
+            padding: 60px 40px;
             margin: 30px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(247, 162, 84, 0.2), 0 0 0 3px rgba(247, 162, 84, 0.15);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(247, 197, 80, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(247, 162, 84, 0.12) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
         .header h1 {
             color: #C05540;
-            font-size: 2.5em;
+            font-size: 3em;
             margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
+
+        .header h1 i {
+            color: #F7A254;
+            animation: glow 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes glow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(247, 162, 84, 0.5)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(247, 162, 84, 0.8)); }
+        }
+
         .header .subtitle {
-            font-size: 1.2em;
-            color: #666;
-            margin-bottom: 20px;
+            font-size: 1.3em;
+            color: #F7A254;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
         .header .intro {
             max-width: 900px;
@@ -72,13 +172,33 @@
             color: #555;
             font-size: 1.05em;
             line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(247, 162, 84, 0.2);
+            box-shadow: 0 4px 15px rgba(247, 162, 84, 0.1);
         }
         .content-section {
-            background: white;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
             padding: 40px;
             margin: 30px 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 32px rgba(247, 162, 84, 0.12), 0 0 0 2px rgba(247, 162, 84, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #F5C883, #F7C550, #F7A254, #C05540);
+            border-radius: 20px 20px 0 0;
         }
         .content-section h2 {
             color: #C05540;
@@ -106,11 +226,29 @@
         }
         .architecture-card {
             background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border-top: 4px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .architecture-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(247, 162, 84, 0.05), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .architecture-card:hover::before {
+            opacity: 1;
         }
         .architecture-card:nth-child(1) {
             border-top-color: #F5C883;
@@ -128,8 +266,8 @@
             border-top-color: #a04532;
         }
         .architecture-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 8px 25px rgba(192, 85, 64, 0.2);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(192, 85, 64, 0.25);
         }
         .architecture-card:nth-child(1):hover {
             box-shadow: 0 8px 25px rgba(245, 200, 131, 0.3);
@@ -167,11 +305,11 @@
             color: #a04532;
         }
         .architecture-card .image-container {
-            background: white;
-            border-radius: 10px;
-            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 15px;
+            padding: 20px;
             margin: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);
             text-align: center;
             min-height: 200px;
             max-height: 400px;
@@ -179,6 +317,19 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            border: 2px solid rgba(247, 162, 84, 0.1);
+            position: relative;
+        }
+
+        .architecture-card .image-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(247, 162, 84, 0.03), transparent 30%);
+            animation: rotate 15s linear infinite;
         }
         .architecture-card img {
             max-width: 100%;
@@ -356,46 +507,93 @@
             margin: 0;
         }
         .cta-section {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, #ffffff 0%, #fff5e6 50%, #ffe9d0 100%);
+            padding: 40px;
+            border-radius: 20px;
             margin: 40px 0;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 40px rgba(247, 162, 84, 0.25);
+            border: 3px solid transparent;
+            border-image: linear-gradient(135deg, #F7C550, #F7A254, #C05540) 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background:
+                radial-gradient(circle at 30% 50%, rgba(247, 197, 80, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(247, 162, 84, 0.08) 0%, transparent 50%);
+            animation: rotate 25s linear infinite;
         }
         .cta-section h3 {
             color: #C05540;
             margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-size: 2em;
         }
         .cta-section p {
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            font-size: 1.1em;
         }
         .cta-button {
             display: inline-block;
             color: white;
-            padding: 12px 30px;
-            border-radius: 25px;
+            padding: 14px 35px;
+            border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s ease;
             margin: 0 10px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
         }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
         .cta-button-primary {
             background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+            box-shadow: 0 5px 15px rgba(247, 162, 84, 0.4);
         }
         .cta-button-primary:hover {
             background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(247, 162, 84, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(247, 162, 84, 0.6);
         }
         .cta-button-secondary {
-            background: #C05540;
+            background: linear-gradient(135deg, #C05540 0%, #a04532 100%);
+            box-shadow: 0 5px 15px rgba(192, 85, 64, 0.4);
         }
         .cta-button-secondary:hover {
-            background: #a04532;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(192, 85, 64, 0.4);
+            background: linear-gradient(135deg, #a04532 0%, #8a3a28 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(192, 85, 64, 0.6);
         }
         @media (max-width: 768px) {
             .architectures-grid {
@@ -414,6 +612,9 @@
     </style>
 </head>
 <body>
+    <!-- Animated Neural Network Background -->
+    <div class="neural-bg" id="neuralBg"></div>
+
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-nav">
@@ -475,11 +676,71 @@
                     <div class="architecture-card">
                         <h3><i class="fas fa-circle"></i> Multi-Layer Perceptron (MLP)</h3>
                         <div class="image-container">
-                            <img src="figures/MLP.png" alt="MLP Architecture">
+                            <svg viewBox="0 0 400 250" style="max-width: 100%; height: auto;">
+                                <!-- Input Layer -->
+                                <circle cx="50" cy="50" r="15" fill="#F5C883" stroke="#333" stroke-width="2"/>
+                                <circle cx="50" cy="125" r="15" fill="#F5C883" stroke="#333" stroke-width="2"/>
+                                <circle cx="50" cy="200" r="15" fill="#F5C883" stroke="#333" stroke-width="2"/>
+                                <text x="50" y="235" text-anchor="middle" font-size="12" fill="#555">Input</text>
+
+                                <!-- Hidden Layer 1 -->
+                                <circle cx="150" cy="40" r="15" fill="#F7C550" stroke="#333" stroke-width="2"/>
+                                <circle cx="150" cy="90" r="15" fill="#F7C550" stroke="#333" stroke-width="2"/>
+                                <circle cx="150" cy="140" r="15" fill="#F7C550" stroke="#333" stroke-width="2"/>
+                                <circle cx="150" cy="190" r="15" fill="#F7C550" stroke="#333" stroke-width="2"/>
+                                <text x="150" y="225" text-anchor="middle" font-size="12" fill="#555">Hidden 1</text>
+
+                                <!-- Hidden Layer 2 -->
+                                <circle cx="250" cy="60" r="15" fill="#F7A254" stroke="#333" stroke-width="2"/>
+                                <circle cx="250" cy="115" r="15" fill="#F7A254" stroke="#333" stroke-width="2"/>
+                                <circle cx="250" cy="170" r="15" fill="#F7A254" stroke="#333" stroke-width="2"/>
+                                <text x="250" y="210" text-anchor="middle" font-size="12" fill="#555">Hidden 2</text>
+
+                                <!-- Output Layer -->
+                                <circle cx="350" cy="100" r="15" fill="#C05540" stroke="#333" stroke-width="2"/>
+                                <circle cx="350" cy="150" r="15" fill="#C05540" stroke="#333" stroke-width="2"/>
+                                <text x="350" y="185" text-anchor="middle" font-size="12" fill="#555">Output</text>
+
+                                <!-- Connections from Input to Hidden 1 -->
+                                <line x1="65" y1="50" x2="135" y2="40" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="50" x2="135" y2="90" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="50" x2="135" y2="140" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="50" x2="135" y2="190" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="125" x2="135" y2="40" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="125" x2="135" y2="90" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="125" x2="135" y2="140" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="125" x2="135" y2="190" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="200" x2="135" y2="40" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="200" x2="135" y2="90" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="200" x2="135" y2="140" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="65" y1="200" x2="135" y2="190" stroke="#999" stroke-width="1" opacity="0.4"/>
+
+                                <!-- Connections from Hidden 1 to Hidden 2 -->
+                                <line x1="165" y1="40" x2="235" y2="60" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="40" x2="235" y2="115" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="40" x2="235" y2="170" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="90" x2="235" y2="60" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="90" x2="235" y2="115" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="90" x2="235" y2="170" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="140" x2="235" y2="60" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="140" x2="235" y2="115" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="140" x2="235" y2="170" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="190" x2="235" y2="60" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="190" x2="235" y2="115" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="165" y1="190" x2="235" y2="170" stroke="#999" stroke-width="1" opacity="0.4"/>
+
+                                <!-- Connections from Hidden 2 to Output -->
+                                <line x1="265" y1="60" x2="335" y2="100" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="265" y1="60" x2="335" y2="150" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="265" y1="115" x2="335" y2="100" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="265" y1="115" x2="335" y2="150" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="265" y1="170" x2="335" y2="100" stroke="#999" stroke-width="1" opacity="0.4"/>
+                                <line x1="265" y1="170" x2="335" y2="150" stroke="#999" stroke-width="1" opacity="0.4"/>
+                            </svg>
                         </div>
                         <div class="description">
                             <p>
-                                The foundational feedforward neural network with fully connected layers. Data flows in one direction 
+                                The foundational feedforward neural network with fully connected layers. Data flows in one direction
                                 from input to output, with each neuron connected to every neuron in the next layer.
                             </p>
                             <p><strong>Key Features:</strong></p>
@@ -504,11 +765,80 @@
                     <div class="architecture-card">
                         <h3><i class="fas fa-layer-group"></i> Deep Neural Network (DNN)</h3>
                         <div class="image-container">
-                            <img src="figures/DNN.png" alt="DNN Architecture">
+                            <svg viewBox="0 0 450 280" style="max-width: 100%; height: auto;">
+                                <!-- Input Layer -->
+                                <circle cx="40" cy="80" r="12" fill="#F5C883" stroke="#333" stroke-width="2"/>
+                                <circle cx="40" cy="140" r="12" fill="#F5C883" stroke="#333" stroke-width="2"/>
+                                <circle cx="40" cy="200" r="12" fill="#F5C883" stroke="#333" stroke-width="2"/>
+                                <text x="40" y="235" text-anchor="middle" font-size="11" fill="#555">Input</text>
+
+                                <!-- Hidden Layer 1 -->
+                                <circle cx="110" cy="60" r="11" fill="#F7C550" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="110" cy="100" r="11" fill="#F7C550" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="110" cy="140" r="11" fill="#F7C550" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="110" cy="180" r="11" fill="#F7C550" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="110" cy="220" r="11" fill="#F7C550" stroke="#333" stroke-width="1.5"/>
+                                <text x="110" y="250" text-anchor="middle" font-size="10" fill="#555">H1</text>
+
+                                <!-- Hidden Layer 2 -->
+                                <circle cx="170" cy="60" r="11" fill="#F7B850" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="170" cy="100" r="11" fill="#F7B850" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="170" cy="140" r="11" fill="#F7B850" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="170" cy="180" r="11" fill="#F7B850" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="170" cy="220" r="11" fill="#F7B850" stroke="#333" stroke-width="1.5"/>
+                                <text x="170" y="250" text-anchor="middle" font-size="10" fill="#555">H2</text>
+
+                                <!-- Hidden Layer 3 -->
+                                <circle cx="230" cy="60" r="11" fill="#F7A254" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="230" cy="100" r="11" fill="#F7A254" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="230" cy="140" r="11" fill="#F7A254" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="230" cy="180" r="11" fill="#F7A254" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="230" cy="220" r="11" fill="#F7A254" stroke="#333" stroke-width="1.5"/>
+                                <text x="230" y="250" text-anchor="middle" font-size="10" fill="#555">H3</text>
+
+                                <!-- Hidden Layer 4 -->
+                                <circle cx="290" cy="60" r="11" fill="#D88548" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="290" cy="100" r="11" fill="#D88548" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="290" cy="140" r="11" fill="#D88548" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="290" cy="180" r="11" fill="#D88548" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="290" cy="220" r="11" fill="#D88548" stroke="#333" stroke-width="1.5"/>
+                                <text x="290" y="250" text-anchor="middle" font-size="10" fill="#555">H4</text>
+
+                                <!-- Hidden Layer 5 -->
+                                <circle cx="350" cy="80" r="11" fill="#C66A44" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="350" cy="120" r="11" fill="#C66A44" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="350" cy="160" r="11" fill="#C66A44" stroke="#333" stroke-width="1.5"/>
+                                <circle cx="350" cy="200" r="11" fill="#C66A44" stroke="#333" stroke-width="1.5"/>
+                                <text x="350" y="230" text-anchor="middle" font-size="10" fill="#555">H5</text>
+
+                                <!-- Output Layer -->
+                                <circle cx="410" cy="120" r="12" fill="#C05540" stroke="#333" stroke-width="2"/>
+                                <circle cx="410" cy="160" r="12" fill="#C05540" stroke="#333" stroke-width="2"/>
+                                <text x="410" y="195" text-anchor="middle" font-size="11" fill="#555">Output</text>
+
+                                <!-- Sample connections (representative, not all) -->
+                                <line x1="52" y1="80" x2="98" y2="100" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+                                <line x1="52" y1="140" x2="98" y2="140" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+                                <line x1="121" y1="100" x2="158" y2="140" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+                                <line x1="181" y1="140" x2="218" y2="140" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+                                <line x1="241" y1="140" x2="278" y2="140" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+                                <line x1="301" y1="140" x2="338" y2="140" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+                                <line x1="361" y1="140" x2="398" y2="140" stroke="#999" stroke-width="0.8" opacity="0.3"/>
+
+                                <!-- Depth indicator -->
+                                <text x="225" y="20" text-anchor="middle" font-size="12" fill="#C05540" font-weight="bold">Deep Architecture (5+ Hidden Layers)</text>
+                                <path d="M 80 265 L 380 265" stroke="#C05540" stroke-width="2" marker-end="url(#arrowhead)"/>
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                        <polygon points="0 0, 10 3, 0 6" fill="#C05540"/>
+                                    </marker>
+                                </defs>
+                                <text x="230" y="275" text-anchor="middle" font-size="10" fill="#C05540">Hierarchical Learning</text>
+                            </svg>
                         </div>
                         <div class="description">
                             <p>
-                                An extension of MLPs with many hidden layers (typically 5+). Deeper architectures enable learning of 
+                                An extension of MLPs with many hidden layers (typically 5+). Deeper architectures enable learning of
                                 hierarchical representations, from simple features to complex patterns.
                             </p>
                             <p><strong>Key Features:</strong></p>
@@ -533,11 +863,88 @@
                     <div class="architecture-card">
                         <h3><i class="fas fa-th"></i> Convolutional Neural Network (CNN)</h3>
                         <div class="image-container">
-                            <img src="figures/CNN.png" alt="CNN Architecture">
+                            <svg viewBox="0 0 500 280" style="max-width: 100%; height: auto;">
+                                <!-- Input Layer (image/sequence) -->
+                                <rect x="20" y="60" width="80" height="80" fill="#F5C883" stroke="#333" stroke-width="2" rx="5"/>
+                                <line x1="30" y1="70" x2="90" y2="70" stroke="#333" stroke-width="0.5"/>
+                                <line x1="30" y1="80" x2="90" y2="80" stroke="#333" stroke-width="0.5"/>
+                                <line x1="30" y1="90" x2="90" y2="90" stroke="#333" stroke-width="0.5"/>
+                                <line x1="30" y1="100" x2="90" y2="100" stroke="#333" stroke-width="0.5"/>
+                                <line x1="30" y1="110" x2="90" y2="110" stroke="#333" stroke-width="0.5"/>
+                                <line x1="40" y1="60" x2="40" y2="140" stroke="#333" stroke-width="0.5"/>
+                                <line x1="50" y1="60" x2="50" y2="140" stroke="#333" stroke-width="0.5"/>
+                                <line x1="60" y1="60" x2="60" y2="140" stroke="#333" stroke-width="0.5"/>
+                                <line x1="70" y1="60" x2="70" y2="140" stroke="#333" stroke-width="0.5"/>
+                                <line x1="80" y1="60" x2="80" y2="140" stroke="#333" stroke-width="0.5"/>
+                                <text x="60" y="160" text-anchor="middle" font-size="11" fill="#555">Input</text>
+                                <text x="60" y="175" text-anchor="middle" font-size="9" fill="#777">(Image/Seq)</text>
+
+                                <!-- Conv Layer 1 -->
+                                <rect x="130" y="50" width="70" height="70" fill="#F7C550" stroke="#333" stroke-width="2" rx="5"/>
+                                <rect x="135" y="55" width="20" height="20" fill="none" stroke="#C05540" stroke-width="2" stroke-dasharray="2,2"/>
+                                <path d="M 145 65 L 150 70 L 145 75 Z" fill="#C05540"/>
+                                <text x="165" y="105" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">Conv</text>
+                                <text x="165" y="145" text-anchor="middle" font-size="9" fill="#555">Conv 1</text>
+                                <text x="165" y="157" text-anchor="middle" font-size="8" fill="#777">Filter</text>
+
+                                <!-- Pooling Layer 1 -->
+                                <rect x="225" y="65" width="50" height="50" fill="#F7B850" stroke="#333" stroke-width="2" rx="5"/>
+                                <rect x="230" y="70" width="20" height="20" fill="rgba(192,85,64,0.3)"/>
+                                <rect x="250" y="70" width="20" height="20" fill="rgba(192,85,64,0.2)"/>
+                                <rect x="230" y="90" width="20" height="20" fill="rgba(192,85,64,0.2)"/>
+                                <rect x="250" y="90" width="20" height="20" fill="rgba(192,85,64,0.1)"/>
+                                <text x="250" y="135" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">Pool</text>
+                                <text x="250" y="147" text-anchor="middle" font-size="8" fill="#777">Max/Avg</text>
+
+                                <!-- Conv Layer 2 -->
+                                <rect x="300" y="55" width="60" height="60" fill="#F7A254" stroke="#333" stroke-width="2" rx="5"/>
+                                <rect x="305" y="60" width="18" height="18" fill="none" stroke="#C05540" stroke-width="2" stroke-dasharray="2,2"/>
+                                <path d="M 314 69 L 318 73 L 314 77 Z" fill="#C05540"/>
+                                <text x="330" y="100" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">Conv</text>
+                                <text x="330" y="135" text-anchor="middle" font-size="9" fill="#555">Conv 2</text>
+
+                                <!-- Pooling Layer 2 -->
+                                <rect x="380" y="70" width="40" height="40" fill="#D88548" stroke="#333" stroke-width="2" rx="5"/>
+                                <rect x="385" y="75" width="15" height="15" fill="rgba(192,85,64,0.3)"/>
+                                <rect x="400" y="75" width="15" height="15" fill="rgba(192,85,64,0.2)"/>
+                                <rect x="385" y="90" width="15" height="15" fill="rgba(192,85,64,0.2)"/>
+                                <rect x="400" y="90" width="15" height="15" fill="rgba(192,85,64,0.1)"/>
+                                <text x="400" y="125" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">Pool</text>
+
+                                <!-- Fully Connected -->
+                                <circle cx="450" cy="80" r="10" fill="#C05540" stroke="#333" stroke-width="2"/>
+                                <circle cx="450" cy="100" r="10" fill="#C05540" stroke="#333" stroke-width="2"/>
+                                <text x="450" y="125" text-anchor="middle" font-size="9" fill="#555">FC</text>
+
+                                <!-- Arrows -->
+                                <path d="M 105 100 L 125 90" stroke="#666" stroke-width="2" marker-end="url(#arrow2)"/>
+                                <path d="M 203 90 L 220 90" stroke="#666" stroke-width="2" marker-end="url(#arrow2)"/>
+                                <path d="M 278 90 L 295 85" stroke="#666" stroke-width="2" marker-end="url(#arrow2)"/>
+                                <path d="M 363 85 L 375 85" stroke="#666" stroke-width="2" marker-end="url(#arrow2)"/>
+                                <path d="M 423 90 L 438 85" stroke="#666" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                                <defs>
+                                    <marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                                        <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+                                    </marker>
+                                </defs>
+
+                                <!-- Feature map visualization -->
+                                <text x="250" y="200" text-anchor="middle" font-size="12" fill="#C05540" font-weight="bold">Local Pattern Detection</text>
+                                <rect x="80" y="210" width="30" height="30" fill="none" stroke="#F7A254" stroke-width="2" stroke-dasharray="3,3"/>
+                                <text x="95" y="250" text-anchor="middle" font-size="9" fill="#555">Motif/</text>
+                                <text x="95" y="260" text-anchor="middle" font-size="9" fill="#555">Feature</text>
+                                <path d="M 110 225 Q 180 225 180 180" stroke="#F7A254" stroke-width="2" marker-end="url(#arrow3)" fill="none"/>
+                                <defs>
+                                    <marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                                        <polygon points="0 0, 8 3, 0 6" fill="#F7A254"/>
+                                    </marker>
+                                </defs>
+                            </svg>
                         </div>
                         <div class="description">
                             <p>
-                                Specialized networks designed for grid-like data using convolution operations. CNNs apply learnable filters 
+                                Specialized networks designed for grid-like data using convolution operations. CNNs apply learnable filters
                                 to detect local patterns and features, with parameter sharing across spatial locations.
                             </p>
                             <p><strong>Key Features:</strong></p>
@@ -562,11 +969,75 @@
                     <div class="architecture-card">
                         <h3><i class="fas fa-sync-alt"></i> Recurrent Neural Network (RNN)</h3>
                         <div class="image-container">
-                            <img src="figures/RNN.png" alt="RNN Architecture">
+                            <svg viewBox="0 0 480 260" style="max-width: 100%; height: auto;">
+                                <!-- Time steps -->
+                                <text x="240" y="20" text-anchor="middle" font-size="12" fill="#C05540" font-weight="bold">Sequential Processing with Memory</text>
+
+                                <!-- Time step t-1 -->
+                                <g>
+                                    <rect x="40" y="80" width="80" height="80" fill="#F5C883" stroke="#333" stroke-width="2" rx="8"/>
+                                    <circle cx="80" cy="110" r="8" fill="#C05540"/>
+                                    <circle cx="80" cy="130" r="8" fill="#C05540"/>
+                                    <path d="M 100 120 Q 110 100 100 80" stroke="#F7A254" stroke-width="3" fill="none" marker-end="url(#arrow4)"/>
+                                    <text x="80" y="180" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">RNN</text>
+                                    <text x="80" y="50" text-anchor="middle" font-size="10" fill="#777">t-1</text>
+                                    <text x="80" y="205" text-anchor="middle" font-size="9" fill="#555">x₁</text>
+                                    <path d="M 80 195 L 80 165" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
+                                    <path d="M 80 75 L 80 55" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
+                                    <text x="80" y="45" text-anchor="middle" font-size="9" fill="#555">h₁</text>
+                                </g>
+
+                                <!-- Time step t -->
+                                <g>
+                                    <rect x="200" y="80" width="80" height="80" fill="#F7C550" stroke="#333" stroke-width="2" rx="8"/>
+                                    <circle cx="240" cy="110" r="8" fill="#C05540"/>
+                                    <circle cx="240" cy="130" r="8" fill="#C05540"/>
+                                    <path d="M 260 120 Q 270 100 260 80" stroke="#F7A254" stroke-width="3" fill="none" marker-end="url(#arrow4)"/>
+                                    <text x="240" y="180" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">RNN</text>
+                                    <text x="240" y="50" text-anchor="middle" font-size="10" fill="#777">t</text>
+                                    <text x="240" y="205" text-anchor="middle" font-size="9" fill="#555">x₂</text>
+                                    <path d="M 240 195 L 240 165" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
+                                    <path d="M 240 75 L 240 55" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
+                                    <text x="240" y="45" text-anchor="middle" font-size="9" fill="#555">h₂</text>
+                                </g>
+
+                                <!-- Time step t+1 -->
+                                <g>
+                                    <rect x="360" y="80" width="80" height="80" fill="#F7A254" stroke="#333" stroke-width="2" rx="8"/>
+                                    <circle cx="400" cy="110" r="8" fill="#C05540"/>
+                                    <circle cx="400" cy="130" r="8" fill="#C05540"/>
+                                    <path d="M 420 120 Q 430 100 420 80" stroke="#F7A254" stroke-width="3" fill="none" marker-end="url(#arrow4)"/>
+                                    <text x="400" y="180" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">RNN</text>
+                                    <text x="400" y="50" text-anchor="middle" font-size="10" fill="#777">t+1</text>
+                                    <text x="400" y="205" text-anchor="middle" font-size="9" fill="#555">x₃</text>
+                                    <path d="M 400 195 L 400 165" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
+                                    <path d="M 400 75 L 400 55" stroke="#666" stroke-width="2" marker-end="url(#arrow4)"/>
+                                    <text x="400" y="45" text-anchor="middle" font-size="9" fill="#555">h₃</text>
+                                </g>
+
+                                <!-- Hidden state connections -->
+                                <path d="M 125 120 L 195 120" stroke="#C05540" stroke-width="3" marker-end="url(#arrow5)"/>
+                                <path d="M 285 120 L 355 120" stroke="#C05540" stroke-width="3" marker-end="url(#arrow5)"/>
+                                <text x="160" y="115" text-anchor="middle" font-size="10" fill="#C05540" font-weight="bold">h</text>
+                                <text x="320" y="115" text-anchor="middle" font-size="10" fill="#C05540" font-weight="bold">h</text>
+
+                                <defs>
+                                    <marker id="arrow4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                                        <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+                                    </marker>
+                                    <marker id="arrow5" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                                        <polygon points="0 0, 10 3, 0 6" fill="#C05540"/>
+                                    </marker>
+                                </defs>
+
+                                <!-- Memory/State indicator -->
+                                <rect x="140" y="225" width="200" height="25" fill="rgba(247,162,84,0.2)" stroke="#F7A254" stroke-width="2" rx="5"/>
+                                <text x="240" y="242" text-anchor="middle" font-size="11" fill="#C05540" font-weight="bold">Hidden State Memory (h)</text>
+                            </svg>
                         </div>
                         <div class="description">
                             <p>
-                                Networks with loops that allow information to persist across time steps. Each unit maintains a hidden 
+                                Networks with loops that allow information to persist across time steps. Each unit maintains a hidden
                                 state that captures information about previous inputs in the sequence.
                             </p>
                             <p><strong>Key Features:</strong></p>
@@ -591,11 +1062,75 @@
                     <div class="architecture-card">
                         <h3><i class="fas fa-bolt"></i> Transformer</h3>
                         <div class="image-container">
-                            <img src="figures/Transformer.png" alt="Transformer Architecture">
+                            <svg viewBox="0 0 420 300" style="max-width: 100%; height: auto;">
+                                <!-- Title -->
+                                <text x="210" y="20" text-anchor="middle" font-size="12" fill="#C05540" font-weight="bold">Self-Attention Mechanism</text>
+
+                                <!-- Input tokens -->
+                                <rect x="40" y="50" width="50" height="30" fill="#F5C883" stroke="#333" stroke-width="2" rx="5"/>
+                                <text x="65" y="70" text-anchor="middle" font-size="10" fill="#333">Token 1</text>
+
+                                <rect x="110" y="50" width="50" height="30" fill="#F5C883" stroke="#333" stroke-width="2" rx="5"/>
+                                <text x="135" y="70" text-anchor="middle" font-size="10" fill="#333">Token 2</text>
+
+                                <rect x="180" y="50" width="50" height="30" fill="#F5C883" stroke="#333" stroke-width="2" rx="5"/>
+                                <text x="205" y="70" text-anchor="middle" font-size="10" fill="#333">Token 3</text>
+
+                                <rect x="250" y="50" width="50" height="30" fill="#F5C883" stroke="#333" stroke-width="2" rx="5"/>
+                                <text x="275" y="70" text-anchor="middle" font-size="10" fill="#333">Token 4</text>
+
+                                <rect x="320" y="50" width="50" height="30" fill="#F5C883" stroke="#333" stroke-width="2" rx="5"/>
+                                <text x="345" y="70" text-anchor="middle" font-size="10" fill="#333">Token 5</text>
+
+                                <!-- Self-Attention Layer -->
+                                <ellipse cx="210" cy="140" rx="150" ry="50" fill="rgba(247,162,84,0.2)" stroke="#F7A254" stroke-width="3"/>
+                                <text x="210" y="145" text-anchor="middle" font-size="13" fill="#C05540" font-weight="bold">Multi-Head Self-Attention</text>
+
+                                <!-- Attention lines (showing token interactions) -->
+                                <path d="M 65 80 L 210 115" stroke="#F7C550" stroke-width="2" opacity="0.6"/>
+                                <path d="M 135 80 L 210 115" stroke="#F7C550" stroke-width="3" opacity="0.8"/>
+                                <path d="M 205 80 L 210 115" stroke="#F7A254" stroke-width="4" opacity="1"/>
+                                <path d="M 275 80 L 210 115" stroke="#F7C550" stroke-width="2" opacity="0.5"/>
+                                <path d="M 345 80 L 210 115" stroke="#F7C550" stroke-width="1.5" opacity="0.4"/>
+
+                                <path d="M 65 80 L 210 165" stroke="#F7C550" stroke-width="1" opacity="0.3"/>
+                                <path d="M 135 80 L 210 165" stroke="#F7C550" stroke-width="2" opacity="0.5"/>
+                                <path d="M 205 80 L 210 165" stroke="#F7A254" stroke-width="4" opacity="1"/>
+                                <path d="M 275 80 L 210 165" stroke="#F7C550" stroke-width="3" opacity="0.7"/>
+                                <path d="M 345 80 L 210 165" stroke="#F7C550" stroke-width="2" opacity="0.5"/>
+
+                                <!-- Attention weights visualization -->
+                                <text x="340" y="130" text-anchor="start" font-size="9" fill="#C05540">Attention</text>
+                                <text x="340" y="142" text-anchor="start" font-size="9" fill="#C05540">Weights</text>
+                                <line x1="335" y1="135" x2="315" y2="130" stroke="#F7A254" stroke-width="3"/>
+
+                                <!-- Feed Forward Network -->
+                                <rect x="120" y="200" width="180" height="35" fill="#F7A254" stroke="#333" stroke-width="2" rx="8"/>
+                                <text x="210" y="222" text-anchor="middle" font-size="12" fill="#fff" font-weight="bold">Feed Forward Network</text>
+
+                                <!-- Output -->
+                                <rect x="140" y="260" width="140" height="30" fill="#C05540" stroke="#333" stroke-width="2" rx="5"/>
+                                <text x="210" y="280" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">Output Embeddings</text>
+
+                                <!-- Arrows -->
+                                <path d="M 210 170 L 210 195" stroke="#666" stroke-width="2" marker-end="url(#arrow6)"/>
+                                <path d="M 210 235 L 210 255" stroke="#666" stroke-width="2" marker-end="url(#arrow6)"/>
+
+                                <defs>
+                                    <marker id="arrow6" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                                        <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+                                    </marker>
+                                </defs>
+
+                                <!-- Parallel processing indicator -->
+                                <path d="M 20 95 L 390 95" stroke="#C05540" stroke-width="2" stroke-dasharray="5,5"/>
+                                <text x="15" y="90" text-anchor="end" font-size="10" fill="#C05540" font-weight="bold">Parallel</text>
+                                <text x="15" y="102" text-anchor="end" font-size="10" fill="#C05540" font-weight="bold">Processing</text>
+                            </svg>
                         </div>
                         <div class="description">
                             <p>
-                                Revolutionary architecture based on self-attention mechanisms. Processes entire sequences in parallel, 
+                                Revolutionary architecture based on self-attention mechanisms. Processes entire sequences in parallel,
                                 learning which parts of the input to focus on without sequential processing.
                             </p>
                             <p><strong>Key Features:</strong></p>
@@ -824,5 +1359,61 @@
             </p>
         </div>
     </footer>
+
+    <script>
+        // Create animated neural network background
+        const neuralBg = document.getElementById('neuralBg');
+        const nodeCount = 30;
+        const nodes = [];
+
+        // Create nodes
+        for (let i = 0; i < nodeCount; i++) {
+            const node = document.createElement('div');
+            node.className = 'neural-node';
+            node.style.left = Math.random() * 100 + '%';
+            node.style.top = Math.random() * 100 + '%';
+            node.style.animationDelay = Math.random() * 3 + 's';
+            neuralBg.appendChild(node);
+            nodes.push({
+                element: node,
+                x: parseFloat(node.style.left),
+                y: parseFloat(node.style.top)
+            });
+        }
+
+        // Create connections between nearby nodes
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[j].x - nodes[i].x;
+                const dy = nodes[j].y - nodes[i].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 25) { // Only connect nearby nodes
+                    const connection = document.createElement('div');
+                    connection.className = 'neural-connection';
+                    const angle = Math.atan2(dy, dx);
+                    connection.style.width = distance + 'vw';
+                    connection.style.left = nodes[i].x + '%';
+                    connection.style.top = nodes[i].y + '%';
+                    connection.style.transform = `rotate(${angle}rad)`;
+                    neuralBg.appendChild(connection);
+                }
+            }
+        }
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
