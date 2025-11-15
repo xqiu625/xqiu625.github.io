@@ -1,0 +1,2226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comprehensive guide to single-cell multi-omics integration methods and frameworks">
+    <title>Single-Cell Multi-Omics Integration - AI4Bio Learning Hub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== BASE STYLES ===== */
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar-nav li {
+            margin: 5px 15px;
+        }
+
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav a:hover {
+            color: #849E58;
+        }
+
+        .home-link {
+            color: #849E58 !important;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, #849E58 0%, #46670A 100%);
+            color: white;
+            padding: 50px 40px;
+            border-radius: 15px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(132, 158, 88, 0.3);
+        }
+
+        .header h1 {
+            margin: 0 0 15px 0;
+            font-size: 2.8em;
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            opacity: 0.95;
+            margin-bottom: 15px;
+        }
+
+        .header .description {
+            font-size: 1.05em;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ===== STATISTICS BAR ===== */
+        .stats-bar {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-left: 3px solid #849E58;
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #849E58;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-section h2 {
+            color: #849E58;
+            border-bottom: 3px solid #849E58;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .content-section h3 {
+            color: #46670A;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .content-section ul {
+            line-height: 2;
+        }
+
+        /* ===== PAPER CARDS ===== */
+        .paper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            margin: 25px 0;
+        }
+
+        .paper-card {
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .paper-card:hover {
+            border-color: #849E58;
+            box-shadow: 0 6px 20px rgba(132, 158, 88, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .paper-card h4 {
+            color: #849E58;
+            margin-top: 0;
+            font-size: 1.15em;
+            line-height: 1.4;
+        }
+
+        .paper-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .meta-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+        }
+
+        .year-badge {
+            background: #849E58;
+            color: white;
+        }
+
+        .journal-badge {
+            background: #D0DBC4;
+            color: #46670A;
+        }
+
+        .type-badge {
+            background: #8CB36D;
+            color: white;
+        }
+
+        .modality-badge {
+            background: #C0D175;
+            color: #1A4971;
+        }
+
+        .paper-description {
+            font-size: 0.95em;
+            color: #555;
+            line-height: 1.6;
+            margin: 12px 0;
+        }
+
+        .paper-highlights {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 0.9em;
+        }
+
+        .paper-highlights ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .paper-highlights li {
+            line-height: 1.5;
+            margin: 5px 0;
+        }
+
+        .paper-links {
+            margin-top: 12px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .paper-link {
+            display: inline-block;
+            padding: 6px 14px;
+            background: #849E58;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .paper-link:hover {
+            background: #46670A;
+            transform: translateY(-2px);
+        }
+
+        .paper-link i {
+            margin-right: 5px;
+        }
+
+        /* ===== TIMELINE ===== */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+            margin: 30px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #849E58 0%, #46670A 100%);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 20px;
+            height: 20px;
+            background: #849E58;
+            border: 4px solid white;
+            border-radius: 50%;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            box-shadow: 0 0 0 4px rgba(132, 158, 88, 0.2);
+        }
+
+        .timeline-year {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #849E58;
+            margin-bottom: 10px;
+        }
+
+        /* ===== HIGHLIGHT BOX ===== */
+        .highlight-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #849E58;
+            padding: 20px 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box h4 {
+            color: #46670A;
+            margin-top: 0;
+        }
+
+        /* ===== COMPARISON TABLE ===== */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95em;
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #849E58 0%, #46670A 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .comparison-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* ===== METHOD CATEGORIES ===== */
+        .method-category {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .method-category:hover {
+            border-color: #849E58;
+            box-shadow: 0 4px 15px rgba(132, 158, 88, 0.15);
+        }
+
+        .method-category h4 {
+            color: #849E58;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .method-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .method-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9em;
+            border-left: 3px solid #849E58;
+        }
+
+        /* ===== METHOD PAPER LINKS ===== */
+        .method-item a {
+            color: #849E58;
+            text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.3s, text-decoration 0.3s;
+        }
+
+        .method-item a:hover {
+            color: #46670A;
+            text-decoration: none;
+        }
+
+        .method-item a::after {
+            content: " ↗";
+            font-size: 0.8em;
+            vertical-align: super;
+            color: #849E58;
+            transition: color 0.3s;
+        }
+
+        .method-item a:hover::after {
+            color: #46670A;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        footer a {
+            color: #849E58;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #46670A;
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px;
+            }
+
+            .timeline-marker {
+                left: 20px;
+                transform: none;
+            }
+
+            .paper-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== UTILITY CLASSES ===== */
+        .icon-heading {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .feature-badge {
+            background: #E3F2FD;
+            color: #1976D2;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="../index.html" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
+                </li>
+                <li>
+                    <a href="../../">
+                        <i class="fas fa-home"></i> Xinru's Homepage
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🧬 Single-Cell Multi-Omics Integration</h1>
+            <div class="subtitle">A Comprehensive Guide to Methods, Frameworks, and Best Practices (2015-2025)</div>
+            <div class="description">
+                From early paired measurements to modern foundation models: Understanding how to integrate
+                RNA-seq, ATAC-seq, protein abundance, spatial data, and perturbation responses at single-cell resolution.
+                Based on systematic analysis of 40+ landmark papers spanning a decade of innovation.
+            </div>
+        </header>
+
+        <!-- Statistics Bar -->
+        <section class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">40+</span>
+                <div class="stat-label">Papers Analyzed<br>(2015-2025)</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">6</span>
+                <div class="stat-label">Integration<br>Categories</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">10+</span>
+                <div class="stat-label">Omics<br>Modalities</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">100M+</span>
+                <div class="stat-label">Cells in Foundation<br>Model Training</div>
+            </div>
+        </section>
+
+        <!-- Overview Section -->
+        <section id="overview" class="content-section">
+            <h2>📖 What is Single-Cell Multi-Omics Integration?</h2>
+
+            <p>
+                Single-cell multi-omics integration combines measurements of different molecular layers 
+                (transcriptome, epigenome, proteome, spatial location) from the same or related cells to build 
+                comprehensive cellular maps. This integration is essential for understanding cell states, 
+                developmental trajectories, disease mechanisms, and therapeutic responses.
+            </p>
+
+            <h3>Why Multi-Omics Integration Matters</h3>
+            <ul>
+                <li>
+                    <strong>Comprehensive Cell State Definition:</strong> Single modalities provide incomplete views; 
+                    RNA tells what's transcribed, ATAC reveals accessible chromatin, proteins show functional output
+                </li>
+                <li>
+                    <strong>Regulatory Mechanism Discovery:</strong> Linking chromatin accessibility → transcription → 
+                    protein abundance reveals gene regulatory networks and signaling cascades
+                </li>
+                <li>
+                    <strong>Batch Effect Correction:</strong> Harmonizing data across experiments, technologies, and 
+                    labs enables atlas-scale analyses and meta-studies
+                </li>
+                <li>
+                    <strong>Missing Modality Imputation:</strong> Predicting unmeasured features (e.g., protein from RNA) 
+                    reduces experimental costs while maintaining biological insights
+                </li>
+                <li>
+                    <strong>Spatial Context Integration:</strong> Combining molecular profiles with spatial locations 
+                    reveals tissue architecture and cell-cell interactions
+                </li>
+                <li>
+                    <strong>Perturbation Response Modeling:</strong> Understanding how genetic or chemical perturbations 
+                    affect multiple molecular layers simultaneously
+                </li>
+            </ul>
+
+            <h3>Integration Paradigms <a href="https://www.nature.com/articles/s41592-025-02737-9" target="_blank">(Fu, Shaliu, et al. Nature Methods, 2025)</a>, <a href="https://www.nature.com/articles/s41592-025-02856-3" target="_blank">(Liu, Chunlei, et al. Nature Methods, 2025)</a></h3>
+
+<p>According to the benchmark papers, there are <strong>six major multi-omics integration paradigms</strong>:</p>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0;">
+
+<!-- 1. Vertical Integration -->
+<div>
+    <h4>🔵 Vertical Integration</h4>
+    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Single dataset with multiple modality layers -->
+        <rect x="50" y="20" width="100" height="30" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
+        <text x="100" y="40" text-anchor="middle" font-size="12" fill="white">RNA</text>
+        
+        <rect x="50" y="55" width="100" height="30" fill="#4ecdc4" stroke="#333" stroke-width="2"/>
+        <text x="100" y="75" text-anchor="middle" font-size="12" fill="white">ATAC</text>
+        
+        <rect x="50" y="90" width="100" height="30" fill="#95e1d3" stroke="#333" stroke-width="2"/>
+        <text x="100" y="110" text-anchor="middle" font-size="12" fill="white">Protein</text>
+        
+        <!-- Vertical lines showing same cells -->
+        <line x1="70" y1="20" x2="70" y2="120" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="100" y1="20" x2="100" y2="120" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+        <line x1="130" y1="20" x2="130" y2="120" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+        
+        <text x="100" y="140" text-anchor="middle" font-size="10">Same cells, all modalities</text>
+    </svg>
+</div>
+
+<!-- 2. Diagonal Integration -->
+<div>
+    <h4>🟢 Diagonal Integration</h4>
+    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Dataset 1 - RNA only -->
+        <rect x="20" y="20" width="60" height="40" fill="#ff6b6b" stroke="#333" stroke-width="2"/>
+        <text x="50" y="35" text-anchor="middle" font-size="10">Dataset 1</text>
+        <text x="50" y="50" text-anchor="middle" font-size="10" fill="white">RNA</text>
+        
+        <!-- Dataset 2 - ATAC only -->
+        <rect x="120" y="70" width="60" height="40" fill="#4ecdc4" stroke="#333" stroke-width="2"/>
+        <text x="150" y="85" text-anchor="middle" font-size="10">Dataset 2</text>
+        <text x="150" y="100" text-anchor="middle" font-size="10" fill="white">ATAC</text>
+        
+        <!-- Arrow showing integration -->
+        <path d="M 80 40 Q 100 55 120 90" stroke="#333" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+        
+        <text x="100" y="140" text-anchor="middle" font-size="10">Non-overlapping modalities</text>
+        
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                <polygon points="0 0, 10 3, 0 6" fill="#333"/>
+            </marker>
+        </defs>
+    </svg>
+</div>
+
+<!-- 3. Mosaic Integration -->
+<div>
+    <h4>🟡 Mosaic Integration</h4>
+    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Dataset 1 - RNA + ATAC -->
+        <g>
+            <rect x="10" y="20" width="50" height="20" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <text x="35" y="34" text-anchor="middle" font-size="9" fill="white">RNA</text>
+            <rect x="10" y="40" width="50" height="20" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+            <text x="35" y="54" text-anchor="middle" font-size="9" fill="white">ATAC</text>
+            <text x="35" y="70" text-anchor="middle" font-size="8">Dataset 1</text>
+        </g>
+        
+        <!-- Dataset 2 - RNA + Protein -->
+        <g>
+            <rect x="75" y="20" width="50" height="20" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <text x="100" y="34" text-anchor="middle" font-size="9" fill="white">RNA</text>
+            <rect x="75" y="40" width="50" height="20" fill="#95e1d3" stroke="#333" stroke-width="1"/>
+            <text x="100" y="54" text-anchor="middle" font-size="9">Protein</text>
+            <text x="100" y="70" text-anchor="middle" font-size="8">Dataset 2</text>
+        </g>
+        
+        <!-- Dataset 3 - RNA only -->
+        <g>
+            <rect x="140" y="20" width="50" height="20" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <text x="165" y="34" text-anchor="middle" font-size="9" fill="white">RNA</text>
+            <rect x="140" y="40" width="50" height="20" fill="#e0e0e0" stroke="#333" stroke-width="1" stroke-dasharray="2,2"/>
+            <text x="165" y="54" text-anchor="middle" font-size="9">—</text>
+            <text x="165" y="70" text-anchor="middle" font-size="8">Dataset 3</text>
+        </g>
+        
+        <!-- Integration arrows -->
+        <path d="M 60 50 L 75 50" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead2)"/>
+        <path d="M 125 50 L 140 50" stroke="#333" stroke-width="1.5" marker-end="url(#arrowhead2)"/>
+        
+        <text x="100" y="100" text-anchor="middle" font-size="10">Partial overlap (mosaic)</text>
+        
+        <defs>
+            <marker id="arrowhead2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                <polygon points="0 0, 8 3, 0 6" fill="#333"/>
+            </marker>
+        </defs>
+    </svg>
+</div>
+
+<!-- 4. Cross Integration -->
+<div>
+    <h4>🔴 Cross Integration</h4>
+    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Multiple batches, all with same modalities but batch effects -->
+        <g>
+            <text x="35" y="15" text-anchor="middle" font-size="9">Batch 1</text>
+            <rect x="10" y="20" width="50" height="15" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <rect x="10" y="35" width="50" height="15" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+            <rect x="10" y="50" width="50" height="15" fill="#95e1d3" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <g>
+            <text x="100" y="15" text-anchor="middle" font-size="9">Batch 2</text>
+            <rect x="75" y="20" width="50" height="15" fill="#ff8787" stroke="#333" stroke-width="1"/>
+            <rect x="75" y="35" width="50" height="15" fill="#6ee7e0" stroke="#333" stroke-width="1"/>
+            <rect x="75" y="50" width="50" height="15" fill="#b0ede9" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <g>
+            <text x="165" y="15" text-anchor="middle" font-size="9">Batch 3</text>
+            <rect x="140" y="20" width="50" height="15" fill="#ffa3a3" stroke="#333" stroke-width="1"/>
+            <rect x="140" y="35" width="50" height="15" fill="#8df0ea" stroke="#333" stroke-width="1"/>
+            <rect x="140" y="50" width="50" height="15" fill="#c5f2ee" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <!-- Batch effect indicator -->
+        <text x="100" y="85" text-anchor="middle" font-size="10" fill="#d63031">⚠ Batch Effects</text>
+        
+        <text x="100" y="100" text-anchor="middle" font-size="10">All modalities + batch correction</text>
+    </svg>
+</div>
+
+<!-- 5. Spatial Integration -->
+<div>
+    <h4>🟣 Spatial Integration</h4>
+    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Tissue section outline -->
+        <ellipse cx="100" cy="60" rx="70" ry="40" fill="#f0f0f0" stroke="#333" stroke-width="2"/>
+        
+        <!-- Spatial spots with data -->
+        <circle cx="60" cy="45" r="8" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+        <circle cx="85" cy="50" r="8" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+        <circle cx="100" cy="60" r="8" fill="#95e1d3" stroke="#333" stroke-width="1"/>
+        <circle cx="115" cy="55" r="8" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+        <circle cx="140" cy="70" r="8" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+        <circle cx="75" cy="75" r="8" fill="#95e1d3" stroke="#333" stroke-width="1"/>
+        
+        <!-- Coordinate axes -->
+        <line x1="15" y1="115" x2="55" y2="115" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead3)"/>
+        <line x1="15" y1="115" x2="15" y2="75" stroke="#666" stroke-width="1.5" marker-end="url(#arrowhead3)"/>
+        <text x="60" y="120" font-size="8">X</text>
+        <text x="10" y="70" font-size="8">Y</text>
+        
+        <text x="100" y="140" text-anchor="middle" font-size="10">Molecular + spatial coords</text>
+        
+        <defs>
+            <marker id="arrowhead3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto">
+                <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+            </marker>
+        </defs>
+    </svg>
+</div>
+
+<!-- 6. Perturbation Integration -->
+<div>
+    <h4>🟠 Perturbation Integration</h4>
+    <svg viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+        <!-- Control cells -->
+        <g>
+            <text x="40" y="15" text-anchor="middle" font-size="9">Control</text>
+            <circle cx="30" cy="35" r="10" fill="#d3d3d3" stroke="#333" stroke-width="1"/>
+            <circle cx="50" cy="35" r="10" fill="#d3d3d3" stroke="#333" stroke-width="1"/>
+            <rect x="20" y="55" width="40" height="12" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <rect x="20" y="67" width="40" height="12" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <!-- Perturbation A -->
+        <g>
+            <text x="110" y="15" text-anchor="middle" font-size="9">Perturb A</text>
+            <circle cx="100" cy="35" r="10" fill="#ffd93d" stroke="#333" stroke-width="2"/>
+            <circle cx="120" cy="35" r="10" fill="#ffd93d" stroke="#333" stroke-width="2"/>
+            <text x="110" y="40" text-anchor="middle" font-size="12">⚡</text>
+            <rect x="90" y="55" width="40" height="12" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <rect x="90" y="67" width="40" height="12" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <!-- Perturbation B -->
+        <g>
+            <text x="170" y="15" text-anchor="middle" font-size="9">Perturb B</text>
+            <circle cx="160" cy="35" r="10" fill="#a29bfe" stroke="#333" stroke-width="2"/>
+            <circle cx="180" cy="35" r="10" fill="#a29bfe" stroke="#333" stroke-width="2"/>
+            <text x="170" y="40" text-anchor="middle" font-size="12">🧬</text>
+            <rect x="150" y="55" width="40" height="12" fill="#ff6b6b" stroke="#333" stroke-width="1"/>
+            <rect x="150" y="67" width="40" height="12" fill="#4ecdc4" stroke="#333" stroke-width="1"/>
+        </g>
+        
+        <text x="100" y="100" text-anchor="middle" font-size="10">Multi-modal + perturbations</text>
+    </svg>
+</div>
+
+</div>
+
+<p><em>Each paradigm addresses different data structures and analytical challenges in multi-omics analysis.</em></p>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline" class="content-section">
+            <h2>📅 Evolution Timeline: From Paired Measurements to Foundation Models</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2015-2017: Early Multi-Modal Technologies</div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>G&T-seq (2015):</strong> First simultaneous RNA + DNA methylation</li>
+                            <li><strong>CITE-seq (2017):</strong> RNA + surface protein via antibody tags</li>
+                            <li><strong>mixOmics (2017):</strong> Statistical framework for multi-block data</li>
+                        </ul>
+                        <p><em>Era Characteristic:</em> Experimental methods development; simple statistical integration</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2019-2020: Statistical Methods Era</div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>DIABLO (2019):</strong> Multi-omics discriminant analysis</li>
+                            <li><strong>MOFA+ (2020):</strong> Multi-omics factor analysis with covariates</li>
+                        </ul>
+                        <p><em>Era Characteristic:</em> Matrix factorization; interpretable latent factors; limited scalability</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2021-2022: Deep Learning Breakthrough</div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>totalVI (2021):</strong> VAE for RNA + protein integration</li>
+                            <li><strong>Seurat WNN (2021):</strong> Weighted nearest neighbor multi-modal analysis</li>
+                            <li><strong>Concerto (2022):</strong> Contrastive learning for 10M+ cells</li>
+                        </ul>
+                        <p><em>Era Characteristic:</em> VAE dominance; scalability improvements; atlas-scale analyses</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2023: Optimal Transport & Graph Methods</div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>CellOT (2023):</strong> Neural optimal transport for perturbations</li>
+                            <li><strong>SIMBA (2023):</strong> Graph embedding with cells + features co-embedded</li>
+                        </ul>
+                        <p><em>Era Characteristic:</em> Theoretical rigor; optimal transport theory</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2024: Foundation Model Era Begins</div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>scGPT (2024):</strong> 100M parameter transformer on 33M cells</li>
+                        </ul>
+                        <p><em>Era Characteristic:</em> Pre-training paradigm; 10M+ cell datasets; transfer learning</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2025: Specialized Foundation Models </div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>CellWhisperer (2025):</strong> Instruction-tuned multimodal foundation model</li>
+                            <li><strong>Nicheformer (2025):</strong> Spatial multi-omics foundation model</li>
+                            <li><strong>OmiCLIP (2025):</strong> Visual-omics foundation model (H&E + transcriptomics)</li>
+                            <li><strong>MORPH (2025):</strong> Cross-condition perturbation prediction</li>
+                        </ul>
+                        <p><em>Era Characteristic:</em> Task-specific foundation models; comprehensive benchmarking; 
+                        clinical translation focus</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Method Categorization -->
+        <section id="methods" class="content-section">
+            <h2>🔬 Method Taxonomy: Algorithmic Approaches</h2>
+
+            <h3>By Computational Framework</h3>
+
+            <div class="method-category">
+                <h4>🧠 Variational Autoencoders (VAE-based)</h4>
+                <p><strong>Principle:</strong> Learn probabilistic latent representations with encoder-decoder architecture</p>
+                <p><strong>Advantages:</strong> Uncertainty quantification; generative modeling; missing data imputation</p>
+                <div class="method-list">
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-020-01050-x" target="_blank">totalVI (2021)</a> - RNA+Protein</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-023-01909-9" target="_blank">MultiVI (2023)</a> - Mosaic integration</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-018-0229-2" target="_blank">scVI (2018)</a> - Single modality</div>
+                </div>
+            </div>
+
+            <div class="method-category">
+                <h4>🔄 Contrastive Learning</h4>
+                <p><strong>Principle:</strong> Learn representations by pulling similar samples together, pushing dissimilar apart</p>
+                <p><strong>Advantages:</strong> Scalability to millions of cells; no explicit pairing needed; robust embeddings</p>
+                <div class="method-list">
+                    <div class="method-item"><a href="https://doi.org/10.1038/s42256-022-00518-z" target="_blank">Concerto (2022)</a> - 10M+ cells</div>
+                </div>
+            </div>
+
+            <div class="method-category">
+                <h4>📊 Graph Neural Networks (GNN)</h4>
+                <p><strong>Principle:</strong> Model cells as graph nodes; aggregate information from neighborhoods</p>
+                <p><strong>Advantages:</strong> Captures cell-cell relationships; flexible message passing; spatial awareness</p>
+                <div class="method-list">
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-023-01899-8" target="_blank">SIMBA (2023)</a> - Cells + features co-embedding</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41587-022-01284-4" target="_blank">GLUE (2022)</a> - Graph-based integration</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41467-025-58089-7" target="_blank">SIMVI (2025)</a> - Spatial + intrinsic disentanglement</div>
+                </div>
+            </div>
+
+            <div class="method-category">
+                <h4>🚀 Optimal Transport</h4>
+                <p><strong>Principle:</strong> Find minimal-cost mapping between cell distributions</p>
+                <p><strong>Advantages:</strong> Theoretical guarantees; preserves distributional structure; interpretable</p>
+                <div class="method-list">
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-023-01969-x" target="_blank">CellOT (2023)</a> - Perturbation prediction</div>
+                    <div class="method-item"><a href="https://arxiv.org/abs/2405.00838" target="_blank">Labeled GWOT (2025)</a> - Cross-modality alignment</div>
+                    <div class="method-item"><a href="https://pubmed.ncbi.nlm.nih.gov/35050714/" target="_blank">SCOT (2022)</a> - Gromov-Wasserstein</div>
+                </div>
+            </div>
+
+            <div class="method-category">
+                <h4>🤖 Foundation Models (Transformers)</h4>
+                <p><strong>Principle:</strong> Pre-train large models on massive datasets; fine-tune for specific tasks</p>
+                <p><strong>Advantages:</strong> Transfer learning; few-shot adaptation; generalizable representations</p>
+                <div class="method-list">
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41587-025-02857-9" target="_blank">CellWhisperer (2025)</a> - Instruction-tuned</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-025-02814-z" target="_blank">Nicheformer (2025)</a> - Spatial specialist</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-024-02201-0" target="_blank">scGPT (2024)</a> - 33M cells pretrain</div>
+                    <div class="method-item"><a href="https://doi.org/10.1038/s41592-025-02707-1" target="_blank">OmiCLIP (2025)</a> - Visual-omics CLIP</div>
+                </div>
+            </div>
+
+            <div class="method-category">
+                <h4>🔗 Matrix Factorization & Classical</h4>
+                <p><strong>Principle:</strong> Decompose data matrices into latent factor representations</p>
+                <p><strong>Advantages:</strong> Interpretable factors; computationally efficient; well-understood theory</p>
+                <div class="method-list">
+                    <div class="method-item"><a href="https://doi.org/10.1186/s13059-020-02015-1" target="_blank">MOFA+ (2020)</a> - Multi-omics factors</div>
+                    <div class="method-item"><a href="https://doi.org/10.1016/j.cell.2021.04.048" target="_blank">Seurat CCA/WNN (2021)</a> - Canonical correlation</div>
+                    <div class="method-item"><a href="https://doi.org/10.1371/journal.pcbi.1005752" target="_blank">mixOmics (2017)</a> - Multiblock projection to latent structure (PLS)</div>
+                    <div class="method-item"><a href="https://doi.org/10.1093/bioinformatics/bty1054" target="_blank">DIABLO (2019)</a> - Discriminant analysis</div>
+                </div>
+            </div>
+
+            <h3>By Scale Capability</h3>
+            <div class="highlight-box">
+                <h4>Scalability Tiers</h4>
+                <ul>
+                    <li><strong>Small Scale (&lt;10K cells):</strong> MOFA+, DIABLO, mixOmics - ideal for pilot studies</li>
+                    <li><strong>Medium Scale (10K-100K cells):</strong> Seurat WNN, totalVI, MultiVI - standard analyses</li>
+                    <li><strong>Large Scale (100K-1M cells):</strong> Concerto, SIMBA, scBridge - atlas construction</li>
+                    <li><strong>Atlas Scale (&gt;1M cells):</strong> Foundation models (scGPT, CellWhisperer), SnapATAC2 - population studies</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Key Papers Section -->
+        <section id="papers" class="content-section">
+            <h2>📄 Landmark Papers by Computational Framework (2015-2025)</h2>
+
+            <h3>🧬 Experimental Technologies (Foundation)</h3>
+            <div class="paper-grid">
+                <!-- CITE-seq -->
+                <div class="paper-card">
+                    <h4>CITE-seq: Simultaneous epitope and transcriptome measurement in single cells</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2017</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge modality-badge">RNA+Protein</span>
+                    </div>
+                    <div class="paper-description">
+                        Pioneering technology combining RNA-seq with antibody-derived tags (ADT) for protein quantification. 
+                        Enabled paired transcriptome-proteome measurements at single-cell resolution.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Key Contributions:</strong>
+                        <ul>
+                            <li>Antibody-oligonucleotide conjugation method</li>
+                            <li>Validated on PBMC immune cell populations</li>
+                            <li>Foundation for multi-modal single-cell biology</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/nmeth.4380" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </div>
+
+                <!-- scONE-seq -->
+                <div class="paper-card">
+                    <h4>scONE-seq: A single-cell multi-omics method enables simultaneous dissection of phenotype and genotype heterogeneity from frozen tumors</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Science Advances</span>
+                        <span class="meta-badge modality-badge">DNA+RNA</span>
+                    </div>
+                    <div class="paper-description">
+                        scONE-seq is a versatile single-cell multi-omics method that simultaneously profiles whole-genome DNA and full-length RNA from the same cell in a one-pot reaction, enabling multi-omics analysis of frozen biobanked tumor samples and revealing transcriptionally normal-like tumor clones.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Applications:</strong>
+                        <ul>
+                            <li>Works with frozen tissue samples</li>
+                            <li>Simultaneous DNA and RNA profiling</li>
+                            <li>Tumor heterogeneity analysis</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1126/sciadv.abp8901" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔷 Variational Autoencoders & Probabilistic Models</h3>
+            <div class="paper-grid">
+                <!-- totalVI -->
+                <div class="paper-card">
+                    <h4>Probabilistic harmonization and annotation of single-cell transcriptomics data with deep generative models (totalVI)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2021</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">VAE-based</span>
+                    </div>
+                    <div class="paper-description">
+                        Variational autoencoder for integrating RNA and protein measurements. Models technical effects 
+                        including batch, background noise, and protein zero-inflation.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Capabilities:</strong>
+                        <ul>
+                            <li>Batch correction across technologies</li>
+                            <li>Protein imputation from RNA</li>
+                            <li>Uncertainty quantification</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-020-01050-x" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://scvi-tools.org/" class="paper-link" target="_blank">
+                            <i class="fas fa-code"></i> scvi-tools
+                        </a>
+                        <a href="https://github.com/scverse/scvi-tools" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- MultiVI -->
+                <div class="paper-card">
+                    <h4>Multi-resolution deconvolution of spatial transcriptomics data reveals continuous patterns of inflammation (MultiVI)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Mosaic Integration</span>
+                    </div>
+                    <div class="paper-description">
+                        Variational inference framework for mosaic multi-omics integration. Handles incomplete 
+                        modality measurements across datasets with joint latent space.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>Handles RNA+ADT+ATAC combinations</li>
+                            <li>Missing modality imputation</li>
+                            <li>Spatial deconvolution capabilities</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-023-01909-9" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/scverse/scvi-tools" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cobolt -->
+                <div class="paper-card">
+                    <h4>Cobolt: integrative analysis of multimodal single-cell sequencing data</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2021</span>
+                        <span class="meta-badge journal-badge">Genome Biology</span>
+                        <span class="meta-badge type-badge">VAE-based</span>
+                    </div>
+                    <div class="paper-description">
+                        Cobolt uses Multimodal Variational Autoencoders (MVAE) based on hierarchical generative models to enable coherent integration of multi-modality single-cell data with single-modality datasets, creating a unified representation for downstream analysis.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Innovations:</strong>
+                        <ul>
+                            <li>Hierarchical latent variable model</li>
+                            <li>Handles incomplete modality measurements</li>
+                            <li>Supports SNARE-seq and other multimodal data</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1186/s13059-021-02556-z" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🕸️ Graph-Based Methods</h3>
+            <div class="paper-grid">
+                <!-- Seurat WNN -->
+                <div class="paper-card">
+                    <h4>Integrated analysis of multimodal single-cell data (Seurat WNN)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2021</span>
+                        <span class="meta-badge journal-badge">Cell</span>
+                        <span class="meta-badge type-badge">Weighted NN</span>
+                    </div>
+                    <div class="paper-description">
+                        Weighted nearest neighbor (WNN) algorithm for integrating paired multi-modal measurements. 
+                        Learns modality-specific weights to construct unified cell similarity graph.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Key Innovations:</strong>
+                        <ul>
+                            <li>Cell-specific modality weighting</li>
+                            <li>Works with RNA+ADT, RNA+ATAC</li>
+                            <li>Integrated into widely-used Seurat package</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1016/j.cell.2021.04.048" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://satijalab.org/seurat/" class="paper-link" target="_blank">
+                            <i class="fas fa-code"></i> Software
+                        </a>
+                        <a href="https://github.com/satijalab/seurat" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SIMBA -->
+                <div class="paper-card">
+                    <h4>SIMBA: single-cell embedding along with features</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Graph Embedding</span>
+                    </div>
+                    <div class="paper-description">
+                        Graph-based co-embedding framework placing cells and features (genes, peaks, motifs) in shared space. 
+                        Enables clustering-free marker discovery and regulatory network inference.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Innovations:</strong>
+                        <ul>
+                            <li>Unified cell-feature embedding space</li>
+                            <li>Multi-omics native support</li>
+                            <li>Scales to 1.3M cells in 1.5 hours</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-023-01899-8" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/pinellolab/simba" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://simba-bio.readthedocs.io/" class="paper-link" target="_blank">
+                            <i class="fas fa-book"></i> Docs
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔄 Optimal Transport Methods</h3>
+            <div class="paper-grid">
+                <!-- CellOT -->
+                <div class="paper-card">
+                    <h4>Learning single-cell perturbation responses using neural optimal transport (CellOT)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Optimal Transport</span>
+                    </div>
+                    <div class="paper-description">
+                        Input convex neural networks for optimal transport maps. Predicts single-cell perturbation 
+                        responses from unaligned control/treatment populations.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Applications:</strong>
+                        <ul>
+                            <li>Drug response prediction</li>
+                            <li>Genetic knockout effects</li>
+                            <li>Cross-patient generalization</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-023-01969-x" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/bunnech/cellot" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Labeled GWOT -->
+                <div class="paper-card">
+                    <h4>Cross-modality matching and prediction of perturbation responses with labeled Gromov-Wasserstein optimal transport</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">AISTATS</span>
+                        <span class="meta-badge type-badge">Optimal Transport</span>
+                    </div>
+                    <div class="paper-description">
+                        Label-constrained Gromov-Wasserstein OT for cross-modality alignment. Achieves L-fold 
+                        computational speedup while improving alignment quality with perturbation labels.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Innovations:</strong>
+                        <ul>
+                            <li>Incorporates perturbation labels</li>
+                            <li>RNA → protein prediction</li>
+                            <li>Dose-response preservation</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2405.00838" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/Genentech/Perturb-OT" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🧠 Deep Learning & Neural Networks</h3>
+            <div class="paper-grid">
+                <!-- Tangram -->
+                <div class="paper-card">
+                    <h4>Deep learning and alignment of spatially resolved single-cell transcriptomes with Tangram</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2021</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Spatial Transcriptomics</span>
+                    </div>
+                    <div class="paper-description">
+                        Tangram is a deep learning framework that aligns single-cell/single-nucleus RNA-seq data to any form of spatial transcriptomics data to generate genome-wide spatial expression maps at single-cell resolution and integrate them with anatomical references.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Key Features:</strong>
+                        <ul>
+                            <li>Works with any spatial technology (MERFISH, Visium, smFISH)</li>
+                            <li>Expands gene coverage to genome-wide scale</li>
+                            <li>Automated histological registration module</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-021-01264-7" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/broadinstitute/Tangram" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- scJoint -->
+                <div class="paper-card">
+                    <h4>scJoint integrates atlas-scale single-cell RNA-seq and ATAC-seq data with transfer learning</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span>
+                        <span class="meta-badge journal-badge">Nature Biotechnology</span>
+                        <span class="meta-badge modality-badge">RNA+ATAC</span>
+                    </div>
+                    <div class="paper-description">
+                        scJoint is a scalable transfer learning method using neural networks to integrate atlas-scale scRNA-seq and scATAC-seq data through semisupervised learning, achieving 84% label transfer accuracy while handling over 1 million cells in 2 hours.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Key Achievements:</strong>
+                        <ul>
+                            <li>Processes 1M+ cells in 2 hours</li>
+                            <li>84% label transfer accuracy</li>
+                            <li>Effective batch correction across platforms</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-021-01161-6" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/SydneyBioX/scJoint" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- scBridge -->
+                <div class="paper-card">
+                    <h4>scBridge embraces cell heterogeneity in single-cell RNA-seq and ATAC-seq data integration</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge type-badge">Transfer Learning</span>
+                    </div>
+                    <div class="paper-description">
+                        scBridge is a heterogeneous transfer learning method that exploits cell heterogeneity to progressively integrate scRNA-seq and scATAC-seq data by first identifying and integrating "reliable" scATAC-seq cells with smaller omics differences, then using them as bridges to integrate the remaining cells.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Novel Approach:</strong>
+                        <ul>
+                            <li>Progressive integration strategy</li>
+                            <li>Exploits cell heterogeneity as advantage</li>
+                            <li>Superior performance on challenging datasets</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-023-41795-5" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/XLearning-SCU/scBridge" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- scMODAL -->
+                <div class="paper-card">
+                    <h4>scMODAL: a general deep learning framework for comprehensive single-cell multi-omics data alignment with feature links</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge type-badge">GAN-based</span>
+                    </div>
+                    <div class="paper-description">
+                        scMODAL is a deep learning framework leveraging neural networks and generative adversarial networks to align single-cell multi-omics datasets with limited known feature correlations, enabling accurate cross-modality integration, feature imputation, and regulatory relationship inference.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>GAN-based architecture for alignment</li>
+                            <li>Works with limited feature correlations</li>
+                            <li>Cross-modality imputation and prediction</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-60333-z" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/gefeiwang/scMODAL" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- OmiCLIP -->
+                <div class="paper-card">
+                    <h4>A visual-omics foundation model to bridge histopathology with spatial transcriptomics (OmiCLIP)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Visual-Omics</span>
+                    </div>
+                    <div class="paper-description">
+                        CLIP-based foundation model trained on 2.2M H&E image-transcriptomics pairs. Enables 
+                        gene expression prediction from routine histology images.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Capabilities:</strong>
+                        <ul>
+                            <li>Image → transcriptomics prediction</li>
+                            <li>Tissue section alignment</li>
+                            <li>Cell type annotation from H&E</li>
+                            <li>Spatial decomposition</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02707-1" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/GuangyuWangLab2021/Loki/" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🎯 Contrastive Learning</h3>
+            <div class="paper-grid">
+                <!-- Concerto -->
+                <div class="paper-card">
+                    <h4>Contrastive learning enables rapid mapping to multimodal single-cell atlas of multimillion scale (Concerto)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span>
+                        <span class="meta-badge journal-badge">Nature Machine Intelligence</span>
+                        <span class="meta-badge type-badge">Contrastive Learning</span>
+                    </div>
+                    <div class="paper-description">
+                        Self-distillation framework with asymmetric teacher-student architecture. Demonstrates 
+                        linear scalability to 10M+ cells with 100x speedup over baselines.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Achievements:</strong>
+                        <ul>
+                            <li>10M cell reference atlas in 1.5 hours</li>
+                            <li>Query mapping in 8 seconds (10K cells)</li>
+                            <li>Superior clustering and classification</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s42256-022-00518-z" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/melobio/Concerto-reproducibility" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🤖 Foundation Models & Transformers</h3>
+            <div class="paper-grid">
+                <!-- scGPT -->
+                <div class="paper-card">
+                    <h4>scGPT: toward building a foundation model for single-cell multi-omics using generative AI</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Foundation Model</span>
+                    </div>
+                    <div class="paper-description">
+                        100M parameter transformer pre-trained on 33M cells. Generative pretraining with cell-as-sentence paradigm. 
+                        Supports multi-omics fine-tuning and zero-shot predictions.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Capabilities:</strong>
+                        <ul>
+                            <li>Cell type annotation</li>
+                            <li>Batch correction</li>
+                            <li>Perturbation prediction</li>
+                            <li>Gene network inference</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-024-02201-0" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/bowang-lab/scGPT" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CellWhisperer -->
+                <div class="paper-card">
+                    <h4>CellWhisperer: An instruction-tuned foundation model for single-cell multimodal analysis</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Biotechnology</span>
+                        <span class="meta-badge type-badge">Foundation Model</span>
+                    </div>
+                    <div class="paper-description">
+                        Instruction-tuned multimodal foundation model supporting natural language queries. 
+                        First single-cell model with conversational interface for biological questions.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>Natural language biological queries</li>
+                            <li>Multi-task learning (classification, clustering, prediction)</li>
+                            <li>Zero-shot generalization</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-025-02857-9" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/epigen/cellwhisperer" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://cellwhisperer.bocklab.org/" class="paper-link" target="_blank">
+                            <i class="fas fa-globe"></i> Website
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🌉 Mosaic & Bridge Integration</h3>
+            <div class="paper-grid">
+                <!-- StabMap -->
+                <div class="paper-card">
+                    <h4>Stabilized mosaic single-cell data integration using unshared features (StabMap)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Biotechnology</span>
+                        <span class="meta-badge type-badge">Mosaic Integration</span>
+                    </div>
+                    <div class="paper-description">
+                        StabMap enables mosaic data integration of single-cell datasets by exploiting non-overlapping features through traversal of a mosaic data topology, allowing multi-hop integration where some datasets share no common features.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Unique Capabilities:</strong>
+                        <ul>
+                            <li>Multi-hop integration without direct feature overlap</li>
+                            <li>Leverages non-overlapping features</li>
+                            <li>Supports supervised and unsupervised modes</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-023-01766-z" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/MarioniLab/StabMap" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dictionary Learning -->
+                <div class="paper-card">
+                    <h4>Building a cross-species cell atlas with interpretable deep learning (Dictionary Learning)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">Nature Biotechnology</span>
+                        <span class="meta-badge type-badge">Bridge Integration</span>
+                    </div>
+                    <div class="paper-description">
+                        Dictionary learning approach for cross-species and cross-technology integration. Learns 
+                        interpretable gene programs bridging evolutionary distances.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Applications:</strong>
+                        <ul>
+                            <li>Human-mouse integration</li>
+                            <li>Cross-platform harmonization</li>
+                            <li>Conserved program discovery</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-023-01767-y" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔬 Perturbation & Response Prediction</h3>
+            <div class="paper-grid">
+                <!-- IMPA -->
+                <div class="paper-card">
+                    <h4>Predicting cell morphological responses to perturbations using generative modeling (IMPA)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge type-badge">Generative Model</span>
+                    </div>
+                    <div class="paper-description">
+                        IMPA is a generative style-transfer model that predicts cellular morphological responses to unseen chemical and genetic perturbations while accounting for batch effects in high-content imaging screens.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Applications:</strong>
+                        <ul>
+                            <li>Drug response prediction from imaging</li>
+                            <li>Handles batch effects in HCS</li>
+                            <li>Generative modeling for perturbation screens</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-024-55707-8" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/theislab/IMPA" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>📊 Benchmark & Review Papers</h3>
+            <div class="paper-grid">
+                <div class="paper-card">
+                    <h4>Multitask benchmarking of single-cell multimodal omics integration methods</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Benchmark</span>
+                    </div>
+                    <div class="paper-description">
+                        Comprehensive evaluation of 40 integration methods across 7 tasks using 64 real + 22 simulated datasets. 
+                        Establishes integration taxonomy (vertical/diagonal/mosaic/cross) and provides decision trees for method selection.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Key Findings:</strong>
+                        <ul>
+                            <li>No universal winner; task-dependent performance</li>
+                            <li>Deep learning dominates diagonal/cross integration</li>
+                            <li>Batch correction often trades off with biological preservation</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02856-3" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/PYangLab/scMultiBench" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://doi.org/10.6084/m9.figshare.29035586.v1" class="paper-link" target="_blank">
+                            <i class="fas fa-database"></i> Data
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>Benchmarking single-cell multi-modal data integrations</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge type-badge">Benchmark</span>
+                    </div>
+                    <div class="paper-description">
+                        Systematic assessment across usability, accuracy, and robustness dimensions. Evaluates 40 algorithms 
+                        with 101 benchmark datasets spanning diverse technologies and cell types.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Evaluation Framework:</strong>
+                        <ul>
+                            <li>Multi-gradient AUC for robustness</li>
+                            <li>Hardware scalability testing (500GB RAM, 24h limits)</li>
+                            <li>Cross-modality imputation assessment</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02737-9" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/bm2-lab/SCMMI_Benchmark/" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                        <a href="https://bm2-lab.github.io/SCMMIB-reproducibility/" class="paper-link" target="_blank">
+                            <i class="fas fa-globe"></i> Website
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>How to build the virtual cell with artificial intelligence: Priorities and opportunities (AIVC)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Cell</span>
+                        <span class="meta-badge type-badge">Perspective</span>
+                    </div>
+                    <div class="paper-description">
+                        Vision paper outlining the AI Virtual Cell framework. Proposes universal representations across 
+                        molecular, cellular, and multicellular scales with virtual instruments for manipulation and decoding.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Framework Components:</strong>
+                        <ul>
+                            <li>Universal representations (URs) across scales</li>
+                            <li>Virtual instruments (manipulators & decoders)</li>
+                            <li>Foundation model architecture for cells</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1016/j.cell.2024.11.015" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://arxiv.org/abs/2409.11654" class="paper-link" target="_blank">
+                            <i class="fas fa-file-pdf"></i> arXiv
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>The Human Cell Atlas: from a cell census to a unified foundation model</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature</span>
+                        <span class="meta-badge type-badge">Perspective</span>
+                    </div>
+                    <div class="paper-description">
+                        Roadmap for Human Cell Atlas evolution from cell census to foundation models. Outlines 5 perspectives: 
+                        cell census, 3D maps, genotype-phenotype maps, developmental maps, and foundation models.
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41586-024-08338-4" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://www.humancellatlas.org/" class="paper-link" target="_blank">
+                            <i class="fas fa-globe"></i> HCA Website
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>🔧 Methods Development & Innovation</h3>
+            <div class="paper-grid">
+                <div class="paper-card">
+                    <h4>SnapATAC2: A fast, scalable and versatile tool for analysis of single-cell omics data</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nature Methods</span>
+                        <span class="meta-badge modality-badge">scATAC-seq</span>
+                    </div>
+                    <div class="paper-description">
+                        Matrix-free spectral embedding for chromatin accessibility data. Achieves linear time/memory 
+                        complexity enabling analysis of million-cell datasets on standard hardware.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Performance:</strong>
+                        <ul>
+                            <li>O(n) complexity vs O(n²) for competitors</li>
+                            <li>63.4% cost reduction vs ArchR</li>
+                            <li>200K cells in 13.4 minutes</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-023-02139-9" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/kaizhang/SnapATAC2/" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>SIMVI disentangles intrinsic and spatial-induced cellular states in spatial omics data</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge type-badge">Spatial</span>
+                    </div>
+                    <div class="paper-description">
+                        Dual encoder VAE with MLP for intrinsic variation and GAT for spatial variation. First 
+                        identifiable framework for separating intrinsic cell state from spatial microenvironment effects.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Innovations:</strong>
+                        <ul>
+                            <li>Asymmetric regularization for identifiability</li>
+                            <li>Single-cell spatial effect estimation</li>
+                            <li>Causal inference integration (DML)</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-58089-7" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/KlugerLab/SIMVI" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>scMODAL: a general deep learning framework for comprehensive single-cell multi-omics data alignment</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge type-badge">GAN-based</span>
+                    </div>
+                    <div class="paper-description">
+                        GAN-based integration using feature links (e.g., gene-protein pairs). First method to effectively 
+                        handle weakly-linked modalities through adversarial alignment.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Capabilities:</strong>
+                        <ul>
+                            <li>29-34% imputation improvement</li>
+                            <li>Works with minimal feature links</li>
+                            <li>Integrates CITE-seq + CyTOF</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-60333-z" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/gefeiwang/scMODAL" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>MORPH predicts the single-cell outcome of genetic perturbations across conditions and data modalities</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">Perturbation</span>
+                    </div>
+                    <div class="paper-description">
+                        Discrepancy-based VAE with attention mechanism for perturbation prediction. Handles both 
+                        transcriptomic and imaging modalities with prior knowledge integration (DepMap, GenePT).
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Features:</strong>
+                        <ul>
+                            <li>Cross-cell line transfer learning</li>
+                            <li>Combinatorial perturbation modeling</li>
+                            <li>Active learning for experiment design</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.06.27.661992" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/uhlerlab/MORPH" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>MetaQ: fast, scalable and accurate metacell inference via single-cell quantization</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge type-badge">Scalability</span>
+                    </div>
+                    <div class="paper-description">
+                        Deep learning with quantization for metacell construction. Achieves O(n) complexity and 
+                        100x speedup over SEACell while maintaining superior classification accuracy.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Performance:</strong>
+                        <ul>
+                            <li>100K cells in 0.3h vs 26.7h (SEACell)</li>
+                            <li>88% balanced accuracy vs 84% (baseline)</li>
+                            <li>Native multi-omics support</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-56424-6" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/XLearning-SCU/MetaQ" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <div class="paper-card">
+                    <h4>ADTnorm: robust integration of single-cell protein measurement across CITE-seq datasets</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nature Communications</span>
+                        <span class="meta-badge modality-badge">Protein</span>
+                    </div>
+                    <div class="paper-description">
+                        Functional data analysis for protein expression normalization. Landmark alignment preserves 
+                        negative peaks essential for cell type annotation while harmonizing batch effects.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Applications:</strong>
+                        <ul>
+                            <li>Cross-institutional integration</li>
+                            <li>Antibody titration optimization</li>
+                            <li>Auto-gating (80-100% accuracy)</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-61023-6" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/yezhengSTAT/ADTnorm" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub (R)
+                        </a>
+                        <a href="https://github.com/donnafarberlab/ADTnormPy" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub (Python)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section id="comparison" class="content-section">
+            <h2>📚 Comprehensive Method Comparison</h2>
+
+            <h3>By Integration Category & Performance</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Year</th>
+                        <th>Category</th>
+                        <th>Modalities</th>
+                        <th>Scale</th>
+                        <th>Key Strength</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Vertical Integration -->
+                    <tr style="background-color: #E3F2FD;">
+                        <td colspan="6"><strong>Vertical Integration (Paired Multi-Modal)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seurat WNN</strong></td>
+                        <td>2021</td>
+                        <td>Vertical</td>
+                        <td>RNA+ADT, RNA+ATAC</td>
+                        <td>~100K cells</td>
+                        <td>Cell-specific modality weighting; widely adopted</td>
+                    </tr>
+                    <tr>
+                        <td><strong>totalVI</strong></td>
+                        <td>2021</td>
+                        <td>Vertical/Cross</td>
+                        <td>RNA+ADT</td>
+                        <td>~50K cells</td>
+                        <td>Probabilistic; batch correction; imputation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multigrate</strong></td>
+                        <td>2024</td>
+                        <td>Vertical/Cross</td>
+                        <td>RNA+ADT+ATAC</td>
+                        <td>~100K cells</td>
+                        <td>Tri-modal support; robust performance</td>
+                    </tr>
+
+                    <!-- Diagonal Integration -->
+                    <tr style="background-color: #E8F5E9;">
+                        <td colspan="6"><strong>Diagonal Integration (Unpaired, Non-Overlapping)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>scBridge</strong></td>
+                        <td>2023</td>
+                        <td>Diagonal</td>
+                        <td>RNA+ATAC</td>
+                        <td>~50K cells</td>
+                        <td>Superior dimensionality reduction & clustering</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GLUE</strong></td>
+                        <td>2022</td>
+                        <td>Diagonal</td>
+                        <td>RNA+ATAC</td>
+                        <td>~50K cells</td>
+                        <td>Graph neural network; best batch correction</td>
+                    </tr>
+                    <tr>
+                        <td><strong>scJoint</strong></td>
+                        <td>2022</td>
+                        <td>Diagonal</td>
+                        <td>RNA+ATAC</td>
+                        <td>~100K cells</td>
+                        <td>Multi-batch integration; transfer learning</td>
+                    </tr>
+
+                    <!-- Mosaic Integration -->
+                    <tr style="background-color: #FFF9C4;">
+                        <td colspan="6"><strong>Mosaic Integration (Overlapping Incomplete)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>StabMap</strong></td>
+                        <td>2023</td>
+                        <td>Mosaic</td>
+                        <td>Any combination</td>
+                        <td>~50K cells</td>
+                        <td>Flexible; efficient; handles any modality pattern</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MultiVI</strong></td>
+                        <td>2023</td>
+                        <td>Mosaic</td>
+                        <td>RNA+ADT+ATAC</td>
+                        <td>~100K cells</td>
+                        <td>VAE-based; missing modality imputation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cobolt</strong></td>
+                        <td>2023</td>
+                        <td>Mosaic</td>
+                        <td>RNA+ADT+ATAC</td>
+                        <td>~50K cells</td>
+                        <td>Bayesian framework; uncertainty quantification</td>
+                    </tr>
+
+                    <!-- Spatial Integration -->
+                    <tr style="background-color: #F3E5F5;">
+                        <td colspan="6"><strong>Spatial Integration</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>SIMVI</strong></td>
+                        <td>2025</td>
+                        <td>Spatial</td>
+                        <td>Spatial transcriptomics</td>
+                        <td>~60K cells</td>
+                        <td>Disentangles intrinsic vs spatial variation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>OmiCLIP</strong></td>
+                        <td>2025</td>
+                        <td>Spatial</td>
+                        <td>H&E + ST</td>
+                        <td>2.2M pairs</td>
+                        <td>Visual-omics foundation model; H&E → gene expression</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tangram</strong></td>
+                        <td>2021</td>
+                        <td>Spatial</td>
+                        <td>Spatial mapping</td>
+                        <td>~50K cells</td>
+                        <td>Maps scRNA-seq to spatial coordinates</td>
+                    </tr>
+
+                    <!-- Perturbation Integration -->
+                    <tr style="background-color: #FFE0B2;">
+                        <td colspan="6"><strong>Perturbation-Aware Integration</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>CellOT</strong></td>
+                        <td>2023</td>
+                        <td>Perturbation</td>
+                        <td>RNA-seq (protein/imaging)</td>
+                        <td>~50K cells</td>
+                        <td>Neural OT; single-cell predictions</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MORPH</strong></td>
+                        <td>2025</td>
+                        <td>Perturbation</td>
+                        <td>RNA + Imaging</td>
+                        <td>~300K cells</td>
+                        <td>Cross-modality; cross-cell line transfer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Labeled GWOT</strong></td>
+                        <td>2025</td>
+                        <td>Perturbation</td>
+                        <td>RNA + Protein</td>
+                        <td>~50K cells</td>
+                        <td>Label-constrained OT; L-fold speedup</td>
+                    </tr>
+
+                    <!-- Classical Methods -->
+                    <tr style="background-color: #D49BA7;">
+                        <td colspan="6"><strong>Classical/Statistical Methods</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>MOFA+</strong></td>
+                        <td>2020</td>
+                        <td>Vertical</td>
+                        <td>Any</td>
+                        <td>~10K cells</td>
+                        <td>Interpretable factors; handles covariates</td>
+                    </tr>
+                    <tr>
+                        <td><strong>mixOmics</strong></td>
+                        <td>2017</td>
+                        <td>Vertical</td>
+                        <td>Any</td>
+                        <td>~5K cells</td>
+                        <td>Multiblock projection to latent structure (PLS); statistical rigor</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        
+        </section>
+
+        <!-- Implementation Guide -->
+        <section id="guide" class="content-section">
+            <h2>💡 Practical Implementation Guide</h2>
+
+            <h3>Choosing the Right Method: Decision Framework</h3>
+            <div class="highlight-box">
+                <h4>Step 1: Identify Your Data Structure</h4>
+                <ul>
+                    <li><strong>All cells have all modalities?</strong> → Vertical integration </li>
+                    <li><strong>Different batches, different modalities?</strong> → Diagonal </li>
+                    <li><strong>Mixed modality availability?</strong> → Mosaic </li>
+                    <li><strong>Multiple batches, all modalities?</strong> → Cross </li>
+                    <li><strong>Spatial data?</strong> → Spatial methods </li>
+                    <li><strong>Perturbation data?</strong> → Perturbation-aware </li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Step 2: Consider Your Computational Resources</h4>
+                <p><strong>Limited Resources (no GPU, &lt;32GB RAM):</strong></p>
+                <ul>
+                    <li>Classical methods </li>
+                </ul>
+
+                <p><strong>Moderate Resources (GPU optional, 32-64GB RAM):</strong></p>
+                <ul>
+                    <li>Most VAE-based and graph methods </li>
+                </ul>
+
+                <p><strong>High-End Resources (GPU required, 64GB+ RAM):</strong></p>
+                <ul>
+                    <li>Foundation models </li>
+                </ul>
+            </div>
+
+
+            <h3>Common Pitfalls & Best Practices</h3>
+            <ul>
+                <li>
+                    <strong>Data Quality First:</strong> Ensure proper preprocessing (UMI counts &gt;500, doublet removal, 
+                    quality control). Use standard pipelines (Scanpy, Seurat). Bad data → bad integration.
+                </li>
+                <li>
+                    <strong>Modality-Specific Normalization:</strong> Each modality needs appropriate normalization 
+                    (RNA: log-normalization, ATAC: TF-IDF, Protein: ADTnorm/DSB). Don't use RNA normalization for ATAC!
+                </li>
+                <li>
+                    <strong>Evaluation Metrics Matter:</strong> Use multiple complementary metrics (ARI, NMI, ASW for clustering; 
+                    kBET, iLISI for batch mixing). Single metrics can be misleading.
+                </li>
+                <li>
+                    <strong>Batch Effect vs Biological Variation:</strong> Over-correction removes biology; under-correction 
+                    leaves technical artifacts. Check cell type separation alongside batch mixing.
+                </li>
+                <li>
+                    <strong>Held-Out Testing:</strong> Evaluate on held-out batches or cell types, not just held-out cells 
+                    from training conditions. Tests true generalization.
+                </li>
+                <li>
+                    <strong>Baseline Comparisons:</strong> Always compare against simple baselines (PCA, naive concatenation, 
+                    per-modality analysis). Complex methods should outperform simple ones.
+                </li>
+                <li>
+                    <strong>Computational Scalability:</strong> Test methods on your actual data size. Many methods fail 
+                    silently or degrade performance on large datasets.
+                </li>
+                <li>
+                    <strong>Biological Validation:</strong> Computational integration should reveal biologically meaningful 
+                    patterns. Validate key findings with marker genes, known cell types, or experimental follow-up.
+                </li>
+                <li>
+                    <strong>Hyperparameter Tuning:</strong> Default parameters often suboptimal. Use cross-validation or 
+                    grid search for critical parameters (latent dimensions, regularization, learning rate).
+                </li>
+                <li>
+                    <strong>Reproducibility:</strong> Report random seeds, package versions, preprocessing steps, and 
+                    hyperparameters. Provide code and (when possible) data.
+                </li>
+            </ul>
+
+            <h3>Software Ecosystem & Tools</h3>
+            <ul>
+                <li>
+                    <strong><a href="https://scanpy.readthedocs.io/" target="_blank">Scanpy</a>:</strong> 
+                    Standard Python toolkit for preprocessing, analysis, visualization. Foundation for many integration methods.
+                </li>
+                <li>
+                    <strong><a href="https://satijalab.org/seurat/" target="_blank">Seurat</a>:</strong> 
+                    R package with Seurat v3/v5 integration, WNN, UMAP. Industry standard for single-cell RNA-seq.
+                </li>
+                <li>
+                    <strong><a href="https://scvi-tools.org/" target="_blank">scvi-tools</a>:</strong> 
+                    PyTorch-based framework for probabilistic models (scVI, totalVI, MultiVI, scANVI). GPU-accelerated.
+                </li>
+                <li>
+                    <strong><a href="https://muon.readthedocs.io/" target="_blank">Muon</a>:</strong> 
+                    Python package for multimodal omics analysis. Integrates with Scanpy ecosystem.
+                </li>
+                <li>
+                    <strong><a href="https://github.com/welch-lab/liger" target="_blank">LIGER</a>:</strong> 
+                    R package for integrative non-negative matrix factorization. Good for cross-platform integration.
+                </li>
+                <li>
+                    <strong><a href="https://github.com/immunogenomics/harmony" target="_blank">Harmony</a>:</strong> 
+                    Fast batch correction algorithm. Works on PCA embeddings. Widely used for large-scale integration.
+                </li>
+              </ul>
+        </section>
+    </main>
+             
+               
+               
+            
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 1.1em;">
+            Part of the <a href="../">AI4Bio Learning Hub</a> by Xinru Qiu
+        </p>
+        <p style="font-size: 0.9em; margin-top: 15px;">
+            Last updated: November 2025 
+        </p>
+        <p style="font-size: 0.85em; color: #999; margin-top: 10px;">
+            <i class="fas fa-envelope"></i>
+            <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #999;">xinru.reina.qiu@gmail.com</a> |
+            <i class="fab fa-github"></i>
+            <a href="https://github.com/xqiu625" style="color: #999;">GitHub</a>
+        </p>
+
+    </footer>
+</body>
+</html>
