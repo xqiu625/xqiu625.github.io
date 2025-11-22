@@ -411,7 +411,7 @@
                 <h2>🎮 Concept: The Perturbation Vector</h2>
                 <p>
                     Before exploring specific tools, visualize the core challenge: moving a cell from a "Control" state 
-                    to a "Treated" state. Modern AI methods learn this vector field in high-dimensional space.
+                    to a "Treated" state. Modern AI methods (like CRISP) learn this <strong>vector field</strong> in high-dimensional space, while methods like State account for resistant <strong>subpopulations</strong>.
                 </p>
                 
                 <div class="demo-container">
@@ -420,10 +420,10 @@
                             <i class="fas fa-undo"></i> Control State
                         </button>
                         <button class="demo-btn btn-drugA" onclick="setDemoState('drugA')">
-                            <i class="fas fa-pills"></i> Effective Drug
+                            <i class="fas fa-pills"></i> Effective Drug (Vector Shift)
                         </button>
                         <button class="demo-btn btn-drugB" onclick="setDemoState('drugB')">
-                            <i class="fas fa-shield-virus"></i> Resistant Response
+                            <i class="fas fa-shield-virus"></i> Resistant (Heterogeneity)
                         </button>
                     </div>
 
@@ -576,6 +576,7 @@
                             Factorized Causal Representations. A VAE that disentangles cell identity from treatment effects, allowing for the generation of "counterfactual" single-cell states (e.g., "What if this specific cell had been treated?").
                         </p>
                         <div class="paper-links">
+                            <a href="https://openreview.net/forum?id=AhlaBDHMQh" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                             <a href="https://github.com/Genentech/fcr" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
@@ -886,56 +887,76 @@
     <!-- JAVASCRIPT FOR INTERACTIVE DEMO -->
     <script>
         // Configuration
-        const numCells = 60;
+        const numCells = 50; // Slightly reduced for cleaner vector lines
         const svg = document.getElementById('perturbationSvg');
         const cellsGroup = document.getElementById('cellsGroup');
         
         let cells = [];
+        let vectors = []; // Store vector lines
         
-        // Initialize Random Cells in "Control" state
+        // Initialize Random Cells
         function initCells() {
             cellsGroup.innerHTML = ''; // clear
             cells = [];
+            vectors = [];
+            
+            // Create a group for vectors (lines) so they sit BEHIND the cells
+            const vectorGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            vectorGroup.id = "vectorGroup";
+            cellsGroup.appendChild(vectorGroup);
+
+            // Create a group for cells
+            const dotsGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            dotsGroup.id = "dotsGroup";
+            cellsGroup.appendChild(dotsGroup);
             
             for(let i=0; i<numCells; i++) {
-                // Create logical cell object with 3 states
-                const controlX = 100 + Math.random() * 150; // Left side cluster
-                const controlY = 100 + Math.random() * 200;
+                // CONTROL STATE (Baseline)
+                const controlX = 150 + (Math.random() - 0.5) * 100;
+                const controlY = 200 + (Math.random() - 0.5) * 150;
                 
+                // DRUG A: EFFECTIVE (Shift entire population right and compress)
+                // Matches CRISP's "Translation" in latent space
+                const drugAX = 600 + (Math.random() - 0.5) * 60; 
+                const drugAY = 200 + (Math.random() - 0.5) * 60;
+
+                // DRUG B: RESISTANT (Bimodal Distribution)
+                // Matches STATE's focus on heterogeneity/subpopulations
+                // 70% stay near control (resistant), 30% move (sensitive)
+                const isResistant = Math.random() > 0.3;
+                const drugBX = isResistant ? (controlX + (Math.random()-0.5)*30) : (550 + (Math.random()-0.5)*80);
+                const drugBY = isResistant ? (controlY + (Math.random()-0.5)*30) : (100 + (Math.random()-0.5)*80);
+
                 const cellData = {
                     id: i,
-                    // State 1: Control (Left, scattered)
-                    control: { x: controlX, y: controlY, color: '#ccc', r: 4 + Math.random()*3 },
-                    
-                    // State 2: Drug A (Right, tight cluster, "Effective")
-                    drugA: { 
-                        x: 550 + Math.random() * 100, 
-                        y: 150 + Math.random() * 100, 
-                        color: '#8FC50E', // Green
-                        r: 4 + Math.random()*3 
-                    },
-                    
-                    // State 3: Drug B (Middle-Right, spread out, "Resistance/Mixed")
-                    drugB: { 
-                        x: 450 + Math.random() * 200, 
-                        y: 50 + Math.random() * 300, 
-                        color: '#FF6B6B', // Red
-                        r: 4 + Math.random()*3 
-                    }
+                    control: { x: controlX, y: controlY, color: '#ccc' },
+                    drugA:   { x: drugAX, y: drugAY, color: '#8FC50E' },
+                    drugB:   { x: drugBX, y: drugBY, color: '#FF6B6B' }
                 };
                 
                 cells.push(cellData);
                 
-                // Create SVG Element
+                // 1. Create Vector Line (Hidden initially)
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", controlX);
+                line.setAttribute("y1", controlY);
+                line.setAttribute("x2", controlX); // Start length 0
+                line.setAttribute("y2", controlY);
+                line.setAttribute("stroke", "#ddd");
+                line.setAttribute("stroke-width", "1");
+                line.setAttribute("opacity", "0"); // Hidden in control
+                line.id = `vec-${i}`;
+                vectorGroup.appendChild(line);
+
+                // 2. Create Cell Dot
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 circle.setAttribute("cx", cellData.control.x);
                 circle.setAttribute("cy", cellData.control.y);
-                circle.setAttribute("r", cellData.control.r);
+                circle.setAttribute("r", 5);
                 circle.setAttribute("fill", cellData.control.color);
                 circle.setAttribute("class", "cell-dot");
-                circle.setAttribute("opacity", 0.7);
                 circle.id = `cell-${i}`;
-                cellsGroup.appendChild(circle);
+                dotsGroup.appendChild(circle);
             }
         }
 
@@ -948,13 +969,33 @@
             else if (state === 'drugA') document.querySelector('.btn-drugA').classList.add('active');
             else if (state === 'drugB') document.querySelector('.btn-drugB').classList.add('active');
             
-            // Animate Cells
+            // Animate Cells & Vectors
             cells.forEach(cell => {
                 const target = cell[state];
-                const el = document.getElementById(`cell-${cell.id}`);
-                el.setAttribute("cx", target.x);
-                el.setAttribute("cy", target.y);
-                el.setAttribute("fill", target.color);
+                const dot = document.getElementById(`cell-${cell.id}`);
+                const vec = document.getElementById(`vec-${cell.id}`);
+
+                // Move Dot
+                dot.setAttribute("cx", target.x);
+                dot.setAttribute("cy", target.y);
+                dot.setAttribute("fill", target.color);
+
+                // Update Vector Logic
+                if (state === 'control') {
+                    // Hide vectors in control state
+                    vec.setAttribute("opacity", "0");
+                    vec.setAttribute("x2", cell.control.x);
+                    vec.setAttribute("y2", cell.control.y);
+                } else {
+                    // Show vector connecting Origin (Control) to Destination (Drug)
+                    // This visualizes the "CRISP" Delta Vector
+                    vec.setAttribute("x1", cell.control.x);
+                    vec.setAttribute("y1", cell.control.y);
+                    vec.setAttribute("x2", target.x);
+                    vec.setAttribute("y2", target.y);
+                    vec.setAttribute("opacity", "1");
+                    vec.style.transition = "x2 1s, y2 1s, opacity 0.5s";
+                }
             });
         }
 
