@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attention Mechanisms in Biology - AI4Bio Learning Hub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 50%, #fef0e0 100%);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(247, 200, 131, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(247, 162, 84, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 90%, rgba(192, 85, 64, 0.08) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #F7A254 0%, #F7C550 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(247, 162, 84, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(247, 162, 84, 0.3), transparent);
+            transform-origin: 0 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, #F5C883, #F7C550, #F7A254, #C05540) 1;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(247, 162, 84, 0.15);
+        }
+
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .navbar-nav a:hover {
+            color: #C05540;
+        }
+
+        .home-link {
+            color: #C05540 !important;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 50%, #ffefe0 100%);
+            border-radius: 25px;
+            padding: 60px 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(247, 162, 84, 0.2), 0 0 0 3px rgba(247, 162, 84, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(247, 197, 80, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(247, 162, 84, 0.12) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            color: #C05540;
+            font-size: 3em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .header h1 i {
+            color: #F7A254;
+            animation: glow 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes glow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(247, 162, 84, 0.5)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(247, 162, 84, 0.8)); }
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #F7A254;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .header .intro {
+            max-width: 900px;
+            margin: 0 auto;
+            color: #555;
+            font-size: 1.05em;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(247, 162, 84, 0.2);
+            box-shadow: 0 4px 15px rgba(247, 162, 84, 0.1);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px rgba(247, 162, 84, 0.12), 0 0 0 2px rgba(247, 162, 84, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #F5C883, #F7C550, #F7A254, #C05540);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .content-section h2 {
+            color: #C05540;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-left: 4px solid #F7A254;
+            padding-left: 15px;
+        }
+
+        .content-section h3 {
+            color: #F7A254;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* --- UPDATED LAYOUT FOR ATTENTION CARDS (Full Width) --- */
+        .attention-types-container {
+            display: flex;
+            flex-direction: column;
+            gap: 50px; /* Added significant spacing between the large cards */
+            margin: 40px 0;
+        }
+
+        .attention-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 5px solid;
+            position: relative;
+            overflow: hidden;
+            /* Ensure full width */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .attention-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(247, 162, 84, 0.05), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .attention-card:hover::before {
+            opacity: 1;
+        }
+
+        .attention-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(192, 85, 64, 0.15);
+        }
+
+        .attention-card:nth-child(1) { border-top-color: #F5C883; }
+        .attention-card:nth-child(2) { border-top-color: #426DB4; }
+        .attention-card:nth-child(3) { border-top-color: #C05540; }
+        /* Add color for the new 4th card */
+        .attention-card:nth-child(4) { border-top-color: #E67E22; }
+
+        .attention-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            margin-top: 0;
+        }
+        .attention-card:nth-child(1) h3 { color: #F5C883; }
+        .attention-card:nth-child(2) h3 { color: #426DB4; }
+        .attention-card:nth-child(3) h3 { color: #C05540; }
+        /* Add color for the new 4th card title */
+        .attention-card:nth-child(4) h3 { color: #E67E22; }
+
+        /* --- UPDATED VISUAL CONTAINER FOR WIDER SVGS --- */
+        .attention-card .visual-container {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: inset 0 2px 15px rgba(0,0,0,0.03);
+            text-align: center;
+            /* Increased height for better visualization */
+            min-height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(247, 162, 84, 0.1);
+        }
+
+        .attention-card .description {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+        .attention-card .analogy-box {
+            background: rgba(0,0,0,0.03);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ddd;
+        }
+        .attention-card .analogy-box h4 {
+            margin-top: 0;
+            color: #555;
+            display: flex;
+            align-items: center;
+        }
+        .attention-card .analogy-box h4 i {
+            margin-right: 10px;
+            color: #F7A254;
+        }
+
+        /* --- NEW STYLES FOR THE EXAMPLES BOX --- */
+        .attention-card .examples {
+            background: rgba(247, 162, 84, 0.1); /* Default, will be overridden */
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .attention-card:nth-child(4) .examples { background: rgba(230, 126, 34, 0.1); }
+
+        .attention-card .examples h4 {
+            font-size: 1.1em;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .attention-card:nth-child(4) .examples h4 { color: #E67E22; }
+
+        .attention-card .examples ul {
+            margin: 0;
+            padding-left: 25px;
+            color: #555;
+            font-size: 1.05em;
+        }
+
+        .attention-card .examples li {
+            margin-bottom: 10px;
+        }
+
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .key-point {
+            border-left: 4px solid;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .key-point:nth-child(1) { background: rgba(245, 200, 131, 0.1); border-left-color: #F5C883; }
+        .key-point:nth-child(2) { background: rgba(247, 197, 80, 0.1); border-left-color: #F7C550; }
+        .key-point:nth-child(3) { background: rgba(247, 162, 84, 0.1); border-left-color: #F7A254; }
+        .key-point:nth-child(4) { background: rgba(192, 85, 64, 0.1); border-left-color: #C05540; }
+
+        .key-point h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .key-point:nth-child(1) h4 { color: #F5C883; }
+        .key-point:nth-child(2) h4 { color: #F7C550; }
+        .key-point:nth-child(3) h4 { color: #F7A254; }
+        .key-point:nth-child(4) h4 { color: #C05540; }
+
+        .key-point p {
+            color: #666;
+            font-size: 0.95em;
+            margin: 0;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(247, 162, 84, 0.05);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .highlight-box h3 {
+            color: white;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .highlight-box p {
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .highlight-box ul {
+            color: white;
+            margin: 10px 0;
+            padding-left: 25px;
+        }
+
+        .highlight-box li {
+            margin-bottom: 8px;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #ffffff 0%, #fff5e6 50%, #ffe9d0 100%);
+            padding: 40px;
+            border-radius: 20px;
+            margin: 40px 0;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(247, 162, 84, 0.25);
+            border: 3px solid transparent;
+            border-image: linear-gradient(135deg, #F7C550, #F7A254, #C05540) 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -100%;
+            width: 300%;
+            height: 300%;
+            background:
+                radial-gradient(circle at 30% 50%, rgba(247, 197, 80, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(247, 162, 84, 0.08) 0%, transparent 50%);
+            animation: rotate 25s linear infinite;
+        }
+
+        .cta-section h3 {
+            color: #C05540;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-size: 2em;
+        }
+
+        .cta-section p {
+            color: #666;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            font-size: 1.1em;
+        }
+
+        .cta-button {
+            display: inline-block;
+            color: white;
+            padding: 14px 35px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button-primary {
+            background: linear-gradient(135deg, #F7C550 0%, #F7A254 100%);
+            box-shadow: 0 5px 15px rgba(247, 162, 84, 0.4);
+        }
+
+        .cta-button-primary:hover {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(247, 162, 84, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 25px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .content-section {
+                padding: 25px;
+            }
+            .attention-card {
+                padding: 25px;
+            }
+            .attention-card .visual-container {
+                min-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="neural-bg" id="neuralBg"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../../../index.html" class="home-link"><i class="fas fa-home"></i> Back to Learning Hub</a></li>
+                <li><a href="#overview">Overview</a></li>
+                <li><a href="#types">Attention Types</a></li>
+                <li><a href="#applications">Applications</a></li>
+                <li><a href="#models">Key Models</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-eye"></i> Attention Mechanisms</h1>
+                <p class="subtitle">Understanding How AI Models Focus on What Matters in Biology</p>
+                <p class="intro">
+                    Attention mechanisms have revolutionized how AI models process biological data by enabling them to
+                    selectively focus on the most relevant parts of their input. Just as biologists scan sequences for
+                    important motifs or examine microscopy images for key features, attention allows neural networks to
+                    learn which genes, nucleotides, or proteins are most important for a given task—without being
+                    explicitly programmed with that knowledge.
+                </p>
+            </div>
+
+            <div class="content-section" id="overview">
+                <h2>Why Attention Mechanisms Matter in Biology</h2>
+                <p>
+                    Traditional neural networks process all inputs equally, treating every gene or nucleotide with the same
+                    importance. But biological systems are inherently selective—regulatory elements can affect genes millions
+                    of base pairs away, protein function depends on specific amino acid interactions, and cell identity is
+                    determined by a subset of marker genes. Attention mechanisms capture this selectivity.
+                </p>
+
+                <div class="key-points">
+                    <div class="key-point">
+                        <h4><i class="fas fa-arrows-alt"></i> Long-Range Dependencies</h4>
+                        <p>Captures interactions between distant elements, like enhancers regulating genes >1 Mbp away or amino acids far in sequence but close in 3D structure</p>
+                    </div>
+                    <div class="key-point">
+                        <h4><i class="fas fa-network-wired"></i> Biological Relationships</h4>
+                        <p>Learns gene-gene interactions, TF-target relationships, and protein-protein interfaces directly from data without explicit supervision</p>
+                    </div>
+                    <div class="key-point">
+                        <h4><i class="fas fa-search"></i> Interpretability</h4>
+                        <p>Attention weights reveal which elements the model considers important, providing biological insights beyond predictions</p>
+                    </div>
+                    <div class="key-point">
+                        <h4><i class="fas fa-exchange-alt"></i> Transfer Learning</h4>
+                        <p>Pre-trained attention models transfer knowledge across tasks, cell types, and even species, reducing need for task-specific training</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section" id="types">
+                <h2>How the Factory Works: Four Types of Attention</h2>
+
+                <!-- CHANGED CONTAINER FROM GRID TO FLEX COLUMN FOR FULL WIDTH -->
+                <div class="attention-types-container">
+
+                    <!-- CARD 1: SELF-ATTENTION (The "Group Chat") -->
+                    <div class="attention-card">
+                        <h3>1. Self-Attention: The "Group Chat" of Bricks</h3>
+                        
+                        <div class="analogy-box">
+                            <h4><i class="fas fa-comments"></i> The Analogy:</h4>
+                            <p>Imagine every single brick in the messy pile enters a giant group chat. A gray foundation brick types, "Hey, I'm at the bottom, who goes on top of me?" A window piece replies, "I do!" and a roof slope says, "Not me, I'm way up top." By talking to everyone simultaneously, every brick figures out exactly where it fits relative to all the others.</p>
+                        </div>
+
+                        <div class="visual-container">
+                            <!-- NEW WIDE SVG FOR SELF-ATTENTION -->
+                            <svg viewBox="0 0 900 350" style="width: 100%; height: auto; font-family: 'Lato', sans-serif;">
+                                <defs>
+                                    <filter id="brickShadow">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+                                    </filter>
+                                    <pattern id="studs" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+                                        <circle cx="8" cy="8" r="3" fill="#ffffff" opacity="0.4"/>
+                                    </pattern>
+                                </defs>
+
+                                <!-- Factory Floor -->
+                                <rect x="50" y="260" width="800" height="15" fill="#95a5a6" rx="2"/>
+                                
+                                <!-- Conveyor Belt -->
+                                <rect x="80" y="180" width="740" height="70" fill="#34495e" rx="5"/>
+                                <rect x="80" y="185" width="740" height="12" fill="#2c3e50"/>
+                                <rect x="80" y="238" width="740" height="12" fill="#2c3e50"/>
+                                
+                                <!-- Conveyor belt rollers -->
+                                <circle cx="100" cy="215" r="20" fill="#7f8c8d" stroke="#5a6c7d" stroke-width="2"/>
+                                <circle cx="800" cy="215" r="20" fill="#7f8c8d" stroke="#5a6c7d" stroke-width="2"/>
+
+                                <!-- Factory Title Banner -->
+                                <rect x="250" y="10" width="400" height="50" fill="#e67e22" rx="8" stroke="#d35400" stroke-width="3"/>
+                                <text x="450" y="42" text-anchor="middle" fill="white" font-size="20" font-weight="bold">🏭 SELF-ATTENTION FACTORY</text>
+
+                                <!-- Scanning Tower (Query Brick) -->
+                                <g transform="translate(150, 90)">
+                                    <!-- Scanner device -->
+                                    <rect x="-25" y="0" width="50" height="40" fill="#e67e22" stroke="#d35400" stroke-width="2" rx="4"/>
+                                    <circle cx="0" cy="15" r="12" fill="#f1c40f" opacity="0.8"/>
+                                    <text x="0" y="35" text-anchor="middle" fill="white" font-size="10" font-weight="bold">SCAN</text>
+                                    
+                                    <!-- Scanner beams -->
+                                    <line x1="0" y1="40" x2="0" y2="95" stroke="#f1c40f" stroke-width="8" opacity="0.3"/>
+                                    <line x1="0" y1="40" x2="0" y2="95" stroke="#f1c40f" stroke-width="2" opacity="0.8" stroke-dasharray="4,4">
+                                        <animate attributeName="stroke-dashoffset" from="0" to="8" dur="0.5s" repeatCount="indefinite"/>
+                                    </line>
+                                </g>
+
+                                <!-- LEGO Brick A (Query - Being Scanned) -->
+                                <g transform="translate(127, 185)">
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="#F5C883" filter="url(#brickShadow)"/>
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="url(#studs)"/>
+                                    <circle cx="12" cy="10" r="4" fill="#e0a800"/>
+                                    <circle cx="34" cy="10" r="4" fill="#e0a800"/>
+                                    <circle cx="12" cy="26" r="4" fill="#e0a800"/>
+                                    <circle cx="34" cy="26" r="4" fill="#e0a800"/>
+                                    <text x="23" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="16">A</text>
+                                </g>
+
+                                <!-- LEGO Brick C -->
+                                <g transform="translate(240, 185)">
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="#3498db" filter="url(#brickShadow)"/>
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="url(#studs)"/>
+                                    <circle cx="12" cy="10" r="4" fill="#2980b9"/>
+                                    <circle cx="34" cy="10" r="4" fill="#2980b9"/>
+                                    <circle cx="12" cy="26" r="4" fill="#2980b9"/>
+                                    <circle cx="34" cy="26" r="4" fill="#2980b9"/>
+                                    <text x="23" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="16">C</text>
+                                </g>
+
+                                <!-- LEGO Brick D -->
+                                <g transform="translate(353, 185)">
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="#2ecc71" filter="url(#brickShadow)"/>
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="url(#studs)"/>
+                                    <circle cx="12" cy="10" r="4" fill="#27ae60"/>
+                                    <circle cx="34" cy="10" r="4" fill="#27ae60"/>
+                                    <circle cx="12" cy="26" r="4" fill="#27ae60"/>
+                                    <circle cx="34" cy="26" r="4" fill="#27ae60"/>
+                                    <text x="23" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="16">D</text>
+                                </g>
+
+                                <!-- LEGO Brick E -->
+                                <g transform="translate(466, 185)">
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="#e74c3c" filter="url(#brickShadow)"/>
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="url(#studs)"/>
+                                    <circle cx="12" cy="10" r="4" fill="#c0392b"/>
+                                    <circle cx="34" cy="10" r="4" fill="#c0392b"/>
+                                    <circle cx="12" cy="26" r="4" fill="#c0392b"/>
+                                    <circle cx="34" cy="26" r="4" fill="#c0392b"/>
+                                    <text x="23" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="16">E</text>
+                                </g>
+
+                                <!-- LEGO Brick F -->
+                                <g transform="translate(579, 185)">
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="#9b59b6" filter="url(#brickShadow)"/>
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="url(#studs)"/>
+                                    <circle cx="12" cy="10" r="4" fill="#8e44ad"/>
+                                    <circle cx="34" cy="10" r="4" fill="#8e44ad"/>
+                                    <circle cx="12" cy="26" r="4" fill="#8e44ad"/>
+                                    <circle cx="34" cy="26" r="4" fill="#8e44ad"/>
+                                    <text x="23" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="16">F</text>
+                                </g>
+
+                                <!-- LEGO Brick G -->
+                                <g transform="translate(692, 185)">
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="#f39c12" filter="url(#brickShadow)"/>
+                                    <rect x="0" y="0" width="46" height="52" rx="3" fill="url(#studs)"/>
+                                    <circle cx="12" cy="10" r="4" fill="#d68910"/>
+                                    <circle cx="34" cy="10" r="4" fill="#d68910"/>
+                                    <circle cx="12" cy="26" r="4" fill="#d68910"/>
+                                    <circle cx="34" cy="26" r="4" fill="#d68910"/>
+                                    <text x="23" y="45" text-anchor="middle" fill="white" font-weight="bold" font-size="16">G</text>
+                                </g>
+
+                                <!-- Scanning beams to each brick -->
+                                <path d="M 150 140 Q 180 160, 263 185" stroke="#f1c40f" stroke-width="2.5" fill="none" opacity="0.6" stroke-dasharray="4,3">
+                                    <animate attributeName="stroke-dashoffset" from="0" to="7" dur="0.8s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M 150 140 Q 220 160, 376 185" stroke="#f1c40f" stroke-width="2.5" fill="none" opacity="0.6" stroke-dasharray="4,3">
+                                    <animate attributeName="stroke-dashoffset" from="0" to="7" dur="0.8s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M 150 140 Q 260 160, 489 185" stroke="#f1c40f" stroke-width="2.5" fill="none" opacity="0.6" stroke-dasharray="4,3">
+                                    <animate attributeName="stroke-dashoffset" from="0" to="7" dur="0.8s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M 150 140 Q 300 160, 602 185" stroke="#f1c40f" stroke-width="2.5" fill="none" opacity="0.6" stroke-dasharray="4,3">
+                                    <animate attributeName="stroke-dashoffset" from="0" to="7" dur="0.8s" repeatCount="indefinite"/>
+                                </path>
+                                <path d="M 150 140 Q 340 160, 715 185" stroke="#f1c40f" stroke-width="2.5" fill="none" opacity="0.6" stroke-dasharray="4,3">
+                                    <animate attributeName="stroke-dashoffset" from="0" to="7" dur="0.8s" repeatCount="indefinite"/>
+                                </path>
+
+                                <!-- Info Panel -->
+                                <g transform="translate(100, 290)">
+                                    <rect x="0" y="0" width="700" height="45" fill="#ecf0f1" rx="6" stroke="#bdc3c7" stroke-width="2"/>
+                                    <text x="350" y="28" text-anchor="middle" fill="#e74c3c" font-size="16" font-weight="bold">⚡ O(N²) Complexity: Scanner checks EVERY brick against EVERY other brick!</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <strong>In Biology:</strong> The model looks at a protein sequence, and every single amino acid determines its relationship with every other amino acid in the chain. This helps the AI understand the 3D shape of the protein based on how distant parts interact, which is crucial for understanding how drugs might bind to it.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <!-- CARD 2: MULTI-HEAD ATTENTION (The Specialist Team) -->
+                    <div class="attention-card">
+                        <h3>2. Multi-Head Attention: The Team of Specialists</h3>
+                        
+                        <div class="analogy-box">
+                            <h4><i class="fas fa-users-cog"></i> The Analogy:</h4>
+                            <p>Building a huge Lego city is too hard for one person. So, you hire a team of specialists to sort the pile simultaneously.
+                            <br>• Specialist A (Red Hat) only looks for <strong>color matches</strong>.
+                            <br>• Specialist B (Blue Hat) only looks for <strong>specific shapes</strong> (like 2x4s).
+                            <br>• Specialist C (Yellow Hat) only looks for <strong>functional parts</strong> (wheels, gears).
+                            <br>They work at the same time, then combine their sorted piles to build faster.</p>
+                        </div>
+
+                        <div class="visual-container">
+                             <svg viewBox="0 0 900 380" style="width: 100%; height: auto; font-family: 'Lato', sans-serif;">
+                                <defs>
+                                    <filter id="brickShadow2">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+                                    </filter>
+                                    <pattern id="studs2" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                                        <circle cx="6" cy="6" r="2" fill="#ffffff" opacity="0.4"/>
+                                    </pattern>
+                                </defs>
+
+                                <!-- Factory Title -->
+                                <text x="450" y="25" text-anchor="middle" fill="#426DB4" font-size="22" font-weight="bold">🏭 MULTI-HEAD FACTORY: Three Specialist Stations</text>
+
+                                <!-- Main Conveyor Belt -->
+                                <rect x="50" y="300" width="800" height="60" fill="#34495e" rx="5"/>
+                                <rect x="50" y="305" width="800" height="10" fill="#2c3e50"/>
+                                <rect x="50" y="350" width="800" height="10" fill="#2c3e50"/>
+
+                                <!-- Station 1: Color Sorter (Red) -->
+                                <g transform="translate(100, 80)">
+                                    <rect x="-60" y="0" width="120" height="180" fill="#e74c3c" rx="8" stroke="#c0392b" stroke-width="3"/>
+                                    <rect x="-55" y="5" width="110" height="40" fill="#c0392b" rx="4"/>
+                                    <text x="0" y="28" text-anchor="middle" fill="white" font-size="13" font-weight="bold">HEAD 1</text>
+                                    <text x="0" y="43" text-anchor="middle" fill="white" font-size="10">Color Sorter</text>
+                                    
+                                    <!-- Scanner light -->
+                                    <circle cx="0" cy="70" r="15" fill="#f1c40f" opacity="0.8"/>
+                                    <rect x="-8" y="85" width="16" height="100" fill="#f1c40f" opacity="0.3"/>
+                                    
+                                    <!-- Sorted red bricks -->
+                                    <g transform="translate(-30, 120)">
+                                        <rect x="0" y="0" width="24" height="28" rx="2" fill="#e74c3c" filter="url(#brickShadow2)"/>
+                                        <circle cx="6" cy="6" r="2.5" fill="#c0392b"/>
+                                        <circle cx="18" cy="6" r="2.5" fill="#c0392b"/>
+                                    </g>
+                                    <g transform="translate(6, 120)">
+                                        <rect x="0" y="0" width="24" height="28" rx="2" fill="#e74c3c" filter="url(#brickShadow2)"/>
+                                        <circle cx="6" cy="6" r="2.5" fill="#c0392b"/>
+                                        <circle cx="18" cy="6" r="2.5" fill="#c0392b"/>
+                                    </g>
+                                    
+                                    <text x="0" y="165" text-anchor="middle" fill="white" font-size="9" font-weight="bold">✓ RED ONLY</text>
+                                </g>
+
+                                <!-- Station 2: Shape Sorter (Blue) -->
+                                <g transform="translate(350, 80)">
+                                    <rect x="-60" y="0" width="120" height="180" fill="#3498db" rx="8" stroke="#2980b9" stroke-width="3"/>
+                                    <rect x="-55" y="5" width="110" height="40" fill="#2980b9" rx="4"/>
+                                    <text x="0" y="28" text-anchor="middle" fill="white" font-size="13" font-weight="bold">HEAD 2</text>
+                                    <text x="0" y="43" text-anchor="middle" fill="white" font-size="10">Shape Sorter</text>
+                                    
+                                    <!-- Scanner light -->
+                                    <circle cx="0" cy="70" r="15" fill="#f1c40f" opacity="0.8"/>
+                                    <rect x="-8" y="85" width="16" height="100" fill="#f1c40f" opacity="0.3"/>
+                                    
+                                    <!-- Sorted flat bricks (2x4) -->
+                                    <g transform="translate(-32, 120)">
+                                        <rect x="0" y="0" width="28" height="16" rx="2" fill="#3498db" filter="url(#brickShadow2)"/>
+                                        <circle cx="5" cy="5" r="2" fill="#2980b9"/>
+                                        <circle cx="13" cy="5" r="2" fill="#2980b9"/>
+                                        <circle cx="23" cy="5" r="2" fill="#2980b9"/>
+                                    </g>
+                                    <g transform="translate(-32, 140)">
+                                        <rect x="0" y="0" width="28" height="16" rx="2" fill="#2ecc71" filter="url(#brickShadow2)"/>
+                                        <circle cx="5" cy="5" r="2" fill="#27ae60"/>
+                                        <circle cx="13" cy="5" r="2" fill="#27ae60"/>
+                                        <circle cx="23" cy="5" r="2" fill="#27ae60"/>
+                                    </g>
+                                    <g transform="translate(4, 130)">
+                                        <rect x="0" y="0" width="28" height="16" rx="2" fill="#f39c12" filter="url(#brickShadow2)"/>
+                                        <circle cx="5" cy="5" r="2" fill="#d68910"/>
+                                        <circle cx="13" cy="5" r="2" fill="#d68910"/>
+                                        <circle cx="23" cy="5" r="2" fill="#d68910"/>
+                                    </g>
+                                    
+                                    <text x="0" y="165" text-anchor="middle" fill="white" font-size="9" font-weight="bold">✓ 2x4 ONLY</text>
+                                </g>
+
+                                <!-- Station 3: Size Sorter (Yellow) -->
+                                <g transform="translate(600, 80)">
+                                    <rect x="-60" y="0" width="120" height="180" fill="#f39c12" rx="8" stroke="#d68910" stroke-width="3"/>
+                                    <rect x="-55" y="5" width="110" height="40" fill="#d68910" rx="4"/>
+                                    <text x="0" y="28" text-anchor="middle" fill="white" font-size="13" font-weight="bold">HEAD 3</text>
+                                    <text x="0" y="43" text-anchor="middle" fill="white" font-size="10">Size Sorter</text>
+                                    
+                                    <!-- Scanner light -->
+                                    <circle cx="0" cy="70" r="15" fill="#f1c40f" opacity="0.8"/>
+                                    <rect x="-8" y="85" width="16" height="100" fill="#f1c40f" opacity="0.3"/>
+                                    
+                                    <!-- Sorted large bricks -->
+                                    <g transform="translate(-36, 115)">
+                                        <rect x="0" y="0" width="32" height="38" rx="2" fill="#9b59b6" filter="url(#brickShadow2)"/>
+                                        <circle cx="7" cy="7" r="2.5" fill="#8e44ad"/>
+                                        <circle cx="7" cy="18" r="2.5" fill="#8e44ad"/>
+                                        <circle cx="7" cy="29" r="2.5" fill="#8e44ad"/>
+                                        <circle cx="25" cy="7" r="2.5" fill="#8e44ad"/>
+                                        <circle cx="25" cy="18" r="2.5" fill="#8e44ad"/>
+                                        <circle cx="25" cy="29" r="2.5" fill="#8e44ad"/>
+                                    </g>
+                                    <g transform="translate(8, 125)">
+                                        <rect x="0" y="0" width="32" height="28" rx="2" fill="#2ecc71" filter="url(#brickShadow2)"/>
+                                        <circle cx="7" cy="7" r="2.5" fill="#27ae60"/>
+                                        <circle cx="7" cy="18" r="2.5" fill="#27ae60"/>
+                                        <circle cx="25" cy="7" r="2.5" fill="#27ae60"/>
+                                        <circle cx="25" cy="18" r="2.5" fill="#27ae60"/>
+                                    </g>
+                                    
+                                    <text x="0" y="165" text-anchor="middle" fill="white" font-size="9" font-weight="bold">✓ LARGE ONLY</text>
+                                </g>
+
+                                <!-- Mixed bricks on conveyor -->
+                                <g transform="translate(0, 307)">
+                                    <!-- Various colored and shaped bricks -->
+                                    <rect x="120" y="12" width="22" height="25" rx="2" fill="#e74c3c" filter="url(#brickShadow2)"/>
+                                    <rect x="180" y="15" width="26" height="15" rx="2" fill="#3498db" filter="url(#brickShadow2)"/>
+                                    <rect x="250" y="10" width="30" height="32" rx="2" fill="#9b59b6" filter="url(#brickShadow2)"/>
+                                    <rect x="320" y="14" width="24" height="24" rx="2" fill="#e74c3c" filter="url(#brickShadow2)"/>
+                                    <rect x="380" y="16" width="26" height="14" rx="2" fill="#2ecc71" filter="url(#brickShadow2)"/>
+                                    <rect x="450" y="12" width="28" height="16" rx="2" fill="#f39c12" filter="url(#brickShadow2)"/>
+                                    <rect x="520" y="11" width="30" height="34" rx="2" fill="#2ecc71" filter="url(#brickShadow2)"/>
+                                    <rect x="590" y="15" width="22" height="26" rx="2" fill="#e74c3c" filter="url(#brickShadow2)"/>
+                                    <rect x="660" y="13" width="26" height="15" rx="2" fill="#3498db" filter="url(#brickShadow2)"/>
+                                    <rect x="730" y="14" width="24" height="24" rx="2" fill="#f39c12" filter="url(#brickShadow2)"/>
+                                </g>
+
+                                <!-- Arrows showing sorting -->
+                                <path d="M 150 270 L 110 260" stroke="#e74c3c" stroke-width="3" fill="none" marker-end="url(#arrow1)" opacity="0.7"/>
+                                <path d="M 380 270 L 350 260" stroke="#3498db" stroke-width="3" fill="none" marker-end="url(#arrow2)" opacity="0.7"/>
+                                <path d="M 550 270 L 600 260" stroke="#9b59b6" stroke-width="3" fill="none" marker-end="url(#arrow3)" opacity="0.7"/>
+
+                                <!-- Bottom label -->
+                                <text x="450" y="60" text-anchor="middle" fill="#555" font-size="13">All stations work simultaneously on the same pile!</text>
+                            </svg>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <strong>In Biology:</strong> Different "heads" in the AI model learn different biological rules at the same time. One head might focus on which genes are turned on together. Another might focus on the physical chemistry between molecules. A third might look at evolutionary patterns across species. The AI combines all these different "views" for a complete picture.
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <!-- CARD 3: CROSS-ATTENTION (The Instruction Manual) -->
+                    <div class="attention-card">
+                        <h3>3. Cross-Attention: Following the Instructions</h3>
+                        
+                        <div class="analogy-box">
+                            <h4><i class="fas fa-book-open"></i> The Analogy:</h4>
+                            <p>Imagine you have the brick pile on the floor, but this time you also have the instruction manual open on the table. You read "Step 5: Find the windshield." Your eyes don't randomly scan the pile anymore. They "cross over" from the manual to the pile and immediately narrow down the search, ignoring all the bricks that are aren't clear plastic windshields.</p>
+                        </div>
+
+                        <div class="visual-container">
+                             <svg viewBox="0 0 900 380" style="width: 100%; height: auto; font-family: 'Lato', sans-serif;">
+                                <defs>
+                                    <filter id="brickShadow3">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+                                    </filter>
+                                    <filter id="glowBrick">
+                                        <feGaussianBlur stdDeviation="4"/>
+                                        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    </filter>
+                                    <pattern id="studs3" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                                        <circle cx="6" cy="6" r="2" fill="#ffffff" opacity="0.5"/>
+                                    </pattern>
+                                </defs>
+
+                                <!-- Factory Title -->
+                                <text x="450" y="25" text-anchor="middle" fill="#C05540" font-size="22" font-weight="bold">🏭 CROSS-ATTENTION FACTORY: Instructions Guide the Search</text>
+
+                                <!-- Left Side: Instruction Screen/Blueprint -->
+                                <g transform="translate(50, 80)">
+                                    <rect x="0" y="0" width="250" height="280" fill="#2c3e50" rx="10" stroke="#34495e" stroke-width="4"/>
+                                    <rect x="10" y="10" width="230" height="260" fill="#34495e" rx="6"/>
+                                    
+                                    <!-- Screen glow -->
+                                    <rect x="15" y="15" width="220" height="250" fill="#1a252f" rx="4"/>
+                                    
+                                    <!-- Blueprint/Instructions Display -->
+                                    <rect x="25" y="30" width="200" height="60" fill="#e67e22" rx="4"/>
+                                    <text x="125" y="55" text-anchor="middle" fill="white" font-size="16" font-weight="bold">STEP 5:</text>
+                                    <text x="125" y="75" text-anchor="middle" fill="white" font-size="14">FIND WINDSHIELD</text>
+                                    
+                                    <!-- Blueprint diagram -->
+                                    <g transform="translate(45, 110)">
+                                        <path d="M 0 0 L 80 0 L 70 40 L 10 40 Z" fill="none" stroke="#3498db" stroke-width="3" stroke-dasharray="5,3"/>
+                                        <path d="M 90 0 L 170 0 L 160 40 L 100 40 Z" fill="none" stroke="#555" stroke-width="2"/>
+                                        
+                                        <!-- Highlight the needed piece -->
+                                        <path d="M 0 0 L 80 0 L 70 40 L 10 40 Z" fill="#3498db" opacity="0.3">
+                                            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="1.5s" repeatCount="indefinite"/>
+                                        </path>
+                                        <text x="40" y="65" text-anchor="middle" fill="#3498db" font-size="12" font-weight="bold">TARGET!</text>
+                                    </g>
+                                    
+                                    <text x="125" y="230" text-anchor="middle" fill="#7f8c8d" font-size="11">INSTRUCTION QUERY</text>
+                                </g>
+
+                                <!-- Search beam/spotlight -->
+                                <g>
+                                    <path d="M 310 180 Q 450 140, 590 180" stroke="#f1c40f" stroke-width="6" fill="none" opacity="0.7" stroke-dasharray="8,4">
+                                        <animate attributeName="stroke-dashoffset" from="0" to="12" dur="1s" repeatCount="indefinite"/>
+                                    </path>
+                                    <text x="450" y="135" text-anchor="middle" fill="#f39c12" font-size="14" font-weight="bold">🔍 SEARCHING...</text>
+                                </g>
+
+                                <!-- Right Side: Brick Storage/Warehouse -->
+                                <g transform="translate(600, 80)">
+                                    <rect x="0" y="0" width="250" height="280" fill="#ecf0f1" rx="10" stroke="#bdc3c7" stroke-width="4"/>
+                                    <text x="125" y="30" text-anchor="middle" fill="#7f8c8d" font-size="14" font-weight="bold">BRICK WAREHOUSE</text>
+                                    
+                                    <!-- Dimmed/irrelevant bricks -->
+                                    <g opacity="0.25">
+                                        <rect x="30" y="60" width="28" height="32" rx="2" fill="#e74c3c"/>
+                                        <circle cx="70" cy="85" r="14" fill="#9b59b6"/>
+                                        <rect x="170" y="70" width="35" height="20" rx="2" fill="#2ecc71"/>
+                                        <rect x="40" y="190" width="30" height="40" rx="2" fill="#f39c12"/>
+                                        <rect x="180" y="210" width="25" height="25" rx="2" fill="#e74c3c"/>
+                                    </g>
+                                    
+                                    <!-- THE FOUND WINDSHIELD - GLOWING! -->
+                                    <g transform="translate(85, 120)" filter="url(#glowBrick)">
+                                        <path d="M 0 0 L 80 0 L 70 45 L 10 45 Z" fill="#3498db" stroke="#2980b9" stroke-width="4" opacity="0.9"/>
+                                        <path d="M 0 0 L 80 0 L 70 45 L 10 45 Z" fill="url(#studs3)"/>
+                                        <circle cx="20" cy="12" r="4" fill="#2980b9"/>
+                                        <circle cx="40" cy="12" r="4" fill="#2980b9"/>
+                                        <circle cx="60" cy="12" r="4" fill="#2980b9"/>
+                                        
+                                        <!-- Pulsing highlight -->
+                                        <path d="M 0 0 L 80 0 L 70 45 L 10 45 Z" fill="#f1c40f" opacity="0.3">
+                                            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="1s" repeatCount="indefinite"/>
+                                        </path>
+                                        
+                                        <text x="40" y="-10" text-anchor="middle" fill="#2ecc71" font-size="14" font-weight="bold">✓ MATCH!</text>
+                                    </g>
+                                    
+                                    <text x="125" y="265" text-anchor="middle" fill="#7f8c8d" font-size="11">KEY/VALUE DATA</text>
+                                </g>
+
+                                <!-- Bottom Info Panel -->
+                                <g transform="translate(100, 380)">
+                                    <text x="350" y="0" text-anchor="middle" fill="#C05540" font-size="15" font-weight="bold">Instructions direct focused search instead of checking everything!</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <strong>In Biology:</strong> This is used when we have two different types of data. For example, the "instruction manual" could be a DNA sequence, and the "pile" could be data about protein structures. The AI uses the DNA instructions to know exactly which parts of the protein structure data to focus on to find connections between the two.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- CARD 4: GRAPH-BASED ATTENTION (The Local Network) - NEW INSERTION -->
+                    <div class="attention-card">
+                        <h3>4. Graph-Based Attention: The Local Network</h3>
+                        
+                        <div class="analogy-box">
+                            <h4><i class="fas fa-share-alt"></i> The Analogy:</h4>
+                            <p>Imagine a giant, pre-built Lego city. Instead of trying to find connections between a brick in the skyscraper and a brick in the subway station miles away, you only look at the bricks that are physically touching or immediately surrounding the piece you're interested in. You focus on the local neighborhood, ignoring the rest of the massive city to save time.</p>
+                        </div>
+
+                        <div class="visual-container">
+                             <svg viewBox="0 0 900 380" style="width: 100%; height: auto; font-family: 'Lato', sans-serif;">
+                                <defs>
+                                    <filter id="brickShadow4">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.3"/>
+                                    </filter>
+                                    <filter id="glowOrange">
+                                        <feGaussianBlur stdDeviation="5"/>
+                                        <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+                                    </filter>
+                                    <pattern id="studs4" x="0" y="0" width="14" height="14" patternUnits="userSpaceOnUse">
+                                        <circle cx="7" cy="7" r="2.5" fill="#ffffff" opacity="0.4"/>
+                                    </pattern>
+                                </defs>
+
+                                <!-- Factory Title -->
+                                <text x="450" y="25" text-anchor="middle" fill="#E67E22" font-size="22" font-weight="bold">🏭 GRAPH FACTORY: Only Check Your Neighbors</text>
+
+                                <!-- Dimmed background city -->
+                                <g opacity="0.15">
+                                    <rect x="50" y="60" width="800" height="260" fill="#95a5a6" rx="10"/>
+                                    <text x="450" y="90" text-anchor="middle" fill="#555" font-size="14">THE REST OF THE MASSIVE FACTORY (IGNORED)</text>
+                                    
+                                    <!-- Distant bricks scattered -->
+                                    <rect x="100" y="120" width="30" height="35" rx="2" fill="#7f8c8d"/>
+                                    <rect x="750" y="140" width="35" height="30" rx="2" fill="#7f8c8d"/>
+                                    <rect x="150" y="250" width="28" height="28" rx="2" fill="#7f8c8d"/>
+                                    <rect x="700" y="230" width="32" height="32" rx="2" fill="#7f8c8d"/>
+                                </g>
+
+                                <!-- Central assembly area with platforms -->
+                                <g transform="translate(330, 130)">
+                                    <!-- Platform for local area -->
+                                    <rect x="-120" y="-80" width="240" height="200" fill="#ecf0f1" rx="8" stroke="#bdc3c7" stroke-width="3"/>
+                                    <text x="0" y="-90" text-anchor="middle" fill="#E67E22" font-size="15" font-weight="bold">LOCAL NEIGHBORHOOD</text>
+                                    
+                                    <!-- Connecting conveyor belts/connections -->
+                                    <g stroke="#f39c12" stroke-width="4" opacity="0.7">
+                                        <line x1="0" y1="0" x2="-70" y2="-50" stroke-dasharray="6,3">
+                                            <animate attributeName="stroke-dashoffset" from="0" to="9" dur="0.8s" repeatCount="indefinite"/>
+                                        </line>
+                                        <line x1="0" y1="0" x2="70" y2="-50" stroke-dasharray="6,3">
+                                            <animate attributeName="stroke-dashoffset" from="0" to="9" dur="0.8s" repeatCount="indefinite"/>
+                                        </line>
+                                        <line x1="0" y1="0" x2="-70" y2="50" stroke-dasharray="6,3">
+                                            <animate attributeName="stroke-dashoffset" from="0" to="9" dur="0.8s" repeatCount="indefinite"/>
+                                        </line>
+                                        <line x1="0" y1="0" x2="70" y2="50" stroke-dasharray="6,3">
+                                            <animate attributeName="stroke-dashoffset" from="0" to="9" dur="0.8s" repeatCount="indefinite"/>
+                                        </line>
+                                    </g>
+
+                                    <!-- Neighbor brick: Top Left -->
+                                    <g transform="translate(-70, -50)">
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="#f39c12" filter="url(#brickShadow4)"/>
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="url(#studs4)"/>
+                                        <circle cx="-8" cy="-12" r="3.5" fill="#d68910"/>
+                                        <circle cx="8" cy="-12" r="3.5" fill="#d68910"/>
+                                        <circle cx="-8" cy="6" r="3.5" fill="#d68910"/>
+                                        <circle cx="8" cy="6" r="3.5" fill="#d68910"/>
+                                        <text x="0" y="8" text-anchor="middle" fill="white" font-size="11" font-weight="bold">N1</text>
+                                    </g>
+
+                                    <!-- Neighbor brick: Top Right -->
+                                    <g transform="translate(70, -50)">
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="#2ecc71" filter="url(#brickShadow4)"/>
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="url(#studs4)"/>
+                                        <circle cx="-8" cy="-12" r="3.5" fill="#27ae60"/>
+                                        <circle cx="8" cy="-12" r="3.5" fill="#27ae60"/>
+                                        <circle cx="-8" cy="6" r="3.5" fill="#27ae60"/>
+                                        <circle cx="8" cy="6" r="3.5" fill="#27ae60"/>
+                                        <text x="0" y="8" text-anchor="middle" fill="white" font-size="11" font-weight="bold">N2</text>
+                                    </g>
+
+                                    <!-- Neighbor brick: Bottom Left -->
+                                    <g transform="translate(-70, 50)">
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="#3498db" filter="url(#brickShadow4)"/>
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="url(#studs4)"/>
+                                        <circle cx="-8" cy="-12" r="3.5" fill="#2980b9"/>
+                                        <circle cx="8" cy="-12" r="3.5" fill="#2980b9"/>
+                                        <circle cx="-8" cy="6" r="3.5" fill="#2980b9"/>
+                                        <circle cx="8" cy="6" r="3.5" fill="#2980b9"/>
+                                        <text x="0" y="8" text-anchor="middle" fill="white" font-size="11" font-weight="bold">N3</text>
+                                    </g>
+
+                                    <!-- Neighbor brick: Bottom Right -->
+                                    <g transform="translate(70, 50)">
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="#9b59b6" filter="url(#brickShadow4)"/>
+                                        <rect x="-20" y="-24" width="40" height="48" rx="3" fill="url(#studs4)"/>
+                                        <circle cx="-8" cy="-12" r="3.5" fill="#8e44ad"/>
+                                        <circle cx="8" cy="-12" r="3.5" fill="#8e44ad"/>
+                                        <circle cx="-8" cy="6" r="3.5" fill="#8e44ad"/>
+                                        <circle cx="8" cy="6" r="3.5" fill="#8e44ad"/>
+                                        <text x="0" y="8" text-anchor="middle" fill="white" font-size="11" font-weight="bold">N4</text>
+                                    </g>
+
+                                    <!-- Center brick (ME) - GLOWING -->
+                                    <g filter="url(#glowOrange)">
+                                        <rect x="-25" y="-28" width="50" height="56" rx="4" fill="#E67E22" stroke="#d35400" stroke-width="4"/>
+                                        <rect x="-25" y="-28" width="50" height="56" rx="4" fill="url(#studs4)"/>
+                                        <circle cx="-10" cy="-14" r="4" fill="#d35400"/>
+                                        <circle cx="10" cy="-14" r="4" fill="#d35400"/>
+                                        <circle cx="-10" cy="2" r="4" fill="#d35400"/>
+                                        <circle cx="10" cy="2" r="4" fill="#d35400"/>
+                                        <text x="0" y="10" text-anchor="middle" fill="white" font-size="14" font-weight="bold">ME</text>
+                                        
+                                        <!-- Pulsing ring -->
+                                        <circle cx="0" cy="0" r="35" fill="none" stroke="#f1c40f" stroke-width="3" opacity="0.6">
+                                            <animate attributeName="r" values="35;45;35" dur="2s" repeatCount="indefinite"/>
+                                            <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+                                        </circle>
+                                    </g>
+                                </g>
+
+                                <!-- Info panels -->
+                                <g transform="translate(100, 340)">
+                                    <rect x="0" y="0" width="320" height="35" fill="#2ecc71" rx="6" opacity="0.9"/>
+                                    <text x="160" y="23" text-anchor="middle" fill="white" font-size="13" font-weight="bold">⚡ O(N) - FAST! Only 4 checks</text>
+                                </g>
+
+                                <g transform="translate(480, 340)">
+                                    <rect x="0" y="0" width="320" height="35" fill="#e74c3c" rx="6" opacity="0.4"/>
+                                    <text x="160" y="23" text-anchor="middle" fill="white" font-size="13" font-weight="bold">vs O(N²) - Checking 10,000+ bricks</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <strong>What it is:</strong> Attention restricted to specific graph structures (e.g., k-nearest neighbors in 3D space, known biological interactions).
+                            </p>
+                            <p>
+                                <strong>Why it matters:</strong> Reduces computational cost from O(N²) to O(N) while maintaining biological relevance—distant in sequence can be close in 3D structure.
+                            </p>
+                        </div>
+
+                        <div class="examples">
+                            <h4>Biological Examples:</h4>
+                            <ul>
+                                <li><strong>Structured Transformer:</strong> k=30 nearest neighbors for protein structure-to-sequence design</li>
+                                <li><strong>Chroma:</strong> Random graph networks enabling 60,000-residue protein complexes</li>
+                                <li><strong>CellPLM:</strong> Spatial graph attention for neighboring cells in tissue</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div> <!-- End of attention-types-container -->
+            </div>
+
+            <div class="content-section" id="applications">
+                <h2>Key Applications in Biology</h2>
+
+                <h3>Single-Cell Genomics</h3>
+                <p>
+                    Attention mechanisms enable models to learn which genes define cell types, predict how cells respond to
+                    perturbations, and integrate data across batches and technologies.
+                </p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Task</th>
+                            <th>Attention Type</th>
+                            <th>Key Achievement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>scGPT</strong></td>
+                            <td>Cell annotation, perturbation prediction</td>
+                            <td>Multi-head self-attention</td>
+                            <td>33M cells, outperforms task-specific models</td>
+                        </tr>
+                        <tr>
+                            <td><strong>scBERT</strong></td>
+                            <td>Cell type classification</td>
+                            <td>Performer (linear complexity approximation)</td>
+                            <td>Handles whole transcriptome (16,000+ genes) with linear complexity</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GeneCompass</strong></td>
+                            <td>Cross-species gene regulation</td>
+                            <td>Multi-head with knowledge embedding</td>
+                            <td>101.7M cells (53.5M human + 48.2M mouse) with cross-species transfer learning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>CellPLM</strong></td>
+                            <td>Spatial transcriptomics</td>
+                            <td>Spatial graph attention</td>
+                            <td>Cell-level tokens capture spatial context</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Genomic Sequence Analysis</h3>
+                <p>
+                    Attention allows models to capture long-range regulatory interactions and learn sequence patterns across
+                    entire genomes.
+                </p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Task</th>
+                            <th>Context Length</th>
+                            <th>Key Innovation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Nucleotide Transformer</strong></td>
+                            <td>Variant effect prediction</td>
+                            <td>12kb (2,000 6-mers)</td>
+                            <td>Multi-species training (850 genomes)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GET</strong></td>
+                            <td>Expression from chromatin</td>
+                            <td>200 genomic regions (~2-4 Mbp span)</td>
+                            <td>Predicts expression from distal enhancers >1 Mbp away (r=0.94, R²=0.88)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AlphaGenome</strong></td>
+                            <td>Regulatory element discovery</td>
+                            <td>Genome-wide</td>
+                            <td>Multi-scale attention for different genomic features</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Protein Design and Structure</h3>
+                <p>
+                    Attention mechanisms learn which amino acids interact in 3D space and generate functional proteins with
+                    specific properties.
+                </p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Application</th>
+                            <th>Attention Approach</th>
+                            <th>Experimental Validation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Structured Transformer</strong></td>
+                            <td>Inverse folding</td>
+                            <td>k-NN graph attention (k=30)</td>
+                            <td>27.6% native sequence recovery; 21,000× faster on GPU, 455× on CPU vs Rosetta</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ProGen</strong></td>
+                            <td>Protein generation</td>
+                            <td>Causal self-attention (1.2B params)</td>
+                            <td>Functional lysozymes down to 31.4% identity (extreme low-identity case, ~200× lower efficiency)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chroma</strong></td>
+                            <td>Complex design</td>
+                            <td>Random graph networks (O(N) edges)</td>
+                            <td>High expression rates; crystal structures ~1Å RMSD to predictions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ProteinMPNN</strong></td>
+                            <td>Sequence design</td>
+                            <td>Message passing with attention</td>
+                            <td>State-of-art for fixed backbone design</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-section" id="models">
+                <h2>Transformer Architectures in Biology</h2>
+
+                <p>
+                    Most attention-based models in biology use the Transformer architecture, introduced by Vaswani et al. (2017).
+                    The core innovation is replacing recurrence with attention, allowing parallel processing of sequences while
+                    maintaining the ability to capture long-range dependencies.
+                </p>
+
+                <div class="highlight-box">
+                    <h3><i class="fas fa-lightbulb"></i> How Transformers Work for Biological Sequences</h3>
+
+                    <p><strong>1. Tokenization:</strong></p>
+                    <ul>
+                        <li><strong>Genes:</strong> Each gene becomes a token (scGPT, GeneCompass)</li>
+                        <li><strong>DNA:</strong> 6-mers or individual nucleotides (Nucleotide Transformer)</li>
+                        <li><strong>Proteins:</strong> Individual amino acids or structural elements</li>
+                        <li><strong>Chromatin:</strong> Genomic regions with motif features (GET)</li>
+                    </ul>
+
+                    <p><strong>2. Embedding:</strong></p>
+                    <ul>
+                        <li>Convert tokens to high-dimensional vectors (typically 256-768 dimensions)</li>
+                        <li>Add positional information so model knows order in sequence</li>
+                        <li>Can incorporate biological knowledge (gene families, TF binding motifs)</li>
+                    </ul>
+
+                    <p><strong>3. Attention Layers:</strong></p>
+                    <ul>
+                        <li>Each token attends to all other tokens (or k-nearest for efficiency)</li>
+                        <li>Multiple attention heads capture different relationship types</li>
+                        <li>Stacked layers build hierarchical representations</li>
+                    </ul>
+
+                    <p><strong>4. Output:</strong></p>
+                    <ul>
+                        <li>Cell-level predictions (scGPT: cell type, perturbation response)</li>
+                        <li>Gene-level predictions (GET: expression level from chromatin)</li>
+                        <li>Sequence generation (ProGen: novel functional proteins)</li>
+                    </ul>
+                </div>
+
+                <h3>Comparing Attention to Traditional Architectures</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>CNN</th>
+                            <th>RNN/LSTM</th>
+                            <th>Transformer (Attention)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Long-range dependencies</strong></td>
+                            <td>Limited by receptive field</td>
+                            <td>Degrades with distance (vanishing gradients)</td>
+                            <td>Direct connections between any positions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Computational complexity</strong></td>
+                            <td>O(N)</td>
+                            <td>O(N) but sequential</td>
+                            <td>O(N²) for self-attention, O(N) for graph attention</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Parallelization</strong></td>
+                            <td>High</td>
+                            <td>Low (sequential processing)</td>
+                            <td>Very high (all positions processed together)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Interpretability</strong></td>
+                            <td>Filter visualization</td>
+                            <td>Hidden states (opaque)</td>
+                            <td>Attention weights show relationships</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Variable-length sequences</strong></td>
+                            <td>Requires padding</td>
+                            <td>Natural support</td>
+                            <td>Natural support</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Best biological applications</strong></td>
+                            <td>Local motifs, images</td>
+                            <td>Short sequences, time-series</td>
+                            <td>Long sequences, relationships, foundation models</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Recent Innovations in Attention for Biology</h3>
+
+                <div class="key-points">
+                    <div class="key-point">
+                        <h4>Efficient Attention</h4>
+                        <p>Performer (scBERT), FlashAttention (scGPT), and sparse attention patterns reduce O(N²) complexity while maintaining effectiveness for long biological sequences</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Knowledge Integration</h4>
+                        <p>GeneCompass embeds gene regulatory networks, promoter data, and co-expression into attention, improving performance by 15% over sequence-only models</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Cross-Species Learning</h4>
+                        <p>Nucleotide Transformer trained on 850 genomes; GeneCompass learns from 101.7M cells (53.5M human + 48.2M mouse) showing cross-species scaling benefits</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Structural Attention</h4>
+                        <p>Structured Transformer and Chroma use 3D spatial neighborhoods instead of sequence position, capturing physical protein interactions</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2>Practical Benefits for Biologists</h2>
+
+                <h3>For Experimentalists</h3>
+                <ul>
+                    <li><strong>In Silico Screening:</strong> scGPT predicts perturbation outcomes (r=0.94) before running CRISPR experiments, saving time and resources</li>
+                    <li><strong>Variant Interpretation:</strong> Nucleotide Transformer scores clinical variants without functional assays</li>
+                    <li><strong>Protein Design:</strong> ProGen and Chroma generate functional proteins in days vs. years of directed evolution</li>
+                    <li><strong>Cell Type Discovery:</strong> Automated annotation with scGPT and scBERT reduces manual curation effort</li>
+                </ul>
+
+                <h3>For Computational Biologists</h3>
+                <ul>
+                    <li><strong>Pre-trained Embeddings:</strong> Use gene/cell representations from foundation models as features (GeneCompass improved GEARS by 15%)</li>
+                    <li><strong>Zero-shot Prediction:</strong> Apply models to new cell types/species without retraining</li>
+                    <li><strong>Interpretable Models:</strong> Attention weights provide biological insights beyond predictions</li>
+                    <li><strong>Transfer Learning:</strong> Fine-tune on small datasets leveraging knowledge from millions of cells/sequences</li>
+                </ul>
+
+                <h3>Computational Efficiency</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Task</th>
+                            <th>Speed</th>
+                            <th>Hardware</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>scGPT</strong></td>
+                            <td>Cell annotation</td>
+                            <td>Millions of cells trained</td>
+                            <td>8× A100 GPUs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Nucleotide Transformer</strong></td>
+                            <td>Variant scoring</td>
+                            <td>1,000+ sequences/second</td>
+                            <td>Single GPU</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Structured Transformer</strong></td>
+                            <td>Protein inverse folding</td>
+                            <td>GPU: 222 AA/s (21,000× faster); CPU: 0.488 AA/s (455× faster than Rosetta)</td>
+                            <td>Single GPU or CPU</td>
+                        </tr>
+                        <tr>
+                            <td><strong>GET</strong></td>
+                            <td>Expression prediction</td>
+                            <td>Minutes per cell type</td>
+                            <td>8× A100 GPUs</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="content-section">
+                <h2>Key Takeaways</h2>
+
+                <div class="key-points">
+                    <div class="key-point">
+                        <h4>What Attention Is</h4>
+                        <p>A mechanism that allows models to selectively focus on relevant parts of input, learning which genes, nucleotides, or proteins matter most for a given task</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Why It Matters</h4>
+                        <p>Captures long-range biological interactions, learns from massive unlabeled data, transfers knowledge across tasks and species, and provides interpretable insights</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>Real Examples</h4>
+                        <p>scGPT (r=0.94 perturbation), ProGen (functional down to 31.4% identity), GET (r=0.94, R²=0.88), GeneCompass (101.7M cells cross-species)</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>How to Use Them</h4>
+                        <p>Download pre-trained models, fine-tune on your data, extract embeddings for downstream analysis, and interpret attention weights for biological insights</p>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 40px;">
+                    <h3><i class="fas fa-graduation-cap"></i> Getting Started with Attention Models</h3>
+
+                    <p><strong>Step 1: Choose a Pre-trained Model</strong></p>
+                    <ul>
+                        <li>Single-cell analysis: scGPT, GeneCompass, scBERT</li>
+                        <li>Genomic sequences: Nucleotide Transformer, GET</li>
+                        <li>Protein design: ProGen, Chroma, ProteinMPNN</li>
+                    </ul>
+
+                    <p><strong>Step 2: Download and Fine-tune</strong></p>
+                    <ul>
+                        <li>Most models available on GitHub/HuggingFace</li>
+                        <li>Fine-tuning typically requires 1-8 GPUs and hours to days</li>
+                        <li>Parameter-efficient methods (LoRA, IA3) enable fine-tuning in minutes</li>
+                    </ul>
+
+                    <p><strong>Step 3: Extract Insights</strong></p>
+                    <ul>
+                        <li>Use embeddings as features for downstream tasks</li>
+                        <li>Visualize attention weights to understand model focus</li>
+                        <li>Compare predictions to experiments to validate biological relevance</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="cta-section">
+                <h3>Continue Learning</h3>
+                <p>
+                    Explore more machine learning concepts and their applications in computational biology
+                </p>
+                <a href="../../../index.html" class="cta-button cta-button-primary">
+                    <i class="fas fa-arrow-left"></i> Back to Learning Hub
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; margin-top: 40px; color: #666; padding-bottom: 30px;">
+            <p>Part of the <a href="../../../index.html" style="color: #C05540; text-decoration: none; font-weight: bold;">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                <a href="https://github.com/xqiu625" style="color: #666; margin: 0 10px;"><i class="fab fa-github"></i> GitHub</a> |
+                <a href="https://www.linkedin.com/in/xinru-qiu" style="color: #666; margin: 0 10px;"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+                <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #666; margin: 0 10px;"><i class="fas fa-envelope"></i> Email</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        const neuralBg = document.getElementById('neuralBg');
+        const nodeCount = 30;
+        const nodes = [];
+
+        for (let i = 0; i < nodeCount; i++) {
+            const node = document.createElement('div');
+            node.className = 'neural-node';
+            node.style.left = Math.random() * 100 + '%';
+            node.style.top = Math.random() * 100 + '%';
+            node.style.animationDelay = Math.random() * 3 + 's';
+            neuralBg.appendChild(node);
+            nodes.push({
+                element: node,
+                x: parseFloat(node.style.left),
+                y: parseFloat(node.style.top)
+            });
+        }
+
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[j].x - nodes[i].x;
+                const dy = nodes[j].y - nodes[i].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 25) {
+                    const connection = document.createElement('div');
+                    connection.className = 'neural-connection';
+                    const angle = Math.atan2(dy, dx);
+                    connection.style.width = distance + 'vw';
+                    connection.style.left = nodes[i].x + '%';
+                    connection.style.top = nodes[i].y + '%';
+                    connection.style.transform = `rotate(${angle}rad)`;
+                    neuralBg.appendChild(connection);
+                }
+            }
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
