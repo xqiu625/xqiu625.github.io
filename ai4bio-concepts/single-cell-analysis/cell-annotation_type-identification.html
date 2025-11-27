@@ -1,0 +1,1806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cell Annotation & Type Identification - AI4Bio Concepts Handbook</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* New Theme Palette */
+            --primary-color: #46670A;       /* Darkest green for strong headers and text */
+            --secondary-color: #849E58;     /* Medium olive for accents and links */
+            --accent-color: #8CB36D;        /* Alternative medium green */
+            --success-color: #C0D175;       /* Bright lime for highlights and checks (fixed typo COD175) */
+            --border-base: #D0DBC4;         /* Lightest green for subtle borders */
+            
+            /* UI Colors derived from palette */
+            --warning-color: #a94442;       /* Keeping a distinct earthy red for limitations/warnings for UX clarity */
+            --background-color: #fcfdfb;    /* Very subtle off-white green tint for main background */
+            --card-background: #ffffff;     /* White cards */
+            --text-color: #46670A;          /* Using primary color for text for high contrast */
+            --border-color: var(--border-base);
+            --sidebar-width: 240px;
+
+            /* Light background tints for sections */
+            --tint-bg-light: #f4f8f0;       /* Very light green tint for feature areas */
+            --tint-bg-highlight: #f1f5e9;   /* Slightly stronger tint for hovers/special sections */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Layout Wrapper for Sidebar + Content */
+        .main-content-wrapper {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .content-area {
+            flex: 1;
+            min-width: 0; /* Prevents flex items from overflowing */
+        }
+
+        /* Sticky Table of Contents Sidebar */
+        .toc-sidebar {
+            position: sticky;
+            top: 20px;
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            background: var(--card-background);
+            padding: 25px 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            display: none; /* Hidden on mobile by default */
+        }
+
+        .toc-sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toc-sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-sidebar li {
+            margin-bottom: 12px;
+        }
+
+        .toc-sidebar a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 0.95em;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.85;
+        }
+
+        .toc-sidebar a:hover {
+            color: var(--secondary-color);
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .toc-sidebar a i {
+            font-size: 0.8em;
+            color: var(--secondary-color);
+        }
+
+
+        header {
+            /* Updated Gradient to Green Theme */
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(70, 103, 10, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+        }
+
+        section {
+            scroll-margin-top: 20px; /* Offset for scrolling to IDs */
+        }
+
+        .overview-section {
+            background: var(--card-background);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        /* Special Styling for Decision Section - Updated to Green Tints */
+        .decision-section-container {
+            background: linear-gradient(to bottom right, var(--tint-bg-highlight), #ffffff);
+            border: 2px solid var(--border-base);
+        }
+
+        .overview-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(70, 103, 10, 0.15);
+            border-color: var(--secondary-color);
+        }
+
+        .tool-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 15px;
+            gap: 10px;
+        }
+
+        .tool-name {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-right: auto;
+        }
+
+        /* New prominent "Best For" indicator in header */
+        .tool-best-for {
+            font-size: 0.9em;
+            color: var(--primary-color);
+            font-weight: 600;
+            /* Updated background to green tint */
+            background: var(--tint-bg-highlight);
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--border-base);
+        }
+
+        .tool-year {
+            background: var(--secondary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .tool-journal {
+            color: var(--secondary-color);
+            font-size: 0.9em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+        .tool-journal i { color: var(--accent-color); }
+
+        .tool-description {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            flex-grow: 1;
+            line-height: 1.6;
+        }
+
+        .tool-features {
+            /* Updated background to green tint */
+            background: var(--tint-bg-light);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .tool-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tool-features li {
+            padding: 5px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 0.95em;
+        }
+
+        .tool-features li::before {
+            content: "✓";
+            color: var(--success-color);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Style for limitations */
+        .tool-features li.limitation-item {
+            color: var(--warning-color);
+        }
+        .tool-features li.limitation-item::before {
+            content: "!";
+            color: var(--warning-color);
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            font-size: 0.8em;
+            top: 7px;
+        }
+
+        .tool-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .tool-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tool-link.paper {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tool-link.paper:hover {
+            background: #2e4605; /* Darker primary */
+        }
+
+        .tool-link.github {
+            background: #24292e; /* Standard GitHub black */
+            color: white;
+        }
+
+        .tool-link.github:hover {
+            background: #000;
+        }
+
+        .tool-link.web {
+            background: var(--success-color);
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .tool-link.web:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .tool-link.docs {
+            /* Updated to Accent Green */
+            background: var(--accent-color);
+            color: white;
+        }
+
+        .tool-link.docs:hover {
+            background: var(--secondary-color);
+        }
+
+        .tool-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .tool-tag {
+            background: #f0f0f0;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            color: #666;
+            border: 1px solid #e0e0e0;
+        }
+
+        .tool-tag.highlight {
+            /* Updated to green tint */
+            background: var(--tint-bg-highlight);
+            color: var(--primary-color);
+            border-color: var(--border-base);
+            font-weight: 600;
+        }
+
+        /* Category Headers */
+        .category-section {
+            margin-bottom: 40px;
+            scroll-margin-top: 20px;
+        }
+
+        .category-header {
+            /* Updated Gradient to Green Theme */
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 10px rgba(70, 103, 10, 0.15);
+        }
+
+        .category-header i {
+            font-size: 2em;
+            opacity: 0.9;
+            color: var(--success-color);
+        }
+
+        .category-header h2 {
+            font-size: 1.5em;
+            margin: 0;
+        }
+
+        .category-header p {
+            margin: 5px 0 0 0;
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        /* Quick Reference Table */
+        .quick-ref-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9em;
+        }
+
+        .quick-ref-table th,
+        .quick-ref-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .quick-ref-table th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            position: sticky;
+            top: 0;
+        }
+
+        .quick-ref-table tr:hover {
+            /* Updated hover to green tint */
+            background: var(--tint-bg-highlight);
+        }
+
+        .quick-ref-table td:first-child {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .quick-ref-table a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .quick-ref-table a:hover {
+            text-decoration: underline;
+            color: var(--primary-color);
+        }
+
+        /* Decision Guide */
+        .decision-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .decision-card {
+            background: linear-gradient(145deg, #ffffff, var(--tint-bg-light));
+            border-radius: 10px;
+            padding: 20px;
+            border-left: 4px solid var(--secondary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-base);
+            border-left-width: 4px;
+        }
+
+        .decision-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .decision-card h3 i {
+            color: var(--secondary-color);
+        }
+
+        .decision-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .decision-card li {
+            margin-bottom: 8px;
+        }
+        
+        .decision-card strong {
+            color: var(--primary-color);
+        }
+
+        /* Workflow */
+        .workflow-diagram {
+            /* Updated Gradient to Green Theme */
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            color: white;
+            box-shadow: 0 4px 15px rgba(70, 103, 10, 0.2);
+        }
+
+        .workflow-diagram h3 {
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 1.3em;
+            color: var(--success-color);
+        }
+        
+        .workflow-diagram h3 i { margin-right: 8px; }
+
+        .workflow-steps {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .workflow-step {
+            background: rgba(255,255,255,0.15);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            min-width: 140px;
+            max-width: 180px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .workflow-step i {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--success-color);
+        }
+
+        .workflow-step h4 {
+            margin-bottom: 5px;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .workflow-step p {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .workflow-arrow {
+            font-size: 1.5em;
+            opacity: 0.8;
+            color: var(--success-color);
+        }
+
+        /* Back to Top Link */
+        .back-to-top-container {
+            text-align: right;
+            margin-top: 15px;
+            margin-bottom: 30px;
+        }
+        .back-to-top {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+        .back-to-top:hover { text-decoration: underline; color: var(--primary-color); }
+
+
+        footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 40px;
+            text-align: center;
+            /* Added a subtle top border using the secondary color */
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        footer h3 { color: var(--success-color); }
+
+        footer a {
+            /* Updated footer link color to pop against dark green */
+            color: var(--success-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+            color: white;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 1100px) {
+            /* Show sidebar only on wide screens */
+            .toc-sidebar {
+                display: block;
+            }
+        }
+
+        @media (max-width: 1099px) {
+            .main-content-wrapper {
+                flex-direction: column;
+            }
+            .toc-sidebar {
+                display: none; /* Hide sidebar on smaller screens */
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .workflow-steps {
+                flex-direction: column;
+            }
+
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .quick-ref-table {
+                font-size: 0.8em;
+            }
+            /* Hide less critical table columns on mobile */
+            .hide-on-mobile {
+                display: none;
+            }
+            
+            .tool-header {
+                gap: 5px;
+            }
+            .tool-best-for {
+                order: 3; /* Move below name on very small screens if needed */
+                width: 100%;
+                margin-top: 5px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-microscope"></i> Cell Annotation & Type Identification</h1>
+            <p>A Guide to Computational Tools for Single-Cell Analysis</p>
+        </header>
+
+        <div class="main-content-wrapper">
+            <!-- Sticky Table of Contents Sidebar (Visible on large screens) -->
+            <nav class="toc-sidebar">
+                <h3><i class="fas fa-list-ul"></i> Contents</h3>
+                <ul>
+                    <li><a href="#overview"><i class="fas fa-chevron-right"></i> Overview & Workflow</a></li>
+                    <li><a href="#quick-ref"><i class="fas fa-chevron-right"></i> Quick Reference Table</a></li>
+                    <li><a href="#reference-based"><i class="fas fa-chevron-right"></i> Reference-Based Methods</a></li>
+                    <li><a href="#marker-based"><i class="fas fa-chevron-right"></i> Marker-Based Methods</a></li>
+                    <li><a href="#ml-classifiers"><i class="fas fa-chevron-right"></i> ML Classifiers</a></li>
+                    <li><a href="#foundation-models"><i class="fas fa-chevron-right"></i> Foundation Models</a></li>
+                    <li><a href="#specialized"><i class="fas fa-chevron-right"></i> Specialized Methods</a></li>
+                    <li><a href="#decision-guide"><i class="fas fa-chevron-right"></i> <strong>Selection Guide</strong></a></li>
+                </ul>
+            </nav>
+
+            <main class="content-area">
+                <!-- Overview -->
+                <section class="overview-section" id="overview">
+                    <h2><i class="fas fa-info-circle"></i> Overview</h2>
+                    <p>Cell annotation assigns biological identities (cell types, states) to individual cells based on their transcriptomic profiles. This page provides a comprehensive guide to available tools, helping you choose the right method for your analysis.</p>
+
+                    <!-- Workflow Diagram -->
+                    <div class="workflow-diagram">
+                        <h3><i class="fas fa-project-diagram"></i> General Annotation Workflow</h3>
+                        <div class="workflow-steps">
+                            <div class="workflow-step">
+                                <i class="fas fa-filter"></i>
+                                <h4>Preprocess</h4>
+                                <p>QC & normalize</p>
+                            </div>
+                            <span class="workflow-arrow"><i class="fas fa-arrow-right"></i></span>
+                            <div class="workflow-step">
+                                <i class="fas fa-cogs"></i>
+                                <h4>Select Tool</h4>
+                                <p>Based on data & needs</p>
+                            </div>
+                            <span class="workflow-arrow"><i class="fas fa-arrow-right"></i></span>
+                            <div class="workflow-step">
+                                <i class="fas fa-tag"></i>
+                                <h4>Annotate</h4>
+                                <p>Run classification</p>
+                            </div>
+                            <span class="workflow-arrow"><i class="fas fa-arrow-right"></i></span>
+                            <div class="workflow-step">
+                                <i class="fas fa-check-circle"></i>
+                                <h4>Validate</h4>
+                                <p>Check markers</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Reference Table -->
+                <section class="overview-section" id="quick-ref">
+                    <h2><i class="fas fa-table"></i> Quick Reference</h2>
+                    <div style="overflow-x: auto;">
+                        <table class="quick-ref-table">
+                            <thead>
+                                <tr>
+                                    <th>Tool</th>
+                                    <th class="hide-on-mobile">Year</th>
+                                    <th>Approach</th>
+                                    <th>Best For</th>
+                                    <th class="hide-on-mobile">Links</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>scmap</td>
+                                    <td class="hide-on-mobile">2018</td>
+                                    <td>Projection to reference</td>
+                                    <td>Fast large-scale annotation</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/nmeth.4644" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/hemberg-lab/scmap" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>SingleR</td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td>Correlation-based</td>
+                                    <td>Bulk reference compatibility</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41590-018-0276-y" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/dviraran/SingleR" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>CellAssign</td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td>Probabilistic marker-based</td>
+                                    <td>Multi-batch studies with markers</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-019-0529-1" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/irrationone/cellassign" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>SCINA</td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td>Semi-supervised mixture</td>
+                                    <td>Simple marker-based</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.3390/genes10070531" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/jcao89757/SCINA" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>SingleCellNet</td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td>Random forest</td>
+                                    <td>Cross-platform robustness</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cels.2019.06.004" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/pcahan1/singleCellNet" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>CHETAH</td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td>Hierarchical tree</td>
+                                    <td>Uncertain/intermediate cells</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1093/nar/gkz543" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/jdekanter/CHETAH" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>CellTypist</td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td>Logistic regression</td>
+                                    <td>Immune cell typing</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1126/science.abl5197" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/Teichlab/celltypist" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Azimuth</td>
+                                    <td class="hide-on-mobile">2023</td>
+                                    <td>Reference mapping (Seurat)</td>
+                                    <td>Seurat ecosystem users</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cell.2021.04.048" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/satijalab/azimuth" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>scGPT</td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td>Foundation model (Transformer)</td>
+                                    <td>Multi-task learning</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-024-02201-0" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/bowang-lab/scGPT" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>scFoundation</td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td>Foundation model (100M params)</td>
+                                    <td>Low-depth data enhancement</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-024-02305-7" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/biomap-research/scFoundation" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>CytoTRACE 2</td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td>Interpretable deep learning</td>
+                                    <td>Developmental potential</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-025-02857-2" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/digitalcytometry/cytotrace2" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>scCATCH</td>
+                                    <td class="hide-on-mobile">2020</td>
+                                    <td>Cluster-based + database</td>
+                                    <td>Automatic cluster annotation</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.isci.2020.100882" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ZJUFanLab/scCATCH" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>scDeepSort</td>
+                                    <td class="hide-on-mobile">2021</td>
+                                    <td>Pre-trained GNN</td>
+                                    <td>Reference-free annotation</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1093/nar/gkab775" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ZJUFanLab/scDeepSort" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>scBERT</td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td>BERT-based transformer</td>
+                                    <td>Deep learning annotation</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s42256-022-00534-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/TencentAILabHealthcare/scBERT" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Concerto</td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td>Contrastive learning</td>
+                                    <td>Million-scale mapping</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s42256-022-00518-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/melobio/Concerto-reproducibility" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>CellHint</td>
+                                    <td class="hide-on-mobile">2023</td>
+                                    <td>Harmonization (PCT)</td>
+                                    <td>Cross-dataset standardization</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cell.2023.11.026" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/Teichlab/cellhint" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>UCE</td>
+                                    <td class="hide-on-mobile">2023</td>
+                                    <td>Universal embeddings</td>
+                                    <td>Zero-shot cross-species</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1101/2023.11.28.568918" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/snap-stanford/uce" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>scInterpreter</td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td>LLM-based (Llama)</td>
+                                    <td>Gene knowledge integration</td>
+                                    <td class="hide-on-mobile"><a href="https://arxiv.org/abs/2402.12405" target="_blank" rel="noopener noreferrer">Paper (arXiv)</a></td>
+                                </tr>
+                                <tr>
+                                    <td>TCellSI</td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td>T cell state scoring</td>
+                                    <td>8 T cell functional states</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1002/imt2.231" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/GuoBioinfoLab/TCellSI" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>AIDO.Cell</td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td>Full-transcriptome transformer</td>
+                                    <td>19K gene context</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1101/2024.11.28.625303" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/genbio-ai/AIDO" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Nicheformer</td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td>Spatial + dissociated FM</td>
+                                    <td>Spatial context prediction</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-025-02814-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/theislab/nicheformer" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Reference-Based Methods -->
+                <section class="category-section" id="reference-based">
+                    <div class="category-header">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <div>
+                            <h2>Reference-Based Methods</h2>
+                            <p>Map query cells to pre-annotated reference datasets</p>
+                        </div>
+                    </div>
+                    <div class="tools-grid">
+                        <!-- scmap -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scmap</span>
+                                <span class="tool-best-for">Best for: Fast large-scale annotation</span>
+                                <span class="tool-year">2018</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Methods | Wellcome Sanger Institute
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Fast</span>
+                                <span class="tool-tag">Projection</span>
+                                <span class="tool-tag">Bioconductor</span>
+                            </div>
+                            <div class="tool-description">
+                                First scalable projection method for single-cell reference mapping. Offers two modes: <strong>scmap-cluster</strong> (fast, maps to cluster centroids) and <strong>scmap-cell</strong> (precise, maps to individual cells).
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Dropout-based feature selection</li>
+                                    <li>Handles "unassigned" cells gracefully</li>
+                                    <li>Low memory footprint</li>
+                                    <li class="limitation-item">Requires pre-computed indices for references</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/nmeth.4644" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/hemberg-lab/scmap" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://bioconductor.org/packages/scmap" target="_blank" rel="noopener noreferrer" class="tool-link docs">
+                                    <i class="fas fa-book-open"></i> Bioconductor
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- SingleR -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">SingleR</span>
+                                <span class="tool-best-for">Best for: Bulk reference compatibility</span>
+                                <span class="tool-year">2019</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Immunology | Weizmann Institute
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Bulk Compatible</span>
+                                <span class="tool-tag">Correlation</span>
+                                <span class="tool-tag">Pre-built Refs</span>
+                            </div>
+                            <div class="tool-description">
+                                Correlates single-cell profiles with reference datasets (bulk or single-cell). Iteratively refines annotations using variable genes between top candidates.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Works with bulk RNA-seq references</li>
+                                    <li>Pre-built references (HPCA, Blueprint, Monaco)</li>
+                                    <li>Iterative fine-tuning refinement</li>
+                                    <li class="limitation-item">Can be slow on very large datasets</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41590-018-0276-y" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/dviraran/SingleR" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://bioconductor.org/packages/SingleR" target="_blank" rel="noopener noreferrer" class="tool-link docs">
+                                    <i class="fas fa-book-open"></i> Bioconductor
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Azimuth -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">Azimuth</span>
+                                <span class="tool-best-for">Best for: Seurat ecosystem users</span>
+                                <span class="tool-year">2023</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Cell (Seurat v4) | Satija Lab
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Web App</span>
+                                <span class="tool-tag">Seurat</span>
+                                <span class="tool-tag">Multi-Modal</span>
+                                <span class="tool-tag">ATAC-seq</span>
+                            </div>
+                            <div class="tool-description">
+                                Automated reference-based annotation using HuBMAP atlases. Single-command <code>RunAzimuth()</code> provides multi-resolution labels (l1, l2) with confidence scores. Supports ATAC-seq via bridge integration.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>No-code web interface available</li>
+                                    <li>HuBMAP reference atlases (PBMC, lung, kidney...)</li>
+                                    <li>Bridge integration for ATAC-seq</li>
+                                    <li class="limitation-item">Restricted to provided HuBMAP references</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1016/j.cell.2021.04.048" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/satijalab/azimuth" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://azimuth.hubmapconsortium.org/" target="_blank" rel="noopener noreferrer" class="tool-link web">
+                                    <i class="fas fa-globe"></i> Web App
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
+
+                <!-- Marker-Based Methods -->
+                <section class="category-section" id="marker-based">
+                    <div class="category-header">
+                        <i class="fas fa-dna"></i>
+                        <div>
+                            <h2>Marker Gene-Based Methods</h2>
+                            <p>Leverage prior knowledge of cell type marker genes</p>
+                        </div>
+                    </div>
+                    <div class="tools-grid">
+                        <!-- CellAssign -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">CellAssign</span>
+                                <span class="tool-best-for">Best for: Multi-batch studies with markers</span>
+                                <span class="tool-year">2019</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Methods | BC Cancer
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Batch Correction</span>
+                                <span class="tool-tag">Probabilistic</span>
+                                <span class="tool-tag">TensorFlow</span>
+                            </div>
+                            <div class="tool-description">
+                                Probabilistic framework using marker genes with explicit batch effect modeling. Provides uncertainty quantification and robust to ~30% marker misspecification.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Hierarchical Bayesian model (negative binomial)</li>
+                                    <li>Explicit batch/patient/sample modeling</li>
+                                    <li>GPU acceleration via TensorFlow</li>
+                                    <li class="limitation-item">Performance sensitive to marker list quality/specificity</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41592-019-0529-1" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/irrationone/cellassign" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- SCINA -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">SCINA</span>
+                                <span class="tool-best-for">Best for: Simple marker-based annotation</span>
+                                <span class="tool-year">2019</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Genes | UT Southwestern
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Simple</span>
+                                <span class="tool-tag">Semi-Supervised</span>
+                                <span class="tool-tag">EM Algorithm</span>
+                            </div>
+                            <div class="tool-description">
+                                Semi-supervised annotation using bimodal Gaussian mixture models for marker genes. Simple input: just provide marker gene lists per cell type.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Bimodal on/off expression model</li>
+                                    <li>No reference dataset required</li>
+                                    <li>Easy to use - just marker lists</li>
+                                    <li class="limitation-item">Relies heavily on assumption of bimodal gene expression</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.3390/genes10070531" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/jcao89757/SCINA" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CHETAH -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">CHETAH</span>
+                                <span class="tool-best-for">Best for: Uncertain/intermediate cells</span>
+                                <span class="tool-year">2019</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nucleic Acids Research
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Hierarchical</span>
+                                <span class="tool-tag">Uncertainty</span>
+                                <span class="tool-tag">Tree-Based</span>
+                            </div>
+                            <div class="tool-description">
+                                Hierarchical classification using reference tree structure. Stops at appropriate resolution when confidence drops, flagging uncertain cells.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Auto-determines annotation granularity</li>
+                                    <li>Identifies intermediate/ambiguous states</li>
+                                    <li>Confidence thresholds at each tree level</li>
+                                    <li class="limitation-item">High rate of "unassigned" cells if reference is biologically distinct</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1093/nar/gkz543" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/jdekanter/CHETAH" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://bioconductor.org/packages/CHETAH" target="_blank" rel="noopener noreferrer" class="tool-link docs">
+                                    <i class="fas fa-book-open"></i> Bioconductor
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- scCATCH -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scCATCH</span>
+                                <span class="tool-best-for">Best for: Automatic cluster annotation</span>
+                                <span class="tool-year">2020</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> iScience | Zhejiang University
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Cluster-Based</span>
+                                <span class="tool-tag">CellMatch DB</span>
+                                <span class="tool-tag">Evidence-Based</span>
+                            </div>
+                            <div class="tool-description">
+                                Automatic cluster annotation using CellMatch database (353 cell types, 20,792 markers across 184 tissues). Evidence-based scoring ranks candidates by marker matches and literature support.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Paired cluster comparison reduces false positives</li>
+                                    <li>CellMatch integrates CellMarker, MCA, CancerSEA</li>
+                                    <li>83% average accuracy across tissues</li>
+                                    <li class="limitation-item">Database-dependent; novel cell types may not be recognized</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1016/j.isci.2020.100882" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/ZJUFanLab/scCATCH" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
+
+                <!-- Machine Learning Classifiers -->
+                <section class="category-section" id="ml-classifiers">
+                    <div class="category-header">
+                        <i class="fas fa-brain"></i>
+                        <div>
+                            <h2>Machine Learning Classifiers</h2>
+                            <p>Traditional ML approaches for supervised classification</p>
+                        </div>
+                    </div>
+                    <div class="tools-grid">
+                        <!-- SingleCellNet -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">SingleCellNet</span>
+                                <span class="tool-best-for">Best for: Cross-platform robustness</span>
+                                <span class="tool-year">2019</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Cell Systems | Johns Hopkins
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Cross-Platform</span>
+                                <span class="tool-tag">Random Forest</span>
+                                <span class="tool-tag">Calibrated</span>
+                            </div>
+                            <div class="tool-description">
+                                Random forest classifier using "top-pair" gene features that are robust to technical variation. Provides calibrated scores for quality assessment.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Rank-based gene pairs for cross-platform robustness</li>
+                                    <li>Train custom classifiers from your reference</li>
+                                    <li>Calibrated probability scores</li>
+                                    <li class="limitation-item">Requires training data that closely matches target data type</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1016/j.cels.2019.06.004" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/pcahan1/singleCellNet" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CellTypist -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">CellTypist</span>
+                                <span class="tool-best-for">Best for: Immune cell typing</span>
+                                <span class="tool-year">2022</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Science | Wellcome Sanger Institute
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Immune Cells</span>
+                                <span class="tool-tag">Cross-Tissue</span>
+                                <span class="tool-tag">360K Cells</span>
+                                <span class="tool-tag">101 Types</span>
+                            </div>
+                            <div class="tool-description">
+                                Fast logistic regression trained on cross-tissue immune atlas (360K cells, 16 tissues, 101 cell types). Continuously updatable as new data becomes available.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>F1: 0.95 (high) / 0.89 (low hierarchy)</li>
+                                    <li>Hierarchical: 32 broad → 91 fine types</li>
+                                    <li>SGD training - fast and scalable</li>
+                                    <li class="limitation-item">Currently optimized primarily for immune cells</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1126/science.abl5197" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/Teichlab/celltypist" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://www.celltypist.org/" target="_blank" rel="noopener noreferrer" class="tool-link web">
+                                    <i class="fas fa-globe"></i> Website
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- scDeepSort -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scDeepSort</span>
+                                <span class="tool-best-for">Best for: Reference-free annotation</span>
+                                <span class="tool-year">2021</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nucleic Acids Research | Zhejiang University
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Pre-trained</span>
+                                <span class="tool-tag">GNN</span>
+                                <span class="tool-tag">265K Cells</span>
+                            </div>
+                            <div class="tool-description">
+                                First pre-trained graph neural network for cell type annotation. Treats cells and genes as graph nodes with expression as weighted edges. No additional reference required at prediction time.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>83.79% accuracy across 265,489 cells</li>
+                                    <li>Weighted graph aggregator handles batch effects</li>
+                                    <li>Outperforms 12 existing methods</li>
+                                    <li class="limitation-item">Pre-trained on specific cell types; may struggle with novel types</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1093/nar/gkab775" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/ZJUFanLab/scDeepSort" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- scBERT -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scBERT</span>
+                                <span class="tool-best-for">Best for: Deep learning annotation</span>
+                                <span class="tool-year">2022</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Machine Intelligence | Tencent
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">BERT</span>
+                                <span class="tool-tag">Transformer</span>
+                                <span class="tool-tag">Performer</span>
+                            </div>
+                            <div class="tool-description">
+                                BERT-based model adapted for scRNA-seq with Performer encoder. Two-stage pre-training + fine-tuning paradigm. Attention weights enable discovery of cell-type-specific genes.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Strong batch effect resistance</li>
+                                    <li>Interpretable attention for gene discovery</li>
+                                    <li>Novel cell type detection capability</li>
+                                    <li class="limitation-item">Requires GPU for efficient training/inference</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s42256-022-00534-z" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/TencentAILabHealthcare/scBERT" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Concerto -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">Concerto</span>
+                                <span class="tool-best-for">Best for: Million-scale mapping</span>
+                                <span class="tool-year">2022</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Machine Intelligence | BGI
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Contrastive Learning</span>
+                                <span class="tool-tag">Self-Distillation</span>
+                                <span class="tool-tag">Multi-Modal</span>
+                            </div>
+                            <div class="tool-description">
+                                Contrastive learning framework using asymmetric teacher-student self-distillation. First application of contrastive learning to single-cell. Supports multimodal RNA + protein integration.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Rapid mapping to million-scale atlases</li>
+                                    <li>NOTA (None-of-the-above) rejection for novel types</li>
+                                    <li>Hierarchical fine-grained annotation</li>
+                                    <li class="limitation-item">Requires large training datasets for optimal performance</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s42256-022-00518-z" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/melobio/Concerto-reproducibility" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- CellHint -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">CellHint</span>
+                                <span class="tool-best-for">Best for: Cross-dataset standardization</span>
+                                <span class="tool-year">2023</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Cell | Wellcome Sanger Institute
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Harmonization</span>
+                                <span class="tool-tag">HCA</span>
+                                <span class="tool-tag">PCT</span>
+                            </div>
+                            <div class="tool-description">
+                                Predictive clustering tree (PCT) tool for harmonizing cell type annotations across datasets. Creates hierarchical cell type relationships for standardized Human Cell Atlas integration.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Overcomes batch effects in cross-dataset comparisons</li>
+                                    <li>Annotation-aware data integration</li>
+                                    <li>From CellTypist team - compatible ecosystem</li>
+                                    <li class="limitation-item">Requires multiple datasets with existing annotations</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1016/j.cell.2023.11.026" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/Teichlab/cellhint" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://www.celltypist.org/organs" target="_blank" rel="noopener noreferrer" class="tool-link web">
+                                    <i class="fas fa-globe"></i> Website
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
+
+                <!-- Foundation Models -->
+                <section class="category-section" id="foundation-models">
+                    <div class="category-header">
+                        <i class="fas fa-robot"></i>
+                        <div>
+                            <h2>Foundation Models</h2>
+                            <p>Large-scale pre-trained models for general single-cell analysis</p>
+                        </div>
+                    </div>
+                    <div class="tools-grid">
+                        <!-- scGPT -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scGPT</span>
+                                <span class="tool-best-for">Best for: Multi-task learning</span>
+                                <span class="tool-year">2024</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Methods | University of Toronto
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Multi-Task</span>
+                                <span class="tool-tag">Transformer</span>
+                                <span class="tool-tag">33M Cells</span>
+                                <span class="tool-tag">Fine-Tunable</span>
+                            </div>
+                            <div class="tool-description">
+                                Foundation model trained on 33M human cells. Simultaneously learns cell and gene representations. Fine-tune for annotation, perturbation prediction, batch integration, and more.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Transformer with specialized attention masks</li>
+                                    <li>&lt;cls&gt; token for cell-level representation</li>
+                                    <li>Gene network inference from attention</li>
+                                    <li class="limitation-item">Requires significant GPU resources for fine-tuning</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41592-024-02201-0" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/bowang-lab/scGPT" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- scFoundation -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scFoundation</span>
+                                <span class="tool-best-for">Best for: Low-depth data enhancement</span>
+                                <span class="tool-year">2024</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Methods | BioMap
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">100M Params</span>
+                                <span class="tool-tag">50M Cells</span>
+                                <span class="tool-tag">Low-Depth</span>
+                                <span class="tool-tag">xTrimoGene</span>
+                            </div>
+                            <div class="tool-description">
+                                100M parameter model with xTrimoGene architecture and Read-Depth Aware (RDA) pre-training. Excels at gene expression enhancement and handles variable sequencing depths.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Asymmetric encoder-decoder (non-zero only)</li>
+                                    <li>RDA task handles low-depth data</li>
+                                    <li>Zero-shot expression enhancement</li>
+                                    <li class="limitation-item">Very large model size makes local deployment challenging</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41592-024-02305-7" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/biomap-research/scFoundation" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- UCE -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">UCE</span>
+                                <span class="tool-best-for">Best for: Zero-shot cross-species</span>
+                                <span class="tool-year">2023</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> bioRxiv | Stanford & CZI
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Cross-Species</span>
+                                <span class="tool-tag">650M Params</span>
+                                <span class="tool-tag">36M Cells</span>
+                                <span class="tool-tag">ESM2</span>
+                            </div>
+                            <div class="tool-description">
+                                Universal Cell Embeddings using "Bags of RNA" approach with ESM2 protein embeddings. Zero-shot cell type classification across species without homolog mapping. 33-layer transformer on Integrated Mega-scale Atlas.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>No cell type annotations needed for training</li>
+                                    <li>Cross-species annotation without fine-tuning</li>
+                                    <li>1280-dimensional universal embeddings</li>
+                                    <li class="limitation-item">Currently transcriptomics only; preprint status</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1101/2023.11.28.568918" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/snap-stanford/uce" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- scInterpreter -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">scInterpreter</span>
+                                <span class="tool-best-for">Best for: Gene knowledge integration</span>
+                                <span class="tool-year">2024</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> arXiv Preprint | Chinese Academy of Sciences
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">LLM-Based</span>
+                                <span class="tool-tag">Llama-13b</span>
+                                <span class="tool-tag">GPT Embeddings</span>
+                                <span class="tool-tag">Preprint</span>
+                            </div>
+                            <div class="tool-description">
+                                Adapts LLMs (Llama-13b) to interpret scRNA-seq using GPT-3.5 gene description embeddings from NCBI. Bridges biological knowledge from language models with expression profiles.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>LLM-encoded biological knowledge integration</li>
+                                    <li>Frozen LLM + lightweight projection layers</li>
+                                    <li>Gene-level semantic grounding via NCBI</li>
+                                    <li class="limitation-item">Preprint; code not publicly available yet</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://arxiv.org/abs/2402.12405" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper (arXiv)
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- AIDO.Cell -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">AIDO.Cell</span>
+                                <span class="tool-best-for">Best for: Full 19K gene context</span>
+                                <span class="tool-year">2024</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> NeurIPS | GenBio AI
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Full Transcriptome</span>
+                                <span class="tool-tag">650M Params</span>
+                                <span class="tool-tag">FlashAttention</span>
+                                <span class="tool-tag">19K Context</span>
+                            </div>
+                            <div class="tool-description">
+                                First single-cell FM to process entire 20K-gene transcriptome without truncation using dense Transformer + FlashAttention-2. Scaling study from 3M to 650M params on 50M cells.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>No gene truncation/sampling - full context</li>
+                                    <li>Auto-discretization learns flexible expression embeddings</li>
+                                    <li>Read-depth aware pre-training</li>
+                                    <li class="limitation-item">Requires 256 H100 GPUs for training; inference still heavy</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1101/2024.11.28.625303" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/genbio-ai/AIDO" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Nicheformer -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">Nicheformer</span>
+                                <span class="tool-best-for">Best for: Spatial context prediction</span>
+                                <span class="tool-year">2025</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Methods | Helmholtz Munich
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Spatial + Dissociated</span>
+                                <span class="tool-tag">110M Cells</span>
+                                <span class="tool-tag">Multi-Tech</span>
+                            </div>
+                            <div class="tool-description">
+                                First foundation model trained on both dissociated (57M) and spatial (53M) transcriptomics. Learns spatially-aware representations enabling transfer of spatial context to scRNA-seq.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Predicts cellular microenvironments from expression</li>
+                                    <li>SpatialCorpus-110M across multiple technologies</li>
+                                    <li>Transfers spatial annotations to dissociated data</li>
+                                    <li class="limitation-item">Spatial predictions may not generalize to all tissue contexts</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41592-025-02814-z" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/theislab/nicheformer" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://huggingface.co/datasets/theislab/SpatialCorpus-110M" target="_blank" rel="noopener noreferrer" class="tool-link docs">
+                                    <i class="fas fa-database"></i> Data
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
+
+                <!-- Specialized Methods -->
+                <section class="category-section" id="specialized">
+                    <div class="category-header">
+                        <i class="fas fa-seedling"></i>
+                        <div>
+                            <h2>Developmental Potential & Specialized</h2>
+                            <p>Methods for predicting cell potency and developmental states</p>
+                        </div>
+                    </div>
+                    <div class="tools-grid">
+                        <!-- CytoTRACE 2 -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">CytoTRACE 2</span>
+                                <span class="tool-best-for">Best for: Developmental potential</span>
+                                <span class="tool-year">2025</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Methods | Stanford
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Interpretable</span>
+                                <span class="tool-tag">Potency</span>
+                                <span class="tool-tag">Cross-Dataset</span>
+                                <span class="tool-tag">GSBN</span>
+                            </div>
+                            <div class="tool-description">
+                                Predicts absolute developmental potential (0-1 scale) and potency categories (totipotent → differentiated) using interpretable Gene Set Binary Networks. Works across datasets without batch correction.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>6 potency categories (totipotent to differentiated)</li>
+                                    <li>Binary weights enable gene set extraction</li>
+                                    <li>τ = 0.82 correlation with ground truth</li>
+                                    <li class="limitation-item">Focuses on potency state, not specific cell type identity</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41592-025-02857-2" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/digitalcytometry/cytotrace2" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                                <a href="https://cytotrace2.stanford.edu/" target="_blank" rel="noopener noreferrer" class="tool-link web">
+                                    <i class="fas fa-globe"></i> Web App
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- TCellSI -->
+                        <div class="tool-card">
+                            <div class="tool-header">
+                                <span class="tool-name">TCellSI</span>
+                                <span class="tool-best-for">Best for: T cell functional states</span>
+                                <span class="tool-year">2024</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> iMeta | Huazhong University of Science and Technology
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">T Cells</span>
+                                <span class="tool-tag">State Inference</span>
+                                <span class="tool-tag">8 States</span>
+                                <span class="tool-tag">R Package</span>
+                            </div>
+                            <div class="tool-description">
+                                Specialized tool for inferring 8 distinct T cell functional states from scRNA-seq: Quiescence, Regulating, Proliferation, Helper, Cytotoxicity, Progenitor exhaustion, Terminal exhaustion, and Senescence.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>8 curated T cell functional state signatures</li>
+                                    <li>Mann-Whitney U statistics for robust scoring</li>
+                                    <li>Works with bulk RNA-seq and scRNA-seq</li>
+                                    <li class="limitation-item">Specific to T cells; not generalizable to other cell types</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1002/imt2.231" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/GuoBioinfoLab/TCellSI" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
+
+                <!-- Method Selection Guide -->
+                <section class="overview-section decision-section-container" id="decision-guide">
+                    <h2><i class="fas fa-compass"></i> Which Tool Should I Use?</h2>
+                    <div class="decision-grid">
+                        <div class="decision-card">
+                            <h3><i class="fas fa-database"></i> Have a Reference Atlas?</h3>
+                            <ul>
+                                <li>Seurat user: <strong>Azimuth</strong></li>
+                                <li>Immune cells: <strong>CellTypist</strong></li>
+                                <li>Bulk reference: <strong>SingleR</strong></li>
+                                <li>Fast/simple: <strong>scmap</strong></li>
+                            </ul>
+                        </div>
+                        <div class="decision-card">
+                            <h3><i class="fas fa-dna"></i> Have Marker Genes?</h3>
+                            <ul>
+                                <li>Multi-batch data: <strong>CellAssign</strong></li>
+                                <li>Simple/quick: <strong>SCINA</strong></li>
+                                <li>Uncertain cells: <strong>CHETAH</strong></li>
+                            </ul>
+                        </div>
+                        <div class="decision-card">
+                            <h3><i class="fas fa-tasks"></i> Multiple Tasks / Foundation Models?</h3>
+                            <ul>
+                                <li>Annotation + Integration + Perturbation: <strong>scGPT</strong></li>
+                                <li>Low-depth data: <strong>scFoundation</strong></li>
+                                <li>Cross-species zero-shot: <strong>UCE</strong></li>
+                                <li>Full 19K gene context: <strong>AIDO.Cell</strong></li>
+                                <li>Spatial + scRNA-seq: <strong>Nicheformer</strong></li>
+                            </ul>
+                        </div>
+                        <div class="decision-card">
+                            <h3><i class="fas fa-seedling"></i> Specialized Cell Types/States?</h3>
+                            <ul>
+                                <li>Developmental potency: <strong>CytoTRACE 2</strong></li>
+                                <li>T cell functional states: <strong>TCellSI</strong></li>
+                                <li>Cross-dataset harmonization: <strong>CellHint</strong></li>
+                                <li>Million-scale mapping: <strong>Concerto</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main> <!-- End content-area -->
+        </div> <!-- End main-content-wrapper -->
+
+        <footer>
+            <h3>AI4Bio Concepts Handbook</h3>
+            <p>Cell Annotation & Type Identification</p>
+            <p style="margin-top: 15px;">
+                <strong>21 Tools Covered:</strong> scmap | SingleR | CHETAH | SCINA | CellAssign | SingleCellNet | CellTypist | Azimuth | scCATCH | scDeepSort | scBERT | Concerto | CellHint | UCE | scGPT | scFoundation | scInterpreter | AIDO.Cell | Nicheformer | CytoTRACE 2 | TCellSI
+            </p>
+            <p style="margin-top: 15px; opacity: 0.8;">Last updated: November 2025</p>
+            <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.7;">
+                🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>
+                Content released under CC BY 4.0.
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

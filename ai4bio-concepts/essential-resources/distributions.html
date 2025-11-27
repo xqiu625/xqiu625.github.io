@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hypergeometric Distribution - AI4Bio Learning Hub</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
@@ -44,10 +52,10 @@
             transition: color 0.3s ease;
         }
         .navbar-nav a:hover {
-            color: #4E7AC2;
+            color: #B01C3C;
         }
         .home-link {
-            color: #4E7AC2 !important;
+            color: #B01C3C !important;
         }
         .container {
             max-width: 1200px;
@@ -55,13 +63,13 @@
             padding: 20px;
         }
         .header {
-            background: linear-gradient(135deg, #4E7AC2 0%, #455E85 100%);
+            background: linear-gradient(135deg, #B01C3C 0%, #7D1439 100%);
             color: white;
             padding: 50px 40px;
             border-radius: 15px;
             margin: 30px 0;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(78, 122, 194, 0.3);
+            box-shadow: 0 4px 20px rgba(176, 28, 60, 0.3);
         }
         .header h1 {
             margin: 0 0 15px 0;
@@ -89,18 +97,18 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.08);
         }
         .figure-section h2 {
-            color: #426DB4;
+            color: #8F193E;
             font-size: 2em;
             margin-bottom: 25px;
-            border-left: 4px solid #426DB4;
+            border-left: 4px solid #8F193E;
             padding-left: 15px;
         }
         .controls {
-            background: linear-gradient(135deg, #e3f2fd 0%, #d1e9f6 100%);
+            background: linear-gradient(135deg, #fde3e8 0%, #f6d1d9 100%);
             padding: 25px;
             border-radius: 10px;
             margin: 25px 0;
-            border: 2px solid #4E7AC2;
+            border: 2px solid #B01C3C;
         }
         .control-group {
             display: flex;
@@ -111,7 +119,7 @@
         }
         .control-group label {
             font-weight: 600;
-            color: #426DB4;
+            color: #8F193E;
             margin-right: 15px;
             min-width: 150px;
         }
@@ -129,12 +137,12 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background: #4E7AC2;
+            background: #B01C3C;
             cursor: pointer;
         }
         .control-group .value-display {
             font-weight: 700;
-            color: #426DB4;
+            color: #8F193E;
             font-size: 1.2em;
             min-width: 50px;
             text-align: center;
@@ -147,19 +155,19 @@
             stroke-width: 3;
         }
         .selected {
-            stroke: #4E7AC2 !important;
+            stroke: #B01C3C !important;
             stroke-width: 5 !important;
         }
         .formula-box {
-            background: linear-gradient(135deg, #e3f2fd 0%, #d1e9f6 100%);
+            background: linear-gradient(135deg, #fde3e8 0%, #f6d1d9 100%);
             padding: 25px;
-            border-left: 5px solid #426DB4;
+            border-left: 5px solid #8F193E;
             margin: 25px 0;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(66, 109, 180, 0.15);
+            box-shadow: 0 2px 10px rgba(143, 25, 62, 0.15);
         }
         .formula-box strong {
-            color: #426DB4;
+            color: #8F193E;
             font-size: 1.2em;
         }
         .formula-box .formula {
@@ -171,15 +179,15 @@
             border-radius: 5px;
         }
         .bio-example {
-            background: linear-gradient(135deg, #f0f8ff 0%, #e8f4f8 100%);
+            background: linear-gradient(135deg, #fff0f3 0%, #f8e8ec 100%);
             padding: 25px;
-            border-left: 5px solid #426DB4;
+            border-left: 5px solid #8F193E;
             margin: 25px 0;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(66, 109, 180, 0.15);
+            box-shadow: 0 2px 10px rgba(143, 25, 62, 0.15);
         }
         .bio-example strong {
-            color: #426DB4;
+            color: #8F193E;
             font-size: 1.2em;
         }
         .comparison-table {
@@ -197,12 +205,12 @@
             border-bottom: 1px solid #e9ecef;
         }
         .comparison-table th {
-            background: linear-gradient(135deg, #4E7AC2 0%, #455E85 100%);
+            background: linear-gradient(135deg, #B01C3C 0%, #7D1439 100%);
             color: white;
             font-weight: 600;
         }
         .comparison-table tr:hover {
-            background: rgba(78, 122, 194, 0.05);
+            background: rgba(176, 28, 60, 0.05);
         }
         .comparison-table tr:last-child td {
             border-bottom: none;
@@ -218,7 +226,7 @@
         .tooltip {
             position: absolute;
             padding: 10px;
-            background: rgba(78, 122, 194, 0.95);
+            background: rgba(176, 28, 60, 0.95);
             color: white;
             border-radius: 6px;
             pointer-events: none;
@@ -240,12 +248,12 @@
             margin: 25px 0;
         }
         .stat-card {
-            background: linear-gradient(135deg, #4E7AC2 0%, #455E85 100%);
+            background: linear-gradient(135deg, #B01C3C 0%, #7D1439 100%);
             color: white;
             padding: 25px;
             border-radius: 10px;
             text-align: center;
-            box-shadow: 0 4px 15px rgba(78, 122, 194, 0.3);
+            box-shadow: 0 4px 15px rgba(176, 28, 60, 0.3);
             transition: transform 0.3s ease;
         }
         .stat-card:hover {
@@ -261,13 +269,13 @@
             opacity: 0.95;
         }
         .cta-section {
-            background: linear-gradient(135deg, #4E7AC2 0%, #455E85 100%);
+            background: linear-gradient(135deg, #B01C3C 0%, #7D1439 100%);
             color: white;
             padding: 40px;
             border-radius: 15px;
             margin: 40px 0;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(78, 122, 194, 0.3);
+            box-shadow: 0 4px 20px rgba(176, 28, 60, 0.3);
         }
         .cta-section h3 {
             color: white;
@@ -276,7 +284,7 @@
         .cta-button {
             display: inline-block;
             background: white;
-            color: #426DB4;
+            color: #8F193E;
             padding: 12px 30px;
             border-radius: 25px;
             text-decoration: none;
@@ -566,7 +574,7 @@
                 .attr("cy", d => d.y)
                 .attr("r", ballRadius)
                 .attr("fill", d => d.isRed ? "#e74c3c" : "#3498db")
-                .attr("stroke", d => d.isSelected ? "#4E7AC2" : "#2c3e50")
+                .attr("stroke", d => d.isSelected ? "#B01C3C" : "#2c3e50")
                 .attr("stroke-width", d => d.isSelected ? 5 : 2)
                 .classed("selected", d => d.isSelected)
                 .on("click", function(event, d) {
@@ -597,7 +605,7 @@
             const legendData = [
                 {color: "#e74c3c", label: `Red balls (K = ${K})`, y: 0},
                 {color: "#3498db", label: `Blue balls (${N-K})`, y: 35},
-                {color: "#4E7AC2", label: "Selected balls", y: 70, stroke: true}
+                {color: "#B01C3C", label: "Selected balls", y: 70, stroke: true}
             ];
 
             legendData.forEach(item => {
@@ -606,7 +614,7 @@
                     .attr("cy", item.y)
                     .attr("r", 12)
                     .attr("fill", item.color)
-                    .attr("stroke", item.stroke ? "#4E7AC2" : "#2c3e50")
+                    .attr("stroke", item.stroke ? "#B01C3C" : "#2c3e50")
                     .attr("stroke-width", item.stroke ? 5 : 2);
                 
                 legend.append("text")
@@ -623,7 +631,7 @@
                 .text("💡 Click balls to sample")
                 .style("font-size", "14px")
                 .style("font-weight", "bold")
-                .style("fill", "#426DB4");
+                .style("fill", "#8F193E");
             
             legend.append("text")
                 .attr("x", 0)
@@ -701,7 +709,7 @@
                 .attr("width", xScale.bandwidth())
                 .attr("y", d => yScale(d.probability))
                 .attr("height", d => height - yScale(d.probability))
-                .attr("fill", d => d.x === currentX ? "#e74c3c" : "#4E7AC2")
+                .attr("fill", d => d.x === currentX ? "#e74c3c" : "#B01C3C")
                 .attr("stroke", "#2c3e50")
                 .attr("stroke-width", d => d.x === currentX ? 3 : 1)
                 .attr("opacity", 0.8)
@@ -778,7 +786,7 @@
 
             const colorScale = d3.scaleOrdinal()
                 .domain(['Hypergeometric', 'Binomial', 'Poisson'])
-                .range(['#e74c3c', '#4E7AC2', '#27ae60']);
+                .range(['#e74c3c', '#B01C3C', '#27ae60']);
 
             const line = d3.line()
                 .x(d => xScale(d.x))
@@ -941,11 +949,11 @@
                 .attr("orient", "auto")
                 .append("path")
                 .attr("d", "M 0,0 L 0,6 L 9,3 z")
-                .attr("fill", "#426DB4");
+                .attr("fill", "#8F193E");
 
             svg.append("path")
                 .attr("d", "M 260 175 L 400 175")
-                .attr("stroke", "#426DB4")
+                .attr("stroke", "#8F193E")
                 .attr("stroke-width", 4)
                 .attr("marker-end", "url(#arrowhead)");
 
@@ -1011,9 +1019,9 @@
                 .attr("y", statsY - 50)
                 .attr("width", 160)
                 .attr("height", 180)
-                .attr("fill", "#4E7AC2")
+                .attr("fill", "#B01C3C")
                 .attr("opacity", 0.1)
-                .attr("stroke", "#426DB4")
+                .attr("stroke", "#8F193E")
                 .attr("stroke-width", 3)
                 .attr("rx", 10);
 
@@ -1059,13 +1067,17 @@
 
     <footer>
         <div class="container" style="text-align: center; margin-top: 40px; padding: 30px; color: #666;">
-            <p>Part of the <a href="../index.html" style="color: #426DB4; text-decoration: none; font-weight: bold;">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+            <p>Part of the <a href="../index.html" style="color: #8F193E; text-decoration: none; font-weight: bold;">AI4Bio Learning Hub</a> by Xinru Qiu</p>
             <p style="font-size: 0.9em; margin-top: 10px;">
                 <a href="https://github.com/xqiu625" style="color: #666; margin: 0 10px;"><i class="fab fa-github"></i> GitHub</a> | 
                 <a href="https://www.linkedin.com/in/xinru-qiu" style="color: #666; margin: 0 10px;"><i class="fab fa-linkedin"></i> LinkedIn</a> | 
                 <a href="mailto:xinru.reina.qiu@gmail.com" style="color: #666; margin: 0 10px;"><i class="fas fa-envelope"></i> Email</a>
             </p>
             <p style="font-size: 0.9em; margin-top: 10px;">Last updated: January 2025</p>
+            <p style="font-size: 0.85em; margin-top: 15px; color: #888;">
+                🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>
+                Content released under <a href="https://creativecommons.org/licenses/by/4.0/" style="color: #8F193E;">CC BY 4.0</a>.
+            </p>
         </div>
     </footer>
 </body>
