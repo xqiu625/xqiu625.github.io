@@ -654,9 +654,67 @@
                 text-align: center;
             }
         }
+            /* ===== NAVIGATION ===== */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar-nav li {
+            margin: 5px 15px;
+        }
+
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav a:hover {
+            color: var(--secondary-color);
+        }
+
+        .home-link {
+            color: var(--secondary-color) !important;
+        }
     </style>
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
+                </li>
+                <li>
+                    <a href="https://xqiu625.github.io/">
+                        <i class="fas fa-home"></i> Xinru's Homepage
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
         <header>
             <h1><i class="fas fa-microscope"></i> Cell Annotation & Type Identification</h1>
