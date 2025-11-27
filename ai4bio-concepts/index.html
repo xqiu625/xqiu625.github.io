@@ -23,11 +23,11 @@
     <meta property="og:url" content="https://xqiu625.github.io/AI4Bio-Knowledge-Hub/">
     <meta property="og:title" content="AI4Bio Knowledge Hub">
     <meta property="og:description" content="Learn computational biology, single-cell analysis, and machine learning through comprehensive tutorials.">
-    <meta property="og:image" content="https://xqiu625.github.io/AI4Bio-Knowledge-Hub/ershu-mascot.png">
+    <meta property="og:image" content="https://xqiu625.github.io/AI4Bio-Knowledge-Hub/mascot.jpeg">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:image" content="https://xqiu625.github.io/AI4Bio-Knowledge-Hub/ershu-mascot.png">
+    <meta property="twitter:image" content="https://xqiu625.github.io/AI4Bio-Knowledge-Hub/mascot.jpeg">
     
     <!-- Styles & Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900">
@@ -148,11 +148,13 @@
             flex-wrap: wrap;
         }
         .mascot-image {
-            width: 200px;
-            height: 200px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 15px rgba(0,0,0,0.15));
+            width: 280px;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 16px;
+            filter: drop-shadow(0 8px 25px rgba(0,0,0,0.2));
             animation: float 3s ease-in-out infinite;
+            border: 3px solid rgba(255,255,255,0.8);
         }
         @keyframes float {
             0%, 100% { transform: translateY(0px); }
@@ -418,7 +420,7 @@
             <div class="header">
                 <div class="header-content">
                     <div class="mascot-container">
-                        <img src="ershu-mascot.png" alt="Ershu Mascot" class="mascot-image">
+                        <img src="mascot.jpeg" alt="AI4Bio Mascot - Curious bunny exploring the world of cells and DNA" class="mascot-image">
                     </div>
                     <div class="header-text">
                         <h1>🧬 AI4Bio Knowledge Hub</h1>
@@ -433,9 +435,9 @@
                 </p>
 
                 <div class="mascot-info">
-                    🐭 <strong>Meet Healshu (希欧-鼠)</strong> — Inspired by the mythical <em>Ershu</em> (耳鼠) from Classic of Mountains and Seas (山海经).
-                    This curious creature spends its days listening to the whispers of cells, decoding biological secrets through algorithms.
-                    When a hidden pattern emerges from the data, you might hear a soft "hew-hew~" of discovery.
+                    🐰 <strong>Meet BioExplorer (生物探索者)</strong> — Our curious mascot who loves wandering through the magical world of cells and DNA!
+                    With glasses for examining tiny details and a heart full of wonder, this little scientist guides you through the mysteries of computational biology.
+                    Follow the glowing path of knowledge and discover the secrets hidden in every cell! ✨
                 </div>
             </div>
 
@@ -553,7 +555,7 @@
                     <i class="fas fa-hourglass-half" style="font-size: 2.5em; color: var(--col-genom); margin-bottom: 15px;"></i>
                     <h3 style="color: #1a5f7a; margin: 0 0 10px 0;">Content In Development</h3>
                     <p style="color: #666; margin-bottom: 20px;">Tutorials on DNA language models and Variant Effect Prediction are currently being written.</p>
-                    <a href="mailto:xinru.reina.qiu@gmail.com?subject=Notify%20Me%20About%20Genomics" style="color: var(--col-genom); font-weight: bold; text-decoration: none;">
+                    <a href="/cdn-cgi/l/email-protection#8bf3e2e5f9fea5f9eee2e5eaa5fae2fecbece6eae2e7a5e8e4e6b4f8fee9e1eee8ffb6c5e4ffe2edf2aeb9bbc6eeaeb9bbcae9e4feffaeb9bbcceee5e4e6e2e8f8" style="color: var(--col-genom); font-weight: bold; text-decoration: none;">
                         <i class="far fa-bell"></i> Get notified when ready
                     </a>
                 </div>
@@ -640,7 +642,7 @@
                 <h3>💡 Let's Connect</h3>
                 <p>Interested in collaborating, discussing research, or have feedback? I'd love to hear from you!</p>
                 <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:10px;">
-                    <a href="mailto:xinru.reina.qiu@gmail.com" class="cta-button">
+                    <a href="/cdn-cgi/l/email-protection#85fdecebf7f0abf7e0ecebe4abf4ecf0c5e2e8e4ece9abe6eae8" class="cta-button">
                         <i class="fas fa-envelope"></i> Email Me
                     </a>
                     <a href="https://www.linkedin.com/in/xinru-qiu" class="cta-button">
@@ -670,7 +672,7 @@
     </footer>
 
     <!-- Search Functionality Script -->
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         document.getElementById('hubSearch').addEventListener('keyup', function() {
             let query = this.value.toLowerCase();
             let cards = document.querySelectorAll('.topic-link');
@@ -681,13 +683,4 @@
                 // Also search tags
                 let tags = card.querySelector('.meta-tags') ? card.querySelector('.meta-tags').textContent.toLowerCase() : "";
                 
-                if (title.includes(query) || desc.includes(query) || tags.includes(query)) {
-                    card.style.display = "flex";
-                } else {
-                    card.style.display = "none";
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+                if (title.includes(query) || des
