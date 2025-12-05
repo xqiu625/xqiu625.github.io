@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xinru Qiu - AI for Drug Discovery Scientist & Pharmacist</title>
+    <title>Xinru Qiu - Foundation Model Evaluation × Drug Discovery</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -89,6 +89,10 @@
             margin: 20px 0;
             border-radius: 4px;
         }
+        .highlight-box.primary {
+            border-left-color: #1a5f7a;
+            background-color: #f4f8fb;
+        }
         .research-image {
             background: transparent;
             padding: 20px;
@@ -112,6 +116,56 @@
             font-style: italic;
             margin-top: 10px;
             font-size: 0.9em;
+        }
+        .experience-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .experience-item:last-child {
+            border-bottom: none;
+        }
+        .experience-item strong {
+            color: #1a5f7a;
+        }
+        .tag {
+            display: inline-block;
+            background: #1a5f7a;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+        .tag.next {
+            background: #e67e22;
+        }
+        .core-box {
+            background: #fff8f0;
+            border-left: 4px solid #e67e22;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .core-box strong {
+            color: #e67e22;
+        }
+        .next-step-box {
+            background: white;
+            border: 2px solid #1a5f7a;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 25px 0;
+        }
+        .next-step-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        a {
+            color: #1a5f7a;
+        }
+        a:hover {
+            color: #6c8cc0;
         }
         @media (max-width: 768px) {
             .profile-container {
@@ -166,93 +220,99 @@
                 </div>
                 <div class="profile-info">
                     <h1>Xinru Qiu, PhD</h1>
-                    <h3 style="color: #6c8cc0; margin-top: 5px;">Computational Biologist | Pharmaceutical Sciences × Generative AI</h3>
+                    <h3 style="color: #6c8cc0; margin-top: 5px;">Foundation Model Evaluation × Drug Discovery</h3>
                     
                     <div class="content">
-                        <p class="highlight-box" style="border-left-color: #1a5f7a; background-color: #f4f8fb;">
-                            <strong>Working at the intersection of AI and Drug Discovery.</strong> <br>
-                            I am a bilingual scientist bridging the gap between <strong>Pharmaceutical Sciences</strong> (ADMET, PK/PD, Toxicology) and <strong>Generative AI</strong> (Foundation Models, Single-Cell Genomics). I design computational workflows that stay grounded in biological and clinical reality.
+                        <p class="highlight-box primary">
+                            <strong>I evaluate AI models so you know which outputs to trust.</strong><br><br>
+                            Built systematic benchmarks comparing 4 single-cell foundation models (UCE, scGPT, Geneformer, TranscriptFormer) on <strong>226K cells</strong>. UCE achieves <strong>0.876 AUC</strong> for COVID severity prediction. Now building AI agents that automate the path from patient data to therapeutic targets.
                         </p>
 
-                        <p>Currently a Postdoctoral Researcher at UC Riverside (Godzik Lab), I apply large-scale pretrained models across single-cell, multi-omic, and protein modalities to solve translational problems in immunology, infectious disease, and therapeutic discovery. My work brings together pharmaceutical sciences and computational biology to create models that are biologically grounded and gentle to interpret.</p>
+                        <p>Currently a Postdoctoral Researcher at UC Riverside (Godzik Lab), I apply foundation models to single-cell, multi-omic, and protein data to solve problems in immunology, infectious disease, and therapeutic discovery.</p>
 
-                        <div class="research-image">
-                            <img src="./research_focus.png" alt="AI-Driven Drug Discovery Platform Architecture">        
+                        <div class="core-box">
+                            <strong>Core Competency:</strong> I know when AI outputs are right and when they're wrong. 10 years of biology training + hands-on foundation model experience = I can evaluate what others can only run.
                         </div>
-
-                        <p><strong>Core Competency:</strong> Bringing wet-lab sense and AI together to make biological findings clearer and more clinically meaningful.</p>
 
                         <p>I obtained my PhD in Genetics, Genomics, and Bioinformatics from UC Riverside in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Download my <a href="XinruQiu_resume.pdf">resume</a>.</p>
                     </div>
 
                     <div class="content">
-                        <h2>Experience & Focus Areas</h2>
-                        <ul>
-                            <li><strong>Community Contributor:</strong> Actively sharing learnings and practical notes on foundation models and AI-for-Biology through writing and discussions.</li>
-                            <li><strong>Foundation Model Benchmarking:</strong> Systematic evaluation of leading models (UCE, scGPT, Geneformer, Transcriptformer) for task-specific adaptability in drug discovery pipelines.</li>
-                            <li><strong>Translational Science:</strong> 16+ peer-reviewed publications focusing on immune plasticity and disease modeling, translating high-dimensional omics data into actionable therapeutic hypotheses.</li>
-                            <li><strong>Pharma-Ready Skillset:</strong> Deep understanding of the drug development lifecycle (IND-enabling, GLP/GMP) combined with modern cloud-native computing (AWS/GCP).</li>
-                        </ul>
-                    </div>
+                        <h2>What I Do</h2>
 
-                    <div class="content">
-                        <h2>Platform & Methodology</h2>
                         <div class="research-image">
-                            <img src="./research_intro.png" alt="Research Introduction">
+                            <img src="./research_focus.png" alt="AI-Driven Discovery Engine">
+                            <p class="caption">End-to-end platform: from multi-modal data to therapeutic candidates</p>
                         </div>
                         
-                        <h4>Using AI to better understand cellular behavior in therapeutic contexts</h4>
-                        <p>My work focuses on constructing an integrated computational platform for modern drug discovery，using single-cell foundation models to simulate biological systems and predict clinical outcomes before wet-lab validation.</p>
-
-                        <h4>Strategic Pillars:</h4>
-                        <ul>
-                            <li><strong>Using AI to simulate how cells respond to perturbations:</strong> Leveraging Foundation Models to predict cellular responses to perturbagens (small molecules, CRISPR, biologics), reducing the cost of high-throughput screening.</li>
-                            <li><strong>Clinical De-risking:</strong> Mining large-scale single-cell atlases for patient stratification and predictive biomarker discovery, addressing the "Valley of Death" in Phase II trials.</li>
-                            <li><strong>Lab-in-the-Loop Optimization:</strong> Architecting active learning workflows where AI models propose optimal experiments to maximize information gain per experimental cycle.</li>
-                            <li><strong>Mechanistic Interpretability:</strong> Extracting interpretable Mechanism of Action (MoA) insights from foundation model embeddings for regulatory submissions and scientific validation.</li>
-                        </ul>
+                        <div class="experience-item">
+                            <strong>Foundation Model Evaluation</strong> <span class="tag">Primary</span><br>
+                            Systematic benchmark of UCE, scGPT, Geneformer, TranscriptFormer for clinical prediction tasks. UCE outperforms with 0.876 AUC. Published evaluation framework for task-specific model selection.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>End-to-End Drug Discovery Pipeline</strong><br>
+                            From single-cell embeddings → severity prediction → perturbation mapping → 50 therapeutic targets (ICMT, DUSP11, LILRB2, PIK3R2). Two IP disclosures filed.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Building AI Agents for Biology</strong> <span class="tag next">Next</span><br>
+                            Automating the path from patient data to actionable drug targets using LLM orchestration. Encoding domain expertise into automated decision systems.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Clinical Genomics</strong><br>
+                            3 years variant classification (ACMG guidelines), NGS pipeline development at Vantari Genetics. Illumina internship building pharmacogenomics reporting workflows.
+                        </div>
                     </div>
 
                     <div class="content">
-                        <h2>Technical & Domain Stack</h2>
-                        <p><strong>AI & Computational Biology:</strong></p>
+                        <h2>Technical Stack</h2>
+                        <p><strong>Foundation Models & ML:</strong></p>
                         <ul>
-                            <li><strong>Foundation Models:</strong> Fine-tuning, benchmarking, and deployment of single-cell FMs (Geneformer, scGPT, UCE, scPRINT).</li>
-                            <li><strong>Single-Cell Analysis:</strong> Full-stack expertise (Seurat, Scanpy, CellRank, RNA Velocity, Spatial Transcriptomics, Cell-Cell Communication).</li>
-                            <li><strong>ML/DL Engineering:</strong> Pytorch, TensorFlow, JAX, Graph Neural Networks (GNN), Variational Autoencoders (VAE), Active Learning pipelines.</li>
+                            <li><strong>Single-cell FMs:</strong> UCE, scGPT, Geneformer, TranscriptFormer - benchmarking, fine-tuning, deployment</li>
+                            <li><strong>Protein:</strong> AlphaFold2, ESMFold, ESM-2, ProteinMPNN for structure prediction and design</li>
+                            <li><strong>Frameworks:</strong> PyTorch, TensorFlow, Hugging Face Transformers</li>
+                            <li><strong>Agent Development:</strong> LangChain, function calling, RAG pipelines</li>
                         </ul>
                         
-                        <p><strong>Pharmaceutical Domain Knowledge:</strong></p>
+                        <p><strong>Computational Biology:</strong></p>
                         <ul>
-                            <li><strong>Drug Discovery:</strong> ADMET prediction, PK/PD modeling, Target ID/Validation, Lead Optimization, MoA elucidation.</li>
-                            <li><strong>Regulatory & Safety:</strong> Familiarity with IND-enabling studies, preclinical toxicology workflows, and GLP standards.</li>
+                            <li><strong>Single-Cell:</strong> Seurat, Scanpy, CellRank, RNA Velocity, CellChat</li>
+                            <li><strong>Spatial:</strong> 10x Visium, Space Ranger, spatial transcriptomics analysis</li>
+                            <li><strong>Structure:</strong> GROMACS, DiffDock, AutoDock Vina, PyMOL</li>
+                            <li><strong>HPC:</strong> SLURM, Singularity/Docker, GPU computing (CUDA/A100)</li>
+                        </ul>
+                        
+                        <p><strong>Pharmaceutical Domain:</strong></p>
+                        <ul>
+                            <li><strong>Drug Discovery:</strong> ADMET prediction, PK/PD modeling, Target ID/Validation</li>
+                            <li><strong>Regulatory:</strong> ACMG variant classification, IND-enabling studies, GLP standards</li>
                         </ul>
                     </div>
 
                     <div class="content">
                         <h2>Looking Ahead</h2>
-                        <div class="research-image">
-                            <img src="./career_goals.png" alt="Career Goals">        
+                        
+                        <div class="next-step-box">
+                            <h4>Next Step</h4>
+                            <p>Joining a Discovery or Platform team where I can build AI agents that automate drug discovery workflows - from target identification to lead optimization - while ensuring outputs are biologically valid.</p>
+                            <p><strong>Value I bring:</strong> I don't just run models. I know which outputs to trust, which to flag, and how to connect computational predictions to experimental reality.</p>
                         </div>
-                        <p><strong>Tooling is the means; the drug is the end.</strong></p>
-                        
-                        <p> I aim to create AI approaches that support discovery in a biologically thoughtful way. My goal is to help AI and biology speak to each other more clearly. I envision workflows where computational models and experiments support each other gracefully.</p>
-                        
-                        <p><strong>Goal:</strong> To contribute to Discovery or Platform teams in TechBio or Pharma, helping translate complex omics data into meaningful therapeutic insights.</p>
                     </div>
 
                     <div class="content">
                         <h2>Education</h2>
                         <ul>
-                            <li><strong>Ph.D.</strong>, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, <a href="https://www.usnews.com/best-colleges/university-of-california-riverside-1316">University of California, Riverside</a>, 2018 – 2023</li>
-                            <li><strong>M.S.</strong>, <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, <a href="https://www.usnews.com/best-colleges/university-of-southern-california-1328">University of Southern California</a>, 2013 – 2015</li>
-                            <li><strong>B.S.</strong>, <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 – 2013</li>                            
+                            <li><strong>Ph.D.</strong>, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, <a href="https://www.usnews.com/best-colleges/university-of-california-riverside-1316">University of California, Riverside</a>, 2018 - 2023</li>
+                            <li><strong>M.S.</strong>, <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, <a href="https://www.usnews.com/best-colleges/university-of-southern-california-1328">University of Southern California</a>, 2013 - 2015</li>
+                            <li><strong>B.S.</strong>, <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 - 2013</li>                            
                         </ul>
                     </div>
 
                     <div class="content">
                         <h2>Let's Connect</h2>
-                        <p>I'm always interested in discussing AI for drug discovery, single-cell therapeutics, computational immunology, or potential collaborations. Feel free to reach out via <a href="mailto:xinru.reina.qiu@gmail.com">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
+                        <p>Interested in AI for drug discovery, foundation model evaluation, or building biology AI agents? Feel free to reach out via <a href="mailto:xinru.reina.qiu@gmail.com">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
                     </div>
                 </div>
             </div>
