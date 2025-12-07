@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tokenization Strategies - AI4Bio Learning Hub</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 50%, #fef0e0 100%);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(247, 200, 131, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(247, 162, 84, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 40% 90%, rgba(192, 85, 64, 0.08) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Animated neural network background */
+        .neural-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, #F7A254 0%, #F7C550 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(247, 162, 84, 0.4);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.3); opacity: 0.8; }
+        }
+
+        .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(247, 162, 84, 0.3), transparent);
+            transform-origin: 0 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(90deg, #F5C883, #F7C550, #F7A254, #C05540) 1;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(247, 162, 84, 0.15);
+        }
+
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar-nav li {
+            margin: 5px 15px;
+        }
+
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .navbar-nav a:hover {
+            color: #C05540;
+        }
+
+        .home-link {
+            color: #C05540 !important;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ffffff 0%, #fff9f4 50%, #ffefe0 100%);
+            border-radius: 25px;
+            padding: 60px 40px;
+            margin: 30px 0;
+            box-shadow: 0 10px 40px rgba(247, 162, 84, 0.2), 0 0 0 3px rgba(247, 162, 84, 0.15);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(247, 197, 80, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(247, 162, 84, 0.12) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            color: #C05540;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+            font-weight: 700;
+        }
+
+        .header h1 i {
+            color: #F7A254;
+            animation: glow 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes glow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(247, 162, 84, 0.5)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 10px rgba(247, 162, 84, 0.8)); }
+        }
+
+        .header .subtitle {
+            font-size: 1.3em;
+            color: #F7A254;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        .header .intro {
+            max-width: 900px;
+            margin: 0 auto;
+            color: #555;
+            font-size: 1.05em;
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px solid rgba(247, 162, 84, 0.2);
+            box-shadow: 0 4px 15px rgba(247, 162, 84, 0.1);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px rgba(247, 162, 84, 0.12), 0 0 0 2px rgba(247, 162, 84, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #F5C883, #F7C550, #F7A254, #C05540);
+            border-radius: 20px 20px 0 0;
+        }
+
+        .content-section h2 {
+            color: #C05540;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-left: 4px solid #F7A254;
+            padding-left: 15px;
+        }
+
+        .content-section h3 {
+            color: #F7A254;
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .content-section h4 {
+            color: #C05540;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .content-section p {
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        /* LEGO SVG Styles */
+        .lego-concept-block {
+            margin: 30px 0;
+        }
+
+        .concept-pair {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            align-items: center;
+        }
+
+        @media (max-width: 900px) {
+            .concept-pair {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .concept-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lego-svg {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .concept-text h4 {
+            color: #C05540;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+
+        .concept-text p {
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .intro-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-left: 4px solid #F7A254;
+            padding: 20px 25px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
+        }
+
+        .intro-box p {
+            margin: 10px 0;
+            color: #78350f;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .tag.strategy {
+            background: rgba(124, 58, 237, 0.1);
+            color: #7c3aed;
+        }
+
+        .tag.data-type {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .tag.architecture {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3b82f6;
+        }
+
+        /* Paper Grid */
+        .paper-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .paper-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid #F7A254;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .paper-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(247, 162, 84, 0.2);
+        }
+
+        .paper-card h4 {
+            color: #C05540;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+
+        .paper-card .meta {
+            color: #64748b;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+
+        .paper-card .summary {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+
+        .paper-card .innovation-box {
+            background: rgba(247, 162, 84, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .paper-card .innovation-box h5 {
+            color: #C05540;
+            margin: 0 0 8px 0;
+            font-size: 0.95em;
+        }
+
+        .paper-card .innovation-box p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .paper-card .links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .paper-card .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #F7A254;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .paper-card .links a:hover {
+            color: #C05540;
+        }
+
+        /* Comparison Tables */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .comparison-table th {
+            background: linear-gradient(135deg, #F7A254 0%, #C05540 100%);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .comparison-table td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+            font-size: 0.9em;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(247, 162, 84, 0.05);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            color: #a0aec0;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        footer .container {
+            text-align: center;
+        }
+
+        footer p {
+            margin: 10px 0;
+        }
+
+        footer a {
+            color: #F7A254;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #F7C550;
+        }
+
+        .privacy-notice {
+            font-size: 0.85em;
+            color: #718096;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #4a5568;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 30px 20px;
+            }
+            .header h1 {
+                font-size: 2em;
+            }
+            .content-section {
+                padding: 25px 20px;
+            }
+            .paper-grid {
+                grid-template-columns: 1fr;
+            }
+            .navbar-nav {
+                flex-direction: column;
+            }
+            .navbar-nav li {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Neural Network Background -->
+    <div class="neural-bg" id="neuralBg"></div>
+
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="index.html" class="home-link"><i class="fas fa-home"></i> Back to Learning Hub</a></li>
+                <li><a href="#introduction">Introduction</a></li>
+                <li><a href="#visual-guide">Visual Guide</a></li>
+                <li><a href="#papers">Key Papers</a></li>
+                <li><a href="#comparisons">Comparisons</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main role="main">
+        <div class="container">
+            <div class="header">
+                <h1><i class="fas fa-puzzle-piece"></i> Tokenization Strategies</h1>
+                <p class="subtitle">Translating Biology into AI-Readable Language</p>
+                <p class="intro">
+                    Understanding how biological data is converted into tokens is fundamental to building effective foundation models.
+                    This guide explores the major tokenization strategies used in single-cell multi-omics, protein modeling, and DNA sequence analysis,
+                    using intuitive LEGO analogies to make these concepts accessible.
+                </p>
+            </div>
+
+            <!-- Introduction Section -->
+            <div class="content-section" id="introduction">
+                <h2>The Problem: Biology is Messy, AI Needs Order</h2>
+                <div class="intro-box">
+                    <p><strong>The LEGO Analogy:</strong> Imagine a single cell as a giant bucket full of unsorted LEGO bricks.
+                    <br>Each type of brick (color/shape) represents a different <strong>Gene</strong>.
+                    <br>The number of bricks of that specific type represents its <strong>Expression Level</strong> (how active that gene is).</p>
+                    <p>An AI model (like a Transformer) is a master builder, but it can't just grab a handful from the messy bucket. It needs the bricks sorted, labeled, and handed to it in a specific sequence. <strong>Tokenization</strong> is the process of organizing that messy bucket into a neat line of inputs the builder can use.</p>
+                </div>
+                <p>Depending on what we want the model to learn, we use different strategies to sort and present these "bricks".</p>
+            </div>
+
+            <!-- Visual Guide Section -->
+            <div class="content-section" id="visual-guide">
+                <h2>Visual Guide to Core Tokenization Concepts</h2>
+                <p>Before diving into the details, let's understand the core concepts visually using our LEGO analogy.</p>
+
+                <div class="lego-concept-block">
+
+                    <!-- Concept 1: The Basics -->
+                    <div class="concept-pair" id="concept-basics">
+                        <div class="concept-visual">
+                            <!-- SVG 1: Gene vs Expression -->
+                            <svg class="lego-svg" viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg1-title svg1-desc">
+                                <title id="svg1-title">Gene Identity vs Expression Level</title>
+                                <desc id="svg1-desc">A diagram showing different colored LEGO bricks representing gene identities, and stacks of different heights representing expression levels.</desc>
+                                <defs>
+                                    <radialGradient id="studGradient" cx="50%" cy="30%" r="50%">
+                                        <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+                                        <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+                                    </radialGradient>
+                                    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="3" dy="4" stdDeviation="3" flood-opacity="0.25"/>
+                                    </filter>
+                                    <g id="brickRed">
+                                        <rect width="44" height="24" rx="2" fill="#e31c23"/>
+                                        <rect width="44" height="24" rx="2" fill="url(#brickHighlight)"/>
+                                        <rect x="1" y="20" width="42" height="4" fill="#b71c1c"/>
+                                        <ellipse cx="14" cy="4" rx="6" ry="3" fill="#cc1a20"/>
+                                        <ellipse cx="14" cy="4" rx="5" ry="2.5" fill="url(#studGradient)"/>
+                                        <ellipse cx="30" cy="4" rx="6" ry="3" fill="#cc1a20"/>
+                                        <ellipse cx="30" cy="4" rx="5" ry="2.5" fill="url(#studGradient)"/>
+                                    </g>
+                                    <g id="brickBlue">
+                                        <rect width="44" height="24" rx="2" fill="#0057a6"/>
+                                        <rect x="1" y="20" width="42" height="4" fill="#003d73"/>
+                                        <ellipse cx="14" cy="4" rx="6" ry="3" fill="#004d94"/>
+                                        <ellipse cx="14" cy="4" rx="5" ry="2.5" fill="url(#studGradient)"/>
+                                        <ellipse cx="30" cy="4" rx="6" ry="3" fill="#004d94"/>
+                                        <ellipse cx="30" cy="4" rx="5" ry="2.5" fill="url(#studGradient)"/>
+                                    </g>
+                                    <linearGradient id="brickHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="rgba(255,255,255,0.3)"/>
+                                        <stop offset="50%" stop-color="rgba(255,255,255,0)"/>
+                                        <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+                                    </linearGradient>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+                                    </marker>
+                                </defs>
+                                <rect x="10" y="50" width="200" height="230" rx="12" fill="white" filter="url(#dropShadow)"/>
+                                <text x="110" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#1e293b">1. Raw Data (The Bucket)</text>
+                                <g transform="translate(30, 140)" filter="url(#dropShadow)">
+                                    <use href="#brickRed" y="0"/>
+                                    <use href="#brickRed" y="22"/>
+                                    <use href="#brickRed" y="44"/>
+                                    <use href="#brickRed" y="66"/>
+                                    <use href="#brickRed" y="88"/>
+                                </g>
+                                <text x="52" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#e31c23" font-weight="600">Gene A</text>
+                                <text x="52" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Count: 50</text>
+                                <g transform="translate(120, 206)" filter="url(#dropShadow)">
+                                    <use href="#brickBlue" y="0"/>
+                                    <use href="#brickBlue" y="22"/>
+                                </g>
+                                <text x="142" y="265" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#0057a6" font-weight="600">Gene B</text>
+                                <text x="142" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Count: 5</text>
+                                <path d="M 230 165 L 290 165" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+                                <text x="260" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Tokenize</text>
+                                <rect x="310" y="50" width="195" height="230" rx="12" fill="white" filter="url(#dropShadow)"/>
+                                <text x="407" y="35" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#1e293b">2. Tokens (AI Inputs)</text>
+                                <g transform="translate(325, 80)">
+                                    <rect width="165" height="65" rx="10" fill="white" stroke="#fca5a5" stroke-width="2"/>
+                                    <rect x="10" y="12" width="30" height="18" rx="3" fill="#e31c23"/>
+                                    <ellipse cx="20" cy="16" rx="4" ry="2" fill="#cc1a20"/>
+                                    <ellipse cx="20" cy="16" rx="3" ry="1.5" fill="url(#studGradient)"/>
+                                    <ellipse cx="30" cy="16" rx="4" ry="2" fill="#cc1a20"/>
+                                    <ellipse cx="30" cy="16" rx="3" ry="1.5" fill="url(#studGradient)"/>
+                                    <text x="55" y="25" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b" font-weight="600">Gene A</text>
+                                    <text x="10" y="50" font-family="ui-monospace, monospace" font-size="13" fill="#64748b">value: 50 (high)</text>
+                                </g>
+                                <g transform="translate(325, 165)">
+                                    <rect width="165" height="65" rx="10" fill="white" stroke="#93c5fd" stroke-width="2"/>
+                                    <rect x="10" y="12" width="30" height="18" rx="3" fill="#0057a6"/>
+                                    <ellipse cx="20" cy="16" rx="4" ry="2" fill="#004d94"/>
+                                    <ellipse cx="20" cy="16" rx="3" ry="1.5" fill="url(#studGradient)"/>
+                                    <ellipse cx="30" cy="16" rx="4" ry="2" fill="#004d94"/>
+                                    <ellipse cx="30" cy="16" rx="3" ry="1.5" fill="url(#studGradient)"/>
+                                    <text x="55" y="25" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b" font-weight="600">Gene B</text>
+                                    <text x="10" y="50" font-family="ui-monospace, monospace" font-size="13" fill="#64748b">value: 5 (low)</text>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>The Basics: Identity & Count</h4>
+                            <p>A token is a single unit of information for the model. In single-cell data, we usually need two pieces of information combined:</p>
+                            <ol style="margin-left: 20px; margin-top: 10px;">
+                                <li><strong>What is it?</strong> (The Gene Identity, e.g., "TP53" or a red brick).</li>
+                                <li><strong>How much?</strong> (The Expression Value, e.g., "50 counts" or a stack of 50 bricks).</li>
+                            </ol>
+                            <p style="margin-top: 15px;">The challenge is how to combine these two very different types of information into a single vector representing the token.</p>
+                        </div>
+                    </div>
+
+                    <!-- Concept 2: Rank-Based -->
+                    <div class="concept-pair" id="concept-ranking">
+                        <div class="concept-visual">
+                             <!-- SVG 2: Rank-Based Tokenization -->
+                             <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg2-title svg2-desc">
+                                <title id="svg2-title">Rank-Based Tokenization Analogy</title>
+                                <desc id="svg2-desc">Two panels showing different cells with different stack heights but same relative ordering, resulting in identical token sequences.</desc>
+                                <defs>
+                                    <radialGradient id="studGrad2" cx="50%" cy="30%" r="50%">
+                                        <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+                                        <stop offset="100%" stop-color="rgba(0,0,0,0.1)"/>
+                                    </radialGradient>
+                                    <filter id="shadow2" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <g id="miniRed">
+                                        <rect width="36" height="18" rx="2" fill="#e31c23"/>
+                                        <rect x="0" y="15" width="36" height="3" fill="#b71c1c"/>
+                                        <ellipse cx="12" cy="3" rx="4" ry="2" fill="#cc1a20"/>
+                                        <ellipse cx="12" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                        <ellipse cx="24" cy="3" rx="4" ry="2" fill="#cc1a20"/>
+                                        <ellipse cx="24" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                    </g>
+                                    <g id="miniBlue">
+                                        <rect width="36" height="18" rx="2" fill="#0057a6"/>
+                                        <rect x="0" y="15" width="36" height="3" fill="#003d73"/>
+                                        <ellipse cx="12" cy="3" rx="4" ry="2" fill="#004d94"/>
+                                        <ellipse cx="12" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                        <ellipse cx="24" cy="3" rx="4" ry="2" fill="#004d94"/>
+                                        <ellipse cx="24" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                    </g>
+                                    <g id="miniYellow">
+                                        <rect width="36" height="18" rx="2" fill="#ffcd03"/>
+                                        <rect x="0" y="15" width="36" height="3" fill="#d4a300"/>
+                                        <ellipse cx="12" cy="3" rx="4" ry="2" fill="#e6b800"/>
+                                        <ellipse cx="12" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                        <ellipse cx="24" cy="3" rx="4" ry="2" fill="#e6b800"/>
+                                        <ellipse cx="24" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                    </g>
+                                </defs>
+                                <rect x="15" y="40" width="230" height="180" rx="12" fill="white" filter="url(#shadow2)"/>
+                                <text x="130" y="28" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#10b981">Cell 1: Good Quality</text>
+                                <g transform="translate(35, 70)" filter="url(#shadow2)">
+                                    <use href="#miniRed" y="0"/>
+                                    <use href="#miniRed" y="17"/>
+                                    <use href="#miniRed" y="34"/>
+                                    <use href="#miniRed" y="51"/>
+                                    <use href="#miniRed" y="68"/>
+                                    <use href="#miniRed" y="85"/>
+                                </g>
+                                <text x="53" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e31c23" font-weight="600">A (100)</text>
+                                <text x="53" y="60" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#fbbf24">1st</text>
+                                <g transform="translate(95, 104)" filter="url(#shadow2)">
+                                    <use href="#miniBlue" y="0"/>
+                                    <use href="#miniBlue" y="17"/>
+                                    <use href="#miniBlue" y="34"/>
+                                    <use href="#miniBlue" y="51"/>
+                                </g>
+                                <text x="113" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0057a6" font-weight="600">B (60)</text>
+                                <text x="113" y="95" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#94a3b8">2nd</text>
+                                <g transform="translate(155, 138)" filter="url(#shadow2)">
+                                    <use href="#miniYellow" y="0"/>
+                                    <use href="#miniYellow" y="17"/>
+                                </g>
+                                <text x="173" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#d4a300" font-weight="600">C (30)</text>
+                                <text x="173" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#cd7f32">3rd</text>
+                                <rect x="275" y="40" width="230" height="180" rx="12" fill="white" filter="url(#shadow2)"/>
+                                <text x="390" y="28" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#f59e0b">Cell 2: Batch Effect</text>
+                                <g transform="translate(295, 138)" filter="url(#shadow2)" opacity="0.85">
+                                    <use href="#miniRed" y="0"/>
+                                    <use href="#miniRed" y="17"/>
+                                </g>
+                                <text x="313" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#e31c23" font-weight="600">A (10)</text>
+                                <text x="313" y="130" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#fbbf24">1st</text>
+                                <g transform="translate(355, 155)" filter="url(#shadow2)" opacity="0.85">
+                                    <use href="#miniBlue" y="0"/>
+                                </g>
+                                <text x="373" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0057a6" font-weight="600">B (5)</text>
+                                <text x="373" y="147" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#94a3b8">2nd</text>
+                                <g transform="translate(415, 163)" filter="url(#shadow2)" opacity="0.85">
+                                    <rect width="36" height="10" rx="2" fill="#ffcd03"/>
+                                    <rect x="0" y="7" width="36" height="3" fill="#d4a300"/>
+                                </g>
+                                <text x="433" y="200" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#d4a300" font-weight="600">C (2)</text>
+                                <text x="433" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#cd7f32">3rd</text>
+                                <rect x="60" y="260" width="400" height="100" rx="16" fill="white" stroke="#c4b5fd" stroke-width="2" filter="url(#shadow2)"/>
+                                <text x="260" y="290" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#7c3aed">Same Token Sequence!</text>
+                                <g transform="translate(90, 305)">
+                                    <rect width="80" height="40" rx="8" fill="#fef2f2" stroke="#fca5a5" stroke-width="2"/>
+                                    <text x="40" y="25" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="#e31c23" font-weight="600">Gene A</text>
+                                </g>
+                                <text x="185" y="328" font-family="system-ui, sans-serif" font-size="20" fill="#94a3b8">-></text>
+                                <g transform="translate(200, 305)">
+                                    <rect width="80" height="40" rx="8" fill="#eff6ff" stroke="#93c5fd" stroke-width="2"/>
+                                    <text x="40" y="25" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="#0057a6" font-weight="600">Gene B</text>
+                                </g>
+                                <text x="295" y="328" font-family="system-ui, sans-serif" font-size="20" fill="#94a3b8">-></text>
+                                <g transform="translate(310, 305)">
+                                    <rect width="80" height="40" rx="8" fill="#fefce8" stroke="#fde047" stroke-width="2"/>
+                                    <text x="40" y="25" text-anchor="middle" font-family="ui-monospace, monospace" font-size="13" fill="#ca8a04" font-weight="600">Gene C</text>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Rank-Based Tokenization</h4>
+                            <p><strong>The Problem:</strong> Sometimes we have "technical noise" (batch effects). One experiment might yield giant stacks of bricks (high sequencing depth), and another yields tiny stacks, even for the same biological cell type.</p>
+                            <p><strong>The Solution:</strong> Ignore the exact height. Just line them up from tallest to shortest. As long as the <em>relative</em> order is preserved (Red is taller than Blue), the resulting sequence of tokens is the same, making the model immune to batch differences in sequencing depth.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: iSEEEK, Geneformer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 3: Binning -->
+                    <div class="concept-pair" id="concept-binning">
+                        <div class="concept-visual">
+                             <!-- SVG 3: Expression Binning -->
+                             <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg3-title svg3-desc">
+                                <title id="svg3-title">Expression Binning Analogy</title>
+                                <desc id="svg3-desc">Continuous stacks of bricks of varying heights being sorted into three distinct buckets labeled Low, Medium, and High.</desc>
+                                <defs>
+                                    <filter id="shadow3" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="bucketGradLow" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#bfdbfe"/>
+                                        <stop offset="100%" stop-color="#93c5fd"/>
+                                    </linearGradient>
+                                    <linearGradient id="bucketGradMed" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#fed7aa"/>
+                                        <stop offset="100%" stop-color="#fdba74"/>
+                                    </linearGradient>
+                                    <linearGradient id="bucketGradHigh" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#fca5a5"/>
+                                        <stop offset="100%" stop-color="#f87171"/>
+                                    </linearGradient>
+                                    <g id="greenBrick">
+                                        <rect width="32" height="16" rx="2" fill="#00a651"/>
+                                        <rect x="0" y="13" width="32" height="3" fill="#007a3d"/>
+                                        <ellipse cx="10" cy="3" rx="4" ry="2" fill="#009448"/>
+                                        <ellipse cx="10" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                        <ellipse cx="22" cy="3" rx="4" ry="2" fill="#009448"/>
+                                        <ellipse cx="22" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                    </g>
+                                </defs>
+                                <text x="260" y="28" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Discretizing Continuous Values into Buckets</text>
+                                <rect x="30" y="45" width="180" height="155" rx="12" fill="white" filter="url(#shadow3)"/>
+                                <text x="120" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">Raw Expression Counts</text>
+                                <g transform="translate(50, 155)" filter="url(#shadow3)">
+                                    <use href="#greenBrick" y="0"/>
+                                </g>
+                                <text x="66" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">5</text>
+                                <g transform="translate(100, 107)" filter="url(#shadow3)">
+                                    <use href="#greenBrick" y="0"/>
+                                    <use href="#greenBrick" y="15"/>
+                                    <use href="#greenBrick" y="30"/>
+                                    <use href="#greenBrick" y="45"/>
+                                </g>
+                                <text x="116" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">45</text>
+                                <g transform="translate(150, 75)" filter="url(#shadow3)">
+                                    <use href="#greenBrick" y="0"/>
+                                    <use href="#greenBrick" y="15"/>
+                                    <use href="#greenBrick" y="30"/>
+                                    <use href="#greenBrick" y="45"/>
+                                    <use href="#greenBrick" y="60"/>
+                                    <use href="#greenBrick" y="75"/>
+                                    <use href="#greenBrick" y="90"/>
+                                </g>
+                                <text x="166" y="190" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">120</text>
+                                <path d="M 66 205 Q 80 245 125 270" stroke="#3b82f6" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+                                <path d="M 116 205 Q 200 230 280 270" stroke="#f97316" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+                                <path d="M 166 205 Q 320 230 415 270" stroke="#ef4444" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+                                <g transform="translate(70, 270)">
+                                    <path d="M 0 0 C 0 0, -8 70, 10 70 L 70 70 C 88 70, 80 0, 80 0 L 75 0 C 75 0, 82 65, 67 65 L 13 65 C -2 65, 5 0, 5 0 Z" fill="url(#bucketGradLow)" stroke="#60a5fa" stroke-width="2"/>
+                                    <text x="40" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#1d4ed8" font-weight="700">LOW</text>
+                                    <text x="40" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#3b82f6">(1-20)</text>
+                                    <g transform="translate(24, 40)">
+                                        <use href="#greenBrick"/>
+                                    </g>
+                                </g>
+                                <g transform="translate(220, 270)">
+                                    <path d="M 0 0 C 0 0, -8 70, 10 70 L 70 70 C 88 70, 80 0, 80 0 L 75 0 C 75 0, 82 65, 67 65 L 13 65 C -2 65, 5 0, 5 0 Z" fill="url(#bucketGradMed)" stroke="#fb923c" stroke-width="2"/>
+                                    <text x="40" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#c2410c" font-weight="700">MEDIUM</text>
+                                    <text x="40" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#f97316">(21-80)</text>
+                                    <g transform="translate(24, 10)">
+                                        <use href="#greenBrick" y="0"/>
+                                        <use href="#greenBrick" y="15"/>
+                                        <use href="#greenBrick" y="30"/>
+                                    </g>
+                                </g>
+                                <g transform="translate(370, 270)">
+                                    <path d="M 0 0 C 0 0, -8 70, 10 70 L 70 70 C 88 70, 80 0, 80 0 L 75 0 C 75 0, 82 65, 67 65 L 13 65 C -2 65, 5 0, 5 0 Z" fill="url(#bucketGradHigh)" stroke="#f87171" stroke-width="2"/>
+                                    <text x="40" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="13" fill="#b91c1c" font-weight="700">HIGH</text>
+                                    <text x="40" y="105" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#ef4444">(81+)</text>
+                                    <g transform="translate(24, -20)">
+                                        <use href="#greenBrick" y="0"/>
+                                        <use href="#greenBrick" y="15"/>
+                                        <use href="#greenBrick" y="30"/>
+                                        <use href="#greenBrick" y="45"/>
+                                        <use href="#greenBrick" y="60"/>
+                                    </g>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Expression Binning</h4>
+                            <p><strong>The Problem:</strong> Standard language models work best with a fixed dictionary of words (categorical data). Actual expression counts are continuous numbers (1, 2, 50, 1000...).</p>
+                            <p><strong>The Solution:</strong> We create buckets (bins) for different ranges of heights. Instead of saying "Height 45", we throw it into the "Medium Height Bucket". Now, the token isn't a number, it's a category: <code>[GeneID] + [MediumBin]</code>.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: scGPT, scBERT</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 4: Read-Depth-Aware (RDA) -->
+                    <div class="concept-pair" id="concept-rda">
+                        <div class="concept-visual">
+                            <!-- SVG: Read-Depth-Aware Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-rda-title svg-rda-desc">
+                                <title id="svg-rda-title">Read-Depth-Aware Tokenization Analogy</title>
+                                <desc id="svg-rda-desc">Two cells with different sequencing depths, showing how depth tokens help the model understand and recover the original expression levels.</desc>
+                                <defs>
+                                    <filter id="shadowRDA" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="depthGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+                                        <stop offset="0%" stop-color="#3b82f6"/>
+                                        <stop offset="100%" stop-color="#60a5fa"/>
+                                    </linearGradient>
+                                    <g id="rdaBrick">
+                                        <rect width="32" height="16" rx="2" fill="#8b5cf6"/>
+                                        <rect x="0" y="13" width="32" height="3" fill="#7c3aed"/>
+                                        <ellipse cx="10" cy="3" rx="4" ry="2" fill="#9333ea"/>
+                                        <ellipse cx="10" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                        <ellipse cx="22" cy="3" rx="4" ry="2" fill="#9333ea"/>
+                                        <ellipse cx="22" cy="3" rx="3" ry="1.5" fill="url(#studGrad2)"/>
+                                    </g>
+                                </defs>
+
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Continuous Values + Depth Tokens</text>
+
+                                <!-- Original Cell (High Depth) -->
+                                <rect x="20" y="45" width="220" height="140" rx="12" fill="white" filter="url(#shadowRDA)"/>
+                                <text x="130" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#16a34a">Original Cell (Deep Sequencing)</text>
+                                <text x="130" y="80" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">Total counts: 10,000</text>
+
+                                <!-- Tall stacks for original -->
+                                <g transform="translate(45, 95)" filter="url(#shadowRDA)">
+                                    <use href="#rdaBrick" y="0"/>
+                                    <use href="#rdaBrick" y="15"/>
+                                    <use href="#rdaBrick" y="30"/>
+                                    <use href="#rdaBrick" y="45"/>
+                                    <use href="#rdaBrick" y="60"/>
+                                </g>
+                                <text x="61" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#8b5cf6" font-weight="600">Gene A</text>
+                                <text x="61" y="90" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">100</text>
+
+                                <g transform="translate(105, 125)" filter="url(#shadowRDA)">
+                                    <use href="#rdaBrick" y="0"/>
+                                    <use href="#rdaBrick" y="15"/>
+                                    <use href="#rdaBrick" y="30"/>
+                                </g>
+                                <text x="121" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#8b5cf6" font-weight="600">Gene B</text>
+                                <text x="121" y="120" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">60</text>
+
+                                <g transform="translate(165, 155)" filter="url(#shadowRDA)">
+                                    <use href="#rdaBrick" y="0"/>
+                                </g>
+                                <text x="181" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#8b5cf6" font-weight="600">Gene C</text>
+                                <text x="181" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">20</text>
+
+                                <!-- Sampled Cell (Low Depth) -->
+                                <rect x="280" y="45" width="220" height="140" rx="12" fill="white" filter="url(#shadowRDA)"/>
+                                <text x="390" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#f59e0b">Sampled Cell (Shallow)</text>
+                                <text x="390" y="80" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">Sampled counts: 1,000</text>
+
+                                <!-- Shorter stacks for sampled -->
+                                <g transform="translate(305, 140)" filter="url(#shadowRDA)" opacity="0.7">
+                                    <use href="#rdaBrick" y="0"/>
+                                    <use href="#rdaBrick" y="15"/>
+                                </g>
+                                <text x="321" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#8b5cf6" font-weight="600">Gene A</text>
+                                <text x="321" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">10</text>
+
+                                <g transform="translate(365, 155)" filter="url(#shadowRDA)" opacity="0.7">
+                                    <use href="#rdaBrick" y="0"/>
+                                </g>
+                                <text x="381" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#8b5cf6" font-weight="600">Gene B</text>
+                                <text x="381" y="150" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">6</text>
+
+                                <g transform="translate(425, 160)" filter="url(#shadowRDA)" opacity="0.7">
+                                    <rect width="32" height="8" rx="2" fill="#8b5cf6" opacity="0.5"/>
+                                </g>
+                                <text x="441" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#8b5cf6" font-weight="600">Gene C</text>
+                                <text x="441" y="155" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">2</text>
+
+                                <!-- Arrow down -->
+                                <path d="M 260 195 L 260 215" stroke="#94a3b8" stroke-width="3" stroke-linecap="round" marker-end="url(#arrowhead)"/>
+                                <text x="260" y="230" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Add depth tokens</text>
+
+                                <!-- Token representation with depth -->
+                                <rect x="60" y="245" width="400" height="100" rx="16" fill="white" stroke="#c4b5fd" stroke-width="2" filter="url(#shadowRDA)"/>
+                                <text x="260" y="270" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#7c3aed">RDA Token Format</text>
+
+                                <!-- Continuous values -->
+                                <rect x="80" y="285" width="140" height="45" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="1"/>
+                                <text x="150" y="302" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">Continuous Values</text>
+                                <text x="150" y="320" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1e293b">[10, 6, 2, 0, ...]</text>
+
+                                <!-- Plus sign -->
+                                <text x="235" y="312" font-family="system-ui, sans-serif" font-size="20" fill="#94a3b8">+</text>
+
+                                <!-- Depth tokens -->
+                                <rect x="255" y="285" width="80" height="45" rx="8" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+                                <text x="295" y="302" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#1d4ed8" font-weight="600">T token</text>
+                                <text x="295" y="320" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1e293b">10,000</text>
+
+                                <rect x="350" y="285" width="80" height="45" rx="8" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+                                <text x="390" y="302" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#b45309" font-weight="600">S token</text>
+                                <text x="390" y="320" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#1e293b">1,000</text>
+
+                                <!-- Bottom explanation -->
+                                <rect x="80" y="355" width="360" height="35" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+                                <text x="260" y="377" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#166534">Model learns to predict original (T=10,000) from sampled (S=1,000) data!</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Read-Depth-Aware (RDA) Tokenization</h4>
+                            <p><strong>The Problem:</strong> Different cells have different sequencing depths—some have 10,000 total counts, others only 1,000. This makes expression values hard to compare directly.</p>
+                            <p><strong>The Solution:</strong> Keep the continuous expression values (don't discretize!), but add special "depth tokens" that tell the model: "This cell was supposed to have T=10,000 counts, but we only sampled S=1,000." The model learns to mentally "scale up" the values during pretraining.</p>
+                            <p style="margin-top: 10px;"><strong>Key Benefit:</strong> Enables <em>expression enhancement</em>—the model can predict what gene expression would look like at higher sequencing depth, effectively denoising sparse data.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: scFoundation, AIDO.Cell</span>
+                            </div>
+                        </div>
+                    </div>
+
+                     <!-- Concept 5: Coordinates -->
+                     <div class="concept-pair" id="concept-coordinates">
+                        <div class="concept-visual">
+                            <!-- SVG 4: Genome Coordinates -->
+                            <svg class="lego-svg" viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg4-title svg4-desc">
+                                <title id="svg4-title">Genome Coordinate Tokenization Analogy</title>
+                                <desc id="svg4-desc">A long green LEGO baseplate acting as a ruler with numbers. Clusters of bricks are placed at specific coordinate ranges, representing open chromatin regions.</desc>
+                                <defs>
+                                    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="baseplateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#22c55e"/>
+                                        <stop offset="80%" stop-color="#16a34a"/>
+                                        <stop offset="100%" stop-color="#15803d"/>
+                                    </linearGradient>
+                                    <pattern id="baseplateStuds" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <circle cx="10" cy="10" r="4" fill="#20b350"/>
+                                        <circle cx="10" cy="10" r="3" fill="url(#studGrad2)"/>
+                                    </pattern>
+                                    <g id="yellowRegion">
+                                        <rect width="28" height="14" rx="2" fill="#ffcd03"/>
+                                        <rect x="0" y="11" width="28" height="3" fill="#d4a300"/>
+                                        <ellipse cx="9" cy="3" rx="3" ry="1.5" fill="#e6b800"/>
+                                        <ellipse cx="9" cy="3" rx="2.5" ry="1.2" fill="url(#studGrad2)"/>
+                                        <ellipse cx="19" cy="3" rx="3" ry="1.5" fill="#e6b800"/>
+                                        <ellipse cx="19" cy="3" rx="2.5" ry="1.2" fill="url(#studGrad2)"/>
+                                    </g>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Location as Identity (Chromatin/ATAC-seq)</text>
+                                <text x="40" y="130" font-family="system-ui, sans-serif" font-size="14" fill="#16a34a" font-weight="700" transform="rotate(-90 40 130)">Chr 1</text>
+                                <g transform="translate(55, 100)" filter="url(#shadow4)">
+                                    <rect x="0" y="0" width="440" height="50" rx="4" fill="url(#baseplateGrad)"/>
+                                    <rect x="2" y="2" width="436" height="46" rx="3" fill="url(#baseplateStuds)"/>
+                                    <g fill="#15803d" font-family="ui-monospace, monospace" font-size="10">
+                                        <line x1="0" y1="50" x2="0" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="0" y="75" text-anchor="middle">0</text>
+                                        <line x1="88" y1="50" x2="88" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="88" y="75" text-anchor="middle">200</text>
+                                        <line x1="176" y1="50" x2="176" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="176" y="75" text-anchor="middle">400</text>
+                                        <line x1="264" y1="50" x2="264" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="264" y="75" text-anchor="middle">600</text>
+                                        <line x1="352" y1="50" x2="352" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="352" y="75" text-anchor="middle">800</text>
+                                        <line x1="440" y1="50" x2="440" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="440" y="75" text-anchor="middle">1000</text>
+                                    </g>
+                                </g>
+                                <g transform="translate(99, 55)" filter="url(#shadow4)">
+                                    <use href="#yellowRegion" x="0" y="0"/>
+                                    <use href="#yellowRegion" x="0" y="13"/>
+                                    <use href="#yellowRegion" x="30" y="0"/>
+                                    <use href="#yellowRegion" x="30" y="13"/>
+                                    <use href="#yellowRegion" x="15" y="26"/>
+                                </g>
+                                <rect x="95" y="38" width="80" height="18" rx="4" fill="#fef08a" stroke="#fde047" stroke-width="1.5"/>
+                                <text x="135" y="51" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#854d0e" font-weight="600">Region A</text>
+                                <g transform="translate(363, 70)" filter="url(#shadow4)">
+                                    <use href="#yellowRegion" x="0" y="0"/>
+                                    <use href="#yellowRegion" x="0" y="13"/>
+                                    <use href="#yellowRegion" x="30" y="6"/>
+                                </g>
+                                <rect x="360" y="53" width="80" height="18" rx="4" fill="#fef08a" stroke="#fde047" stroke-width="1.5"/>
+                                <text x="400" y="66" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#854d0e" font-weight="600">Region B</text>
+                                <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#7c3aed">Resulting Tokens (Location-Based)</text>
+                                <g transform="translate(60, 225)" filter="url(#shadow4)">
+                                    <rect width="180" height="60" rx="10" fill="white" stroke="#fde047" stroke-width="2"/>
+                                    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#854d0e" font-weight="600">Token A:</text>
+                                    <text x="15" y="42" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b">[Chr1, 100, 180]</text>
+                                </g>
+                                <g transform="translate(280, 225)" filter="url(#shadow4)">
+                                    <rect width="180" height="60" rx="10" fill="white" stroke="#fde047" stroke-width="2"/>
+                                    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#854d0e" font-weight="600">Token B:</text>
+                                    <text x="15" y="42" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b">[Chr1, 700, 760]</text>
+                                </g>
+                                <rect x="80" y="300" width="360" height="30" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+                                <text x="260" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#166534">No fixed gene vocabulary needed - regions can vary by cell type!</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Genome-Coordinate Tokenization</h4>
+                            <p><strong>The Problem:</strong> In chromatin data (ATAC-seq), we don't have predefined "genes". We just have regions on the genome that are "open" (accessible). These regions change depending on the cell type.</p>
+                            <p><strong>The Solution:</strong> Imagine the genome as a giant LEGO baseplate ruler. We don't define the brick type; we define <em>where</em> the bricks are placed. The token isn't a name, it's a set of coordinates: Chromosome number, Start position on the ruler, and End position.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: ChromFound</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 5: Cell2Sentence -->
+                    <div class="concept-pair" id="concept-cell2sentence">
+                        <div class="concept-visual">
+                            <!-- SVG 5: Cell2Sentence -->
+                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg5-title svg5-desc">
+                                <title id="svg5-title">Cell2Sentence Tokenization Analogy</title>
+                                <desc id="svg5-desc">Stacks of bricks transformed into horizontal sequences where height becomes repetition count.</desc>
+                                <defs>
+                                    <filter id="shadow5" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <g id="seqRed">
+                                        <rect width="28" height="22" rx="3" fill="#e31c23"/>
+                                        <rect x="0" y="18" width="28" height="4" fill="#b71c1c"/>
+                                        <ellipse cx="14" cy="5" rx="5" ry="2.5" fill="#cc1a20"/>
+                                        <ellipse cx="14" cy="5" rx="4" ry="2" fill="url(#studGrad2)"/>
+                                    </g>
+                                    <g id="seqBlue">
+                                        <rect width="28" height="22" rx="3" fill="#0057a6"/>
+                                        <rect x="0" y="18" width="28" height="4" fill="#003d73"/>
+                                        <ellipse cx="14" cy="5" rx="5" ry="2.5" fill="#004d94"/>
+                                        <ellipse cx="14" cy="5" rx="4" ry="2" fill="url(#studGrad2)"/>
+                                    </g>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Expression Level to Token Repetition</text>
+                                <rect x="20" y="45" width="150" height="180" rx="12" fill="white" filter="url(#shadow5)"/>
+                                <text x="95" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">Traditional: Stack Height</text>
+                                <g transform="translate(35, 85)" filter="url(#shadow5)">
+                                    <use href="#miniRed" y="0"/>
+                                    <use href="#miniRed" y="17"/>
+                                    <use href="#miniRed" y="34"/>
+                                    <use href="#miniRed" y="51"/>
+                                    <use href="#miniRed" y="68"/>
+                                </g>
+                                <text x="53" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e31c23" font-weight="600">Gene A</text>
+                                <text x="53" y="217" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">(high: 5)</text>
+                                <g transform="translate(100, 153)" filter="url(#shadow5)">
+                                    <use href="#miniBlue" y="0"/>
+                                    <use href="#miniBlue" y="17"/>
+                                </g>
+                                <text x="118" y="205" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0057a6" font-weight="600">Gene B</text>
+                                <text x="118" y="217" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#64748b">(low: 2)</text>
+                                <g transform="translate(185, 125)">
+                                    <path d="M 0 10 L 40 10" stroke="#7c3aed" stroke-width="3" stroke-linecap="round"/>
+                                    <polygon points="40,10 32,5 32,15" fill="#7c3aed"/>
+                                    <text x="20" y="0" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">C2S</text>
+                                </g>
+                                <rect x="240" y="45" width="265" height="180" rx="12" fill="white" filter="url(#shadow5)"/>
+                                <text x="372" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">Cell2Sentence: Repeat by Expression</text>
+                                <g transform="translate(255, 90)" filter="url(#shadow5)">
+                                    <use href="#seqRed" x="0"/>
+                                    <use href="#seqRed" x="32"/>
+                                    <use href="#seqRed" x="64"/>
+                                    <use href="#seqRed" x="96"/>
+                                    <use href="#seqRed" x="128"/>
+                                    <use href="#seqBlue" x="168"/>
+                                    <use href="#seqBlue" x="200"/>
+                                </g>
+                                <text x="335" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#e31c23" font-weight="600">Gene A repeated 5x</text>
+                                <text x="447" y="135" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0057a6" font-weight="600">B x 2</text>
+                                <rect x="255" y="155" width="235" height="55" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="1.5"/>
+                                <text x="372" y="175" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#7c3aed" font-weight="600">"GeneA GeneA GeneA GeneA GeneA</text>
+                                <text x="372" y="195" text-anchor="middle" font-family="ui-monospace, monospace" font-size="11" fill="#7c3aed" font-weight="600">GeneB GeneB ..."</text>
+                                <rect x="60" y="250" width="400" height="110" rx="16" fill="white" stroke="#fbbf24" stroke-width="2" filter="url(#shadow5)"/>
+                                <text x="260" y="280" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#92400e">Key Insight</text>
+                                <text x="260" y="305" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#78350f">Higher expression = More token repeats in the "sentence"</text>
+                                <text x="260" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#92400e">This lets standard LLMs (GPT, LLaMA) process cell data!</text>
+                                <text x="260" y="345" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#a16207">C2S-Scale: Up to 27B parameters, 8,192 token context</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Cell2Sentence (C2S)</h4>
+                            <p><strong>The Idea:</strong> Instead of stacking bricks to show expression level, lay them out in a horizontal line. High expression? Repeat that brick many times. Low expression? Just one or two repeats.</p>
+                            <p><strong>Why It Matters:</strong> This transforms cell data into text-like "sentences" that standard large language models (GPT, LLaMA) can understand. You can even ask natural language questions about cells!</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: C2S-Scale (27B params)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 6: Amino Acid Tokenization -->
+                    <div class="concept-pair" id="concept-aminoacid">
+                        <div class="concept-visual">
+                            <!-- SVG 6: Amino Acid Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg6-title svg6-desc">
+                                <title id="svg6-title">Amino Acid Tokenization Analogy</title>
+                                <desc id="svg6-desc">20 different colored LEGO bricks representing the amino acid alphabet, chained together to form a protein sequence.</desc>
+                                <defs>
+                                    <filter id="shadow6" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="aaGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/>
+                                    </linearGradient>
+                                    <linearGradient id="aaGrad7" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#db2777"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Protein = Chain of 20 Amino Acid "Bricks"</text>
+                                <rect x="30" y="45" width="460" height="95" rx="12" fill="white" filter="url(#shadow6)"/>
+                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">The Vocabulary: 20 Amino Acid Types</text>
+                                <g transform="translate(45, 75)">
+                                    <rect width="38" height="24" rx="4" fill="url(#aaGrad1)"/><text x="19" y="17" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="white" font-weight="700">A</text>
+                                    <rect x="252" width="38" height="24" rx="4" fill="url(#aaGrad7)"/><text x="271" y="17" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="white" font-weight="700">H</text>
+                                    <!-- Simplified for brevity, imagine all 20 here -->
+                                    <text x="430" y="17" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">...</text>
+                                </g>
+                                <path d="M 260 150 L 260 175" stroke="#64748b" stroke-width="2" stroke-dasharray="4,2"/>
+                                <polygon points="260,180 255,172 265,172" fill="#64748b"/>
+                                <rect x="30" y="190" width="460" height="80" rx="12" fill="white" filter="url(#shadow6)"/>
+                                <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">A Protein Sequence (Chain of Bricks)</text>
+                                <g transform="translate(50, 225)" filter="url(#shadow6)">
+                                    <rect width="32" height="28" rx="4" fill="url(#aaGrad7)"/><text x="16" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">M</text>
+                                    <line x1="32" y1="14" x2="38" y2="14" stroke="#94a3b8" stroke-width="3"/>
+                                    <rect x="38" width="32" height="28" rx="4" fill="url(#aaGrad1)"/><text x="54" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">A</text>
+                                    <line x1="70" y1="14" x2="76" y2="14" stroke="#94a3b8" stroke-width="3"/>
+                                    <rect x="76" width="32" height="28" rx="4" fill="#15803d"/><text x="92" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">V</text>
+                                    <text x="355" y="20" font-family="system-ui" font-size="18" fill="#94a3b8">...</text>
+                                </g>
+                                <rect x="60" y="290" width="400" height="75" rx="12" fill="white" stroke="#93c5fd" stroke-width="2" filter="url(#shadow6)"/>
+                                <text x="260" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#1e40af">Simple but Powerful</text>
+                                <text x="260" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">Each amino acid = 1 token. The model learns which "bricks"</text>
+                                <text x="260" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">tend to appear together, like grammar in language.</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Amino Acid Tokenization</h4>
+                            <p><strong>The Idea:</strong> Proteins are chains of just 20 different building blocks (amino acids). Each amino acid is one token - like having 20 different LEGO brick types that snap together in a chain.</p>
+                            <p><strong>Why It Works:</strong> Just like language models learn word patterns ("the" often follows "in"), protein models learn amino acid patterns that determine protein function and structure.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: ESM3, ProGen2</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 7: Codon-Level Tokenization -->
+                    <div class="concept-pair" id="concept-codon">
+                        <div class="concept-visual">
+                            <!-- SVG 7: Codon-Level Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg7-title svg7-desc">
+                                <title id="svg7-title">Codon-Level Tokenization Analogy</title>
+                                <desc id="svg7-desc">Single nucleotide bricks grouped into triplets, showing how multiple triplet combinations can code for the same amino acid.</desc>
+                                <defs>
+                                    <filter id="shadow7" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="nucA" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#16a34a"/>
+                                    </linearGradient>
+                                    <linearGradient id="nucT" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/>
+                                    </linearGradient>
+                                    <linearGradient id="nucG" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/>
+                                    </linearGradient>
+                                    <linearGradient id="nucC" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Codons: 3-Brick Combos (64 Possible)</text>
+                                <rect x="30" y="45" width="180" height="80" rx="12" fill="white" filter="url(#shadow7)"/>
+                                <text x="120" y="63" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">Single Nucleotides (4 types)</text>
+                                <g transform="translate(50, 78)">
+                                    <rect width="28" height="28" rx="4" fill="url(#nucA)"/><text x="14" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">A</text>
+                                    <rect x="35" width="28" height="28" rx="4" fill="url(#nucT)"/><text x="49" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">T</text>
+                                    <rect x="70" width="28" height="28" rx="4" fill="url(#nucG)"/><text x="84" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">G</text>
+                                    <rect x="105" width="28" height="28" rx="4" fill="url(#nucC)"/><text x="119" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">C</text>
+                                </g>
+                                <path d="M 220 85 L 260 85" stroke="#7c3aed" stroke-width="2"/>
+                                <polygon points="265,85 257,80 257,90" fill="#7c3aed"/>
+                                <text x="242" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7c3aed" font-weight="600">Group by 3</text>
+                                <rect x="280" y="45" width="220" height="80" rx="12" fill="white" filter="url(#shadow7)"/>
+                                <text x="390" y="63" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">Codon Tokens (4^3 = 64 types)</text>
+                                <g transform="translate(295, 78)">
+                                    <rect width="80" height="28" rx="6" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <rect x="5" y="4" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="15" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">A</text>
+                                    <rect x="30" y="4" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="40" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">T</text>
+                                    <rect x="55" y="4" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="65" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">G</text>
+                                </g>
+                                <rect x="40" y="145" width="440" height="130" rx="12" fill="white" filter="url(#shadow7)"/>
+                                <text x="260" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e293b" font-weight="700">Key Insight: Multiple Codons -> Same Amino Acid</text>
+                                <g transform="translate(60, 180)">
+                                    <text x="0" y="15" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Leucine (L) can be coded by:</text>
+                                    <g transform="translate(0, 25)">
+                                        <rect width="55" height="24" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+                                        <text x="27.5" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">UUA</text>
+                                        <rect x="62" width="55" height="24" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+                                        <text x="89.5" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">UUG</text>
+                                        <!-- Simplified for brevity -->
+                                        <text x="365" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">...</text>
+                                    </g>
+                                    <text x="200" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">All produce Leucine, but choice matters for translation speed!</text>
+                                </g>
+                                <rect x="60" y="290" width="400" height="95" rx="12" fill="white" stroke="#e879f9" stroke-width="2" filter="url(#shadow7)"/>
+                                <text x="260" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#86198f">Why Codon Choice Matters</text>
+                                <text x="260" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#701a75">"Silent" mutations (same amino acid) can still cause disease!</text>
+                                <text x="260" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#86198f">Codon-level models capture translation efficiency &amp; mRNA stability</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Codon-Level Tokenization</h4>
+                            <p><strong>The Idea:</strong> Instead of tokenizing single DNA letters (A, T, G, C), group them into triplets called codons. There are 64 possible triplet combinations (4^3).</p>
+                            <p><strong>Why It Matters:</strong> Multiple codons can code for the same amino acid (synonymous codons), but the <em>choice</em> affects translation speed and mRNA stability. "Silent" mutations can still cause disease!</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: CodonFM, EnCodon</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 8: BPE + IUPAC Tokenization -->
+                    <div class="concept-pair" id="concept-bpe-iupac">
+                        <div class="concept-visual">
+                            <!-- SVG 8: BPE + IUPAC Tokenization for Diploid Genomes -->
+                            <svg class="lego-svg" viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg8-title svg8-desc">
+                                <title id="svg8-title">BPE + IUPAC Tokenization for Personalized Genomes</title>
+                                <desc id="svg8-desc">A reference genome sequence with variants being encoded using IUPAC ambiguity codes, then tokenized using BPE into learned subword units.</desc>
+                                <defs>
+                                    <filter id="shadow8" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="refGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#64748b"/>
+                                    </linearGradient>
+                                    <linearGradient id="varGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/>
+                                    </linearGradient>
+                                    <linearGradient id="iupacGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#7c3aed"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">BPE + IUPAC: Personalized Diploid Genome Encoding</text>
+
+                                <!-- Reference genome -->
+                                <rect x="20" y="45" width="480" height="70" rx="12" fill="white" filter="url(#shadow8)"/>
+                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">Reference Genome (Generic)</text>
+                                <g transform="translate(35, 78)">
+                                    <rect width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="12" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="28" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="40" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="56" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="68" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">G</text>
+                                    <rect x="84" width="24" height="24" rx="3" fill="#ef4444" stroke="#dc2626" stroke-width="2"/><text x="96" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">C</text>
+                                    <rect x="112" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="124" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="140" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="152" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="168" width="24" height="24" rx="3" fill="#ef4444" stroke="#dc2626" stroke-width="2"/><text x="180" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">G</text>
+                                    <text x="205" y="16" font-family="ui-monospace" font-size="14" fill="#64748b">...</text>
+                                    <text x="96" y="-5" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444" font-weight="600">Het SNP</text>
+                                    <text x="180" y="-5" text-anchor="middle" font-family="system-ui" font-size="9" fill="#ef4444" font-weight="600">Het SNP</text>
+                                </g>
+
+                                <!-- Arrow down -->
+                                <g transform="translate(250, 120)">
+                                    <path d="M 0 0 L 0 25" stroke="#7c3aed" stroke-width="3"/>
+                                    <polygon points="0,30 -6,22 6,22" fill="#7c3aed"/>
+                                    <text x="50" y="18" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">IUPAC Encoding</text>
+                                </g>
+
+                                <!-- Personalized genome with IUPAC -->
+                                <rect x="20" y="155" width="480" height="85" rx="12" fill="white" filter="url(#shadow8)"/>
+                                <text x="260" y="175" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7c3aed" font-weight="600">Personalized Diploid Genome (with IUPAC codes)</text>
+                                <g transform="translate(35, 190)">
+                                    <rect width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="12" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="28" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="40" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="56" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="68" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">G</text>
+                                    <rect x="84" width="24" height="24" rx="3" fill="url(#iupacGrad)"/><text x="96" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">Y</text>
+                                    <rect x="112" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="124" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="140" width="24" height="24" rx="3" fill="url(#refGrad)"/><text x="152" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="168" width="24" height="24" rx="3" fill="url(#iupacGrad)"/><text x="180" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">R</text>
+                                    <text x="205" y="16" font-family="ui-monospace" font-size="14" fill="#64748b">...</text>
+                                </g>
+                                <text x="400" y="200" font-family="system-ui, sans-serif" font-size="9" fill="#7c3aed">Y = C/T (het)</text>
+                                <text x="400" y="215" font-family="system-ui, sans-serif" font-size="9" fill="#7c3aed">R = A/G (het)</text>
+
+                                <!-- Arrow down -->
+                                <g transform="translate(250, 245)">
+                                    <path d="M 0 0 L 0 25" stroke="#10b981" stroke-width="3"/>
+                                    <polygon points="0,30 -6,22 6,22" fill="#10b981"/>
+                                    <text x="50" y="18" font-family="system-ui, sans-serif" font-size="10" fill="#10b981" font-weight="600">BPE Tokenization</text>
+                                </g>
+
+                                <!-- BPE tokens -->
+                                <rect x="20" y="280" width="480" height="55" rx="12" fill="white" filter="url(#shadow8)"/>
+                                <text x="260" y="300" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#10b981" font-weight="600">BPE Tokens (Learned Subwords, 500 vocab)</text>
+                                <g transform="translate(55, 308)">
+                                    <rect width="70" height="22" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+                                    <text x="35" y="15" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#065f46" font-weight="600">ATG</text>
+                                    <rect x="80" width="70" height="22" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+                                    <text x="115" y="15" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#065f46" font-weight="600">YAT</text>
+                                    <rect x="160" width="70" height="22" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+                                    <text x="195" y="15" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#065f46" font-weight="600">R...</text>
+                                    <text x="340" y="15" font-family="system-ui" font-size="11" fill="#64748b">Variable-length tokens</text>
+                                </g>
+
+                                <!-- Key insight box -->
+                                <rect x="60" y="350" width="400" height="60" rx="12" fill="white" stroke="#f97316" stroke-width="2" filter="url(#shadow8)"/>
+                                <text x="260" y="372" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#c2410c">Native Diploid Modeling</text>
+                                <text x="260" y="392" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#9a3412">Heterozygous variants (C/T, A/G) encoded directly via IUPAC codes (Y, R)</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: BPE + IUPAC Encoding for Diploid Genomes</h4>
+                            <p><strong>The Problem:</strong> Reference genome models ignore individual genetic variation. How do you encode personalized genomes with heterozygous variants (where you inherited different alleles from each parent)?</p>
+                            <p><strong>The Solution:</strong> Use <strong>IUPAC ambiguity codes</strong> to represent heterozygous sites directly in the sequence (e.g., Y for C/T, R for A/G). Then apply <strong>Byte-Pair Encoding (BPE)</strong> to learn variable-length subword tokens that capture regulatory motifs.</p>
+                            <p><strong>Why It Works:</strong> This enables native diploid genome modeling without separate haplotype processing. The model learns the biological significance of both homozygous and heterozygous positions.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: VariantFormer</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 9: K-mer Tokenization -->
+                    <div class="concept-pair" id="concept-kmer">
+                        <div class="concept-visual">
+                            <!-- SVG 9: K-mer Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg9-title svg9-desc">
+                                <title id="svg9-title">K-mer Tokenization Analogy</title>
+                                <desc id="svg9-desc">A sliding window of 6 DNA bricks moving along a sequence, treating each window as one compound token.</desc>
+                                <defs>
+                                    <filter id="shadow9" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="windowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="rgba(124, 58, 237, 0.3)"/>
+                                        <stop offset="100%" stop-color="rgba(124, 58, 237, 0.1)"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">K-mer: Sliding Window of K Nucleotides</text>
+                                <rect x="20" y="45" width="480" height="100" rx="12" fill="white" filter="url(#shadow9)"/>
+                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">DNA Sequence (Single Nucleotides)</text>
+                                <g transform="translate(35, 80)">
+                                    <rect width="24" height="24" rx="3" fill="url(#nucA)"/><text x="12" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="28" width="24" height="24" rx="3" fill="url(#nucT)"/><text x="40" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="56" width="24" height="24" rx="3" fill="url(#nucG)"/><text x="68" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">G</text>
+                                    <rect x="84" width="24" height="24" rx="3" fill="url(#nucC)"/><text x="96" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">C</text>
+                                    <rect x="112" width="24" height="24" rx="3" fill="url(#nucA)"/><text x="124" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="140" width="24" height="24" rx="3" fill="url(#nucT)"/><text x="152" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="-4" y="-8" width="176" height="40" rx="6" fill="url(#windowGrad)" stroke="#7c3aed" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <text x="84" y="-15" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="700">6-mer Window</text>
+                                    <text x="180" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="#64748b" font-weight="700">...</text>
+                                </g>
+                                <path d="M 260 155 L 260 185" stroke="#7c3aed" stroke-width="3"/>
+                                <polygon points="260,190 255,182 265,182" fill="#7c3aed"/>
+                                <text x="285" y="175" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">Slide &amp; Extract</text>
+                                <rect x="40" y="200" width="440" height="85" rx="12" fill="white" filter="url(#shadow9)"/>
+                                <text x="260" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">6-mer Tokens (4^6 = 4,096 possible combinations)</text>
+                                <g transform="translate(55, 235)">
+                                    <rect width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <text x="42.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">ATGCAT</text>
+                                    <text x="95" y="22" font-size="16" fill="#94a3b8">-></text>
+                                    <rect x="105" width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <text x="147.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">TGCATG</text>
+                                    <text x="200" y="22" font-size="16" fill="#94a3b8">-></text>
+                                    <rect x="315" width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <text x="357.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">...</text>
+                                </g>
+                                <rect x="60" y="300" width="400" height="70" rx="12" fill="white" stroke="#fca5a5" stroke-width="2" filter="url(#shadow9)"/>
+                                <text x="260" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#991b1b">Why Overlapping K-mers?</text>
+                                <text x="260" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7f1d1d">Captures local sequence context that single nucleotides miss.</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: K-mer Tokenization</h4>
+                            <p><strong>The Idea:</strong> Instead of reading DNA one letter at a time (A, T, G, C), slide a window of K letters along the sequence. Each window position becomes one token. For 6-mers, there are 4^6 = 4,096 possible tokens.</p>
+                            <p><strong>Why It Works:</strong> It's like reading words instead of individual letters. "ATGCAT" carries more biological meaning than six separate letters, capturing local motifs and regulatory elements.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: Nucleotide Transformer, DNABERT</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 10: Macrogene Tokenization -->
+                    <div class="concept-pair" id="concept-macrogene">
+                        <div class="concept-visual">
+                            <!-- SVG 10: Macrogene Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg10-title svg10-desc">
+                                <title id="svg10-title">Macrogene Tokenization Analogy</title>
+                                <desc id="svg10-desc">Genes from different species grouped into functional clusters (macrogenes) based on protein similarity, enabling cross-species integration.</desc>
+                                <defs>
+                                    <filter id="shadow10" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="humanGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#3b82f6"/>
+                                        <stop offset="100%" stop-color="#1d4ed8"/>
+                                    </linearGradient>
+                                    <linearGradient id="mouseGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#22c55e"/>
+                                        <stop offset="100%" stop-color="#15803d"/>
+                                    </linearGradient>
+                                    <linearGradient id="frogGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#f59e0b"/>
+                                        <stop offset="100%" stop-color="#d97706"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Macrogene: Protein-Function-Based Gene Groups</text>
+
+                                <!-- Species genes -->
+                                <g transform="translate(30, 50)">
+                                    <text x="70" y="15" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#3b82f6" font-weight="600">Human Genes</text>
+                                    <rect x="10" y="25" width="50" height="28" rx="5" fill="url(#humanGrad)"/>
+                                    <text x="35" y="44" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="600">CD4</text>
+                                    <rect x="70" y="25" width="50" height="28" rx="5" fill="url(#humanGrad)"/>
+                                    <text x="95" y="44" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="600">MYOC</text>
+                                </g>
+                                <g transform="translate(190, 50)">
+                                    <text x="70" y="15" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#22c55e" font-weight="600">Mouse Genes</text>
+                                    <rect x="10" y="25" width="50" height="28" rx="5" fill="url(#mouseGrad)"/>
+                                    <text x="35" y="44" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="600">Cd4</text>
+                                    <rect x="70" y="25" width="50" height="28" rx="5" fill="url(#mouseGrad)"/>
+                                    <text x="95" y="44" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="600">Myoc</text>
+                                </g>
+                                <g transform="translate(350, 50)">
+                                    <text x="70" y="15" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#f59e0b" font-weight="600">Frog Genes</text>
+                                    <rect x="10" y="25" width="50" height="28" rx="5" fill="url(#frogGrad)"/>
+                                    <text x="35" y="44" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="600">cd4</text>
+                                    <rect x="70" y="25" width="50" height="28" rx="5" fill="url(#frogGrad)"/>
+                                    <text x="95" y="44" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="600">myoc</text>
+                                </g>
+
+                                <!-- ESM2 Protein Embeddings -->
+                                <rect x="100" y="120" width="320" height="50" rx="10" fill="#f0f9ff" stroke="#0ea5e9" stroke-width="2"/>
+                                <text x="260" y="140" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#0369a1" font-weight="600">ESM2 Protein Language Model</text>
+                                <text x="260" y="158" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#0c4a6e">Encode protein sequences → 5120-dim embeddings</text>
+
+                                <!-- Arrows down -->
+                                <path d="M 75 108 L 180 120" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                                <path d="M 260 108 L 260 118" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+                                <path d="M 445 108 L 340 120" stroke="#64748b" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+                                <!-- K-means clustering -->
+                                <path d="M 260 175 L 260 195" stroke="#7c3aed" stroke-width="3"/>
+                                <polygon points="260,200 255,192 265,192" fill="#7c3aed"/>
+                                <text x="310" y="190" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">K-means Clustering</text>
+
+                                <!-- Macrogenes -->
+                                <rect x="60" y="210" width="180" height="80" rx="12" fill="white" stroke="#a855f7" stroke-width="2.5" filter="url(#shadow10)"/>
+                                <text x="150" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#7e22ce">Macrogene 1: T-cell</text>
+                                <g transform="translate(75, 245)">
+                                    <rect width="40" height="20" rx="4" fill="url(#humanGrad)"/><text x="20" y="14" text-anchor="middle" font-family="ui-monospace" font-size="8" fill="white">CD4</text>
+                                    <rect x="45" width="40" height="20" rx="4" fill="url(#mouseGrad)"/><text x="65" y="14" text-anchor="middle" font-family="ui-monospace" font-size="8" fill="white">Cd4</text>
+                                    <rect x="90" width="40" height="20" rx="4" fill="url(#frogGrad)"/><text x="110" y="14" text-anchor="middle" font-family="ui-monospace" font-size="8" fill="white">cd4</text>
+                                </g>
+
+                                <rect x="280" y="210" width="180" height="80" rx="12" fill="white" stroke="#a855f7" stroke-width="2.5" filter="url(#shadow10)"/>
+                                <text x="370" y="235" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#7e22ce">Macrogene 2: Eye</text>
+                                <g transform="translate(295, 245)">
+                                    <rect width="40" height="20" rx="4" fill="url(#humanGrad)"/><text x="20" y="14" text-anchor="middle" font-family="ui-monospace" font-size="8" fill="white">MYOC</text>
+                                    <rect x="45" width="40" height="20" rx="4" fill="url(#mouseGrad)"/><text x="65" y="14" text-anchor="middle" font-family="ui-monospace" font-size="8" fill="white">Myoc</text>
+                                    <rect x="90" width="40" height="20" rx="4" fill="url(#frogGrad)"/><text x="110" y="14" text-anchor="middle" font-family="ui-monospace" font-size="8" fill="white">myoc</text>
+                                </g>
+
+                                <!-- Key insight box -->
+                                <rect x="80" y="310" width="360" height="75" rx="12" fill="white" stroke="#10b981" stroke-width="2" filter="url(#shadow10)"/>
+                                <text x="260" y="335" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#059669">Cross-Species Integration Without Homologs</text>
+                                <text x="260" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#047857">Genes grouped by protein function, not genomic position.</text>
+                                <text x="260" y="375" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46">Works even for species 350M years apart (frog ↔ zebrafish)!</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Macrogene Tokenization</h4>
+                            <p><strong>The Idea:</strong> Instead of using individual genes as tokens, group genes from ALL species into "macrogenes" based on protein sequence similarity (via ESM2). This creates a universal vocabulary that works across species.</p>
+                            <p><strong>Why It Works:</strong> Genes with similar protein functions cluster together regardless of species, enabling cross-species integration WITHOUT requiring one-to-one homolog mappings. Human CD4 and mouse Cd4 end up in the same macrogene!</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: SATURN</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Key Papers Section -->
+            <div class="content-section" id="papers">
+                <h2>Key Papers Implementing These Strategies</h2>
+
+                <div class="paper-grid">
+                    <!-- iSEEEK -->
+                    <div class="paper-card">
+                        <h4>iSEEEK: Integration via Gene Rankings</h4>
+                        <div class="meta">Shen et al. | Briefings in Bioinformatics 2022</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Transformer</span>
+                            <span class="tag strategy">Rank-Based</span>
+                        </div>
+                        <div class="summary">
+                            Pioneered gene rank-based tokenization treating single-cell transcriptomes as "sentences" of ranked genes. Processes 11.9M cells without explicit batch correction by focusing on relative gene rankings.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Top 126 expressing genes per cell, ranked by expression level. Uses [CLS] and [SEP] tokens with MLM objective. Vocabulary: 20,706 protein-coding genes.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 11.9M cells | <strong>Context:</strong> 128 tokens | <strong>Params:</strong> ~10M</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1093/bib/bbab573" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/lixiangchun/iSEEEK" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scGPT -->
+                    <div class="paper-card">
+                        <h4>scGPT: Multi-task Foundation Model</h4>
+                        <div class="meta">Cui et al. | Nature Methods 2024</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Transformer</span>
+                            <span class="tag strategy">Binning + Special Tokens</span>
+                        </div>
+                        <div class="summary">
+                            Combines gene tokens with expression value tokens in a generative framework. Supports multiple tasks including batch correction, perturbation prediction, and multi-omics integration.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Gene tokens paired with binned expression values (51 bins). Special condition tokens for perturbation modeling. Context limited to ~1,200 most variable genes.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 33M cells | <strong>Context:</strong> 1,200 | <strong>Params:</strong> ~100M</p>
+                        <div class="links">
+                            <a href="https://www.nature.com/articles/s41592-024-02201-0" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/bowang-lab/scGPT" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://huggingface.co/tdc/scGPT" target="_blank">🤗 Hugging Face</a>
+                        </div>
+                    </div>
+
+                    <!-- Nicheformer -->
+                    <div class="paper-card">
+                        <h4>Nicheformer: Spatial-Aware Foundation Model</h4>
+                        <div class="meta">Tejada-Lapuerta et al. | Nature Methods 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq + Spatial</span>
+                            <span class="tag architecture">Transformer</span>
+                            <span class="tag strategy">Contextual Tokens</span>
+                        </div>
+                        <div class="summary">
+                            First foundation model jointly learning from dissociated (57M) and spatial (53M) transcriptomics. Technology-specific normalization handles modality differences.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Rank-based with technology-specific mean normalization. Contextual tokens: &lt;ORGANISM&gt;, &lt;ASSAY&gt;, &lt;MODALITY&gt;. Cross-species gene mapping via orthologs.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 110M cells | <strong>Context:</strong> 1,500 | <strong>Params:</strong> 49.3M</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41592-025-02814-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/theislab/nicheformer/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://huggingface.co/datasets/theislab/SpatialCorpus-110M" target="_blank">🤗 Hugging Face</a>
+                        </div>
+                    </div>
+
+                    <!-- ChromFound -->
+                    <div class="paper-card">
+                        <h4>ChromFound: scATAC-seq Foundation Model</h4>
+                        <div class="meta">Jiao et al. | NeurIPS 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">scATAC-seq</span>
+                            <span class="tag architecture">Mamba-Transformer</span>
+                            <span class="tag strategy">Genome-Coordinate</span>
+                        </div>
+                        <div class="summary">
+                            First foundation model for chromatin accessibility. Uses genome-coordinate tokenization instead of fixed vocabularies, enabling representation of tissue-specific OCRs.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Chromosome embedding + sinusoidal positional encoding of genomic coordinates (start/end). Linear accessibility embedding. Vocabulary-free approach for dynamic OCR landscapes.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 1.97M cells | <strong>Context:</strong> 440K OCRs | <strong>Params:</strong> 450K</p>
+                        <div class="links">
+                            <a href="https://arxiv.org/abs/2505.12638" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/JohnsonKlose/ChromFound" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- ESM3 -->
+                    <div class="paper-card">
+                        <h4>ESM3: Multimodal Protein Language Model</h4>
+                        <div class="meta">Hayes et al. | Science 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">Protein Seq + Structure + Function</span>
+                            <span class="tag architecture">Masked Transformer</span>
+                            <span class="tag strategy">Multimodal Tokens</span>
+                        </div>
+                        <div class="summary">
+                            Frontier multimodal generative model reasoning over sequence, structure, and function. Generated esmGFP—a novel fluorescent protein equivalent to 500M years of evolution from known proteins.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Separate token tracks for sequence (amino acids), structure (discrete autoencoder), and function (keywords from InterPro/GO). All modalities fused in shared latent space with masked language modeling.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 2.78B proteins | <strong>Context:</strong> Sequence + 3D Structure | <strong>Params:</strong> 1.4B-98B</p>
+                        <div class="links">
+							<a href="https://www.science.org/doi/10.1126/science.ads0018" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+							<a href="https://github.com/evolutionaryscale/esm" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+							<a href="https://huggingface.co/EvolutionaryScale/esm3-sm-open-v1" target="_blank">🤗 Hugging Face</a>
+
+                        </div>
+                    </div>
+
+                    <!-- C2S-Scale -->
+                    <div class="paper-card">
+                        <h4>C2S-Scale: LLM-Scale Single-Cell Foundation</h4>
+                        <div class="meta">Rizvi et al. | bioRxiv 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Decoder-only LLM</span>
+                            <span class="tag strategy">Cell2Sentence</span>
+                        </div>
+                        <div class="summary">
+                            Scales single-cell foundation models to 27B parameters using Cell2Sentence representation. Enables natural language question answering and experimentally validated drug discovery.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Cell2Sentence: expression encoded via token repetition (high expr = more repeats). GRPO refinement for biological task optimization. 8,192 token context.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 5.7M cells | <strong>Context:</strong> 8,192 | <strong>Params:</strong> 157M-27B</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1101/2025.04.14.648850" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://huggingface.co/vandijklab/C2S-Scale-Gemma-2-27B" target="_blank">🤗 Hugging Face</a>
+                        </div>
+                    </div>
+
+                    <!-- ProGen2 -->
+                    <div class="paper-card">
+                        <h4>ProGen2: Protein Language Model Scaling</h4>
+                        <div class="meta">Nijkamp et al. | Cell Systems 2023</div>
+                        <div class="tags">
+                            <span class="tag data-type">Protein Sequences</span>
+                            <span class="tag architecture">Autoregressive Transformer</span>
+                            <span class="tag strategy">Amino Acid</span>
+                        </div>
+                        <div class="summary">
+                            Scales protein language models to 6.4B parameters, demonstrating that data distribution matters more than model size for fitness prediction. Generated sequences adopt natural folds.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Standard amino acid tokenization with rotary positional encodings. Causal language modeling with next-token prediction. Context: 1,024-2,048 tokens.</p>
+                        </div>
+                        <p><strong>Scale:</strong> UniRef90+BFD | <strong>Context:</strong> 2,048 AAs | <strong>Params:</strong> 151M-6.4B</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1016/j.cels.2023.10.002" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://doi.org/10.5281/zenodo.8078725" target="_blank"></i> Code</a>
+                            <a href="https://doi.org/10.5281/zenodo.7877981" target="_blank"><i class="fas fa-database"></i> Data</a>
+                        </div>
+                    </div>
+
+                    <!-- VariantFormer -->
+                    <div class="paper-card">
+                        <h4>VariantFormer: Personalized Gene Expression from Diploid Genomes</h4>
+                        <div class="meta">Ghosal et al. | bioRxiv 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">DNA + Variants</span>
+                            <span class="tag architecture">Hierarchical Transformer</span>
+                            <span class="tag strategy">BPE + IUPAC</span>
+                        </div>
+                        <div class="summary">
+                            First foundation model to predict tissue-specific gene expression from personalized diploid genomes by integrating individual genetic variants directly into DNA sequences using IUPAC ambiguity codes.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>IUPAC ambiguity codes for heterozygous sites (R=A/G, Y=C/T, etc.) embedded into reference genome. BPE tokenizer (500 vocab) trained on cCREs. Hierarchical cross-attention between CRE (±1Mb) and gene body windows.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 2,330 donors, 50K genes | <strong>Context:</strong> >2Mb | <strong>Params:</strong> 1.2B</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1101/2025.10.31.685862" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/czi-ai/variantformer" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://virtualcellmodels.cziscience.com/model/variantformer" target="_blank"><i class="fas fa-globe"></i> CZI's Biohub</a>
+                        </div>
+                    </div>
+
+                    <!-- SATURN -->
+                    <div class="paper-card">
+                        <h4>SATURN: Universal Cross-Species Embeddings</h4>
+                        <div class="meta">Rosen et al. | Nature Methods 2024</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq (Multi-Species)</span>
+                            <span class="tag architecture">Autoencoder + Metric Learning</span>
+                            <span class="tag strategy">Macrogene</span>
+                        </div>
+                        <div class="summary">
+                            Universal cell embeddings via protein language models (ESM2) coupled with RNA expression. Enables cross-species integration WITHOUT one-to-one gene homologs by grouping genes into macrogenes.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Genes clustered into ~2000 macrogenes via k-means on ESM2 protein embeddings (5120-dim). Gene-to-macrogene weights learned from protein similarity. Enables 350M-year divergent species integration.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 335K cells (3 species) | <strong>Context:</strong> ~2,000 macrogenes | <strong>Params:</strong> ~10M</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41592-024-02191-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/snap-stanford/saturn/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparisons & Trade-offs Section -->
+            <div class="content-section" id="comparisons">
+                <h2>Comparisons &amp; Trade-offs</h2>
+
+                <h3>Tokenization Strategy Comparison</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Strategy</th>
+                            <th>Data Type</th>
+                            <th>Key Advantage</th>
+                            <th>Limitation</th>
+                            <th>Representative Model</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Gene Rank-Based</strong></td>
+                            <td>scRNA-seq</td>
+                            <td>Batch-insensitive, captures relative expression patterns</td>
+                            <td>Loses absolute expression magnitude</td>
+                            <td>iSEEEK, Geneformer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Expression Binning</strong></td>
+                            <td>scRNA-seq</td>
+                            <td>Preserves expression magnitude, compatible with NLP architectures</td>
+                            <td>Information loss from discretization</td>
+                            <td>scGPT, scBERT</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Genome-Coordinate</strong></td>
+                            <td>scATAC-seq</td>
+                            <td>Vocabulary-free, handles novel regions</td>
+                            <td>Requires reference genome alignment</td>
+                            <td>ChromFound</td>
+                        </tr>
+                        <tr>
+                            <td><strong>K-mer Tokenization</strong></td>
+                            <td>DNA sequences</td>
+                            <td>Captures local sequence patterns</td>
+                            <td>Large vocabulary (4^k tokens)</td>
+                            <td>Nucleotide Transformer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>BPE + IUPAC</strong></td>
+                            <td>Diploid DNA + Variants</td>
+                            <td>Native heterozygous encoding; personalized genome modeling</td>
+                            <td>Requires phased VCF; expanded alphabet</td>
+                            <td>VariantFormer</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Amino Acid + Multimodal</strong></td>
+                            <td>Protein sequences + structure + function</td>
+                            <td>Simple sequence tokens; multimodal enables structure/function reasoning</td>
+                            <td>Ignores codon usage effects</td>
+                            <td>ESM3, ProGen2</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cell2Sentence</strong></td>
+                            <td>scRNA-seq</td>
+                            <td>Compatible with standard LLMs, enables NL queries</td>
+                            <td>Long sequences from repetition encoding</td>
+                            <td>C2S-Scale</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Macrogene</strong></td>
+                            <td>scRNA-seq (cross-species)</td>
+                            <td>Enables cross-species integration without homologs via protein embeddings</td>
+                            <td>Requires reference proteomes; loses gene-level resolution</td>
+                            <td>SATURN</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Context Length vs Model Scale Trade-offs</h3>
+                <p>Different tokenization strategies and architectures dictate the maximum sequence length (context window) a model can handle, which impacts the biological scope it can capture.</p>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Model</th>
+                            <th>Tokenization Strategy</th>
+                            <th>Context Length</th>
+                            <th>Parameters</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>iSEEEK</td>
+                            <td>Rank-Based (Top-K)</td>
+                            <td>128 tokens</td>
+                            <td>~10M</td>
+                        </tr>
+                        <tr>
+                            <td>scGPT</td>
+                            <td>Binning (High Variance Genes)</td>
+                            <td>~1,200 genes</td>
+                            <td>~100M</td>
+                        </tr>
+                        <tr>
+                            <td>Nicheformer</td>
+                            <td>Rank-Based (Top-K)</td>
+                            <td>1,500 tokens</td>
+                            <td>49.3M</td>
+                        </tr>
+                        <tr>
+                            <td>AIDO.Cell</td>
+                            <td>Auto-Discretization (Full Transcriptome)</td>
+                            <td>19,264 (full)</td>
+                            <td>650M</td>
+                        </tr>
+                        <tr>
+                            <td>ChromFound</td>
+                            <td>Genome-Coordinate (OCRs)</td>
+                            <td>440K OCRs (via Mamba)</td>
+                            <td>450K</td>
+                        </tr>
+                        <tr>
+                            <td>ESM3</td>
+                            <td>Amino Acid + Structure + Function</td>
+                            <td>Full protein (multimodal)</td>
+                            <td>98B</td>
+                        </tr>
+                        <tr>
+                            <td>VariantFormer</td>
+                            <td>BPE + IUPAC (Diploid)</td>
+                            <td>>2 Mb (CRE ±1Mb + gene body)</td>
+                            <td>1.2B</td>
+                        </tr>
+                        <tr>
+                            <td>C2S-Scale</td>
+                            <td>Cell2Sentence (Repetition)</td>
+                            <td>8,192 tokens</td>
+                            <td>27B</td>
+                        </tr>
+                        <tr>
+                            <td>SATURN</td>
+                            <td>Macrogene (ESM2-based)</td>
+                            <td>~2,000 macrogenes</td>
+                            <td>~10M</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Choosing the Right Tokenization Strategy</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Use Case</th>
+                            <th>Recommended Strategy</th>
+                            <th>Why</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Large-scale integration (&gt;1M cells) across many labs</td>
+                            <td><strong>Gene Rank-Based</strong></td>
+                            <td>Naturally batch-insensitive; focuses on robust relative signals.</td>
+                        </tr>
+                        <tr>
+                            <td>Perturbation modeling (predicting gene knockout effects)</td>
+                            <td><strong>Expression Binning</strong></td>
+                            <td>Preserves the absolute expression magnitude needed to model dosage changes.</td>
+                        </tr>
+                        <tr>
+                            <td>Chromatin accessibility analysis (scATAC-seq)</td>
+                            <td><strong>Genome-Coordinate Tokenization</strong></td>
+                            <td>Handles dynamic open chromatin regions varying across cell types without a fixed vocabulary.</td>
+                        </tr>
+                        <tr>
+                            <td>Protein fitness or structure prediction</td>
+                            <td><strong>Amino Acid Tokenization</strong></td>
+                            <td>Standard approach that effectively captures evolutionary constraints in protein sequences.</td>
+                        </tr>
+                        <tr>
+                            <td>Personalized gene expression prediction from WGS</td>
+                            <td><strong>BPE + IUPAC</strong></td>
+                            <td>Encodes heterozygous variants natively; enables variant effect prediction from individual genomes.</td>
+                        </tr>
+                        <tr>
+                            <td>Interacting with cell data using natural language</td>
+                            <td><strong>Cell2Sentence</strong></td>
+                            <td>Converts biological data into a format understood by standard Large Language Models.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>Part of the <a href="index.html">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+            <p style="font-size: 0.9em; margin-top: 10px;">
+                <a href="https://github.com/xqiu625" style="margin: 0 10px;"><i class="fab fa-github"></i> GitHub</a> |
+                <a href="https://www.linkedin.com/in/xinru-qiu" style="margin: 0 10px;"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+                <a href="mailto:xinru.reina.qiu@gmail.com" style="margin: 0 10px;"><i class="fas fa-envelope"></i> Email</a>
+            </p>
+            <p class="privacy-notice">
+                🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.
+                Content released under CC BY 4.0.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Create animated neural network background
+        const neuralBg = document.getElementById('neuralBg');
+        const nodeCount = 30;
+        const nodes = [];
+
+        // Create nodes
+        for (let i = 0; i < nodeCount; i++) {
+            const node = document.createElement('div');
+            node.className = 'neural-node';
+            node.style.left = Math.random() * 100 + '%';
+            node.style.top = Math.random() * 100 + '%';
+            node.style.animationDelay = Math.random() * 3 + 's';
+            neuralBg.appendChild(node);
+            nodes.push({
+                element: node,
+                x: parseFloat(node.style.left),
+                y: parseFloat(node.style.top)
+            });
+        }
+
+        // Create connections between nearby nodes
+        for (let i = 0; i < nodes.length; i++) {
+            for (let j = i + 1; j < nodes.length; j++) {
+                const dx = nodes[j].x - nodes[i].x;
+                const dy = nodes[j].y - nodes[i].y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < 25) { // Only connect nearby nodes
+                    const connection = document.createElement('div');
+                    connection.className = 'neural-connection';
+                    const angle = Math.atan2(dy, dx);
+                    connection.style.width = distance + 'vw';
+                    connection.style.left = nodes[i].x + '%';
+                    connection.style.top = nodes[i].y + '%';
+                    connection.style.transform = `rotate(${angle}rad)`;
+                    neuralBg.appendChild(connection);
+                }
+            }
+        }
+
+        // Add smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
