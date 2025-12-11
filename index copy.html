@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xinru Qiu - Foundation Model Evaluation × Drug Discovery</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+        }
+        .navbar-nav {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .navbar-nav li {
+            margin: 0 15px;
+        }
+        .navbar-nav a {
+            color: #666666;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .profile-container {
+            display: flex;
+            margin-top: 40px;
+        }
+        .profile-image-container {
+            flex: 0 0 250px;
+            margin-right: 40px;
+        }
+        .profile-image {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #6c8cc0;
+        }
+        .profile-links {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .profile-links li {
+            margin-bottom: 10px;
+        }
+        .profile-links a {
+            color: #666;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        .profile-links i {
+            width: 20px;
+            margin-right: 10px;
+        }
+        .profile-info {
+            flex: 1;
+        }
+        h1, h2, h3, h4 {
+            color: #1a5f7a;
+        }
+        .content {
+            margin-top: 20px;
+        }
+        .highlight-box {
+            background-color: #f0f7ff;
+            border-left: 4px solid #6c8cc0;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .highlight-box.primary {
+            border-left-color: #1a5f7a;
+            background-color: #f4f8fb;
+        }
+        .research-image {
+            background: transparent;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .research-image img {
+            width: 100%;
+            max-width: 800px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+            mix-blend-mode: multiply;
+        }
+        .research-image img:hover {
+            transform: scale(1.02);
+        }
+        .research-image .caption {
+            text-align: center;
+            color: #333333;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .experience-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        .experience-item:last-child {
+            border-bottom: none;
+        }
+        .experience-item strong {
+            color: #1a5f7a;
+        }
+        .tag {
+            display: inline-block;
+            background: #1a5f7a;
+            color: white;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: bold;
+        }
+        .tag.next {
+            background: #e67e22;
+        }
+        .core-box {
+            background: #fff8f0;
+            border-left: 4px solid #e67e22;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .core-box strong {
+            color: #e67e22;
+        }
+        .next-step-box {
+            background: white;
+            border: 2px solid #1a5f7a;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 25px 0;
+        }
+        .next-step-box h4 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        a {
+            color: #1a5f7a;
+        }
+        a:hover {
+            color: #6c8cc0;
+        }
+        @media (max-width: 768px) {
+            .profile-container {
+                flex-direction: column;
+            }
+            .profile-image-container {
+                margin-right: 0;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+            .profile-links {
+                text-align: center;
+            }
+            .research-image {
+                max-width: 900px;
+                margin: 20px auto;
+            }
+            .research-image {
+                padding: 10px;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/publication/">Research</a></li>
+                <li><a href="/talk/">Talks</a></li>
+                <li><a href="/teaching/">Teaching</a></li>
+                <li><a href="/ai4bio-concepts/">AI4Bio Learning Hub</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main role="main">
+        <div class="container">
+            <div class="profile-container">
+                <div class="profile-image-container">
+                    <img src="/photo.JPG" alt="Xinru Qiu" class="profile-image">
+                    <ul class="profile-links">
+                        <li><a href="/cdn-cgi/l/email-protection#ff8796918d8ad18d9a96919ed18e968abf98929e9693d19c9092" title="Email"><i class="fas fa-envelope"></i>Email</a></li>
+                        <li><a href="https://www.linkedin.com/in/xinru-qiu" title="LinkedIn"><i class="fab fa-linkedin"></i>LinkedIn</a></li>
+                        <li><a href="https://github.com/xqiu625" title="GitHub"><i class="fab fa-github"></i>GitHub</a></li>
+                        <li><a href="https://orcid.org/0000-0003-1391-252X" title="ORCID"><i class="fab fa-orcid"></i>ORCID</a></li>
+                        <li><a href="https://www.researchgate.net/profile/Xinru-Qiu" title="ResearchGate"><i class="fab fa-researchgate"></i>ResearchGate</a></li>
+                        <li><a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ" title="Google Scholar"><i class="fas fa-graduation-cap"></i>Google Scholar</a></li>
+                        <li><a href="https://profiles.ucr.edu/app/home/profile/xqiu014" title="UCR Profile"><i class="fas fa-school"></i>UCR Profile</a></li>
+                    </ul>
+                </div>
+                <div class="profile-info">
+                    <h1>Xinru Qiu, PhD</h1>
+                    <h3 style="color: #6c8cc0; margin-top: 5px;">Foundation Model Evaluation × Drug Discovery</h3>
+                    
+                    <div class="content">
+                        <p class="highlight-box primary">
+                        🤖 I evaluate AI models and build computational tools for biological data analysis. My work focuses on 📊 benchmarking foundation models, 🔧 developing interpretable workflows, and 🧬 integrating multi-omic datasets. I specialize in connecting machine learning methods with biological insight to support diverse research collaborations.
+                        </p>
+
+                        <div class="core-box">
+                            <strong>🎯 Core Competency:</strong> I specialize in evaluating the reliability and biological relevance of AI outputs. My background in 🧬 biology, 💊 pharmacology, ⚗️ chemistry, and 💻 computational modeling allows me to bridge domain knowledge with modern machine learning methods.
+                        </div>
+
+                        <p>I obtained my PhD in Genetics, Genomics, and Bioinformatics from UC Riverside in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Download my <a href="XinruQiu_resume.pdf">resume</a>.</p>
+                    </div>
+
+                    <div class="content">
+                        <h2>What I Do</h2>
+
+                        <div class="research-image">
+                            <img src="./research_focus.png" alt="AI-Driven Discovery Engine">
+                            <p class="caption">End-to-end platform: from multi-modal data to therapeutic candidates</p>
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Foundation Model Evaluation</strong> <span class="tag">Primary</span><br>
+                            I benchmark foundation models such as UCE, scGPT, Geneformer, and TranscriptFormer across diverse biological tasks. My work includes evaluating model robustness, interpretability, and task-specific performance to guide model selection for research applications.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Multi-Omic Data Integration</strong><br>
+                            I develop computational workflows for integrating single-cell, bulk RNA-seq, spatial transcriptomics, and protein structure data. This includes feature extraction, embedding analysis, dimensionality reduction, and cross-modal harmonization.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Workflow & Tool Development</strong><br>
+                            I build reproducible pipelines that combine machine learning techniques with biological data processing—covering data QC, feature engineering, model evaluation, visualization, and downstream analysis. The goal is to support collaborative research with scalable, interpretable tools.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Clinical Genomics</strong><br>
+                            Three years of experience in ACMG variant classification, NGS pipeline development, and genomic data interpretation, with an emphasis on quality standards and reproducibility.
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <h2>Technical Stack</h2>
+                        <p><strong>Foundation Models & ML:</strong></p>
+                        <ul>
+                            <li><strong>Single-cell FMs:</strong> UCE, scGPT, Geneformer, TranscriptFormer - benchmarking, fine-tuning, deployment</li>
+                            <li><strong>Protein:</strong> AlphaFold2, ESMFold, ESM-2, ProteinMPNN for structure prediction and design</li>
+                            <li><strong>Frameworks:</strong> PyTorch, TensorFlow, Hugging Face Transformers</li>
+                            <li><strong>Agent Development:</strong> LangChain, function calling, RAG pipelines</li>
+                        </ul>
+                        
+                        <p><strong>Computational Biology:</strong></p>
+                        <ul>
+                            <li><strong>Single-Cell:</strong> Seurat, Scanpy, CellRank, RNA Velocity, CellChat</li>
+                            <li><strong>Spatial:</strong> 10x Visium, Space Ranger, spatial transcriptomics analysis</li>
+                            <li><strong>Structure:</strong> GROMACS, DiffDock, AutoDock Vina, PyMOL</li>
+                            <li><strong>HPC:</strong> SLURM, Singularity/Docker, GPU computing (CUDA/A100)</li>
+                        </ul>
+                        
+                        <p><strong>Pharmaceutical Domain:</strong></p>
+                        <ul>
+                            <li><strong>Drug Discovery:</strong> ADMET prediction, PK/PD modeling, Target ID/Validation</li>
+                            <li><strong>Regulatory:</strong> ACMG variant classification, IND-enabling studies, GLP standards</li>
+                        </ul>
+                    </div>
+
+                    <div class="content">
+                        <h2>Looking Ahead</h2>
+                        
+                        <div class="next-step-box">
+                            <p>I aim to continue developing computational tools and evaluation frameworks that make biological data analysis more robust, interpretable, and scalable. I enjoy working in collaborative environments where machine learning and biology come together to enable deeper scientific understanding.</p>
+                            <p><strong>Value I bring:</strong> I combine domain knowledge with computational expertise to evaluate models, interpret outputs, and build reliable workflows that support a wide range of research projects.</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <h2>🚀 My Interdisciplinary Journey</h2>
+                        <div class="research-image">
+                            <img src="./journey.jpeg" alt="Professional Academic Journey Timeline">
+                            <p class="caption">From pharmaceutical sciences to AI-driven biological research</p>
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <h2>Education</h2>
+                        <ul>
+                            <li><strong>Ph.D.</strong>, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, <a href="https://www.usnews.com/best-colleges/university-of-california-riverside-1316">University of California, Riverside</a>, 2018 - 2023</li>
+                            <li><strong>M.S.</strong>, <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, <a href="https://www.usnews.com/best-colleges/university-of-southern-california-1328">University of Southern California</a>, 2013 - 2015</li>
+                            <li><strong>B.S.</strong>, <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 - 2013</li>                            
+                        </ul>
+                    </div>
+
+                    <div class="content">
+                        <h2>Let's Connect</h2>
+                        <p>Interested in AI for drug discovery, foundation model evaluation, or building biology AI agents? Feel free to reach out via <a href="/cdn-cgi/l/email-protection#c1b9a8afb3b4efb3a4a8afa0efb0a8b481a6aca0a8adefa2aeac">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p style="text-align: center; color: #666; padding: 20px 0

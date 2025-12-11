@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xinru Qiu - Foundation Model Evaluation × Drug Discovery</title>
+    <title>Xinru Qiu - AI-enabled Target Discovery × Mechanistic Biology</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -161,11 +161,83 @@
             margin-top: 0;
             margin-bottom: 10px;
         }
+        .role-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #1a5f7a;
+            border-radius: 8px;
+            padding: 20px 25px;
+            margin: 25px 0;
+        }
+        .role-box h4 {
+            margin-top: 0;
+            color: #1a5f7a;
+        }
+        .role-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .role-tag {
+            background: #1a5f7a;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        .capability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .capability-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .capability-card h4 {
+            margin-top: 0;
+            color: #1a5f7a;
+            border-bottom: 2px solid #6c8cc0;
+            padding-bottom: 10px;
+        }
+        .capability-card ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .capability-card li {
+            margin-bottom: 8px;
+        }
+        .tools-line {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .tools-line strong {
+            color: #1a5f7a;
+        }
         a {
             color: #1a5f7a;
         }
         a:hover {
             color: #6c8cc0;
+        }
+        .other-competencies {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .other-competencies h3 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: #666;
         }
         @media (max-width: 768px) {
             .profile-container {
@@ -187,6 +259,9 @@
                 padding: 10px;
                 margin: 10px 0;
             }
+            .capability-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -207,7 +282,7 @@
         <div class="container">
             <div class="profile-container">
                 <div class="profile-image-container">
-                    <img src="/photo.JPG" alt="Xinru Qiu" class="profile-image">
+                    <img src="./photo.JPG" alt="Xinru Qiu" class="profile-image">
                     <ul class="profile-links">
                         <li><a href="/cdn-cgi/l/email-protection#ff8796918d8ad18d9a96919ed18e968abf98929e9693d19c9092" title="Email"><i class="fas fa-envelope"></i>Email</a></li>
                         <li><a href="https://www.linkedin.com/in/xinru-qiu" title="LinkedIn"><i class="fab fa-linkedin"></i>LinkedIn</a></li>
@@ -220,80 +295,137 @@
                 </div>
                 <div class="profile-info">
                     <h1>Xinru Qiu, PhD</h1>
-                    <h3 style="color: #6c8cc0; margin-top: 5px;">Foundation Model Evaluation × Drug Discovery</h3>
+                    <h3 style="color: #6c8cc0; margin-top: 5px;">AI-enabled Target Discovery × Mechanistic Biology</h3>
                     
                     <div class="content">
                         <p class="highlight-box primary">
-                        🤖 I evaluate AI models and build computational tools for biological data analysis. My work focuses on 📊 benchmarking foundation models, 🔧 developing interpretable workflows, and 🧬 integrating multi-omic datasets. I specialize in connecting machine learning methods with biological insight to support diverse research collaborations.
+                        🎯 I leverage foundation models and multi-omic data to uncover disease mechanisms and identify therapeutic targets. My work transforms single-cell, spatial, and perturbation data into mechanistic insights—mapping causal pathways, decoding microenvironments, and prioritizing druggable targets for therapeutic discovery.
                         </p>
 
                         <div class="core-box">
-                            <strong>🎯 Core Competency:</strong> I specialize in evaluating the reliability and biological relevance of AI outputs. My background in 🧬 biology, 💊 pharmacology, ⚗️ chemistry, and 💻 computational modeling allows me to bridge domain knowledge with modern machine learning methods.
+                            <strong>🧬 Core Expertise:</strong> I specialize in extracting biological meaning from AI model outputs. My background in 🧬 biology, 💊 pharmacology, ⚗️ chemistry, and 💻 computational modeling enables me to translate foundation model embeddings into mechanistic hypotheses and actionable target nominations.
                         </div>
 
                         <p>I obtained my PhD in Genetics, Genomics, and Bioinformatics from UC Riverside in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Download my <a href="XinruQiu_resume.pdf">resume</a>.</p>
                     </div>
 
-                    <div class="content">
-                        <h2>What I Do</h2>
-
-                        <div class="research-image">
-                            <img src="./research_focus.png" alt="AI-Driven Discovery Engine">
-                            <p class="caption">End-to-end platform: from multi-modal data to therapeutic candidates</p>
-                        </div>
-                        
-                        <div class="experience-item">
-                            <strong>Foundation Model Evaluation</strong> <span class="tag">Primary</span><br>
-                            I benchmark foundation models such as UCE, scGPT, Geneformer, and TranscriptFormer across diverse biological tasks. My work includes evaluating model robustness, interpretability, and task-specific performance to guide model selection for research applications.
-                        </div>
-                        
-                        <div class="experience-item">
-                            <strong>Multi-Omic Data Integration</strong><br>
-                            I develop computational workflows for integrating single-cell, bulk RNA-seq, spatial transcriptomics, and protein structure data. This includes feature extraction, embedding analysis, dimensionality reduction, and cross-modal harmonization.
-                        </div>
-                        
-                        <div class="experience-item">
-                            <strong>Workflow & Tool Development</strong><br>
-                            I build reproducible pipelines that combine machine learning techniques with biological data processing—covering data QC, feature engineering, model evaluation, visualization, and downstream analysis. The goal is to support collaborative research with scalable, interpretable tools.
-                        </div>
-                        
-                        <div class="experience-item">
-                            <strong>Clinical Genomics</strong><br>
-                            Three years of experience in ACMG variant classification, NGS pipeline development, and genomic data interpretation, with an emphasis on quality standards and reproducibility.
-                        </div>
+                    <!-- Main Platform Diagram - Hero Position -->
+                    <div class="research-image">
+                        <img src="./Mechanistic_Target_Discovery_Platform.jpeg" alt="Mechanistic Target Discovery Platform">
+                        <p class="caption">From complex multi-modal data to actionable therapeutic targets</p>
                     </div>
 
                     <div class="content">
-                        <h2>Technical Stack</h2>
-                        <p><strong>Foundation Models & ML:</strong></p>
-                        <ul>
-                            <li><strong>Single-cell FMs:</strong> UCE, scGPT, Geneformer, TranscriptFormer - benchmarking, fine-tuning, deployment</li>
-                            <li><strong>Protein:</strong> AlphaFold2, ESMFold, ESM-2, ProteinMPNN for structure prediction and design</li>
-                            <li><strong>Frameworks:</strong> PyTorch, TensorFlow, Hugging Face Transformers</li>
-                            <li><strong>Agent Development:</strong> LangChain, function calling, RAG pipelines</li>
-                        </ul>
+                        <h2>What I Do</h2>
                         
-                        <p><strong>Computational Biology:</strong></p>
-                        <ul>
-                            <li><strong>Single-Cell:</strong> Seurat, Scanpy, CellRank, RNA Velocity, CellChat</li>
-                            <li><strong>Spatial:</strong> 10x Visium, Space Ranger, spatial transcriptomics analysis</li>
-                            <li><strong>Structure:</strong> GROMACS, DiffDock, AutoDock Vina, PyMOL</li>
-                            <li><strong>HPC:</strong> SLURM, Singularity/Docker, GPU computing (CUDA/A100)</li>
-                        </ul>
+                        <!-- Foundation Model Interpretation Diagram -->
+                        <div class="research-image">
+                            <img src="./Foundation_Model___Biology_Interpretation_Map.jpeg" alt="Foundation Model to Biology Interpretation">
+                            <p class="caption">Translating model intelligence into mechanistic insight</p>
+                        </div>
                         
-                        <p><strong>Pharmaceutical Domain:</strong></p>
-                        <ul>
-                            <li><strong>Drug Discovery:</strong> ADMET prediction, PK/PD modeling, Target ID/Validation</li>
-                            <li><strong>Regulatory:</strong> ACMG variant classification, IND-enabling studies, GLP standards</li>
-                        </ul>
+                        <div class="experience-item">
+                            <strong>Foundation Model Mechanistic Interpretation</strong> <span class="tag">Primary</span><br>
+                            I extract biological insights from foundation models (UCE, scGPT, Geneformer, TranscriptFormer) by analyzing attention patterns, embedding structures, and latent representations. My focus is on interpreting what these models learn about gene regulation, pathway activity, and cell state—translating computational outputs into mechanistic hypotheses for target discovery.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Multi-Omic Mechanistic Integration</strong><br>
+                            I integrate single-cell, spatial, and perturbation data to map disease mechanisms. This includes identifying disease-driving cell populations, inferring causal gene regulatory networks, decoding immune microenvironment dynamics, and evaluating target plausibility through cross-modal evidence synthesis.
+                        </div>
+                        
+                        <!-- Multi-omics Convergence Diagram -->
+                        <div class="research-image">
+                            <img src="./Multi-omics_Convergence_Map.jpeg" alt="Multi-omics Convergence Map">
+                            <p class="caption">High-confidence targets from multi-modal consensus</p>
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Spatial Microenvironment & Target Context</strong><br>
+                            I analyze spatial transcriptomics to understand how tissue architecture drives disease. This includes mapping spatial niches that harbor disease-relevant cell states, linking ligand-receptor signaling with foundation model embeddings, and identifying microenvironment-dependent therapeutic targets.
+                        </div>
+                        
+                        <div class="experience-item">
+                            <strong>Therapeutic Discovery Workflows</strong><br>
+                            I build interpretable computational frameworks that connect AI outputs to therapeutic decision-making—from mechanism-of-disease modeling to target nomination, supporting experimental validation and translational research.
+                        </div>
+                    </div>
+
+                    <!-- NEW: Restructured Technical Capabilities -->
+                    <div class="content">
+                        <h2>Technical Capabilities</h2>
+                        
+                        <!-- AI-Driven Discovery Engine Overview -->
+                        <div class="research-image">
+                            <img src="./research_focus.png" alt="AI-Driven Discovery Engine">
+                            <p class="caption">End-to-end platform methodology</p>
+                        </div>
+                        
+                        <div class="capability-grid">
+                            <div class="capability-card">
+                                <h4>🧠 Mechanistic AI</h4>
+                                <ul>
+                                    <li><strong>Foundation Models:</strong> UCE, scGPT, Geneformer, TranscriptFormer, scPRINT, CellPLM</li>
+                                    <li><strong>Deep Learning:</strong> PyTorch, TensorFlow, Hugging Face Transformers, Attention Mechanisms</li>
+                                    <li><strong>Embedding Analysis:</strong> Cosine similarity, centroid-based comparisons, quality assessment</li>
+                                    <li><strong>Transfer Learning:</strong> Cross-species analysis, domain adaptation, embedding space optimization</li>
+                                    <li><strong>Large-Scale Processing:</strong> 226K+ cell embedding generation, 500K+ cell analysis</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="capability-card">
+                                <h4>🔬 Multi-Omic Mechanistic Integration</h4>
+                                <ul>
+                                    <li><strong>Single-Cell:</strong> CellRanger, Seurat, Scanpy, SingleR, scCATCH</li>
+                                    <li><strong>Trajectory & Velocity:</strong> scVelo, CellRank2, Monocle3, PAGA</li>
+                                    <li><strong>Regulatory Networks:</strong> pySCENIC for TF analysis & GRN inference</li>
+                                    <li><strong>Cell Communication:</strong> CellChat for intercellular signaling</li>
+                                    <li><strong>Perturbation:</strong> Large-scale CRISPR screening (2,907+ targets)</li>
+                                    <li><strong>Pathway Analysis:</strong> clusterProfiler, ReactomePA, GSVA</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="capability-card">
+                                <h4>💊 Therapeutic Discovery Logic</h4>
+                                <ul>
+                                    <li><strong>Structure Prediction:</strong> AlphaFold2, ESMFold, RoseTTAFold</li>
+                                    <li><strong>Protein Design:</strong> ESM, ProteinMPNN, ProstT5 for generative enzyme design</li>
+                                    <li><strong>Molecular Modeling:</strong> GROMACS, DiffDock, AutoDock Vina, PyMOL</li>
+                                    <li><strong>Drug Design:</strong> ADMET prediction, SAR analysis, peptide therapeutics</li>
+                                    <li><strong>Pharmacogenomics:</strong> PharmVar, PharmGKB, CPIC, ACMG variant classification</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="capability-card">
+                                <h4>🛠️ Tools & Platforms</h4>
+                                <ul>
+                                    <li><strong>Languages:</strong> Python, R, SQL, Bash, JavaScript, Java</li>
+                                    <li><strong>HPC:</strong> SLURM, GPU/CUDA (A100), parallel processing, memory optimization</li>
+                                    <li><strong>Containers:</strong> Docker, Singularity for reproducible workflows</li>
+                                    <li><strong>ML Libraries:</strong> Pandas, NumPy, Scikit-learn, XGBoost, RDKit</li>
+                                    <li><strong>Visualization:</strong> ggplot2, Plotly, Seaborn, Shiny, BioRender</li>
+                                    <li><strong>Databases:</strong> GEO, KEGG, UniProt, ClinVar, gnomAD, STRING</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="content">
                         <h2>Looking Ahead</h2>
                         
                         <div class="next-step-box">
-                            <p>I aim to continue developing computational tools and evaluation frameworks that make biological data analysis more robust, interpretable, and scalable. I enjoy working in collaborative environments where machine learning and biology come together to enable deeper scientific understanding.</p>
-                            <p><strong>Value I bring:</strong> I combine domain knowledge with computational expertise to evaluate models, interpret outputs, and build reliable workflows that support a wide range of research projects.</p>
+                            <p>I aim to advance AI-enabled target discovery by building mechanistic reasoning frameworks that connect foundation model insights to therapeutic hypotheses. My goal is to work at the intersection of computational biology and drug discovery—collaborating with experimentalists to validate targets and translate computational predictions into actionable therapeutic strategies.</p>
+                            <p><strong>What I bring:</strong> The ability to extract disease mechanisms from complex multi-omic data, interpret AI model outputs through a biological lens, and bridge computational predictions with experimental validation for target discovery.</p>
+                        </div>
+                    </div>
+
+                    <!-- Other Competencies - Moved Down -->
+                    <div class="content">
+                        <div class="other-competencies">
+                            <h3>📋 Additional Competencies</h3>
+                            <p><strong>Clinical Genomics:</strong> Three years of experience in ACMG variant classification, NGS pipeline development, and genomic data interpretation.</p>
+                            <p><strong>Structural Biology:</strong> Molecular dynamics (GROMACS), molecular docking (DiffDock, AutoDock Vina), structure-based analysis.</p>
+                            <p><strong>Regulatory Knowledge:</strong> IND-enabling studies, GLP standards, ADMET prediction, PK/PD modeling fundamentals.</p>
                         </div>
                     </div>
 
@@ -301,7 +433,7 @@
                         <h2>🚀 My Interdisciplinary Journey</h2>
                         <div class="research-image">
                             <img src="./journey.jpeg" alt="Professional Academic Journey Timeline">
-                            <p class="caption">From pharmaceutical sciences to AI-driven biological research</p>
+                            <p class="caption">From pharmaceutical sciences to AI-driven target discovery</p>
                         </div>
                     </div>
 
@@ -316,7 +448,7 @@
 
                     <div class="content">
                         <h2>Let's Connect</h2>
-                        <p>Interested in AI for drug discovery, foundation model evaluation, or building biology AI agents? Feel free to reach out via <a href="/cdn-cgi/l/email-protection#c1b9a8afb3b4efb3a4a8afa0efb0a8b481a6aca0a8adefa2aeac">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
+                        <p>Interested in AI-driven target discovery, mechanistic biology, or foundation model interpretation? Feel free to reach out via <a href="/cdn-cgi/l/email-protection#c1b9a8afb3b4efb3a4a8afa0efb0a8b481a6aca0a8adefa2aeac">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
                     </div>
                 </div>
             </div>
@@ -325,4 +457,8 @@
 
     <footer>
         <div class="container">
-            <p style="text-align: center; color: #666; padding: 20px 0
+            <p style="text-align: center; color: #666; padding: 20px 0;">© 2024 Xinru Qiu. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
