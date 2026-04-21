@@ -1,0 +1,461 @@
+/* ==========================================================================
+   Shared Day / Night theme
+   Loaded by every page via theme.js which sets data-theme on <html>.
+   Light mode = the existing page styles (no overrides).
+   Dark mode  = aggressive overrides below.
+   ========================================================================== */
+
+/* Floating toggle button */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, background 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding: 0;
+}
+.theme-toggle:hover  { transform: scale(1.08); box-shadow: 0 6px 22px rgba(0, 0, 0, 0.25); }
+.theme-toggle:active { transform: scale(0.94); }
+.theme-toggle:focus-visible {
+    outline: 2px solid #79c0ff;
+    outline-offset: 3px;
+}
+
+/* Smooth color transitions for theme changes on common elements */
+html,
+body,
+.navbar,
+.navbar-nav a,
+.topic-link,
+.stat-card,
+.coming-soon-card,
+.mascot-info,
+.updates-bar,
+.highlight-box,
+.search-input,
+.paper,
+.cta-section,
+footer,
+h1, h2, h3, h4, h5, h6,
+a, p {
+    transition: background-color 0.3s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ========== DARK THEME ========== */
+[data-theme="dark"] {
+    color-scheme: dark;
+}
+[data-theme="dark"] body {
+    background: linear-gradient(135deg, #0d1117 0%, #1c2128 100%) !important;
+    color: #e6edf3 !important;
+}
+
+/* Toggle button — dark variant */
+[data-theme="dark"] .theme-toggle {
+    background: rgba(33, 38, 45, 0.92);
+    color: #f0f6fc;
+    border-color: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+}
+
+/* Navbar */
+[data-theme="dark"] .navbar {
+    background-color: #161b22 !important;
+    border-bottom: 1px solid #30363d !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35) !important;
+}
+[data-theme="dark"] .navbar-nav a        { color: #c9d1d9 !important; }
+[data-theme="dark"] .navbar-nav a:hover  { color: #79c0ff !important; }
+[data-theme="dark"] .home-link           { color: #79c0ff !important; }
+
+/* Headings */
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6            { color: #e6edf3 !important; }
+[data-theme="dark"] .section-header h2,
+[data-theme="dark"] .header h1:not(.hero-banner__text h1) { color: #79c0ff !important; }
+
+/* Body text, subtitles, descriptions */
+[data-theme="dark"] p              { color: #c9d1d9; }
+[data-theme="dark"] .description,
+[data-theme="dark"] .subtitle      { color: #8b949e !important; }
+
+/* Links */
+[data-theme="dark"] a              { color: #79c0ff; }
+[data-theme="dark"] a:hover        { color: #a5d6ff; }
+
+/* Cards / tiles / papers */
+[data-theme="dark"] .topic-link,
+[data-theme="dark"] .stat-card,
+[data-theme="dark"] .coming-soon-card,
+[data-theme="dark"] .highlight-box,
+[data-theme="dark"] .mascot-info,
+[data-theme="dark"] .updates-bar,
+[data-theme="dark"] .paper,
+[data-theme="dark"] .card {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35) !important;
+}
+[data-theme="dark"] .topic-link:hover           { background: #1c2128 !important; }
+[data-theme="dark"] .coming-soon-card           { border-color: #30363d !important; }
+[data-theme="dark"] .highlight-box              { border-left-color: #58a6ff !important; }
+[data-theme="dark"] .mascot-info                { border-left-color: #ff7ed4 !important; background: rgba(35, 26, 45, 0.7) !important; }
+
+/* Per-category topic-link hover (override the pale-tinted light hovers) */
+[data-theme="dark"] .topic-link.singlecell:hover,
+[data-theme="dark"] .topic-link.genomics:hover,
+[data-theme="dark"] .topic-link.algorithms:hover,
+[data-theme="dark"] .topic-link.foundation:hover,
+[data-theme="dark"] .topic-link.stats:hover     { background: #1c2128 !important; }
+
+/* Card internals */
+[data-theme="dark"] .topic-title                { color: #e6edf3 !important; }
+[data-theme="dark"] .topic-description          { color: #8b949e !important; }
+[data-theme="dark"] .stat-number                { color: #79c0ff !important; }
+[data-theme="dark"] .stat-label                 { color: #8b949e !important; }
+
+/* Meta tags */
+[data-theme="dark"] .meta-tag                   { background: #21262d !important; color: #c9d1d9 !important; }
+[data-theme="dark"] .meta-tag.difficulty        { border-color: #30363d !important; }
+[data-theme="dark"] .meta-tag.time              { background: #0f2e1c !important; color: #7ee787 !important; }
+
+/* Search input */
+[data-theme="dark"] .search-input {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    border-color: #30363d !important;
+}
+[data-theme="dark"] .search-input:focus         { border-color: #58a6ff !important; box-shadow: 0 6px 20px rgba(88, 166, 255, 0.2) !important; }
+[data-theme="dark"] .search-input::placeholder  { color: #6e7681; }
+[data-theme="dark"] .search-icon                { color: #6e7681 !important; }
+
+/* Breadcrumbs */
+[data-theme="dark"] .breadcrumbs,
+[data-theme="dark"] .breadcrumbs a              { color: #8b949e !important; }
+[data-theme="dark"] .breadcrumbs span           { color: #c9d1d9 !important; }
+
+/* Status badges */
+[data-theme="dark"] .updated-badge,
+[data-theme="dark"] .update-badge               { background-color: #0d2a52 !important; color: #79c0ff !important; }
+[data-theme="dark"] .hot-badge                  { background-color: #5c1d22 !important; color: #ff9aa7 !important; }
+
+/* Footer */
+[data-theme="dark"] footer {
+    background-color: #010409 !important;
+    color: #c9d1d9 !important;
+    border-top: 1px solid #30363d;
+}
+[data-theme="dark"] footer a                    { color: #79c0ff !important; }
+[data-theme="dark"] footer a:hover              { color: #a5d6ff !important; }
+
+/* Homepage profile */
+[data-theme="dark"] .profile-links a            { color: #c9d1d9 !important; }
+[data-theme="dark"] .profile-links a:hover      { color: #79c0ff !important; }
+[data-theme="dark"] .profile-image              { border-color: #58a6ff !important; }
+
+/* CTA section */
+[data-theme="dark"] .cta-section {
+    background: linear-gradient(135deg, #30363d 0%, #1c2128 100%) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+}
+[data-theme="dark"] .cta-button {
+    background: #161b22 !important;
+    color: #79c0ff !important;
+}
+
+/* Tables */
+[data-theme="dark"] table                       { background: #161b22 !important; color: #e6edf3 !important; border-color: #30363d !important; }
+[data-theme="dark"] thead,
+[data-theme="dark"] th                          { background: #21262d !important; color: #e6edf3 !important; border-color: #30363d !important; }
+[data-theme="dark"] td                          { border-color: #30363d !important; }
+[data-theme="dark"] tr:nth-child(even) td       { background: #0f1419 !important; }
+
+/* Code / pre / blockquote */
+[data-theme="dark"] code,
+[data-theme="dark"] pre {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    border-color: #30363d !important;
+}
+[data-theme="dark"] blockquote {
+    background: #161b22 !important;
+    color: #c9d1d9 !important;
+    border-left-color: #58a6ff !important;
+}
+
+/* Hero banner (ai4bio-concepts) — slightly stronger vignette so text stays readable over possibly brighter scene */
+[data-theme="dark"] .hero-banner__vignette {
+    background:
+        linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,0.65) 100%),
+        linear-gradient(90deg,  rgba(0,0,0,0.30) 0%, rgba(0,0,0,0)  35%) !important;
+}
+
+/* Slightly dim photographic content in dark mode so it doesn't glare;
+   opt-out for an image by adding class="no-dim" */
+[data-theme="dark"] img:not(.no-dim):not(.theme-toggle *):not(.hero-banner__image) {
+    filter: brightness(0.92) contrast(1.03);
+}
+
+/* Tutorial-page headers (single-cell trajectory etc. have gradient colored headers) — keep as-is;
+   text on them is white in light mode too. */
+
+/* --------------------------------------------------------------------------
+   Nuclear readability fallback.
+   Each per-page stylesheet hardcodes colors like #333 / #666 / #2c3e50 /
+   #444 on many elements. Those colors are invisible on a dark background.
+   The rules below force a bright default on every text-bearing element in
+   dark mode; earlier rules in this file (with higher specificity) still win
+   for specific elements (links, colored badges, section-header accents,
+   muted subtitles, etc.).
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] body,
+[data-theme="dark"] body h1,
+[data-theme="dark"] body h2,
+[data-theme="dark"] body h3,
+[data-theme="dark"] body h4,
+[data-theme="dark"] body h5,
+[data-theme="dark"] body h6,
+[data-theme="dark"] body p,
+[data-theme="dark"] body li,
+[data-theme="dark"] body ul,
+[data-theme="dark"] body ol,
+[data-theme="dark"] body dl,
+[data-theme="dark"] body dt,
+[data-theme="dark"] body dd,
+[data-theme="dark"] body span,
+[data-theme="dark"] body strong,
+[data-theme="dark"] body em,
+[data-theme="dark"] body b,
+[data-theme="dark"] body i,
+[data-theme="dark"] body u,
+[data-theme="dark"] body small,
+[data-theme="dark"] body label,
+[data-theme="dark"] body figcaption,
+[data-theme="dark"] body caption,
+[data-theme="dark"] body legend,
+[data-theme="dark"] body td,
+[data-theme="dark"] body th,
+[data-theme="dark"] body div,
+[data-theme="dark"] body section,
+[data-theme="dark"] body article,
+[data-theme="dark"] body aside,
+[data-theme="dark"] body main,
+[data-theme="dark"] body header,
+[data-theme="dark"] body nav {
+    color: #e6edf3 !important;
+}
+
+/* Text that should read as muted/secondary in dark mode */
+[data-theme="dark"] .description,
+[data-theme="dark"] .subtitle,
+[data-theme="dark"] .topic-description,
+[data-theme="dark"] .stat-label,
+[data-theme="dark"] .breadcrumbs,
+[data-theme="dark"] .breadcrumbs a,
+[data-theme="dark"] small,
+[data-theme="dark"] figcaption {
+    color: #8b949e !important;
+}
+
+/* Accent headings (keep the pop on section dividers) */
+[data-theme="dark"] .section-header h2 {
+    color: #79c0ff !important;
+}
+
+/* Stat numbers stay accent-colored */
+[data-theme="dark"] .stat-number {
+    color: #79c0ff !important;
+}
+
+/* Make sure text inside colored boxes (gradient headers, CTA banners) stays
+   white — those boxes already have `color: white` which my nuclear rule
+   overrides, so re-assert here. */
+[data-theme="dark"] .cta-section,
+[data-theme="dark"] .cta-section h1,
+[data-theme="dark"] .cta-section h2,
+[data-theme="dark"] .cta-section h3,
+[data-theme="dark"] .cta-section p,
+[data-theme="dark"] .cta-section div {
+    color: #ffffff !important;
+}
+[data-theme="dark"] .cta-section .cta-button,
+[data-theme="dark"] .cta-section .cta-button i {
+    color: #79c0ff !important;
+}
+
+/* Badges keep their colored-on-colored look */
+[data-theme="dark"] .updated-badge,
+[data-theme="dark"] .update-badge              { color: #79c0ff !important; }
+[data-theme="dark"] .hot-badge                 { color: #ff9aa7 !important; }
+[data-theme="dark"] .meta-tag                  { color: #c9d1d9 !important; }
+[data-theme="dark"] .meta-tag.time             { color: #7ee787 !important; }
+
+/* --------------------------------------------------------------------------
+   Nuclear dark-surface fallback.
+   Each tutorial page defines bespoke classes (`.concept-pair`, `.intro`,
+   `.innovation-box`, `.paper-card`, ad hoc `.header` gradient boxes, etc.)
+   with white or near-white backgrounds. The `:where()` wrapper keeps this
+   rule at specificity (0,1,1) so ANY more-specific rule in this file or in a
+   page's own styles still wins — but unstyled containers automatically get a
+   dark surface so light-colored text becomes legible.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] body :where(
+    [class]:not(a):not(button):not(i):not(svg):not(path):not(circle):not(ellipse):not(rect):not(g):not(img):not(input):not(textarea):not(select):not(.theme-toggle):not(.bg-animation):not(.bg-circle):not(.sparkle):not(.butterfly):not(.bio-particle):not(.hero-banner):not([class*="hero-banner"]):not(.tag):not([class*="tag-"]):not(.meta-tag):not(.stat-number):not([class*="badge"]):not([class*="icon"]):not(.topic-icon):not(.cta-button):not(.profile-image):not(.mascot-image):not(.yes-icon):not(.no-icon):not(.container):not(.navbar-nav):not(.topic-content):not(.meta-tags):not(.neural-bg):not(.neural-node):not(.neural-connection):not(.particle):not([class*="particle"]):not([class*="orb"]):not([class*="glow"]):not([class*="ray"]):not([class*="dot"])
+) {
+    background-color: #161b22 !important;
+    background-image: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   Nuclear text-color fallback.
+   Many tutorial pages hard-code dark grays (#333, #555, #666, #78350f, etc.)
+   on light backgrounds. Once the backgrounds flip to dark via the rule above,
+   that dark text becomes invisible. This rule forces a light text color on
+   every text-bearing element. Using :is() on generic text tags AND wrapped in
+   :where() keeps the selector specificity modest (0,1,1) — high enough to
+   beat typical page rules like `.intro { color: #555 }` (0,1,0), low enough
+   for explicitly themed overrides elsewhere in this file to still win.
+   Accent/semantic classes (tags, badges, icons, links, stat-numbers) are
+   excluded so they keep their intentional colors.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] body :where(
+    p, li, td, th, dt, dd, blockquote, figcaption, caption, label, summary,
+    h1, h2, h3, h4, h5, h6,
+    span:not(.tag):not([class*="tag-"]):not([class*="badge"]):not([class*="icon"]):not(.stat-number):not(.yes-icon):not(.no-icon):not(.topic-icon),
+    div:not(.tag):not([class*="tag-"]):not([class*="badge"]):not([class*="icon"]):not(.bg-animation):not(.bg-circle):not(.sparkle):not(.butterfly):not(.bio-particle):not([class*="hero-banner"]):not(.theme-toggle):not(.profile-image):not(.mascot-image):not(.neural-bg):not(.neural-node):not(.neural-connection),
+    strong, em, b, small, mark
+) {
+    color: #e6edf3 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Broad surface override for common content-container class patterns.
+   Tutorial pages define many bespoke container classes with white / light-gray
+   backgrounds. This single rule flips them to a dark surface without needing
+   to know every class name.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] [class*="section"]:not(.cta-section):not(.hero-banner):not(.section-header):not(.theme-toggle):not(.bg-animation):not([class*="hero-banner"]),
+[data-theme="dark"] [class*="card"],
+[data-theme="dark"] [class*="box"],
+[data-theme="dark"] [class*="panel"],
+[data-theme="dark"] [class*="callout"],
+[data-theme="dark"] [class*="note"],
+[data-theme="dark"] [class*="tip"],
+[data-theme="dark"] [class*="alert"],
+[data-theme="dark"] [class*="block"]:not([class*="navbar"]),
+[data-theme="dark"] [class*="tree"],
+[data-theme="dark"] [class*="method"]:not(.method-grid),
+[data-theme="dark"] [class*="paper"],
+[data-theme="dark"] [class*="option"]:not(option),
+[data-theme="dark"] [class*="highlight"],
+[data-theme="dark"] [class*="content-section"],
+[data-theme="dark"] [class*="info-"]:not(.mascot-info),
+[data-theme="dark"] .decision-tree,
+[data-theme="dark"] .decision-option,
+[data-theme="dark"] .method-card,
+[data-theme="dark"] .content-section,
+[data-theme="dark"] .comparison-table,
+[data-theme="dark"] details,
+[data-theme="dark"] summary,
+[data-theme="dark"] fieldset {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    border-color: #30363d !important;
+}
+
+/* Give nested containers a slightly different surface so they still read as nested */
+[data-theme="dark"] .content-section .method-card,
+[data-theme="dark"] .content-section .decision-option,
+[data-theme="dark"] .decision-tree .decision-option,
+[data-theme="dark"] [class*="section"] [class*="card"],
+[data-theme="dark"] [class*="section"] [class*="box"]:not(.mascot-info),
+[data-theme="dark"] [class*="section"] [class*="option"] {
+    background: #1c2128 !important;
+    border-color: #30363d !important;
+}
+
+/* Tables (common pattern across tutorials) */
+[data-theme="dark"] table {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+}
+[data-theme="dark"] thead,
+[data-theme="dark"] thead tr,
+[data-theme="dark"] thead th {
+    background: #21262d !important;
+    color: #e6edf3 !important;
+}
+[data-theme="dark"] tbody tr:nth-child(even) { background: #0f141a !important; }
+[data-theme="dark"] tbody tr:nth-child(odd)  { background: #161b22 !important; }
+[data-theme="dark"] tbody tr:hover           { background: #22303d !important; }
+[data-theme="dark"] td,
+[data-theme="dark"] th                        { border-color: #30363d !important; color: #e6edf3 !important; }
+
+/* Any element whose class contains "header" or gradient colored headers
+   (tutorial pages use gradient-bg headers with white text) — keep text white */
+[data-theme="dark"] .header:not(.header.ai-search-box),
+[data-theme="dark"] .header h1,
+[data-theme="dark"] .header h2,
+[data-theme="dark"] .header .subtitle,
+[data-theme="dark"] .header p {
+    color: #ffffff !important;
+}
+
+/* pre / code blocks */
+[data-theme="dark"] pre,
+[data-theme="dark"] code,
+[data-theme="dark"] kbd,
+[data-theme="dark"] samp {
+    background: #0d1117 !important;
+    color: #e6edf3 !important;
+    border-color: #30363d !important;
+}
+
+/* Figures, images framed with a light border — dim the border, not the image */
+[data-theme="dark"] figure,
+[data-theme="dark"] figure > *              { background: transparent !important; }
+[data-theme="dark"] figure img              { border-color: #30363d !important; }
+
+/* Dividers / horizontal rules */
+[data-theme="dark"] hr                       { border-color: #30363d !important; background: #30363d !important; }
+
+/* Form controls */
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+    background: #0d1117 !important;
+    color: #e6edf3 !important;
+    border-color: #30363d !important;
+}
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder    { color: #6e7681; }
+
+/* Hero-banner overlay text in dark mode stays white for legibility */
+[data-theme="dark"] .hero-banner__text,
+[data-theme="dark"] .hero-banner__text h1,
+[data-theme="dark"] .hero-banner__text p      { color: #ffffff !important; }
+
+/* Honor reduced motion for transitions too */
+@media (prefers-reduced-motion: reduce) {
+    html, body, .navbar, .topic-link, .card, .paper, footer, a, p, h1, h2, h3, h4, h5, h6 {
+        transition: none !important;
+    }
+}
