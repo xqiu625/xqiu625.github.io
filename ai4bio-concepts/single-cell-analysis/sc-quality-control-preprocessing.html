@@ -724,7 +724,7 @@
             <!-- Hands-On Practice -->
             <section class="content-section" id="hands-on">
                 <h2>🛠️ Hands-On Practice</h2>
-                <p>The steps below walk through a minimal but realistic single-cell QC run using Python/Scanpy — from a raw 10x Genomics matrix to a clean, doublet-filtered <code>AnnData</code> object ready for clustering. All code runs in a standard conda environment and is designed to be self-contained.</p>
+                <p>The steps below walk through a minimal but realistic single-cell QC run using Python/Scanpy — from a cell-called 10x Genomics matrix to a clean, doublet-filtered <code>AnnData</code> object ready for clustering. All code runs in a standard conda environment and is designed to be self-contained.</p>
                 <h3>Environment &amp; packages</h3>
                 <p>Install the core Python QC stack into a fresh environment. Scrublet handles doublet detection; miQC (via rpy2) or adaptive MAD thresholds replace hard cutoffs for cell filtering.</p>
                 <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
@@ -745,54 +745,62 @@ pip install scanpy anndata scrublet scvi-tools doubletdetection
                     <li><strong>h5ad</strong> — HDF5-backed <code>AnnData</code> format; save with <code>adata.write_h5ad()</code> for downstream sharing</li>
                 </ul>
                 <h3>Minimal code walkthrough</h3>
-                <p>Load a raw 10x matrix, annotate mitochondrial genes, compute QC metrics, visualise distributions, apply MAD-based adaptive thresholds, run Scrublet, and write a clean h5ad.</p>
+                <p>Load the cell-called (filtered) 10x matrix, apply a basic floor filter, annotate mitochondrial genes, compute QC metrics, visualise distributions, apply log-space MAD adaptive thresholds, run Scrublet, and write a clean h5ad.</p>
                 <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
-import scrublet as scr
 import numpy as np
+from scipy.stats import median_abs_deviation
 
-# 1. Load raw 10x matrix (genes x barcodes, then transposed to cells x genes)
+# 1. Load the CELL-CALLED matrix for standard QC.
+#    Use filtered_feature_bc_matrix (CellRanger's called cells). The
+#    raw_feature_bc_matrix holds ALL barcodes (mostly empty droplets) and is
+#    only needed for ambient-RNA correction (SoupX / decontX), not cell QC.
+#    read_10x_mtx loads genes x barcodes and returns it as cells x genes.
 adata = sc.read_10x_mtx(
-    "raw_feature_bc_matrix/",
+    "filtered_feature_bc_matrix/",
     var_names="gene_symbols",
     cache=True,
 )
 adata.var_names_make_unique()
 
-# 2. Annotate mitochondrial genes
+# 2. Basic floor filter: drop near-empty cells and never-detected genes
+sc.pp.filter_cells(adata, min_genes=200)
+sc.pp.filter_genes(adata, min_cells=3)
+
+# 3. Annotate mitochondrial genes (human "MT-"; mouse uses lowercase "mt-")
 adata.var["mt"] = adata.var_names.str.startswith("MT-")
 
-# 3. Compute per-cell QC metrics
+# 4. Compute per-cell QC metrics (log1p=True adds the log-scaled columns used below)
 sc.pp.calculate_qc_metrics(
-    adata, qc_vars=["mt"], percent_top=None, log1p=False, inplace=True
+    adata, qc_vars=["mt"], percent_top=None, log1p=True, inplace=True
 )
 
-# 4. Visualise distributions (spot outlier thresholds)
+# 5. Visualise distributions (spot outlier thresholds)
 sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
              jitter=0.4, multi_panel=True)
 
-# 5. MAD-based adaptive filtering (3 MADs from the median)
-def mad_filter(series, n_mads=3):
-    med = np.median(series)
-    mad = np.median(np.abs(series - med))
-    return (series &gt;= med - n_mads * mad) &amp; (series &lt;= med + n_mads * mad)
+# 6. MAD-based adaptive filtering. Count metrics are right-skewed, so threshold
+#    on the log1p values; 5 MADs from the median is the common sc convention.
+def is_outlier(metric, n_mads=5):
+    med = np.median(metric)
+    mad = median_abs_deviation(metric)
+    return (metric &lt; med - n_mads * mad) | (metric &gt; med + n_mads * mad)
 
-keep = (
-    mad_filter(adata.obs["n_genes_by_counts"]) &amp;
-    mad_filter(adata.obs["total_counts"]) &amp;
-    (adata.obs["pct_counts_mt"] &lt; 20)   # hard upper cap for mito
+outlier = (
+    is_outlier(adata.obs["log1p_total_counts"]) |
+    is_outlier(adata.obs["log1p_n_genes_by_counts"])
 )
+keep = ~outlier &amp; (adata.obs["pct_counts_mt"] &lt; 20)   # hard upper cap for mito
 adata = adata[keep].copy()
 print(f"Cells after QC filter: {adata.n_obs}")
 
-# 6. Doublet detection with Scrublet
-scrub = scr.Scrublet(adata.X)
-doublet_scores, predicted_doublets = scrub.scrub_doublets()
-adata.obs["doublet_score"] = doublet_scores
-adata.obs["predicted_doublet"] = predicted_doublets
+# 7. Doublet detection with Scrublet (scanpy wrapper). Needs RAW counts —
+#    adata.X has not been normalised yet. Set expected_doublet_rate from the
+#    10x loading chart (roughly 0.8% per 1,000 cells recovered).
+sc.pp.scrublet(adata, expected_doublet_rate=0.06)
 adata = adata[~adata.obs["predicted_doublet"]].copy()
 print(f"Cells after doublet removal: {adata.n_obs}")
 
-# 7. Save QC-filtered object
+# 8. Save QC-filtered object
 adata.write_h5ad("adata_qc.h5ad")
 print("Saved adata_qc.h5ad")</code></pre>
                 <h3>Common pitfalls &amp; tips</h3>
