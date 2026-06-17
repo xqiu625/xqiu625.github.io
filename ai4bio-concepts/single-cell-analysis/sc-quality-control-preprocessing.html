@@ -409,51 +409,6 @@
                 </div>
             </section>
 
-            <!-- CATEGORY 4: Imputation -->
-            <section class="content-section">
-                <h2><i class="fas fa-magic"></i> Imputation & Missing Data</h2>
-                <div class="category-intro">
-                    <i class="fas fa-quote-left"></i>
-                    <strong>Goal:</strong> "I need to recover gene expression values lost due to dropout in single-cell data to improve downstream analysis."
-                </div>
-
-                <div class="paper-grid">
-                    <!-- scImpute -->
-                    <div class="paper-card">
-                        <h4>scImpute</h4>
-                        <div class="paper-meta">
-                            <span class="meta-badge year-badge">2018</span>
-                            <span class="meta-badge impute-badge">Imputation</span>
-                            <span class="meta-badge journal-badge">Nat Commun</span>
-                        </div>
-                        <p class="paper-description">
-                            Statistical imputation method that distinguishes true zeros from dropouts using a mixture model. Imputes only dropout zeros while preserving biological zeros. One of the foundational imputation methods for scRNA-seq.
-                        </p>
-                        <div class="paper-links">
-                            <a href="https://doi.org/10.1038/s41467-018-03405-7" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
-                            <a href="https://github.com/Vivianstats/scImpute" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                        </div>
-                    </div>
-
-                    <!-- scCR -->
-                    <div class="paper-card">
-                        <h4>scCR</h4>
-                        <div class="paper-meta">
-                            <span class="meta-badge year-badge">2024</span>
-                            <span class="meta-badge impute-badge">Deep Learning</span>
-                            <span class="meta-badge journal-badge">NeurIPS</span>
-                        </div>
-                        <p class="paper-description">
-                            Deep learning-based imputation using contrastive representation learning. Learns robust cell embeddings that improve imputation accuracy while preserving cell-type-specific expression patterns. State-of-the-art performance on benchmarks.
-                        </p>
-                        <div class="paper-links">
-                            <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/21b7e46991301ad2126c3e39384df6ed-Paper-Conference.pdf" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
-                            <a href="https://github.com/daehoum1/scCR" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
             <!-- CATEGORY 5: Feature Selection & Dimensionality Reduction -->
             <section class="content-section">
                 <h2><i class="fas fa-filter"></i> Feature Selection & Dimensionality Reduction</h2>
@@ -696,7 +651,6 @@
                     <ul>
                         <li><strong>Doublet Removal:</strong> DoubletFinder (Seurat) or Scrublet (Scanpy)</li>
                         <li><strong>Ambient RNA:</strong> SoupX (simple), DecontX (Bayesian) &mdash; for molecular depletion of abundant transcripts, see scCLEAN</li>
-                        <li><strong>Imputation:</strong> scImpute (statistical) or scCR (deep learning)</li>
                         <li><strong>Feature Selection:</strong> DELVE for trajectory-preserving gene selection</li>
                         <li><strong>Comprehensive QC:</strong> SCTK for unified pipeline with multiple algorithms</li>
                     </ul>
@@ -705,8 +659,8 @@
                 <div class="highlight-box">
                     <h4>By Data Scale</h4>
                     <ul>
-                        <li><strong>&lt;100K cells:</strong> Standard tools (DoubletFinder, SoupX, scImpute)</li>
-                        <li><strong>100K-1M cells:</strong> SnapATAC2, Scrublet, scCR</li>
+                        <li><strong>&lt;100K cells:</strong> Standard tools (DoubletFinder, SoupX)</li>
+                        <li><strong>100K-1M cells:</strong> SnapATAC2, Scrublet</li>
                         <li><strong>&gt;1M cells:</strong> scBaseCount ecosystem, scPRINT foundation model</li>
                     </ul>
                 </div>
