@@ -738,7 +738,7 @@
             <!-- Latest Updates Bar -->
             <div class="updates-bar">
                 <strong style="color:#667eea;"><i class="fas fa-bullhorn"></i> Latest:</strong>
-                <span>Added comprehensive guide on <strong>Spatial Transcriptomics Technologies</strong> (Dec 2025).</span>
+                <span>Added comprehensive guide on <strong>Single-Cell Quality Control &amp; Preprocessing</strong> (Jun 2026).</span>
                 <span class="update-badge">New</span>
             </div>
 
@@ -751,7 +751,7 @@
             <!-- Stats -->
             <div class="stats-section">
                 <div class="stat-card">
-                    <div class="stat-number">11</div>
+                    <div class="stat-number">12</div>
                     <div class="stat-label">Tutorials</div>
                 </div>
                 <div class="stat-card">
@@ -771,6 +771,21 @@
             </div>
             
             <div class="topics-grid">
+                <a href="single-cell-analysis/sc-quality-control-preprocessing.html" class="topic-link singlecell">
+                    <i class="fas fa-filter topic-icon"></i>
+                    <div class="topic-content">
+                        <div class="topic-title">
+                            Quality Control &amp; Preprocessing
+                            <span class="status-badge updated-badge">New</span>
+                        </div>
+                        <div class="topic-description">Comprehensive guide to QC pipelines, doublet detection, ambient RNA removal, and preprocessing workflows.</div>
+                        <div class="meta-tags">
+                            <span class="meta-tag time"><i class="far fa-clock"></i> 30 min</span>
+                            <span class="meta-tag difficulty">Intermediate</span>
+                        </div>
+                    </div>
+                </a>
+
                 <a href="single-cell-analysis/trajectory-inference-overview.html" class="topic-link singlecell">
                     <i class="fas fa-project-diagram topic-icon"></i>
                     <div class="topic-content">
@@ -839,7 +854,6 @@
                     <div class="topic-content">
                         <div class="topic-title">
                             Spatial Transcriptomics Technologies
-                            <span class="status-badge updated-badge">New</span>
                         </div>
                         <div class="topic-description">Comprehensive guide to spatially-resolved gene expression analysis: from sequencing-based to imaging-based methods.</div>
                         <div class="meta-tags">
@@ -965,7 +979,7 @@
         <div class="container">
             <p style="font-size: 1.1em;">Created and maintained by <a href="../">Xinru Qiu</a></p>
             <p style="font-size: 0.9em; margin-top: 10px; color: #cbd5e0;">
-                Last updated: December 2025 | 
+                Last updated: June 2026 | 
                 PhD in Bioinformatics | 
                 <a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ">Google Scholar</a>
             </p>
@@ -988,4 +1002,13 @@
                 // Also search tags
                 let tags = card.querySelector('.meta-tags') ? card.querySelector('.meta-tags').textContent.toLowerCase() : "";
                 
-                if (title.includes(query) || des
+                if (title.includes(query) || desc.includes(query) || tags.includes(query)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>

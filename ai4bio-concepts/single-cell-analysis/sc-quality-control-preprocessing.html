@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Comprehensive guide to single-cell quality control and preprocessing methods">
+    <title>Single-Cell Quality Control & Preprocessing - AI4Bio Learning Hub</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root{
+            --sans:'Lato',sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+            --bg:#fbf9ed; --paper:#ffffff; --paper-2:#fdfbf0;
+            --ink:#2c2a22; --ink-2:#555048; --ink-3:#857f6e; --ink-4:#aaa48f;
+            --rule:#e6dfc2; --rule-soft:#f1ecd6;
+            --accent:#F7E14D; --accent-2:#e3c81f; --accent-tint:#fdf7d0; --accent-ink:#6b5d00;
+            --warn:#b8801c; --warn-tint:#fff5e6;
+            --primary:#6b5d00; --primary-dark:#4d4406; --secondary:#8a7700;
+            --text-dark:#2c2a22; --text-light:#555048;
+        }
+        *{box-sizing:border-box;}
+        body{font-family:var(--sans); background:linear-gradient(135deg,#fbf9ed 0%,#f5efce 50%,#efe7b8 100%); line-height:1.7; color:#2c2a22; margin:0; padding:0;}
+        ::selection{background:#F7E14D; color:#3a3300;}
+        a{color:#6b5d00;}
+        .container{max-width:1180px; margin:0 auto; padding:20px;}
+        .navbar{background:#fff; border-bottom:1px solid #e6dfc2; padding:10px 0; position:sticky; top:0; z-index:1000; box-shadow:0 2px 5px rgba(80,70,0,0.08);}
+        .navbar-nav{list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; flex-wrap:wrap;}
+        .navbar-nav li{margin:5px 15px;}
+        .navbar-nav a{color:#666; text-decoration:none; font-weight:bold; font-size:14.5px; display:inline-flex; align-items:center; gap:7px; transition:color .25s;}
+        .navbar-nav a:hover{color:#6b5d00;}
+        .navbar-nav a i{font-size:13px; opacity:.75;}
+        .home-link{color:#4d4406 !important;}
+        .header{background:linear-gradient(135deg,#26230f 0%,#403a1a 50%,#5e5424 100%); color:#fff; padding:64px 48px; border-radius:20px; margin:24px 0; text-align:center; box-shadow:0 8px 30px rgba(60,52,10,0.4); position:relative; overflow:hidden;}
+        .header::before{content:"scRNA  UMAP  k-NN  \03BC  \03C3  \2207"; position:absolute; top:18px; left:0; right:0; text-align:center; font-size:3em; opacity:0.10; letter-spacing:20px; font-family:var(--mono); pointer-events:none; white-space:nowrap; color:#F7E14D;}
+        .header h1{margin:0 0 16px; font-size:2.7em; font-weight:300; letter-spacing:.5px; position:relative; line-height:1.12; color:#F7E14D;}
+        .header .subtitle{font-size:1.25em; color:#f3edc6; margin:0 auto 18px; font-weight:300; font-style:italic; max-width:72ch; line-height:1.5; position:relative;}
+        .header .description, .header .intro{font-size:1.02em; max-width:880px; margin:0 auto; line-height:1.8; font-weight:300; color:rgba(255,255,255,0.9); position:relative; text-align:left;}
+        .stats-bar{background:linear-gradient(135deg,#ffffff 0%,#fdfbf0 100%); padding:28px; border-radius:15px; margin:25px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:22px; box-shadow:0 4px 20px rgba(80,70,0,0.1); border:1px solid rgba(120,105,0,0.18);}
+        .stat-item{text-align:center; padding:18px; border-left:4px solid #F7E14D; background:#fff; border-radius:8px; transition:transform .3s ease,box-shadow .3s ease;}
+        .stat-item:hover{transform:translateY(-5px); box-shadow:0 6px 20px rgba(120,105,0,0.18);}
+        .stat-number{font-size:2.6em; font-weight:300; color:#4d4406; display:block; letter-spacing:-1px;}
+        .stat-label{color:#6b5d00; font-size:.92em; margin-top:8px; font-weight:500;}
+        .content-section, .section, .overview-section, .category-section{background:#fff; padding:44px 40px; border-radius:15px; margin:25px 0; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-top:4px solid #F7E14D;}
+        .content-section h2, .section h2, .overview-section h2, .category-header h2{color:#4d4406; border-bottom:2px solid #F7E14D; padding-bottom:15px; margin:0 0 28px; font-size:1.85em; font-weight:700; letter-spacing:.3px;}
+        .content-section h3, .section h3{color:#6b5d00; margin:35px 0 18px; font-size:1.4em; font-weight:700; border-left:4px solid #F7E14D; padding-left:15px; line-height:1.25;}
+        .content-section h4, .section h4{color:#4d4406;}
+        .content-section p, .section p{color:#4a463b; line-height:1.75; margin:0 0 15px;}
+        .content-section ul, .content-section ol, .section ul, .section ol{line-height:1.9; color:#4a463b;}
+        .content-section li, .section li{margin-bottom:6px;}
+        .content-section li::marker, .section li::marker{color:#c9ab10;}
+        strong{color:#4d4406;}
+        em{color:#7a6a10;}
+        blockquote{border-left:4px solid #F7E14D; background:#fdfbf0; margin:22px 0; padding:16px 22px; border-radius:0 8px 8px 0; color:#4a463b; font-style:italic;}
+        pre{background:#26230f; color:#f3edc6; padding:18px 20px; border-radius:10px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.55;}
+        code{font-family:var(--mono);}
+        .paper-grid, .method-grid, .glossary-grid, .tools-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:22px; margin:26px 0;}
+        .paper-card, .method-card, .tool-card{border:1px solid #e6dfc2; border-top:4px solid #F7E14D; border-radius:12px; padding:24px; background:linear-gradient(135deg,#ffffff 0%,#fdfbf0 100%); transition:all .3s ease; display:flex; flex-direction:column;}
+        .paper-card:hover, .method-card:hover, .tool-card:hover{border-color:#e3c81f; box-shadow:0 8px 25px rgba(120,105,0,0.2); transform:translateY(-4px);}
+        .paper-card h4, .method-card h4, .tool-name{color:#4d4406; margin:0 0 12px; font-size:1.12em; line-height:1.4; font-weight:700;}
+        .paper-meta, .meta, .tool-header, .tool-tags{display:flex; flex-wrap:wrap; gap:7px; margin:0 0 14px; align-items:center;}
+        .meta-badge, .year-badge, .journal-badge, .pipeline-badge, .doublet-badge, .ambient-badge, .impute-badge, .tool-tag, .tool-year, .tool-journal, .concept-tag, .model-tag, .year, .journal{display:inline-block; padding:4px 10px; border-radius:12px; font-size:.72em; font-weight:700; text-transform:uppercase; letter-spacing:.04em; background:#F7E14D; color:#3a3300;}
+        .journal-badge, .tool-journal, .journal{background:#fdf3b0; color:#5a4d00;}
+        .type-badge, .concept-tag{background:#4d4406; color:#fff;}
+        .paper-description, .tool-best-for, .description{color:#4a463b; line-height:1.6; margin:0 0 14px; font-size:.93em;}
+        .key-contributions, .paper-highlights, .key-features{list-style:none; padding:0; margin:0 0 14px; border-top:1px dashed #e6dfc2; padding-top:12px;}
+        .key-contributions li, .paper-highlights li, .key-features li{padding-left:20px; position:relative; margin:7px 0; font-size:.86em; color:#4a463b; line-height:1.5;}
+        .key-contributions li::before, .paper-highlights li::before, .key-features li::before{content:"\2713"; position:absolute; left:0; color:#2e9e6b; font-weight:bold;}
+        .paper-links, .links{margin-top:auto; display:flex; gap:8px; flex-wrap:wrap;}
+        .paper-links a, .paper-link, .links a, .ref-link{padding:6px 13px; background:#F7E14D; color:#3a3300; text-decoration:none; border-radius:6px; font-size:.8em; font-weight:700; display:inline-flex; align-items:center; gap:6px; transition:all .25s ease; border:1px solid #e3c81f;}
+        .paper-links a:hover, .paper-link:hover, .links a:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(120,105,0,0.3); background:#ffe96b;}
+        .highlight-box, .feature-highlight, .highlight{background:linear-gradient(135deg,#fffdf0 0%,#fcf3bf 100%); border:2px solid #F7E14D; border-left:6px solid #e3c81f; padding:28px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(120,105,0,0.1);}
+        .highlight-box h3, .highlight-box h4, .feature-highlight h4{color:#4d4406; margin:0 0 16px; font-size:1.3em; font-weight:700; border-bottom:2px solid #F7E14D; padding-bottom:10px;}
+        .highlight-box p, .highlight-box li, .feature-highlight p{color:#4a463b;}
+        .comparison-table, .quick-ref-table{width:100%; border-collapse:collapse; margin:22px 0; font-size:.93em; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(120,105,0,0.08);}
+        .comparison-table th, .comparison-table td, .quick-ref-table th, .quick-ref-table td{padding:13px 15px; text-align:left; border-bottom:1px solid #f1ecd6;}
+        .comparison-table th, .quick-ref-table th{background:#F7E14D; color:#3a3300; font-weight:bold;}
+        .comparison-table tr:hover, .quick-ref-table tr:hover{background:#fdfbf0;}
+        .comparison-table td:first-child{font-weight:bold; color:#6b5d00;}
+        .yes-icon{color:#2e9e6b; font-weight:bold;} .no-icon{color:#c0392b; font-weight:bold;}
+        .concept-card{background:#fff; border:1px solid #e6dfc2; border-top:3px solid #F7E14D; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.05); display:flex; flex-direction:column;}
+        .concept-card h4{color:#4d4406; font-size:1.08em; margin:4px 0 12px; line-height:1.3;}
+        .concept-card p{color:#4a463b; font-size:13.5px; line-height:1.6; margin:0;}
+        .timeline{position:relative; margin:25px 0 0; padding:4px 0;}
+        .timeline::before{content:''; position:absolute; left:8px; top:6px; bottom:6px; width:2px; background:linear-gradient(#f1d93a,#c9ab10); border-radius:2px;}
+        .timeline-item{position:relative; padding-left:40px; padding-bottom:28px;}
+        .timeline-item::before{content:''; position:absolute; left:0; top:5px; width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid #e3c81f; box-shadow:0 0 0 4px rgba(227,200,31,0.18);}
+        .timeline-item h3, .timeline-item h4{color:#4d4406; margin:0 0 6px; font-weight:700; border:0; padding:0;}
+        .category-intro, .category-header{color:#4a463b;}
+        /* annotation page bespoke */
+        .main-content-wrapper{display:flex; gap:28px; align-items:flex-start; max-width:1180px; margin:0 auto; padding:0 20px;}
+        .toc-sidebar{position:sticky; top:70px; width:240px; flex-shrink:0; background:#fff; border:1px solid #e6dfc2; border-top:4px solid #F7E14D; border-radius:12px; padding:18px 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); font-size:.9em;}
+        .toc-sidebar a{display:block; color:#555048; text-decoration:none; padding:5px 0; border-bottom:1px solid #f1ecd6;}
+        .toc-sidebar a:hover{color:#6b5d00;}
+        .content-area{flex:1; min-width:0;}
+        .workflow-diagram{background:linear-gradient(135deg,#fffdf0 0%,#fcf3bf 100%); border:1px solid #e6dfc2; border-radius:12px; padding:24px; margin:22px 0;}
+        .workflow-steps{display:flex; flex-wrap:wrap; align-items:center; gap:10px;}
+        .workflow-step{background:#fff; border:1px solid #e3c81f; border-radius:8px; padding:10px 16px; font-weight:600; color:#4d4406;}
+        .workflow-arrow{color:#c9ab10; font-weight:bold; font-size:1.2em;}
+        .tool-header{justify-content:space-between;}
+        /* batch demo bespoke */
+        .demo-container{background:#fff; border:1px solid #e6dfc2; border-radius:12px; padding:24px; margin:22px 0; box-shadow:0 4px 15px rgba(0,0,0,0.06);}
+        .demo-controls{display:flex; gap:10px; justify-content:center; margin-bottom:16px;}
+        .demo-btn{padding:9px 20px; border-radius:8px; border:1px solid #e3c81f; background:#fff; color:#4d4406; font-weight:700; cursor:pointer; transition:all .2s;}
+        .demo-btn.active, .demo-btn:hover{background:#F7E14D; color:#3a3300;}
+        .svg-canvas{background:#fdfbf0; border:1px solid #e6dfc2; border-radius:10px; margin:0 auto; display:block;}
+        .demo-legend{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:14px; font-size:.9em; color:#4a463b;}
+        .legend-item{display:flex; align-items:center; gap:6px;}
+        .legend-dot{width:12px; height:12px; border-radius:50%; display:inline-block;}
+        footer{text-align:center; padding:36px 30px; color:#857f6e; background:transparent; margin-top:30px;}
+        footer a{color:#6b5d00; text-decoration:none; font-weight:600;}
+        /* SVG helper classes */
+        svg .paper{fill:#ffffff;stroke:var(--rule);}
+        svg .paper-2{fill:var(--paper-2);stroke:var(--rule);}
+        svg .accent-tint,svg .node,svg .box,svg .stage{fill:var(--accent-tint);}
+        svg .warn-tint{fill:var(--warn-tint);}
+        svg .node-label{fill:var(--ink);}
+        svg .label{fill:var(--ink-2);}
+        svg .mono{fill:var(--ink);font-family:var(--mono);}
+        svg .fig-label{fill:var(--ink-3);}
+        svg line.accent,svg path.accent,svg polyline.accent{stroke:var(--accent-2);fill:none;}
+        svg line.warn,svg path.warn,svg polyline.warn{stroke:var(--warn);fill:none;}
+        svg line.ink-3,svg path.ink-3,svg polyline.ink-3{stroke:var(--ink-3);fill:none;}
+        svg line.rule,svg path.rule,svg polyline.rule{stroke:var(--rule);fill:none;}
+        svg rect.accent,svg circle.accent,svg text.accent,svg ellipse.accent{fill:var(--accent-2);}
+        svg rect.warn,svg circle.warn,svg text.warn,svg ellipse.warn{fill:var(--warn);}
+        @media (max-width:768px){.header{padding:40px 24px;} .header h1{font-size:2em;} .header::before{display:none;} .content-section,.section,.overview-section,.category-section{padding:28px 22px;} .paper-grid,.method-grid,.glossary-grid,.tools-grid,.stats-bar{grid-template-columns:1fr;} .main-content-wrapper{flex-direction:column;} .toc-sidebar{position:static; width:100%;}}
+    
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
+                </li>
+                <li>
+                    <a href="https://xqiu625.github.io/">
+                        <i class="fas fa-home"></i> Xinru's Homepage
+                    </a>
+                </li>
+                <li>
+                    <a href="#compare">
+                        <i class="fas fa-code-compare"></i> Compare
+                    </a>
+                </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Header -->
+            <div class="header">
+                <h1>Single-Cell Quality Control & Preprocessing</h1>
+                <p class="subtitle">A Comprehensive Methods Repository (2018-2026)</p>
+                <p class="description">
+                    From raw sequencing data to analysis-ready matrices. Whether you need to detect doublets,
+                    remove ambient RNA contamination, impute missing values, or leverage foundation models for
+                    quality control, find the right computational tool for your single-cell preprocessing workflow.
+                </p>
+            </div>
+
+            <!-- Statistics -->
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">17</span>
+                    <span class="stat-label">Curated Methods</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">9</span>
+                    <span class="stat-label">Years (2018-2026)</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">500M+</span>
+                    <span class="stat-label">Cells in Largest Repository</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">AI4Bio</span>
+                    <span class="stat-label">Hub</span>
+                </div>
+            </div>
+
+            <!-- CATEGORY 1: Core QC Pipelines -->
+            <section class="content-section">
+                <h2><i class="fas fa-cogs"></i> Core QC Pipelines & Frameworks</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need a comprehensive, end-to-end quality control workflow that handles multiple QC tasks in a unified framework."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- SCTK -->
+                    <div class="paper-card">
+                        <h4>SCTK (singleCellTK)</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2022</span>
+                            <span class="meta-badge pipeline-badge">QC Pipeline</span>
+                            <span class="meta-badge journal-badge">Nat Commun</span>
+                        </div>
+                        <p class="paper-description">
+                            Comprehensive R/Bioconductor pipeline integrating 7 doublet detection and 3 decontamination algorithms into a unified framework. Features automated parameter optimization, consensus-based filtering, and supports both interactive (Shiny GUI) and command-line workflows.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41467-022-34591-0" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/compbiomed/singleCellTK" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- Reference Optimization -->
+                    <div class="paper-card">
+                        <h4>Reference Optimization</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2023</span>
+                            <span class="meta-badge pipeline-badge">Alignment</span>
+                            <span class="meta-badge journal-badge">Nat Methods</span>
+                        </div>
+                        <p class="paper-description">
+                            Systematic study showing that reference selection significantly impacts scRNA-seq analysis. Demonstrates how to optimize gene annotations and transcriptome models for improved quantification accuracy, especially for intron-containing reads.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.nature.com/articles/s41592-023-02003-w" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/PoolLab/ReferenceEnhancer" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 2: Doublet Detection -->
+            <section class="content-section">
+                <h2><i class="fas fa-clone"></i> Doublet Detection</h2>
+                <div style="background:linear-gradient(135deg,#fffdf0 0%,#ffffff 100%); border:2px solid #F7E14D; border-radius:12px; padding:26px; margin:0 0 24px;">
+                    <h4 style="text-align:center; color:#4d4406; margin:0 0 4px; font-size:1.18em;">What a doublet is — and how simulation catches it</h4>
+                    <p style="text-align:center; color:#857f6e; font-size:0.9em; margin:0 0 16px;">Two cells captured in one droplet share a barcode, so they look like a single cell with a blended profile. Detectors spot them by simulating artificial doublets and asking which real cells resemble them.</p>
+                    <svg viewBox="0 0 900 290" style="width:100%; height:auto; font-family:'Lato',sans-serif;">
+                        <defs><marker id="dbA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c9ab10"/></marker></defs>
+                        <!-- droplet capture -->
+                        <text x="150" y="32" text-anchor="middle" font-size="13" fill="#4d4406" font-weight="bold">droplet capture</text>
+                        <circle cx="105" cy="95" r="34" fill="#fdf7d0" stroke="#e3c81f" stroke-width="1.5"/>
+                        <circle cx="96" cy="90" r="11" fill="#4A90D9"/><circle cx="116" cy="100" r="11" fill="#e74c3c"/>
+                        <text x="105" y="148" text-anchor="middle" font-size="10.5" fill="#857f6e">2 cells, 1 barcode</text>
+                        <text x="105" y="163" text-anchor="middle" font-size="10.5" fill="#c0392b" font-weight="bold">= doublet</text>
+                        <circle cx="205" cy="95" r="28" fill="#fdf7d0" stroke="#e3c81f" stroke-width="1.5"/>
+                        <circle cx="205" cy="95" r="11" fill="#2ecc71"/>
+                        <text x="205" y="148" text-anchor="middle" font-size="10.5" fill="#857f6e">1 cell</text>
+                        <text x="205" y="163" text-anchor="middle" font-size="10.5" fill="#1e7e34" font-weight="bold">= singlet</text>
+
+                        <line x1="250" y1="100" x2="312" y2="100" stroke="#c9ab10" stroke-width="2" marker-end="url(#dbA)"/>
+
+                        <!-- expression blend -->
+                        <text x="430" y="32" text-anchor="middle" font-size="13" fill="#4d4406" font-weight="bold">blended expression</text>
+                        <g font-family="'IBM Plex Mono',monospace" font-size="10">
+                            <rect x="330" y="56" width="200" height="22" rx="3" fill="#eaf3fc" stroke="#4A90D9"/><text x="340" y="71" fill="#2c5aa0">T-cell genes: CD3D ▮▮▮</text>
+                            <rect x="330" y="84" width="200" height="22" rx="3" fill="#fdecec" stroke="#e74c3c"/><text x="340" y="99" fill="#c0392b">B-cell genes: MS4A1 ▮▮▮</text>
+                            <rect x="330" y="116" width="200" height="26" rx="3" fill="#fff7c9" stroke="#e3c81f" stroke-width="1.5"/><text x="340" y="133" fill="#6b5d00">BOTH high — impossible for</text>
+                        </g>
+                        <text x="430" y="160" text-anchor="middle" font-size="10.5" fill="#857f6e">one real cell type</text>
+
+                        <line x1="540" y1="100" x2="602" y2="100" stroke="#c9ab10" stroke-width="2" marker-end="url(#dbA)"/>
+
+                        <!-- simulation scoring -->
+                        <text x="730" y="32" text-anchor="middle" font-size="13" fill="#4d4406" font-weight="bold">simulate &amp; score</text>
+                        <rect x="620" y="50" width="240" height="150" rx="10" fill="#fdfbf0" stroke="#e6dfc2"/>
+                        <!-- real cells -->
+                        <g fill="#2ecc71"><circle cx="670" cy="95" r="5"/><circle cx="690" cy="115" r="5"/><circle cx="660" cy="130" r="5"/><circle cx="700" cy="90" r="5"/><circle cx="685" cy="150" r="5"/></g>
+                        <!-- simulated doublets -->
+                        <g fill="#c9ab10"><circle cx="790" cy="100" r="5"/><circle cx="805" cy="120" r="5"/><circle cx="780" cy="135" r="5"/><circle cx="800" cy="85" r="5"/></g>
+                        <!-- suspect real cell near simulated cluster -->
+                        <circle cx="775" cy="112" r="6" fill="#e74c3c" stroke="#3a3300" stroke-width="1.5"/>
+                        <text x="740" y="180" text-anchor="middle" font-size="9.5" fill="#1e7e34">real singlets</text>
+                        <text x="800" y="180" text-anchor="middle" font-size="9.5" fill="#6b5d00">simulated doublets</text>
+                        <text x="775" y="78" text-anchor="middle" font-size="9" fill="#c0392b">flagged</text>
+                    </svg>
+                    <p style="text-align:center; color:#666; margin:14px 0 0; font-size:0.92em;"><strong style="color:#6b5d00;">Key insight:</strong> tools like Scrublet and DoubletFinder generate synthetic doublets by averaging random pairs of real cells, embed everything together, and score each real cell by how many simulated doublets sit nearby. Cells in dense simulated-doublet neighborhoods are flagged and removed before analysis.</p>
+                </div>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need to identify and remove multiplets (droplets containing two or more cells) from my single-cell data to ensure analysis quality."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- DoubletFinder -->
+                    <div class="paper-card">
+                        <h4>DoubletFinder</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2019</span>
+                            <span class="meta-badge doublet-badge">Doublet Detection</span>
+                            <span class="meta-badge journal-badge">Cell Systems</span>
+                        </div>
+                        <p class="paper-description">
+                            Identifies doublets by creating artificial doublets (pK-NN approach) and measuring proximity in gene expression space. Features parametric parameter sweeping (pK/pN optimization) for dataset-specific calibration. Integrated into Seurat workflows.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1016/j.cels.2019.03.003" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/chris-mcginnis-ucsf/DoubletFinder" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- Scrublet -->
+                    <div class="paper-card">
+                        <h4>Scrublet</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2019</span>
+                            <span class="meta-badge doublet-badge">Doublet Detection</span>
+                            <span class="meta-badge journal-badge">Cell Systems</span>
+                        </div>
+                        <p class="paper-description">
+                            Python-based doublet detection using simulated doublet enrichment analysis. Computes doublet scores based on k-nearest neighbor density in PCA space. Fast, scalable, and well-integrated with Scanpy ecosystem.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1016/j.cels.2018.11.005" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/swolock/scrublet" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 3: Ambient RNA & Contamination Removal -->
+            <section class="content-section">
+                <h2><i class="fas fa-broom"></i> Ambient RNA & Contamination Removal</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need to remove cell-free RNA contamination (soup) from droplet-based single-cell data to improve signal-to-noise ratio."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- SoupX -->
+                    <div class="paper-card">
+                        <h4>SoupX</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2020</span>
+                            <span class="meta-badge ambient-badge">Ambient RNA</span>
+                            <span class="meta-badge journal-badge">GigaScience</span>
+                        </div>
+                        <p class="paper-description">
+                            Estimates and removes ambient RNA contamination using empty droplet profiles. Uses cluster-specific marker genes to estimate contamination fraction per cell. Works with 10x Genomics data and integrates with Seurat.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1093/gigascience/giaa151" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/constantAmateur/SoupX" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- DecontX -->
+                    <div class="paper-card">
+                        <h4>DecontX</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2020</span>
+                            <span class="meta-badge ambient-badge">Ambient RNA</span>
+                            <span class="meta-badge journal-badge">Genome Biology</span>
+                        </div>
+                        <p class="paper-description">
+                            Bayesian method for decontamination using variational inference. Models each cell's expression as a mixture of native and contaminating RNA. Provides uncertainty estimates and works without clustering pre-requisites.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1186/s13059-020-02050-0" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/campbio/celda" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scCLEAN -->
+                    <div class="paper-card">
+                        <h4>scCLEAN</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2025</span>
+                            <span class="meta-badge ambient-badge">Molecular / Library Prep</span>
+                            <span class="meta-badge journal-badge">Nat Commun</span>
+                        </div>
+                        <p class="paper-description">
+                            Molecular (wet-lab) method, not a computational tool. Single-cell CRISPRclean uses CRISPR/Cas9 to target and remove highly abundant, uninformative transcripts (both genomic and transcriptomic) from prepared cDNA before sequencing, redistributing roughly half of reads toward lower-abundance transcripts. Improves detection of rare/low-expression genes in a way that cannot be matched by deeper sequencing alone; complements — rather than replaces — computational decontamination.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.nature.com/articles/s41467-025-59880-2" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/acpandey/scCLEAN" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- Ambient RNA snRNA-seq -->
+                    <div class="paper-card">
+                        <h4>Ambient RNA Analysis (snRNA-seq)</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2022</span>
+                            <span class="meta-badge ambient-badge">Review/Analysis</span>
+                            <span class="meta-badge journal-badge">Neuron</span>
+                        </div>
+                        <p class="paper-description">
+                            Comprehensive analysis of ambient RNA contamination specifically in single-nucleus RNA-seq (snRNA-seq). Provides guidelines for contamination assessment and benchmarks decontamination tools for nuclear preparations.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.cell.com/neuron/fulltext/S0896-6273(22)00815-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627322008157%3Fshowall%3Dtrue" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 4: Imputation -->
+            <section class="content-section">
+                <h2><i class="fas fa-magic"></i> Imputation & Missing Data</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need to recover gene expression values lost due to dropout in single-cell data to improve downstream analysis."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- scImpute -->
+                    <div class="paper-card">
+                        <h4>scImpute</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2018</span>
+                            <span class="meta-badge impute-badge">Imputation</span>
+                            <span class="meta-badge journal-badge">Nat Commun</span>
+                        </div>
+                        <p class="paper-description">
+                            Statistical imputation method that distinguishes true zeros from dropouts using a mixture model. Imputes only dropout zeros while preserving biological zeros. One of the foundational imputation methods for scRNA-seq.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41467-018-03405-7" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/Vivianstats/scImpute" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scCR -->
+                    <div class="paper-card">
+                        <h4>scCR</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2024</span>
+                            <span class="meta-badge impute-badge">Deep Learning</span>
+                            <span class="meta-badge journal-badge">NeurIPS</span>
+                        </div>
+                        <p class="paper-description">
+                            Deep learning-based imputation using contrastive representation learning. Learns robust cell embeddings that improve imputation accuracy while preserving cell-type-specific expression patterns. State-of-the-art performance on benchmarks.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://proceedings.neurips.cc/paper_files/paper/2024/file/21b7e46991301ad2126c3e39384df6ed-Paper-Conference.pdf" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/daehoum1/scCR" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 5: Feature Selection & Dimensionality Reduction -->
+            <section class="content-section">
+                <h2><i class="fas fa-filter"></i> Feature Selection & Dimensionality Reduction</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need to select informative features or reduce dimensionality while preserving biological signal for downstream analysis."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- DELVE -->
+                    <div class="paper-card">
+                        <h4>DELVE</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2024</span>
+                            <span class="meta-badge feature-badge">Feature Selection</span>
+                            <span class="meta-badge journal-badge">Nat Commun</span>
+                        </div>
+                        <p class="paper-description">
+                            Dynamic feature selection method that identifies genes with coherent expression patterns across local cell neighborhoods. Uses Laplacian scores to select features that capture continuous biological processes like differentiation trajectories.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41467-024-46773-z" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/jranek/delve" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- SnapATAC2 -->
+                    <div class="paper-card">
+                        <h4>SnapATAC2</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2024</span>
+                            <span class="meta-badge feature-badge">Dimensionality Reduction</span>
+                            <span class="meta-badge journal-badge">Nat Methods</span>
+                        </div>
+                        <p class="paper-description">
+                            Fast, scalable framework for single-cell ATAC-seq analysis with novel dimensionality reduction using spectral embedding. Handles millions of cells efficiently with out-of-core computation. Also applicable to RNA-seq data.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41592-023-02139-9" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/kaizhang/SnapATAC2" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 6: Foundation Models -->
+            <section class="content-section">
+                <h2><i class="fas fa-brain"></i> Foundation Models for Single-Cell Analysis</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I want to leverage large pre-trained models for zero-shot or transfer learning capabilities in quality control and preprocessing tasks."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- scPRINT -->
+                    <div class="paper-card">
+                        <h4>scPRINT</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2025</span>
+                            <span class="meta-badge foundation-badge">Foundation Model</span>
+                            <span class="meta-badge journal-badge">Nat Commun</span>
+                        </div>
+                        <p class="paper-description">
+                            Large foundation model pre-trained on 50M+ cells for diverse single-cell tasks. Provides cell and gene embeddings enabling zero-shot annotation, denoising, and batch correction. Supports multi-task learning across preprocessing applications.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.nature.com/articles/s41467-025-58699-1" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/cantinilab/scPRINT" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- SIGnature -->
+                    <div class="paper-card">
+                        <h4>SIGnature</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2026</span>
+                            <span class="meta-badge foundation-badge">Explainable AI</span>
+                            <span class="meta-badge journal-badge">Nat Biotechnol</span>
+                        </div>
+                        <p class="paper-description">
+                            Applies gradient-based attribution methods (Integrated Gradients, Input&times;Gradient, DeepLIFT) to scRNA-seq foundation models to score per-gene importance at the single-cell level. Attribution scores are strikingly robust to the technical artifacts that QC tries to manage: they correlate far less with per-cell UMI counts and library complexity than raw expression, automatically demote ribosomal and mitochondrial genes, and remain 93% stable under 50% simulated dropout. This makes SIGnature's gene-importance signal substantially less confounded by sequencing depth, dropout events, and ambient contamination than log-normalized counts alone.
+                        </p>
+                        <ul class="key-contributions">
+                            <li>Attributions promote cell-type marker genes and lineage TFs (GATA3, RORC, FOXP3) while demoting ribo/mito genes vs expression (Wilcoxon P&lt;0.01)</li>
+                            <li>Top-ranked genes 93% stable under 50% dropout simulation — robust to the very missingness QC filters aim to reduce</li>
+                            <li>Attribution-based NMF gene programs less batch/study-specific than expression-based; FOXP3 a top Treg gene in 98% of attribution configs vs 4% for expression</li>
+                            <li>Attribution signature scoring tops F1 in 23/32 tasks, beating ANS, Scanpy, UCell, JASMINE, and mean expression</li>
+                            <li>Scales to ~22 million cells / 412 studies in minutes; enables large-scale QC-aware gene-program discovery</li>
+                        </ul>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41587-026-03112-5" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 8: Metacell & Statistical Methods -->
+            <section class="content-section">
+                <h2><i class="fas fa-cubes"></i> Metacell & Statistical Methods</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need to aggregate cells into metacells for noise reduction or perform robust statistical analysis on single-cell data."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- MetaQ -->
+                    <div class="paper-card">
+                        <h4>MetaQ</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2025</span>
+                            <span class="meta-badge statistical-badge">Metacell</span>
+                            <span class="meta-badge journal-badge">Nat Commun</span>
+                        </div>
+                        <p class="paper-description">
+                            Metacell inference via deep single-cell quantization. Quantizes cells into a discrete codebook where each entry (a metacell) can reconstruct the similar cells it represents, reducing complexity from exponential to linear with constant memory. Scales to arbitrarily large datasets and supports both uni- and multi-omics data while preserving biological heterogeneity.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.nature.com/articles/s41467-025-56424-6" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/XLearning-SCU/MetaQ" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- Memento -->
+                    <div class="paper-card">
+                        <h4>Memento</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2024</span>
+                            <span class="meta-badge statistical-badge">Statistical Method</span>
+                            <span class="meta-badge journal-badge">Cell</span>
+                        </div>
+                        <p class="paper-description">
+                            Method-of-moments framework for differential expression that accounts for technical noise and sampling variability. Provides rigorous statistical inference for mean and variance differences with proper false discovery control.
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.cell.com/cell/fulltext/S0092-8674(24)01144-9" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/yelabucsf/scrna-parameter-estimation" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORY 9: Data Repositories -->
+            <section class="content-section">
+                <h2><i class="fas fa-database"></i> Data Repositories & Standardization</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I need access to large-scale, uniformly processed single-cell datasets or want to standardize my data processing pipeline."
+                </div>
+
+                <div class="paper-grid">
+                    <!-- scBaseCount (formerly scBaseCamp) -->
+                    <div class="paper-card">
+                        <h4>scBaseCount <span style="font-weight:400; font-size:.8em; color:#857f6e;">(formerly scBaseCamp)</span></h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2025</span>
+                            <span class="meta-badge data-badge">Repository</span>
+                            <span class="meta-badge journal-badge">bioRxiv</span>
+                        </div>
+                        <p class="paper-description">
+                            AI agent-curated, continually expanding repository — now over 500M uniformly processed cells across 27 organisms and 75 tissues (the largest freely accessible single-cell collection). An AI agent (SRAgent) automates dataset discovery and metadata extraction from the SRA, and the scRecounter Nextflow pipeline performs standardized reprocessing. Released as part of the Arc Virtual Cell Atlas. <em>Note: first circulated under the name "scBaseCamp" (230M cells); later renamed scBaseCount as it expanded.</em>
+                        </p>
+                        <div class="paper-links">
+                            <a href="https://www.biorxiv.org/content/10.1101/2025.02.27.640494v3" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/ArcInstitute/SRAgent" class="paper-link" target="_blank"><i class="fab fa-github"></i> SRAgent</a>
+                            <a href="https://github.com/ArcInstitute/scRecounter" class="paper-link" target="_blank"><i class="fab fa-github"></i> scRecounter</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Side-by-Side Comparison -->
+            <section class="content-section" id="compare">
+    <h2>⚖️ Side-by-Side: Ambient RNA Removal — Subtraction vs Bayesian Mixture</h2>
+    <p>SoupX and DecontX both correct ambient RNA contamination in droplet-based scRNA-seq, but they diverge on the fundamental statistical question: should contamination be estimated via cluster-driven marker subtraction (SoupX) or inferred as a per-cell Bayesian mixture of native and contaminating transcriptomes (DecontX)?</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">The same starting point — a raw UMI count matrix plus an empty-droplet "soup" profile — yields two very different contamination estimates depending on the modeling assumption:</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — SoupX -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">SoupX</div>
+                    <div style="color:#9fc7bb;font-size:12px;">cluster-marker subtraction (2020)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Estimate global soup fraction (&rho;)</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">use cluster-specific marker genes to infer contamination rate per cluster</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Subtract &rho; &times; soup profile</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">scale expected ambient counts by gene, subtract from each cell; requires cluster pre-assignment</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">corrected_counts</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">&rho;_per_cluster</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">frequentist &middot; requires clustering &middot; gene-specific subtraction &middot; Seurat-native</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — DecontX -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">DecontX</div>
+                    <div style="color:#c7a877;font-size:12px;">Bayesian mixture model (2020)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Model cell as mixture: native + ambient</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">each cell's counts = (1&minus;&epsilon;)&times;native + &epsilon;&times;ambient; &epsilon; inferred per cell via variational Bayes</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Posterior estimate of true expression</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">ELBO-optimized latent topics; does not require pre-clustering; provides uncertainty estimate &epsilon;</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">decontX_counts</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">&epsilon;_per_cell</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">Bayesian &middot; clustering-free &middot; per-cell uncertainty &middot; Bioconductor-native</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision — <strong style="color:#5ec2a8;">global rate subtraction</strong> vs <strong style="color:#d6a44f;">per-cell mixture inference</strong>. SoupX is faster and integrates directly into Seurat/Seurat-cluster workflows, but its accuracy depends on the quality of the cluster assignment used to select marker genes; DecontX's variational inference sidesteps that dependency and returns a per-cell contamination fraction (&epsilon;) that can itself be used as a QC covariate.</p>
+    </div>
+</section>
+
+            <!-- Quick Reference -->
+            <section class="content-section">
+                <h2><i class="fas fa-compass"></i> Quick Reference: Choosing the Right Tool</h2>
+
+                <div class="highlight-box">
+                    <h4>By Preprocessing Task</h4>
+                    <ul>
+                        <li><strong>Doublet Removal:</strong> DoubletFinder (Seurat) or Scrublet (Scanpy)</li>
+                        <li><strong>Ambient RNA:</strong> SoupX (simple), DecontX (Bayesian) &mdash; for molecular depletion of abundant transcripts, see scCLEAN</li>
+                        <li><strong>Imputation:</strong> scImpute (statistical) or scCR (deep learning)</li>
+                        <li><strong>Feature Selection:</strong> DELVE for trajectory-preserving gene selection</li>
+                        <li><strong>Comprehensive QC:</strong> SCTK for unified pipeline with multiple algorithms</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>By Data Scale</h4>
+                    <ul>
+                        <li><strong>&lt;100K cells:</strong> Standard tools (DoubletFinder, SoupX, scImpute)</li>
+                        <li><strong>100K-1M cells:</strong> SnapATAC2, Scrublet, scCR</li>
+                        <li><strong>&gt;1M cells:</strong> scBaseCount ecosystem, scPRINT foundation model</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>By Technology</h4>
+                    <ul>
+                        <li><strong>10x scRNA-seq:</strong> Full toolkit support</li>
+                        <li><strong>snRNA-seq:</strong> Ambient RNA guidelines, specialized parameters</li>
+                        <li><strong>scATAC-seq:</strong> SnapATAC2</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Hands-On Practice -->
+            <section class="content-section" id="hands-on">
+                <h2>🛠️ Hands-On Practice</h2>
+                <p>The steps below walk through a minimal but realistic single-cell QC run using Python/Scanpy — from a raw 10x Genomics matrix to a clean, doublet-filtered <code>AnnData</code> object ready for clustering. All code runs in a standard conda environment and is designed to be self-contained.</p>
+                <h3>Environment &amp; packages</h3>
+                <p>Install the core Python QC stack into a fresh environment. Scrublet handles doublet detection; miQC (via rpy2) or adaptive MAD thresholds replace hard cutoffs for cell filtering.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n scqc python=3.10 -y
+conda activate scqc
+
+pip install scanpy anndata scrublet scvi-tools doubletdetection
+# optional ambient-RNA correction (R bridge)
+# pip install rpy2
+# R: install.packages(c("SoupX", "celda"))   # celda for decontX</code></pre>
+                <p><strong>Hardware.</strong> A standard laptop (8 GB RAM) handles datasets up to ~50k cells; for 100k+ cells use a compute node with 32–64 GB RAM. GPU is only required if running scVI-SOLO doublet detection.</p>
+                <h3>Data structures &amp; formats</h3>
+                <ul>
+                    <li><strong><code>AnnData</code></strong> — central object: <code>adata.X</code> (count matrix), <code>adata.obs</code> (per-cell metadata), <code>adata.var</code> (per-gene metadata)</li>
+                    <li><strong>Per-cell QC metrics</strong> computed by <code>sc.pp.calculate_qc_metrics()</code>: <code>n_genes_by_counts</code>, <code>total_counts</code>, <code>pct_counts_mt</code></li>
+                    <li><strong>Raw vs filtered matrix</strong> — 10x output contains <code>raw_feature_bc_matrix/</code> (all barcodes) and <code>filtered_feature_bc_matrix/</code> (cell-called barcodes); load raw for ambient correction, filtered for standard QC</li>
+                    <li><strong>Doublet scores</strong> — stored in <code>adata.obs["doublet_score"]</code> and <code>adata.obs["predicted_doublet"]</code> after Scrublet</li>
+                    <li><strong>h5ad</strong> — HDF5-backed <code>AnnData</code> format; save with <code>adata.write_h5ad()</code> for downstream sharing</li>
+                </ul>
+                <h3>Minimal code walkthrough</h3>
+                <p>Load a raw 10x matrix, annotate mitochondrial genes, compute QC metrics, visualise distributions, apply MAD-based adaptive thresholds, run Scrublet, and write a clean h5ad.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import scrublet as scr
+import numpy as np
+
+# 1. Load raw 10x matrix (genes x barcodes, then transposed to cells x genes)
+adata = sc.read_10x_mtx(
+    "raw_feature_bc_matrix/",
+    var_names="gene_symbols",
+    cache=True,
+)
+adata.var_names_make_unique()
+
+# 2. Annotate mitochondrial genes
+adata.var["mt"] = adata.var_names.str.startswith("MT-")
+
+# 3. Compute per-cell QC metrics
+sc.pp.calculate_qc_metrics(
+    adata, qc_vars=["mt"], percent_top=None, log1p=False, inplace=True
+)
+
+# 4. Visualise distributions (spot outlier thresholds)
+sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
+             jitter=0.4, multi_panel=True)
+
+# 5. MAD-based adaptive filtering (3 MADs from the median)
+def mad_filter(series, n_mads=3):
+    med = np.median(series)
+    mad = np.median(np.abs(series - med))
+    return (series &gt;= med - n_mads * mad) &amp; (series &lt;= med + n_mads * mad)
+
+keep = (
+    mad_filter(adata.obs["n_genes_by_counts"]) &amp;
+    mad_filter(adata.obs["total_counts"]) &amp;
+    (adata.obs["pct_counts_mt"] &lt; 20)   # hard upper cap for mito
+)
+adata = adata[keep].copy()
+print(f"Cells after QC filter: {adata.n_obs}")
+
+# 6. Doublet detection with Scrublet
+scrub = scr.Scrublet(adata.X)
+doublet_scores, predicted_doublets = scrub.scrub_doublets()
+adata.obs["doublet_score"] = doublet_scores
+adata.obs["predicted_doublet"] = predicted_doublets
+adata = adata[~adata.obs["predicted_doublet"]].copy()
+print(f"Cells after doublet removal: {adata.n_obs}")
+
+# 7. Save QC-filtered object
+adata.write_h5ad("adata_qc.h5ad")
+print("Saved adata_qc.h5ad")</code></pre>
+                <h3>Common pitfalls &amp; tips</h3>
+                <ul>
+                    <li><strong>One-size-fits-all thresholds hurt.</strong> A hard cutoff of &gt;200 genes / &lt;5% mito fails for hepatocytes (high mito) or RBCs (few genes). Use MAD-based adaptive thresholds per sample or per cell type.</li>
+                    <li><strong>Ambient correction before cell filtering.</strong> Run SoupX or decontX on the raw (unfiltered) matrix first; correcting already-filtered data underestimates the ambient profile from empty droplets.</li>
+                    <li><strong>Doublet rate scales with cell loading.</strong> Scrublet's default expected doublet rate (~5%) underestimates for high-density 10x runs (&gt;10k cells loaded); set <code>expected_doublet_rate</code> explicitly based on the 10x loading chart.</li>
+                    <li><strong>Batch-wise QC is essential.</strong> Pool-level thresholds mask lane-specific technical artifacts; run QC independently per sample/batch before integration.</li>
+                    <li><strong>Do not remove biologically high-mito cells blindly.</strong> Cardiomyocytes, platelets, and cells under oxidative stress have genuinely high mitochondrial fractions; inspect marker genes before discarding.</li>
+                    <li><strong>Scrublet needs unnormalised counts.</strong> Always pass raw integer counts (<code>adata.X</code> before <code>sc.pp.normalize_total</code>) to Scrublet or SOLO; normalised or log-transformed input distorts the simulated doublet distribution.</li>
+                </ul>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p style="font-size: 1.1em;">
+            Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu
+        </p>
+        <p style="font-size: 0.9em; margin-top: 15px;">
+            Last updated: June 2026
+        </p>
+        <p style="font-size: 0.85em; color: #999; margin-top: 10px;">
+            <i class="fab fa-github"></i>
+            <a href="https://github.com/xqiu625" style="color: #999;">GitHub</a>
+        </p>
+        <p style="font-size: 0.8em; margin-top: 15px; color: #888;">
+            Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>
+            Content released under CC BY 4.0.
+        </p>
+    </footer>
+</body>
+</html>
