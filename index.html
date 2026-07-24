@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Xinru Qiu - AI-enabled Target Discovery × Mechanistic Biology</title>
+    <meta name="description" content="Xinru Qiu, PhD - AI-enabled target discovery and mechanistic biology. Foundation-model interpretation, multi-omic and spatial single-cell analysis, and causal target prioritization for therapeutic discovery.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://xqiu625.github.io/">
+    <meta property="og:title" content="Xinru Qiu, PhD - AI-enabled Target Discovery × Mechanistic Biology">
+    <meta property="og:description" content="Foundation-model interpretation, multi-omic and spatial single-cell analysis, and causal target prioritization for therapeutic discovery. 20+ publications, 400+ citations, h-index 10.">
+    <meta property="og:image" content="https://xqiu625.github.io/Mechanistic_Target_Discovery_Platform.jpeg">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -15,253 +22,63 @@
             margin: 0;
             padding: 0;
         }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .navbar {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e7e7e7;
-            padding: 10px 0;
-        }
-        .navbar-nav {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-        }
-        .navbar-nav li {
-            margin: 0 15px;
-        }
-        .navbar-nav a {
-            color: #666666;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 18px;
-        }
-        .profile-container {
-            display: flex;
-            margin-top: 40px;
-        }
-        .profile-image-container {
-            flex: 0 0 250px;
-            margin-right: 40px;
-        }
-        .profile-image {
-            width: 220px;
-            height: 220px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid #6c8cc0;
-        }
-        .profile-links {
-            list-style-type: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-        .profile-links li {
-            margin-bottom: 10px;
-        }
-        .profile-links a {
-            color: #666;
-            text-decoration: none;
-            font-size: 16px;
-        }
-        .profile-links i {
-            width: 20px;
-            margin-right: 10px;
-        }
-        .profile-info {
-            flex: 1;
-        }
-        h1, h2, h3, h4 {
-            color: #1a5f7a;
-        }
-        .content {
-            margin-top: 20px;
-        }
-        .highlight-box {
-            background-color: #f0f7ff;
-            border-left: 4px solid #6c8cc0;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .highlight-box.primary {
-            border-left-color: #1a5f7a;
-            background-color: #f4f8fb;
-        }
-        .research-image {
-            background: transparent;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        .research-image img {
-            width: 100%;
-            max-width: 800px;
-            display: block;
-            margin: 0 auto;
-            border-radius: 8px;
-            transition: transform 0.3s ease;
-            mix-blend-mode: multiply;
-        }
-        .research-image img:hover {
-            transform: scale(1.02);
-        }
-        .research-image .caption {
-            text-align: center;
-            color: #333333;
-            font-style: italic;
-            margin-top: 10px;
-            font-size: 0.9em;
-        }
-        .experience-item {
-            padding: 15px 0;
-            border-bottom: 1px solid #e7e7e7;
-        }
-        .experience-item:last-child {
-            border-bottom: none;
-        }
-        .experience-item strong {
-            color: #1a5f7a;
-        }
-        .tag {
-            display: inline-block;
-            background: #1a5f7a;
-            color: white;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-left: 8px;
-            font-weight: bold;
-        }
-        .tag.next {
-            background: #e67e22;
-        }
-        .core-box {
-            background: #fff8f0;
-            border-left: 4px solid #e67e22;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 4px;
-        }
-        .core-box strong {
-            color: #e67e22;
-        }
-        .next-step-box {
-            background: white;
-            border: 2px solid #1a5f7a;
-            border-radius: 8px;
-            padding: 20px 25px;
-            margin: 25px 0;
-        }
-        .next-step-box h4 {
-            margin-top: 0;
-            margin-bottom: 10px;
-        }
-        .role-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: 2px solid #1a5f7a;
-            border-radius: 8px;
-            padding: 20px 25px;
-            margin: 25px 0;
-        }
-        .role-box h4 {
-            margin-top: 0;
-            color: #1a5f7a;
-        }
-        .role-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .role-tag {
-            background: #1a5f7a;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .capability-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        .capability-card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .capability-card h4 {
-            margin-top: 0;
-            color: #1a5f7a;
-            border-bottom: 2px solid #6c8cc0;
-            padding-bottom: 10px;
-        }
-        .capability-card ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-        .capability-card li {
-            margin-bottom: 8px;
-        }
-        .tools-line {
-            background: #f8f9fa;
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-        .tools-line strong {
-            color: #1a5f7a;
-        }
-        a {
-            color: #1a5f7a;
-        }
-        a:hover {
-            color: #6c8cc0;
-        }
-        .other-competencies {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        .other-competencies h3 {
-            margin-top: 0;
-            font-size: 1.1rem;
-            color: #666;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .navbar { background-color: #ffffff; border-bottom: 1px solid #e7e7e7; padding: 10px 0; }
+        .navbar-nav { list-style-type: none; padding: 0; margin: 0; display: flex; justify-content: center; }
+        .navbar-nav li { margin: 0 15px; }
+        .navbar-nav a { color: #666666; text-decoration: none; font-weight: bold; font-size: 18px; }
+        .profile-container { display: flex; margin-top: 40px; }
+        .profile-image-container { flex: 0 0 250px; margin-right: 40px; }
+        .profile-image { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 5px solid #6c8cc0; }
+        .profile-links { list-style-type: none; padding: 0; margin-top: 20px; }
+        .profile-links li { margin-bottom: 10px; }
+        .profile-links a { color: #666; text-decoration: none; font-size: 16px; }
+        .profile-links i { width: 20px; margin-right: 10px; }
+        .profile-info { flex: 1; }
+        h1, h2, h3, h4 { color: #1a5f7a; }
+        .content { margin-top: 20px; }
+        .highlight-box { background-color: #f0f7ff; border-left: 4px solid #6c8cc0; padding: 15px 20px; margin: 20px 0; border-radius: 4px; }
+        .highlight-box.primary { border-left-color: #1a5f7a; background-color: #f4f8fb; }
+        .metrics-box { background: #1a5f7a; color: #fff; border-radius: 8px; padding: 16px 20px; margin: 20px 0; display: flex; flex-wrap: wrap; gap: 10px 20px; justify-content: space-between; align-items: center; }
+        .metrics-box .metric { text-align: center; flex: 1 1 auto; }
+        .metrics-box .metric .num { display: block; font-size: 1.5rem; font-weight: bold; line-height: 1.2; }
+        .metrics-box .metric .lbl { font-size: 0.8rem; opacity: 0.9; }
+        .research-image { background: transparent; padding: 20px; margin: 20px 0; }
+        .research-image img { width: 100%; max-width: 800px; display: block; margin: 0 auto; border-radius: 8px; transition: transform 0.3s ease; mix-blend-mode: multiply; }
+        .research-image img:hover { transform: scale(1.02); }
+        .research-image .caption { text-align: center; color: #333333; font-style: italic; margin-top: 10px; font-size: 0.9em; }
+        .experience-item { padding: 15px 0; border-bottom: 1px solid #e7e7e7; }
+        .experience-item:last-child { border-bottom: none; }
+        .experience-item strong { color: #1a5f7a; }
+        .repo-link { font-size: 0.85rem; font-weight: bold; white-space: nowrap; }
+        .tag { display: inline-block; background: #1a5f7a; color: white; font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; margin-left: 8px; font-weight: bold; }
+        .tag.next { background: #e67e22; }
+        .core-box { background: #fff8f0; border-left: 4px solid #e67e22; padding: 15px 20px; margin: 20px 0; border-radius: 4px; }
+        .core-box strong { color: #e67e22; }
+        .next-step-box { background: white; border: 2px solid #1a5f7a; border-radius: 8px; padding: 20px 25px; margin: 25px 0; }
+        .next-step-box h4 { margin-top: 0; margin-bottom: 10px; }
+        .capability-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+        .capability-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .capability-card h4 { margin-top: 0; color: #1a5f7a; border-bottom: 2px solid #6c8cc0; padding-bottom: 10px; }
+        .capability-card ul { margin: 0; padding-left: 20px; }
+        .capability-card li { margin-bottom: 8px; }
+        .project-card { background: white; border-radius: 8px; padding: 18px 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-top: 3px solid #6c8cc0; }
+        .project-card h4 { margin: 0 0 6px 0; color: #1a5f7a; font-size: 1.02rem; }
+        .project-card p { margin: 0 0 10px 0; font-size: 0.9rem; color: #444; }
+        .project-card a.gh { font-size: 0.85rem; font-weight: bold; color: #1a5f7a; text-decoration: none; }
+        .project-card a.gh:hover { color: #6c8cc0; }
+        .tools-line { background: #f8f9fa; padding: 15px 20px; border-radius: 8px; margin-top: 20px; font-size: 0.9rem; color: #666; }
+        .tools-line strong { color: #1a5f7a; }
+        a { color: #1a5f7a; }
+        a:hover { color: #6c8cc0; }
+        .other-competencies { background: #f8f9fa; border-radius: 8px; padding: 20px; margin-top: 20px; }
+        .other-competencies h3 { margin-top: 0; font-size: 1.1rem; color: #666; }
         @media (max-width: 768px) {
-            .profile-container {
-                flex-direction: column;
-            }
-            .profile-image-container {
-                margin-right: 0;
-                margin-bottom: 20px;
-                text-align: center;
-            }
-            .profile-links {
-                text-align: center;
-            }
-            .research-image {
-                max-width: 900px;
-                margin: 20px auto;
-            }
-            .research-image {
-                padding: 10px;
-                margin: 10px 0;
-            }
-            .capability-grid {
-                grid-template-columns: 1fr;
-            }
+            .profile-container { flex-direction: column; }
+            .profile-image-container { margin-right: 0; margin-bottom: 20px; text-align: center; }
+            .profile-links { text-align: center; }
+            .research-image { padding: 10px; margin: 10px 0; }
+            .capability-grid { grid-template-columns: 1fr; }
         }
     </style>
     <link rel="stylesheet" href="theme.css" data-theme-asset="css">
@@ -279,14 +96,14 @@
             </ul>
         </div>
     </nav>
-    
+
     <main role="main">
         <div class="container">
             <div class="profile-container">
                 <div class="profile-image-container">
                     <img src="./photo.JPG" alt="Xinru Qiu" class="profile-image">
                     <ul class="profile-links">
-                        <li><a href="/cdn-cgi/l/email-protection#ff8796918d8ad18d9a96919ed18e968abf98929e9693d19c9092" title="Email"><i class="fas fa-envelope"></i>Email</a></li>
+                        <li><a href="mailto:xinru.reina.qiu@gmail.com" title="Email"><i class="fas fa-envelope"></i>Email</a></li>
                         <li><a href="https://www.linkedin.com/in/xinru-qiu" title="LinkedIn"><i class="fab fa-linkedin"></i>LinkedIn</a></li>
                         <li><a href="https://github.com/xqiu625" title="GitHub"><i class="fab fa-github"></i>GitHub</a></li>
                         <li><a href="https://orcid.org/0000-0003-1391-252X" title="ORCID"><i class="fab fa-orcid"></i>ORCID</a></li>
@@ -298,20 +115,28 @@
                 <div class="profile-info">
                     <h1>Xinru Qiu, PhD</h1>
                     <h3 style="color: #6c8cc0; margin-top: 5px;">AI-enabled Target Discovery × Mechanistic Biology</h3>
-                    
+
                     <div class="content">
                         <p class="highlight-box primary">
                         🎯 I leverage foundation models and multi-omic data to uncover disease mechanisms and identify therapeutic targets. My work transforms single-cell, spatial, and perturbation data into mechanistic insights—mapping causal pathways, decoding microenvironments, and prioritizing druggable targets for therapeutic discovery.
                         </p>
 
+                        <div class="metrics-box">
+                            <div class="metric"><span class="num">20+</span><span class="lbl">publications</span></div>
+                            <div class="metric"><span class="num">400+</span><span class="lbl">citations</span></div>
+                            <div class="metric"><span class="num">10</span><span class="lbl">h-index</span></div>
+                            <div class="metric"><span class="num">4</span><span class="lbl">first-author</span></div>
+                            <div class="metric"><span class="num">200+</span><span class="lbl">peer reviews</span></div>
+                            <div class="metric"><span class="num">130+</span><span class="lbl">manuscripts reviewed</span></div>
+                        </div>
+
                         <div class="core-box">
                             <strong>🧬 Core Expertise:</strong> I specialize in extracting biological meaning from AI model outputs. My background in 🧬 biology, 💊 pharmacology, ⚗️ chemistry, and 💻 computational modeling enables me to translate foundation model embeddings into mechanistic hypotheses and actionable target nominations.
                         </div>
 
-                        <p>I obtained my PhD in Genetics, Genomics, and Bioinformatics from UC Riverside in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Download my <a href="XinruQiu_resume.pdf">resume</a>.</p>
+                        <p>I obtained my PhD in Genetics, Genomics, and Bioinformatics from UC Riverside in 2023, advised by Professor <a href="https://scholar.google.com/citations?user=0Z7TdsQAAAAJ&hl=en">Adam Godzik</a>. Download my <a href="XinruQiu_resume.pdf">CV / resume</a>.</p>
                     </div>
 
-                    <!-- Main Platform Diagram - Hero Position -->
                     <div class="research-image">
                         <img src="./Mechanistic_Target_Discovery_Platform.jpeg" alt="Mechanistic Target Discovery Platform">
                         <p class="caption">From complex multi-modal data to actionable therapeutic targets</p>
@@ -319,74 +144,107 @@
 
                     <div class="content">
                         <h2>What I Do</h2>
-                        
-                        <!-- Foundation Model Interpretation Diagram -->
+
                         <div class="research-image">
                             <img src="./Foundation_Model___Biology_Interpretation_Map.jpeg" alt="Foundation Model to Biology Interpretation">
                             <p class="caption">Translating model intelligence into mechanistic insight</p>
                         </div>
-                        
+
                         <div class="experience-item">
-                            <strong>Foundation Model Mechanistic Interpretation</strong> <span class="tag">Primary</span><br>
-                            I extract biological insights from foundation models (UCE, scGPT, Geneformer, TranscriptFormer) by analyzing attention patterns, embedding structures, and latent representations. My focus is on interpreting what these models learn about gene regulation, pathway activity, and cell state—translating computational outputs into mechanistic hypotheses for target discovery.
+                            <strong>Foundation Model Mechanistic Interpretation</strong> <span class="tag">Primary</span>
+                            &nbsp;<a class="repo-link" href="https://github.com/xqiu625/Platelet-FM-Benchmark">→ Platelet-FM-Benchmark</a><br>
+                            I extract biological insights from foundation models (STATE, UCE, scGPT, Geneformer, TranscriptFormer) by analyzing attention patterns, embedding structures, and latent representations. My focus is on interpreting what these models learn about gene regulation, pathway activity, and cell state—translating computational outputs into mechanistic hypotheses for target discovery.
                         </div>
-                        
+
                         <div class="experience-item">
-                            <strong>Multi-Omic Mechanistic Integration</strong><br>
+                            <strong>Multi-Omic Mechanistic Integration</strong>
+                            &nbsp;<a class="repo-link" href="https://github.com/xqiu625/PlateletSubpop-ML-ScTranscriptomics">→ PlateletSubpop-ML</a>
+                            &nbsp;<a class="repo-link" href="https://github.com/xqiu625/sepsis-scrna-dynamics">→ sepsis-scrna-dynamics</a><br>
                             I integrate single-cell, spatial, and perturbation data to map disease mechanisms. This includes identifying disease-driving cell populations, inferring causal gene regulatory networks, decoding immune microenvironment dynamics, and evaluating target plausibility through cross-modal evidence synthesis.
                         </div>
-                        
-                        <!-- Multi-omics Convergence Diagram -->
+
                         <div class="research-image">
                             <img src="./Multi-omics_Convergence_Map.jpeg" alt="Multi-omics Convergence Map">
                             <p class="caption">High-confidence targets from multi-modal consensus</p>
                         </div>
-                        
+
                         <div class="experience-item">
-                            <strong>Spatial Microenvironment & Target Context</strong><br>
-                            I analyze spatial transcriptomics to understand how tissue architecture drives disease. This includes mapping spatial niches that harbor disease-relevant cell states, linking ligand-receptor signaling with foundation model embeddings, and identifying microenvironment-dependent therapeutic targets.
+                            <strong>Spatial Microenvironment &amp; Target Context</strong>
+                            &nbsp;<a class="repo-link" href="https://github.com/xqiu625/spatial-kidney-rejection">→ spatial-kidney-rejection</a>
+                            &nbsp;<a class="repo-link" href="https://github.com/xqiu625/cardiovascular-proteomics-bioimage">→ cardiovascular-proteomics-bioimage</a><br>
+                            I analyze spatial transcriptomics and imaging-based (Xenium) data to understand how tissue architecture drives disease. This includes mapping spatial niches that harbor disease-relevant cell states, anchoring molecular data to tissue histology, linking ligand-receptor signaling with foundation model embeddings, and identifying microenvironment-dependent therapeutic targets.
                         </div>
-                        
+
                         <div class="experience-item">
                             <strong>Therapeutic Discovery Workflows</strong><br>
-                            I build interpretable computational frameworks that connect AI outputs to therapeutic decision-making—from mechanism-of-disease modeling to target nomination, supporting experimental validation and translational research.
+                            I build interpretable computational frameworks that connect AI outputs to therapeutic decision-making—from mechanism-of-disease modeling to target nomination and verification-aware validation—supporting experimental validation and translational research.
                         </div>
                     </div>
 
-                    <!-- NEW: Restructured Technical Capabilities -->
+                    <div class="content">
+                        <h2>Featured Projects</h2>
+                        <p style="color:#555;">Open-source, documented, and reproducible. Each links to code and methods on GitHub.</p>
+                        <div class="capability-grid">
+                            <div class="project-card">
+                                <h4>Platelet Foundation-Model Benchmark</h4>
+                                <p>Out-of-distribution robustness benchmark of five single-cell foundation models (STATE, UCE, Geneformer, scPRINT, scGPT) for infection-severity prediction, with anti-leakage patient-level cross-validation. Released as the <code>scfm-benchmark</code> package.</p>
+                                <a class="gh" href="https://github.com/xqiu625/Platelet-FM-Benchmark">GitHub → Platelet-FM-Benchmark</a>
+                            </div>
+                            <div class="project-card">
+                                <h4>Cardiovascular Proteomics &amp; Bioimage</h4>
+                                <p>Platelet scRNA-seq ↔ mass-spectrometry proteome integration (Spearman ρ = 0.49, 6,902 genes) and imaging-based Xenium spatial analysis of human carotid atherosclerosis (120,164 cells): neighborhood enrichment, Ripley's K/L, two-panel replication.</p>
+                                <a class="gh" href="https://github.com/xqiu625/cardiovascular-proteomics-bioimage">GitHub → cardiovascular-proteomics-bioimage</a>
+                            </div>
+                            <div class="project-card">
+                                <h4>Platelet Subpopulations &amp; ML</h4>
+                                <p>Deep neural network and XGBoost models on 47,977 single-cell platelet transcriptomes across COVID-19, sepsis, and SLE, revealing prognostic biomarkers and therapeutic-target modules. First author, <em>Int. J. Mol. Sci.</em> 2024.</p>
+                                <a class="gh" href="https://github.com/xqiu625/PlateletSubpop-ML-ScTranscriptomics">GitHub → PlateletSubpop-ML-ScTranscriptomics</a>
+                            </div>
+                            <div class="project-card">
+                                <h4>Spatial Kidney Allograft Rejection</h4>
+                                <p>First spatial transcriptomic (10x Visium) study of kidney allograft rejection; image/histology-anchored spatial analysis identifying FCGR3A-high monocyte/macrophage subclusters in acute rejection. <em>Frontiers in Immunology</em> 2025.</p>
+                                <a class="gh" href="https://github.com/xqiu625/spatial-kidney-rejection">GitHub → spatial-kidney-rejection</a>
+                            </div>
+                            <div class="project-card">
+                                <h4>Sepsis Single-Cell Dynamics</h4>
+                                <p>Single-cell transcriptional dynamics of fatal sepsis, identifying cell-type-specific signatures that distinguish fatal from survival outcomes. Co-first author, <em>J. Leukoc. Biol.</em> 2021 (115+ citations).</p>
+                                <a class="gh" href="https://github.com/xqiu625/sepsis-scrna-dynamics">GitHub → sepsis-scrna-dynamics</a>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="content">
                         <h2>Technical Capabilities</h2>
-                        
-                        <!-- AI-Driven Discovery Engine Overview -->
+
                         <div class="research-image">
                             <img src="./research_focus.png" alt="AI-Driven Discovery Engine">
                             <p class="caption">End-to-end platform methodology</p>
                         </div>
-                        
+
                         <div class="capability-grid">
                             <div class="capability-card">
                                 <h4>🧠 Mechanistic AI</h4>
                                 <ul>
-                                    <li><strong>Foundation Models:</strong> UCE, scGPT, Geneformer, TranscriptFormer, scPRINT, CellPLM</li>
+                                    <li><strong>Foundation Models:</strong> STATE, UCE, scGPT, Geneformer, TranscriptFormer, scPRINT, CellPLM</li>
                                     <li><strong>Deep Learning:</strong> PyTorch, TensorFlow, Hugging Face Transformers, Attention Mechanisms</li>
                                     <li><strong>Embedding Analysis:</strong> Cosine similarity, centroid-based comparisons, quality assessment</li>
                                     <li><strong>Transfer Learning:</strong> Cross-species analysis, domain adaptation, embedding space optimization</li>
-                                    <li><strong>Large-Scale Processing:</strong> 226K+ cell embedding generation, 500K+ cell analysis</li>
+                                    <li><strong>Large-Scale Processing:</strong> Analyses scaling to ~2M cells (genome-wide Perturb-seq); large-scale embedding generation</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="capability-card">
                                 <h4>🔬 Multi-Omic Mechanistic Integration</h4>
                                 <ul>
                                     <li><strong>Single-Cell:</strong> CellRanger, Seurat, Scanpy, SingleR, scCATCH</li>
-                                    <li><strong>Trajectory & Velocity:</strong> scVelo, CellRank2, Monocle3, PAGA</li>
-                                    <li><strong>Regulatory Networks:</strong> pySCENIC for TF analysis & GRN inference</li>
+                                    <li><strong>Trajectory &amp; Velocity:</strong> scVelo, CellRank2, Monocle3, PAGA</li>
+                                    <li><strong>Regulatory Networks:</strong> pySCENIC for TF analysis &amp; GRN inference</li>
                                     <li><strong>Cell Communication:</strong> CellChat for intercellular signaling</li>
-                                    <li><strong>Perturbation:</strong> Large-scale CRISPR screening (2,907+ targets)</li>
+                                    <li><strong>Perturbation:</strong> Genome-wide CRISPR/Perturb-seq screening (16,248+ targets, ~2M cells)</li>
                                     <li><strong>Pathway Analysis:</strong> clusterProfiler, ReactomePA, GSVA</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="capability-card">
                                 <h4>💊 Therapeutic Discovery Logic</h4>
                                 <ul>
@@ -397,9 +255,9 @@
                                     <li><strong>Pharmacogenomics:</strong> PharmVar, PharmGKB, CPIC, ACMG variant classification</li>
                                 </ul>
                             </div>
-                            
+
                             <div class="capability-card">
-                                <h4>🛠️ Tools & Platforms</h4>
+                                <h4>🛠️ Tools &amp; Platforms</h4>
                                 <ul>
                                     <li><strong>Languages:</strong> Python, R, SQL, Bash, JavaScript, Java</li>
                                     <li><strong>HPC:</strong> SLURM, GPU/CUDA (A100), parallel processing, memory optimization</li>
@@ -414,14 +272,12 @@
 
                     <div class="content">
                         <h2>Looking Ahead</h2>
-                        
                         <div class="next-step-box">
                             <p>I aim to advance AI-enabled target discovery by building mechanistic reasoning frameworks that connect foundation model insights to therapeutic hypotheses. My goal is to work at the intersection of computational biology and drug discovery—collaborating with experimentalists to validate targets and translate computational predictions into actionable therapeutic strategies.</p>
                             <p><strong>What I bring:</strong> The ability to extract disease mechanisms from complex multi-omic data, interpret AI model outputs through a biological lens, and bridge computational predictions with experimental validation for target discovery.</p>
                         </div>
                     </div>
 
-                    <!-- Other Competencies - Moved Down -->
                     <div class="content">
                         <div class="other-competencies">
                             <h3>📋 Additional Competencies</h3>
@@ -444,13 +300,13 @@
                         <ul>
                             <li><strong>Ph.D.</strong>, <a href="https://genetics.ucr.edu/">Genetics, Genomics, and Bioinformatics</a>, <a href="https://www.usnews.com/best-colleges/university-of-california-riverside-1316">University of California, Riverside</a>, 2018 - 2023</li>
                             <li><strong>M.S.</strong>, <a href="https://mann.usc.edu/program/ms-in-pharmaceutical-sciences/">Pharmaceutical Sciences</a>, <a href="https://www.usnews.com/best-colleges/university-of-southern-california-1328">University of Southern California</a>, 2013 - 2015</li>
-                            <li><strong>B.S.</strong>, <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 - 2013</li>                            
+                            <li><strong>B.S.</strong>, <a href="https://yxy.jlu.edu.cn/">Pharmacy</a>, <a href="https://www.usnews.com/education/best-global-universities/jilin-university-506709">Jilin University</a>, 2009 - 2013</li>
                         </ul>
                     </div>
 
                     <div class="content">
                         <h2>Let's Connect</h2>
-                        <p>Interested in AI-driven target discovery, mechanistic biology, or foundation model interpretation? Feel free to reach out via <a href="/cdn-cgi/l/email-protection#c1b9a8afb3b4efb3a4a8afa0efb0a8b481a6aca0a8adefa2aeac">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
+                        <p>Interested in AI-driven target discovery, mechanistic biology, or foundation model interpretation? Feel free to reach out via <a href="mailto:xinru.reina.qiu@gmail.com">email</a> or connect on <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a>.</p>
                     </div>
                 </div>
             </div>
@@ -459,7 +315,7 @@
 
     <footer>
         <div class="container">
-            <p style="text-align: center; color: #666; padding: 20px 0;">© 2024 Xinru Qiu. All rights reserved.</p>
+            <p style="text-align: center; color: #666; padding: 20px 0;">© 2026 Xinru Qiu. All rights reserved.</p>
         </div>
     </footer>
 </body>
