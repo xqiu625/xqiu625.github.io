@@ -535,6 +535,45 @@
             font-size: 0.85em;
             font-weight: 600;
         }
+        /* casework banner + story section (Football lens) */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#041f11 0%,#074422 55%,#0d5a2d 100%); border-radius: 16px; padding: 34px 38px; margin: 24px 0 25px; box-shadow: 0 8px 30px rgba(7,68,34,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #9fe3ba; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; }
+        .casework-banner p { color: #dcf2e3; line-height: 1.75; margin: 0; font-size: .98em; }
+        .football-diagram-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin: 24px 0; }
+        .football-diagram-grid figure { margin: 0; background: #fcfdfb; border: 1px solid rgba(13,105,56,.18); border-radius: 14px; padding: 12px; box-shadow: 0 8px 24px rgba(7,68,34,.08); }
+        .football-diagram-grid img { display: block; width: 100%; height: auto; border-radius: 10px; }
+        .football-diagram-grid figcaption { margin-top: 8px; color: #50665a; font-size: .88em; line-height: 1.45; }
+        .story-pose-strip { margin: 22px 0 8px; background: linear-gradient(180deg,#f8fbf8 0%,#eef7f0 100%); border: 1px solid rgba(13,105,56,.16); border-radius: 16px; overflow: hidden; }
+        .story-pose-strip img { display: block; width: 100%; height: auto; }
+        .story-section { background: var(--sport-soft, #fff0ee); border: 1.5px solid var(--sport-pale, #dceee3); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #074422); border-left: 4px solid var(--sport-primary, #0D6938); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #dceee3); border-left: 5px solid var(--sport-primary, #0D6938); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(7,68,34,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(7,68,34,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #0D6938); }
+        .library-card h4 { color: var(--sport-dark, #074422); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #074422); background: var(--sport-pale, #dceee3); border: 1px dashed rgba(13,105,56,.3); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #0D6938); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #0D6938); font-size: .95em; }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#dceee3); }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#dceee3); box-shadow: 0 10px 28px rgba(7,68,34,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #4fce8a; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #9fe3ba; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(13,105,56,.18); border-color: rgba(79,206,138,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #4fce8a; }
+        [data-theme="dark"] .library-footnote { color: #9fe3ba; }
     </style>
 <base target="_blank">
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
@@ -572,6 +611,66 @@
                 Based on systematic analysis of 17+ landmark papers spanning nearly a decade of innovation.
             </div>
         </header>
+        <!-- CASEWORK BANNER (Coordinate · Football lens: the goalkeeper) -->
+        <section class="casework-banner" aria-label="Goalkeeper inspired spatial transcriptomics casework">
+            <div class="casework-art">
+                <!-- TODO: IP asset pending — football-gk-three-poses.webp -->
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">Football lens · the goalkeeper</div>
+                <h2>Position is a science.</h2>
+                <p>A good keeper is half reflexes, half positioning — and so is a cell. Spatial transcriptomics
+                keeps every cell on the pitch it actually played on: 留在原地的数据，才是能讲位置故事的数据.</p>
+            </div>
+        </section>
+
+        <!-- STORY LINE: The Goalkeeper -->
+        <section class="content-section story-section" id="gk-story">
+            <!-- TODO: story hero pending — football-gk-hero.webp -->
+            <h2><i class="fas fa-futbol"></i> The Goalkeeper's Guide.</h2>
+            <p class="story-quote">「位置感，就是门线前的全部学问。」</p>
+            <p class="story-intro">Watch a keeper for ninety minutes and you learn that goalkeeping is geography: where you stand decides what you can reach. Spatial transcriptomics is that geography for cells — six scenes from the six-yard box, re-read as spatial analysis.</p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Scene 1 · 门卫的基本站位</div>
+                    <h4>Geography before reflexes</h4>
+                    <p class="plot">Before any shot comes, the keeper has already won or lost the duel — by where they chose to stand. The save is just the confirmation.</p>
+                    <p class="echo"><strong>Spatial context itself.</strong> Knowing where a cell stands is data, just like knowing what it can do. <a href="#overview">See why it matters ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 2 · 门线技术</div>
+                    <h4>Millimetre verdicts</h4>
+                    <p class="plot">Goal-line technology watches one line at centimetre precision and misses everything else; the stadium cameras cover the whole pitch at a glance, in less detail.</p>
+                    <p class="echo"><strong>Resolution vs coverage.</strong> Imaging-based methods give sub-cellular detail on fewer targets; sequencing-based arrays cover the whole transcriptome at coarser spots. <a href="#overview">See the three categories ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 3 · 诺伊尔门卫</div>
+                    <h4>The sweeper-keeper</h4>
+                    <p class="plot">Neuer is never just on the line — he reads the entire box, steps out early, and owns the space between defense and goal.</p>
+                    <p class="echo"><strong>Spatial domains, not just spots.</strong> Good analysis reads neighborhoods and domains, not only isolated cells. <a href="#methods">See spatial analysis ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 4 · 盯人 vs 区域联防</div>
+                    <h4>Man-mark or hold the zone</h4>
+                    <p class="plot">Assign a defender to shadow one striker, or hold a zone and let the structure do the work — two legitimate ways to defend the same box.</p>
+                    <p class="echo"><strong>Cell-level vs domain-level.</strong> Segment individual cells, or analyze spatial domains and niches — both are valid reads of the same tissue.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 5 · 点球前的情报战</div>
+                    <h4>Homework before the penalty</h4>
+                    <p class="plot">Before every penalty the keeper studies the taker's habits — favorite corner, run-up rhythm, recent form.</p>
+                    <p class="echo"><strong>Cell–cell communication.</strong> Ligand–receptor analysis is exactly this: reading what neighboring cells are about to do from their signals. <a href="#methods">See the workflows ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 6 · 门将的出球</div>
+                    <h4>Distribution from the back</h4>
+                    <p class="plot">Modern keepers start the attack: where you stand decides which pass is even possible. Position shapes every downstream option.</p>
+                    <p class="echo"><strong>Spatially-informed downstream analysis.</strong> Spatially variable genes and region-specific functions only make sense with location kept. <a href="#methods">See the workflows ↓</a></p>
+                </div>
+            </div>
+            <p class="library-footnote">好门将一半靠反应，一半靠站位 —— spatial context turns expression into geography.</p>
+        </section>
+
 
         <!-- Statistics Bar -->
         <section class="stats-bar">
