@@ -522,6 +522,12 @@
         .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #9fe3ba; }
         .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; }
         .casework-banner p { color: #dcf2e3; line-height: 1.75; margin: 0; font-size: .98em; }
+        .football-diagram-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; margin: 24px 0; }
+        .football-diagram-grid figure { margin: 0; background: #fcfdfb; border: 1px solid rgba(13,105,56,.18); border-radius: 14px; padding: 12px; box-shadow: 0 8px 24px rgba(7,68,34,.08); }
+        .football-diagram-grid img { display: block; width: 100%; height: auto; border-radius: 10px; }
+        .football-diagram-grid figcaption { margin-top: 8px; color: #50665a; font-size: .88em; line-height: 1.45; }
+        .story-pose-strip { margin: 22px 0 8px; background: linear-gradient(180deg,#f8fbf8 0%,#eef7f0 100%); border: 1px solid rgba(13,105,56,.16); border-radius: 16px; overflow: hidden; }
+        .story-pose-strip img { display: block; width: 100%; height: auto; }
         .story-section { background: var(--sport-soft, #fff0ee); border: 1.5px solid var(--sport-pale, #dceee3); }
         .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #074422); border-left: 4px solid var(--sport-primary, #0D6938); padding-left: 16px; margin: 6px 0 14px; }
         .story-intro { max-width: 82ch; line-height: 1.75; }
@@ -610,7 +616,7 @@
         <!-- CASEWORK BANNER (Coordinate · Football lens) -->
         <section class="casework-banner" aria-label="Football inspired multi-omics casework">
             <div class="casework-art">
-                <!-- TODO: IP asset pending — football-coach-three-poses.webp -->
+                <img src="../animations/rive-assets/stage-themes-v5/football-coach-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu football coach moving a cell-player magnet on a formation board">
             </div>
             <div class="casework-copy">
                 <div class="kicker">Football lens · set the formation</div>
@@ -626,6 +632,9 @@
             <h2><i class="fas fa-futbol"></i> Champions Without Stars.</h2>
             <p class="story-quote">「赢球靠阵型，不靠球星。」</p>
             <p class="story-intro">Leicester City, 2015–16: a squad of journeymen, cast-offs and unknowns wins the Premier League at 5000-1 odds — without a single superstar. Six scenes from that season, re-read as multi-omics integration.</p>
+            <div class="story-pose-strip">
+                <img src="../animations/rive-assets/stage-themes-v5/football-players-three-poses.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Healshu as striker, midfielder, and goalkeeper for football-inspired multi-omics integration">
+            </div>
             <div class="library-grid">
                 <div class="library-card">
                     <div class="book-meta">Scene 1 · 5000-1 的赔率</div>
@@ -665,6 +674,16 @@
                 </div>
             </div>
             <p class="library-footnote">5000-1 的赔率，0 个球星，1 座冠军 —— integration wins games, not any single modality.</p>
+            <div class="football-diagram-grid" aria-label="Football omics integration diagrams">
+                <figure>
+                    <img src="figures/football-omics-formation.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Football pitch diagram mapping ST to RNA, CM to ATAC, CB to Protein, GK to Spatial, and coach to integration">
+                    <figcaption>Formation view: each modality takes a role, but integration is the coach that makes the system playable.</figcaption>
+                </figure>
+                <figure>
+                    <img src="figures/football-omics-passing.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Passing route from GK Spatial to CB Protein to CM ATAC to ST RNA with dashed bridge mapping">
+                    <figcaption>Passing view: spatial context, protein, ATAC, and RNA connect through explicit bridge mappings.</figcaption>
+                </figure>
+            </div>
         </section>
 
         <!-- Overview Section -->
