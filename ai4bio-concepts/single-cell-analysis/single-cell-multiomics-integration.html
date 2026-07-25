@@ -2324,6 +2324,128 @@
                 </li>
               </ul>
         </section>
+
+        <!-- Side-by-Side Comparison -->
+        <section class="content-section" id="compare">
+    <h2>⚖️ Side-by-Side: Combining Modalities — Weighted-Graph (WNN) vs Joint Generative (totalVI / MultiVI)</h2>
+    <p>When RNA and a second modality (protein in CITE-seq, chromatin in 10x Multiome) are measured in the <em>same</em> cell, the integration question is <em>when</em> to combine them: fuse per-modality neighbor graphs after embedding each separately (WNN), or learn a single joint latent space from the raw counts of both (a joint VAE like totalVI / MultiVI)?</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">The same paired cells become one integrated representation in two different ways, depending on whether modalities are fused late (graph) or early (latent):</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — WNN -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">WNN (Seurat / muon)</div>
+                    <div style="color:#9fc7bb;font-size:12px;">graph-level, late integration</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Embed each modality separately</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">PCA on RNA, LSI on ATAC (or CLR on protein) &rarr; a neighbor graph per modality</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Weight each modality per cell</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">learn how informative each modality is for each cell, then fuse into one weighted joint graph</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">wnn_graph</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">per_cell_weights</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">model-free &middot; per-cell weights &middot; late fusion &middot; interpretable &middot; no imputation</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — joint VAE -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">totalVI / MultiVI (scvi-tools)</div>
+                    <div style="color:#c7a877;font-size:12px;">latent-level, early integration</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Joint VAE over raw counts</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">model each modality's noise (NB for RNA, background for protein, accessibility for ATAC) in one encoder</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">One shared latent space</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">denoises, imputes a missing modality, and corrects batch &mdash; all from a single generative model</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">joint_latent</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">denoised_counts</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">generative &middot; one latent &middot; early fusion &middot; imputes &amp; denoises &middot; batch-aware</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The root decision is <strong style="color:#5ec2a8;">fuse graphs after separate embeddings</strong> vs <strong style="color:#d6a44f;">learn one joint latent from raw counts</strong>. WNN is model-free and hands you an interpretable per-cell weight showing which modality drives each cell, but it does no denoising or imputation; totalVI/MultiVI is probabilistic — it denoises, imputes missing modalities, and corrects batch — at the cost of training a model. Both assume <em>paired</em> cells; for unpaired / diagonal data (different cells per modality) you need anchor transfer, GLUE, or LIGER instead.</p>
+    </div>
+</section>
+
+        <!-- Hands-On Practice -->
+        <section class="content-section" id="hands-on">
+                <h2>🛠️ Hands-On Practice</h2>
+                <p>The steps below walk through the joint-VAE route on CITE-seq with <strong>totalVI</strong> — one shared latent from RNA + protein — and note the WNN (graph) alternative and the MultiVI variant for RNA + ATAC.</p>
+                <h3>Environment &amp; packages</h3>
+                <p><code>scvi-tools</code> provides totalVI/MultiVI; <code>scanpy</code>/<code>muon</code>/<code>mudata</code> hold the modalities and run the WNN graph route in Python (Seurat's WNN is the R equivalent).</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>conda create -n multiomics python=3.10 -y
+conda activate multiomics
+pip install scvi-tools scanpy muon mudata
+# WNN graph route is in muon (Python) or Seurat (R)</code></pre>
+                <p><strong>Hardware.</strong> WNN runs on a laptop; totalVI/MultiVI training wants a GPU (minutes) but works on CPU (slower) for datasets up to ~100k cells.</p>
+                <h3>Data structures &amp; formats</h3>
+                <ul>
+                    <li><strong>CITE-seq <code>AnnData</code></strong> — RNA counts in <code>adata.X</code>, protein (ADT) counts in <code>adata.obsm["protein_counts"]</code></li>
+                    <li><strong>10x Multiome <code>MuData</code></strong> — <code>mdata["rna"]</code> (genes) + <code>mdata["atac"]</code> (peaks), the <em>same</em> cells in both</li>
+                    <li><strong>Paired requirement</strong> — totalVI, MultiVI, and WNN all need the same cells measured across modalities</li>
+                    <li><strong>Joint latent</strong> — written to <code>adata.obsm["X_totalVI"]</code> / <code>["X_multivi"]</code> for neighbors + UMAP</li>
+                    <li><strong>Batch key</strong> — <code>adata.obs["batch"]</code> (donor / lane) for the model to correct</li>
+                </ul>
+                <h3>Minimal code walkthrough</h3>
+                <p>Fit totalVI on CITE-seq to get one joint latent from RNA + protein.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scvi, scanpy as sc
+
+# CITE-seq: RNA counts in adata.X, protein (ADT) counts in adata.obsm["protein_counts"]
+adata = sc.read_h5ad("cite_seq.h5ad")
+
+# totalVI jointly models RNA (negative binomial) and protein (with ambient background)
+scvi.model.TOTALVI.setup_anndata(
+    adata,
+    protein_expression_obsm_key="protein_counts",
+    batch_key="batch",
+)
+model = scvi.model.TOTALVI(adata)
+model.train()
+
+# One joint latent from BOTH modalities; denoised protein is available too
+adata.obsm["X_totalVI"] = model.get_latent_representation()
+sc.pp.neighbors(adata, use_rep="X_totalVI"); sc.tl.umap(adata)</code></pre>
+                <p>Swap in the graph route, or MultiVI for RNA + ATAC:</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># Graph-level alternative — WNN via muon (Python port of Seurat's WNN):
+# import muon as mu
+# mu.pp.neighbors(mdata)        # per-modality graphs -> one weighted joint graph
+# mu.tl.umap(mdata)
+
+# RNA + ATAC (10x Multiome) instead of CITE-seq -> MultiVI:
+# amvi = scvi.data.organize_multiome_anndatas(adata_paired, adata_rna, adata_atac)
+# scvi.model.MULTIVI.setup_anndata(amvi, batch_key="modality")
+# mvi = scvi.model.MULTIVI(amvi, n_genes=n_g, n_regions=n_r); mvi.train()</code></pre>
+                <h3>Common pitfalls &amp; tips</h3>
+                <ul>
+                    <li><strong>Paired vs unpaired.</strong> totalVI / MultiVI / WNN require the <em>same</em> cells in every modality; for different cells per modality (diagonal integration) use Seurat anchor transfer, GLUE, or LIGER.</li>
+                    <li><strong>Never concatenate raw features and PCA.</strong> RNA counts, protein ADT, and sparse binary ATAC peaks live on wildly different scales — naive concatenation lets one modality dominate the embedding.</li>
+                    <li><strong>Protein has ambient background.</strong> ADT counts include background binding; totalVI models it explicitly, so don't preprocess protein like RNA (use CLR for WNN, raw counts for totalVI).</li>
+                    <li><strong>ATAC needs its own preprocessing.</strong> TF-IDF / binarization and peak calling come first; feeding raw peak counts into an RNA-style model is wrong.</li>
+                    <li><strong>Correct batch <em>and</em> modality.</strong> Donor / lane batch effects exist within each modality — set the batch key, not just the modality label.</li>
+                    <li><strong>Inspect the WNN weights.</strong> The per-cell modality weights are interpretable; a modality with no signal in some cells should get a low weight — check them to catch a broken or empty modality.</li>
+                </ul>
+        </section>
     </main>
              
                
