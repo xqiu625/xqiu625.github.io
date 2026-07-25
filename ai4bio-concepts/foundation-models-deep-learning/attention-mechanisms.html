@@ -617,6 +617,8 @@
                 <li><a href="#types">Attention Types</a></li>
                 <li><a href="#applications">Applications</a></li>
                 <li><a href="#models">Key Models</a></li>
+                <li><a href="#compare">Side-by-Side</a></li>
+                <li><a href="#hands-on">Hands-On</a></li>
             </ul>
         </div>
     </nav>
@@ -1607,6 +1609,137 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Side-by-Side Comparison -->
+            <div class="content-section" id="compare">
+    <h2>⚖️ Side-by-Side: Who Attends to Whom — Global Self-Attention vs Graph-Based Attention</h2>
+    <p>Two of the four attention types above sit at opposite ends of one axis: <em>how many</em> other tokens each token is allowed to look at. Global self-attention lets every token attend to every other token; graph-based attention restricts each token to its neighbors in a biological graph — a protein&ndash;protein network, a spatial neighborhood, a gene-regulatory graph.</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">The same set of tokens produces two very different attention patterns depending on who is allowed to attend to whom:</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — Global self-attention -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">Global self-attention</div>
+                    <div style="color:#9fc7bb;font-size:12px;">all-pairs (transformer)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Score every pair of tokens</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">QK&#8868; gives an N&times;N matrix; softmax runs over <em>all</em> tokens</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Weighted sum over all values</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">full global context, but O(N&sup2;) compute and memory in the number of tokens</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">attn_NxN</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">context_all</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">global context &middot; all-pairs &middot; O(N&sup2;) &middot; no prior graph &middot; transformers</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — Graph-based attention -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">Graph-based attention</div>
+                    <div style="color:#c7a877;font-size:12px;">neighbors only (GAT)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Score only connected pairs</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">attention is restricted to graph edges &mdash; spatial, protein&ndash;protein, or regulatory neighbors</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Aggregate over neighbors</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">sparse, O(E) in the number of edges; the graph itself is a built-in inductive bias</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">attn_edges</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">context_neighbors</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">local context &middot; edges only &middot; O(E) &middot; needs a graph &middot; GAT / graph transformers</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The root decision is <strong style="color:#5ec2a8;">attend to everything</strong> vs <strong style="color:#d6a44f;">attend along a known biological graph</strong>. Global attention is flexible and can learn any dependency, but it is quadratic and structure-agnostic; graph attention is sparse, scales to large systems, and bakes in prior structure &mdash; but is capped by the quality of the graph. Multi-head and cross-attention (the other two types above) are orthogonal choices layered on top of either; the global-vs-graph axis is what sets both the compute cost and the inductive bias.</p>
+    </div>
+</div>
+
+            <!-- Hands-On Practice -->
+            <div class="content-section" id="hands-on">
+                <h2>🛠️ Hands-On Practice</h2>
+                <p>The steps below implement the engine inside every one of the four types above — <strong>scaled dot-product attention</strong> — from scratch in NumPy, then show the PyTorch multi-head and graph-attention equivalents. Seeing the raw matrix math makes the "who attends to whom" idea concrete.</p>
+                <h3>Environment &amp; packages</h3>
+                <p><code>numpy</code> is enough for the core mechanism; <code>torch</code> provides the production multi-head module, and <code>torch-geometric</code> the graph-restricted variant.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>conda create -n attn python=3.10 -y
+conda activate attn
+pip install numpy torch
+# graph-restricted attention variant:
+# pip install torch-geometric</code></pre>
+                <p><strong>Hardware.</strong> The toy example runs anywhere; training a real transformer wants a GPU, and long inputs (whole genomes, thousands of cells) need FlashAttention or an efficient-attention variant to fit the N&times;N matrix in memory.</p>
+                <h3>Data structures &amp; formats</h3>
+                <ul>
+                    <li><strong>Input <code>X</code></strong> — shape <code>(n_tokens, d_model)</code>; tokens are genes, cells, nucleotides, or residues depending on the model</li>
+                    <li><strong><code>Q</code>, <code>K</code>, <code>V</code></strong> — query / key / value projections of <code>X</code>, each <code>(n_tokens, d_k)</code></li>
+                    <li><strong>Attention weights</strong> — <code>(n_tokens, n_tokens)</code>; each row is a softmax over all keys and sums to 1</li>
+                    <li><strong>Mask</strong> — boolean <code>(n_tokens, n_tokens)</code> that blocks padding or future positions <em>before</em> the softmax</li>
+                    <li><strong>Heads</strong> — <code>d_model</code> split into <code>num_heads</code> independent subspaces, concatenated after attention</li>
+                    <li><strong><code>edge_index</code></strong> (graph attention) — <code>(2, n_edges)</code> list of connected token pairs</li>
+                </ul>
+                <h3>Minimal code walkthrough</h3>
+                <p>Scaled dot-product attention in NumPy, then the PyTorch multi-head and graph equivalents.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import numpy as np
+
+def softmax(x, axis=-1):
+    x = x - x.max(axis=axis, keepdims=True)      # subtract max: numerical stability
+    e = np.exp(x)
+    return e / e.sum(axis=axis, keepdims=True)
+
+def attention(Q, K, V, mask=None):
+    d_k = Q.shape[-1]
+    scores = Q @ K.transpose(-1, -2) / np.sqrt(d_k)   # 1/sqrt(d_k) scaling MATTERS
+    if mask is not None:
+        scores = np.where(mask, scores, -1e9)         # block disallowed pairs BEFORE softmax
+    weights = softmax(scores, axis=-1)                # each row sums to 1
+    return weights @ V, weights
+
+# toy: 4 tokens (genes / cells / residues), model dim 8
+rng = np.random.default_rng(0)
+X = rng.standard_normal((4, 8))
+Wq, Wk, Wv = (rng.standard_normal((8, 8)) for _ in range(3))
+out, attn = attention(X @ Wq, X @ Wk, X @ Wv)
+print("attention weights (rows sum to 1):\n", attn.round(2))
+print("output shape:", out.shape)                    # (4, 8)</code></pre>
+                <p>In practice you use the batched, multi-head module &mdash; and swap in graph attention when you have a biological graph:</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import torch, torch.nn as nn
+
+# Global multi-head self-attention (query = key = value = x)
+mha = nn.MultiheadAttention(embed_dim=8, num_heads=2, batch_first=True)
+x = torch.randn(1, 4, 8)              # (batch, tokens, dim)
+out, w = mha(x, x, x)                 # w: per-head attention weights
+
+# Graph-restricted attention: attend ONLY along edges, not all-pairs
+# from torch_geometric.nn import GATConv
+# gat = GATConv(in_channels=8, out_channels=8, heads=2)
+# out = gat(node_features, edge_index)   # edge_index = (2, n_edges)</code></pre>
+                <h3>Common pitfalls &amp; tips</h3>
+                <ul>
+                    <li><strong>Never drop the 1/&radic;d<sub>k</sub> scaling.</strong> Without it, dot products grow with dimension, push softmax into saturation, and gradients vanish &mdash; always divide scores by &radic;d<sub>k</sub>.</li>
+                    <li><strong>Stabilize the softmax.</strong> Subtract the per-row max before <code>exp()</code>, or large scores overflow to <code>inf</code>.</li>
+                    <li><strong>Mask before, not after, softmax.</strong> Set disallowed scores to a large negative value <em>before</em> softmax; masking afterward leaves leaked probability mass on padding or future tokens.</li>
+                    <li><strong>Watch the O(N&sup2;) memory.</strong> The N&times;N matrix blows up for long inputs (whole genomes, thousands of cells) &mdash; use FlashAttention or a linear/efficient-attention variant.</li>
+                    <li><strong><code>num_heads</code> must divide <code>d_model</code>.</strong> Each head gets <code>d_model / num_heads</code> dimensions; a mismatch errors or silently mis-shapes the tensors.</li>
+                    <li><strong>Graph attention is only as good as its edges.</strong> <code>GATConv</code> attends solely along <code>edge_index</code>; a wrong or too-sparse graph silently starves the model of context.</li>
+                </ul>
             </div>
 
             <div class="content-section">
