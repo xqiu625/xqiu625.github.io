@@ -516,6 +516,39 @@
             font-size: 0.85em;
             font-weight: 600;
         }
+        /* casework banner + story section (Football lens) */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#041f11 0%,#074422 55%,#0d5a2d 100%); border-radius: 16px; padding: 34px 38px; margin: 24px 0 25px; box-shadow: 0 8px 30px rgba(7,68,34,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #9fe3ba; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; }
+        .casework-banner p { color: #dcf2e3; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: var(--sport-soft, #fff0ee); border: 1.5px solid var(--sport-pale, #dceee3); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #074422); border-left: 4px solid var(--sport-primary, #0D6938); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #dceee3); border-left: 5px solid var(--sport-primary, #0D6938); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(7,68,34,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(7,68,34,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #0D6938); }
+        .library-card h4 { color: var(--sport-dark, #074422); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #074422); background: var(--sport-pale, #dceee3); border: 1px dashed rgba(13,105,56,.3); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #0D6938); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #0D6938); font-size: .95em; }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#dceee3); }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#dceee3); box-shadow: 0 10px 28px rgba(7,68,34,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #4fce8a; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #9fe3ba; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(13,105,56,.18); border-color: rgba(79,206,138,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #4fce8a; }
+        [data-theme="dark"] .library-footnote { color: #9fe3ba; }
     </style>
 <base target="_blank">
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
@@ -572,6 +605,67 @@
                 <span class="stat-number">100M+</span>
                 <div class="stat-label">Cells in Foundation<br>Model Training</div>
             </div>
+        </section>
+
+        <!-- CASEWORK BANNER (Coordinate · Football lens) -->
+        <section class="casework-banner" aria-label="Football inspired multi-omics casework">
+            <div class="casework-art">
+                <!-- TODO: IP asset pending — football-coach-three-poses.webp -->
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">Football lens · set the formation</div>
+                <h2>Stars don't win games. Formations do.</h2>
+                <p>Each omics arrives with its own talent — RNA's speed, ATAC's vision, protein's defense,
+                spatial's positioning. Multi-omics integration is the manager's job: 把十一个天才排成一个阵型 —
+                turn eleven talents into one formation that actually plays together.</p>
+            </div>
+        </section>
+
+        <!-- STORY LINE: Set the Formation -->
+        <section class="content-section story-section" id="football-story">
+            <!-- TODO: story hero pending — football-coach-hero.webp -->
+            <h2><i class="fas fa-futbol"></i> Set the Formation.</h2>
+            <p class="story-quote">「赢球靠阵型，不靠球星。」</p>
+            <p class="story-intro">Multi-omics integration is not collecting the eleven best players; it is building a team that passes. Every omics is a position with a role — six scenes from the tactics room, re-read as integration strategy.</p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Scene 1 · 阵型板</div>
+                    <h4>The tactics board</h4>
+                    <p class="plot">The manager pins eleven magnets on the board. No one asks "who is the best player" — the question is always "who stands where, and who covers whom".</p>
+                    <p class="echo"><strong>Integration itself.</strong> Not stacking modalities, but arranging them into a working formation. <a href="#overview">See the paradigms ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 2 · 前锋 RNA</div>
+                    <h4>The star scorer</h4>
+                    <p class="plot">Fastest legs on the pitch, most shots on goal, always in the highlight reel — the striker everyone watches.</p>
+                    <p class="echo"><strong>Transcriptome (scRNA).</strong> The most abundant signal and the usual entry point — but a striker alone never wins a match.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 3 · 中场 ATAC</div>
+                    <h4>The playmaker</h4>
+                    <p class="plot">The midfielder decides which lanes are open and where the ball can travel. Nothing reaches the striker unless the midfield opens the channel.</p>
+                    <p class="echo"><strong>Chromatin accessibility (ATAC).</strong> Which regulatory regions are open for business — the context that lets RNA's runs make sense.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 4 · 后卫 Protein</div>
+                    <h4>The last line of defense</h4>
+                    <p class="plot">When a run looks suspicious, the center-back is the final check. If it gets past them, it was real all along.</p>
+                    <p class="echo"><strong>Protein (CITE-seq).</strong> The confirmation layer — surface markers that settle identity disputes RNA and ATAC argue about.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 5 · 门将 Spatial</div>
+                    <h4>The keeper's positioning</h4>
+                    <p class="plot">A goalkeeper's worth is not speed — it is standing in exactly the right spot before the shot comes. Position is everything.</p>
+                    <p class="echo"><strong>Spatial context.</strong> Where a cell sits in the tissue can matter more than how much it expresses. <a href="#methods">See spatial methods ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 6 · 传球与换位</div>
+                    <h4>Passing, not solo runs</h4>
+                    <p class="plot">Great teams move the ball between positions; great squads can also swap in a replacement who plays the same role.</p>
+                    <p class="echo"><strong>Alignment &amp; bridge integration.</strong> Mapping features across modalities — and homolog swaps across species. <a href="#methods">See the methods ↓</a></p>
+                </div>
+            </div>
+            <p class="library-footnote">阵型站稳了，数据才会跑位 —— once the formation holds, every omics starts making runs for the others.</p>
         </section>
 
         <!-- Overview Section -->
