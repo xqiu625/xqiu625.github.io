@@ -540,6 +540,20 @@
         .story-hero img { width: 100%; height: auto; display: block; }
         @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
         @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+
+        /* granularity trade-off cards */
+        .tradeoff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 18px 0 22px; }
+        .tradeoff-card { background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); border-radius: 10px; padding: 18px; border-top: 4px solid var(--sport-primary,#7A5FB8); }
+        .tradeoff-card h4 { color: var(--sport-dark,#3B276E); margin: 0 0 12px; font-size: 1.02em; }
+        .tradeoff-card h4 small { color: var(--sport-primary,#7A5FB8); font-weight: 600; font-size: .78em; }
+        .tradeoff-card p { font-size: .9em; line-height: 1.6; margin: 0 0 8px; padding-left: 20px; position: relative; }
+        .tradeoff-card p:last-child { margin-bottom: 0; }
+        .tradeoff-card .gain { color: #1e7e34; }
+        .tradeoff-card .cost { color: #b03a2e; }
+        [data-theme="dark"] .tradeoff-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); }
+        [data-theme="dark"] .tradeoff-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .tradeoff-card .gain { color: #6fd695; }
+        [data-theme="dark"] .tradeoff-card .cost { color: #e8927f; }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
@@ -1881,6 +1895,30 @@
                 <figure class="content-figure">
                     <img src="figures/tokenization-army-hierarchy.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Token hierarchy as an army organization: document as army, sentences as camps, words as squads, subwords and characters as soldiers">
                 </figure>
+                <p>The hierarchy above is the map; the trade-off is the terrain. Every granularity level buys something and pays for something:</p>
+                <div class="tradeoff-grid">
+                    <div class="tradeoff-card">
+                        <h4>卒 · Smaller units <small>char / byte / base</small></h4>
+                        <p class="gain">✓ Zero OOV — every sequence is coverable; compositional generalization</p>
+                        <p class="cost">✗ Very long sequences; almost no meaning per token; attention gets expensive</p>
+                    </div>
+                    <div class="tradeoff-card">
+                        <h4>队 · Middle units <small>subword / codon / k-mer</small></h4>
+                        <p class="gain">✓ The working balance: coverage, real semantics, manageable vocabulary</p>
+                        <p class="cost">✗ You must tune the knobs — merge count, k, overlapping redundancy</p>
+                    </div>
+                    <div class="tradeoff-card">
+                        <h4>营 · Larger units <small>word / gene / macrogene</small></h4>
+                        <p class="gain">✓ Short sequences; every token carries real meaning</p>
+                        <p class="cost">✗ OOV and batch-dependence; rare or novel units silently vanish</p>
+                    </div>
+                    <div class="tradeoff-card">
+                        <h4>座次 · Value-free units <small>rank / coordinate</small></h4>
+                        <p class="gain">✓ Batch-proof and vocabulary-free; robust across datasets</p>
+                        <p class="cost">✗ Absolute magnitude is gone — 50 vs 5 becomes just 1st vs 2nd</p>
+                    </div>
+                </div>
+                <p>The table below is the same trade-off, one strategy at a time:</p>
 
                 <h3>Tokenization Strategy Comparison</h3>
                 <table class="comparison-table">
