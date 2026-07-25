@@ -554,6 +554,15 @@
         [data-theme="dark"] .tradeoff-card h4 { color: #c9b7ee; }
         [data-theme="dark"] .tradeoff-card .gain { color: #6fd695; }
         [data-theme="dark"] .tradeoff-card .cost { color: #e8927f; }
+        .tradeoff-card.special { grid-column: 1 / -1; border-top-color: #e31c23; }
+        .tradeoff-card.special h4 { color: #7a1f16; }
+        [data-theme="dark"] .tradeoff-card.special h4 { color: #f0a79b; }
+        .tradeoff-card .special-intro { font-size: .92em; color: #4a463b; margin-bottom: 12px; }
+        [data-theme="dark"] .tradeoff-card .special-intro { color: #c9d1d9; }
+        .tradeoff-card .special-rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+        .tradeoff-card .special-rows p { font-size: .88em; margin: 0; padding-left: 0; }
+        .tradeoff-card .special-rows code { background: var(--sport-pale,#f4ecfa); color: var(--sport-dark,#3B276E); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+        [data-theme="dark"] .tradeoff-card .special-rows code { background: rgba(122,95,184,.25); color: #e6ddf7; }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
@@ -1897,24 +1906,33 @@
                 <p>Every granularity level buys something and pays for something:</p>
                 <div class="tradeoff-grid">
                     <div class="tradeoff-card">
-                        <h4>卒 · Smaller units <small>char / byte / base</small></h4>
+                        <h4>1×1 小颗粒 · Smaller units <small>char / byte / base</small></h4>
                         <p class="gain">✓ Zero OOV — every sequence is coverable; compositional generalization</p>
                         <p class="cost">✗ Very long sequences; almost no meaning per token; attention gets expensive</p>
                     </div>
                     <div class="tradeoff-card">
-                        <h4>队 · Middle units <small>subword / codon / k-mer</small></h4>
+                        <h4>2×4 标准砖 · Middle units <small>subword / codon / k-mer</small></h4>
                         <p class="gain">✓ The working balance: coverage, real semantics, manageable vocabulary</p>
                         <p class="cost">✗ You must tune the knobs — merge count, k, overlapping redundancy</p>
                     </div>
                     <div class="tradeoff-card">
-                        <h4>营 · Larger units <small>word / gene / macrogene</small></h4>
+                        <h4>大板与定制件 · Larger units <small>word / gene / macrogene</small></h4>
                         <p class="gain">✓ Short sequences; every token carries real meaning</p>
                         <p class="cost">✗ OOV and batch-dependence; rare or novel units silently vanish</p>
                     </div>
                     <div class="tradeoff-card">
-                        <h4>座次 · Value-free units <small>rank / coordinate</small></h4>
+                        <h4>底板格点与塔高 · Value-free units <small>rank / coordinate</small></h4>
                         <p class="gain">✓ Batch-proof and vocabulary-free; robust across datasets</p>
                         <p class="cost">✗ Absolute magnitude is gone — 50 vs 5 becomes just 1st vs 2nd</p>
+                    </div>
+                    <div class="tradeoff-card special">
+                        <h4>连接件与底板 · Special tokens <small>[CLS] / [SEP] / [MASK]</small></h4>
+                        <p class="special-intro">Content tokens carry meaning; special tokens carry the structure that makes meaning readable — invisible in the castle photo, but nothing snaps together without them:</p>
+                        <div class="special-rows">
+                            <p><code>[CLS]</code> = <strong>说明书封面的总览图</strong> — the single overview picture that summarizes the whole build (classification &amp; sequence embedding)</p>
+                            <p><code>[SEP]</code> = <strong>房间隔断砖</strong> — divider bricks that split one build into readable rooms (segment boundaries)</p>
+                            <p><code>[MASK]</code> = <strong>被遮住的那一格</strong> — a covered slot the model must guess from the surrounding bricks (where the learning signal comes from)</p>
+                        </div>
                     </div>
                 </div>
                 <p>The table below is the same trade-off, one strategy at a time:</p>
