@@ -1,0 +1,219 @@
+/* Shared article palettes derived from the Lab in the Loop sections. */
+body[data-sport="measure"],
+body[data-sport="baseball"] {
+  --sport-primary:#005A9C; --sport-secondary:#FFFFFF; --sport-dark:#003B68;
+  --sport-pale:#dceef8; --sport-soft:#f5fbff; --sport-on-primary:#fff;
+}
+body[data-sport="model"],
+body[data-sport="basketball"] {
+  --sport-primary:#7A5FB8; --sport-secondary:#C9B7EE; --sport-dark:#3B276E;
+  --sport-pale:#f4ecfa; --sport-soft:#fbf7ff; --sport-on-primary:#fff;
+}
+body[data-sport="readout"],
+body[data-sport="tennis"] {
+  --sport-primary:#AD8B91; --sport-secondary:#859C7C; --sport-dark:#18301D;
+  --sport-pale:#eadde1; --sport-soft:#f5f1ef; --sport-on-primary:#fff;
+}
+body[data-sport="coordinate"],
+body[data-sport="football"] {
+  --sport-primary:#0D6938; --sport-secondary:#DA291C; --sport-dark:#074422;
+  --sport-pale:#dceee3; --sport-soft:#fff0ee; --sport-on-primary:#fff;
+}
+body[data-sport="monitor"],
+body[data-sport="f1"] {
+  --sport-primary:#D52E37; --sport-secondary:#FFF200; --sport-dark:#82141b;
+  --sport-pale:#ffe6e8; --sport-soft:#fffbd4; --sport-on-primary:#fff;
+}
+body[data-sport="update"],
+body[data-sport="kickboxing"] {
+  --sport-primary:#145DA0; --sport-secondary:#2EC4B6; --sport-dark:#102A43;
+  --sport-pale:#dcebf7; --sport-soft:#e3f8f5; --sport-on-primary:#fff;
+}
+
+body[data-sport] {
+  --primary-color:var(--sport-primary);
+  --secondary-color:var(--sport-primary);
+  --accent-color:var(--sport-secondary);
+  --success-color:var(--sport-secondary);
+  --border-base:var(--sport-pale);
+  --background-color:var(--sport-soft);
+  --text-color:var(--sport-dark);
+  --tint-bg-light:var(--sport-soft);
+  --tint-bg-highlight:var(--sport-pale);
+  background:linear-gradient(135deg,var(--sport-soft),var(--sport-pale)) !important;
+}
+body[data-sport] ::selection { color:var(--sport-dark) !important; background:var(--sport-secondary) !important; }
+body[data-sport] a { color:var(--sport-primary); }
+body[data-sport] .navbar { border-bottom-color:color-mix(in srgb,var(--sport-primary) 28%,white) !important; }
+body[data-sport] .navbar-nav a:hover, body[data-sport] .home-link { color:var(--sport-primary) !important; }
+
+body[data-sport] main > .header,
+body[data-sport] main > header,
+body[data-sport] .container > .header {
+  color:var(--sport-on-primary) !important;
+  background:linear-gradient(135deg,var(--sport-dark),var(--sport-primary)) !important;
+  box-shadow:0 10px 32px color-mix(in srgb,var(--sport-primary) 34%,transparent) !important;
+}
+body[data-sport] main > .header h1,
+body[data-sport] main > header h1,
+body[data-sport] .container > .header h1 { color:var(--sport-secondary) !important; }
+body[data-sport] main > .header .subtitle,
+body[data-sport] main > header p,
+body[data-sport] .container > .header .subtitle {
+  color:color-mix(in srgb,white 88%,var(--sport-secondary)) !important;
+}
+
+body[data-sport] .content-section,
+body[data-sport] .section,
+body[data-sport] .overview-section,
+body[data-sport] .category-section { border-top-color:var(--sport-secondary) !important; }
+body[data-sport] .content-section h2,
+body[data-sport] .section h2,
+body[data-sport] .overview-section h2,
+body[data-sport] .category-header h2 {
+  color:var(--sport-dark) !important; border-color:var(--sport-secondary) !important;
+}
+body[data-sport] .content-section h3,
+body[data-sport] .section h3,
+body[data-sport] .content-section h4,
+body[data-sport] .section h4,
+body[data-sport] .category-header h3 {
+  color:var(--sport-primary) !important; border-color:var(--sport-secondary) !important;
+}
+
+body[data-sport] .paper-card,
+body[data-sport] .method-card,
+body[data-sport] .tool-card,
+body[data-sport] .attention-card,
+body[data-sport] .architecture-card,
+body[data-sport] .decision-card { border-top-color:var(--sport-secondary) !important; }
+body[data-sport] .paper-card:hover,
+body[data-sport] .method-card:hover,
+body[data-sport] .tool-card:hover,
+body[data-sport] .attention-card:hover,
+body[data-sport] .architecture-card:hover,
+body[data-sport] .decision-card:hover {
+  border-color:var(--sport-primary) !important;
+  box-shadow:0 8px 25px color-mix(in srgb,var(--sport-primary) 22%,transparent) !important;
+}
+body[data-sport] .paper-card h4,
+body[data-sport] .method-card h4,
+body[data-sport] .tool-card h3,
+body[data-sport] .tool-name,
+body[data-sport] .attention-card h3,
+body[data-sport] .architecture-card h3,
+body[data-sport] .decision-card h3 { color:var(--sport-dark) !important; }
+
+body[data-sport] .year-badge,
+body[data-sport] .meta-badge,
+body[data-sport] .model-tag,
+body[data-sport] .concept-tag,
+body[data-sport] .tag,
+body[data-sport] .year { color:var(--sport-on-primary) !important; background:var(--sport-primary) !important; }
+body[data-sport] .journal-badge,
+body[data-sport] .journal,
+body[data-sport] .type-badge { color:var(--sport-dark) !important; background:var(--sport-pale) !important; }
+body[data-sport] .paper-links a,
+body[data-sport] .paper-link,
+body[data-sport] .links a,
+body[data-sport] .btn-primary,
+body[data-sport] button.active {
+  color:var(--sport-on-primary) !important; background:var(--sport-primary) !important;
+  border-color:var(--sport-primary) !important;
+}
+body[data-sport] .highlight-box,
+body[data-sport] .feature-highlight,
+body[data-sport] .highlight,
+body[data-sport] .key-insight,
+body[data-sport] blockquote {
+  color:var(--sport-dark) !important;
+  background:linear-gradient(135deg,var(--sport-soft),var(--sport-pale)) !important;
+  border-color:var(--sport-secondary) !important;
+}
+body[data-sport] table th { color:var(--sport-on-primary) !important; background:var(--sport-primary) !important; }
+body[data-sport] .stat-item { border-color:var(--sport-secondary) !important; }
+body[data-sport] .stat-number, body[data-sport] .stat-card .number { color:var(--sport-primary) !important; }
+
+
+/* ==========================================================================
+   Dark mode legibility fixes.
+   The site theme (theme.css) flips backgrounds to dark under
+   [data-theme="dark"]; the sport palettes were authored for light mode,
+   leaving dark-on-dark headings. Foreground variables flip light here,
+   while badge/banner backgrounds keep the original sport colors.
+   ========================================================================== */
+[data-theme="dark"] body[data-sport] {
+  --primary-color: color-mix(in srgb, var(--sport-primary) 45%, white);
+  --secondary-color: color-mix(in srgb, var(--sport-primary) 45%, white);
+  --accent-color: color-mix(in srgb, var(--sport-secondary) 55%, white);
+  --success-color: color-mix(in srgb, var(--sport-secondary) 65%, white);
+  --text-color: #dbe4ee;
+  --tint-bg-light: rgba(255, 255, 255, .05);
+  --tint-bg-highlight: rgba(255, 255, 255, .09);
+  --border-base: rgba(255, 255, 255, .14);
+  background: linear-gradient(135deg, #0d1117, #1c2128) !important;
+  color: var(--text-color);
+}
+[data-theme="dark"] body[data-sport] a { color: color-mix(in srgb, var(--sport-primary) 45%, white); }
+
+/* Headings / names that use --sport-dark for text -> near-white */
+[data-theme="dark"] body[data-sport] .content-section h2,
+[data-theme="dark"] body[data-sport] .section h2,
+[data-theme="dark"] body[data-sport] .overview-section h2,
+[data-theme="dark"] body[data-sport] .category-header h2,
+[data-theme="dark"] body[data-sport] .paper-card h4,
+[data-theme="dark"] body[data-sport] .method-card h4,
+[data-theme="dark"] body[data-sport] .tool-card h3,
+[data-theme="dark"] body[data-sport] .tool-name,
+[data-theme="dark"] body[data-sport] .attention-card h3,
+[data-theme="dark"] body[data-sport] .architecture-card h3,
+[data-theme="dark"] body[data-sport] .decision-card h3,
+[data-theme="dark"] body[data-sport] .decision-card strong,
+[data-theme="dark"] body[data-sport] .highlight-box,
+[data-theme="dark"] body[data-sport] .feature-highlight,
+[data-theme="dark"] body[data-sport] .highlight,
+[data-theme="dark"] body[data-sport] .key-insight,
+[data-theme="dark"] body[data-sport] blockquote { color: #e6edf3 !important; }
+
+/* Sub-headings / accents that use raw --sport-primary for text -> brightened */
+[data-theme="dark"] body[data-sport] .content-section h3,
+[data-theme="dark"] body[data-sport] .section h3,
+[data-theme="dark"] body[data-sport] .content-section h4,
+[data-theme="dark"] body[data-sport] .section h4,
+[data-theme="dark"] body[data-sport] .category-header h3,
+[data-theme="dark"] body[data-sport] .stat-number,
+[data-theme="dark"] body[data-sport] .stat-card .number {
+  color: color-mix(in srgb, var(--sport-primary) 45%, white) !important;
+}
+
+/* Pale chips -> translucent dark */
+[data-theme="dark"] body[data-sport] .journal-badge,
+[data-theme="dark"] body[data-sport] .journal,
+[data-theme="dark"] body[data-sport] .type-badge {
+  color: #dbe4ee !important; background: rgba(255, 255, 255, .1) !important;
+}
+
+/* Near-white highlight boxes -> translucent dark */
+[data-theme="dark"] body[data-sport] .highlight-box,
+[data-theme="dark"] body[data-sport] .feature-highlight,
+[data-theme="dark"] body[data-sport] .highlight,
+[data-theme="dark"] body[data-sport] .key-insight,
+[data-theme="dark"] body[data-sport] blockquote {
+  background: rgba(255, 255, 255, .06) !important;
+}
+
+/* Warning / limitation red brightened for dark backgrounds */
+[data-theme="dark"] body[data-sport] .limitation-item,
+[data-theme="dark"] body[data-sport] .limitations li,
+[data-theme="dark"] body[data-sport] .limitations,
+[data-theme="dark"] body[data-sport] .warning,
+[data-theme="dark"] body[data-sport] .warning-box { color: #eba39b !important; }
+
+/* Gradient banners that derive from flipped vars -> re-darken */
+[data-theme="dark"] body[data-sport] .category-header,
+[data-theme="dark"] body[data-sport] .workflow-diagram,
+[data-theme="dark"] body[data-sport] footer {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--sport-primary) 38%, #0d1117),
+    color-mix(in srgb, var(--sport-primary) 18%, #1c2128)) !important;
+}

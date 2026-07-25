@@ -13,12 +13,12 @@
         gtag('js', new Date());
         gtag('config', 'G-KSMFMG4TD5');
     </script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* ===== BASE STYLES ===== */
         body {
-            font-family: 'Lato', sans-serif;
+            font-family: 'Manrope', sans-serif;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             line-height: 1.7;
             color: #333;
@@ -100,6 +100,137 @@
             max-width: 900px;
             margin: 0 auto;
             line-height: 1.8;
+        }
+
+        /* ===== TENNIS ANALOGY ===== */
+        .sport-analogy {
+            display: grid;
+            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
+            gap: 30px;
+            align-items: center;
+            margin: 25px 0;
+            padding: 30px;
+            overflow: hidden;
+            border: 2px solid #AD8B91;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f3e8eb 0%, #ffffff 60%, #e8eee5 100%);
+            box-shadow: 0 4px 18px rgba(24, 48, 29, 0.14);
+        }
+
+        .tennis-court {
+            position: relative;
+            min-height: 250px;
+            border: 8px solid white;
+            border-radius: 10px;
+            background: #55a99d;
+            box-shadow: 0 12px 30px rgba(42, 91, 84, 0.2);
+        }
+
+        .tennis-court::before,
+        .tennis-court::after {
+            content: "";
+            position: absolute;
+            background: white;
+        }
+
+        .tennis-court::before {
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            transform: translateX(-50%);
+        }
+
+        .tennis-court::after {
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 5px;
+            transform: translateY(-50%);
+            box-shadow: 0 0 0 2px rgba(56, 67, 71, 0.18);
+        }
+
+        .court-player,
+        .court-lab {
+            position: absolute;
+            z-index: 2;
+            padding: 8px 10px;
+            border-radius: 999px;
+            color: white;
+            font-size: 0.78em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .court-player { left: 8%; top: 16%; background: #AD8B91; }
+        .court-lab { right: 8%; bottom: 16%; background: #18301D; }
+
+        .tennis-ball {
+            position: absolute;
+            z-index: 3;
+            left: 23%;
+            top: 30%;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #eff05c;
+            box-shadow: 0 0 0 4px rgba(239, 240, 92, 0.25);
+            animation: analogyRally 2.8s ease-in-out infinite;
+        }
+
+        .rally-path {
+            position: absolute;
+            left: 25%;
+            top: 34%;
+            width: 50%;
+            height: 34%;
+            border-top: 3px dashed rgba(255,255,255,0.8);
+            border-radius: 50%;
+            transform: rotate(20deg);
+        }
+
+        .sport-analogy-copy .analogy-label {
+            color: #859C7C;
+            font-size: 0.76em;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .sport-analogy-copy h2 {
+            margin: 7px 0 12px;
+            color: #18301D;
+            border: 0;
+            padding: 0;
+        }
+
+        .analogy-steps {
+            display: grid;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .analogy-step {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .analogy-step span {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #AD8B91;
+            color: white;
+            font-weight: bold;
+        }
+
+        @keyframes analogyRally {
+            0%, 100% { left: 23%; top: 30%; transform: scale(1); }
+            50% { left: 73%; top: 64%; transform: scale(0.82); }
         }
 
         /* ===== STATISTICS BAR ===== */
@@ -401,6 +532,15 @@
 
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
+            .sport-analogy {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .tennis-court {
+                min-height: 210px;
+            }
+
             .paper-grid {
                 grid-template-columns: 1fr;
             }
@@ -429,9 +569,10 @@
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
 </head>
 
-<body>
+<body data-sport="readout">
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -443,7 +584,7 @@
                 </li>
                 <li>
                     <a href="../../">
-                        <i class="fas fa-home"></i> Xinru's Homepage
+                        <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
             </ul>
@@ -464,6 +605,43 @@
                 Covering methods from 2016-2025, including recent critical evaluations of foundation models.
             </p>
         </header>
+
+        <section class="sport-analogy" aria-labelledby="tennis-analogy-title">
+            <div class="tennis-court" aria-hidden="true">
+                <span class="court-player">MODEL<br>prediction</span>
+                <span class="court-lab">WET LAB<br>response</span>
+                <span class="rally-path"></span>
+                <span class="tennis-ball"></span>
+            </div>
+            <div class="sport-analogy-copy">
+                <div class="analogy-label">🎾 Tennis analogy · Experiment stage</div>
+                <h2 id="tennis-analogy-title">Every prediction needs a return.</h2>
+                <p>
+                    Perturbation modeling is like a tennis rally. The model serves a prediction about how a cell
+                    will respond to a CRISPR edit or drug. The wet lab returns the ball with the observed cellular
+                    response. The difference between the predicted and measured return tells us how the model
+                    should improve.
+                </p>
+                <div class="analogy-steps">
+                    <div class="analogy-step">
+                        <span>1</span>
+                        <div><strong>Serve:</strong> choose a genetic or chemical perturbation and predict its effect.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>2</span>
+                        <div><strong>Return:</strong> perform the experiment and measure the single-cell response.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>3</span>
+                        <div><strong>Read the rally:</strong> compare prediction with observation across cell types and conditions.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>4</span>
+                        <div><strong>Prepare the next shot:</strong> use the error and uncertainty to improve the model for the next loop.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- Statistics Bar -->
         <div class="stats-bar">

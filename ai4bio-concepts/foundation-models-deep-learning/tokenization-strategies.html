@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tokenization Strategies - AI4Bio Learning Hub</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
@@ -16,7 +16,7 @@
     </script>
     <style>
         body {
-            font-family: 'Lato', sans-serif;
+            font-family: 'Manrope', sans-serif;
             background: linear-gradient(135deg, #fef9f3 0%, #fff5e6 50%, #fef0e0 100%);
             line-height: 1.6;
             color: #333;
@@ -507,11 +507,45 @@
                 margin: 5px 0;
             }
         }
+        /* story line: Romance of the Three Kingdoms */
+        .story-section { background: var(--sport-soft, #fbf7ff); border: 1.5px solid var(--sport-pale, #f4ecfa); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #3B276E); border-left: 4px solid var(--sport-primary, #7A5FB8); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #f4ecfa); border-left: 5px solid var(--sport-primary, #7A5FB8); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(59,39,110,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(59,39,110,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); }
+        .library-card h4 { color: var(--sport-dark, #3B276E); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #3B276E); background: var(--sport-pale, #f4ecfa); border: 1px dashed var(--sport-secondary, #C9B7EE); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #7A5FB8); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #7A5FB8); font-size: .95em; }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #b9a5f0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(122,95,184,.15); border-color: rgba(185,165,240,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #b9a5f0; }
+        /* casework banner + figures */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#2a1a52 0%,#3B276E 55%,#4a3488 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(59,39,110,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #C9B7EE; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #e6ddf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#f4ecfa); box-shadow: 0 10px 28px rgba(59,39,110,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
 </head>
-<body>
+<body data-sport="model">
     <!-- Animated Neural Network Background -->
     <div class="neural-bg" id="neuralBg"></div>
 
@@ -519,6 +553,7 @@
         <div class="container">
             <ul class="navbar-nav">
                 <li><a href="../index.html" class="home-link"><i class="fas fa-home"></i> Back to Learning Hub</a></li>
+                <li><a href="#three-kingdoms"><i class="fas fa-scroll"></i> Three Kingdoms</a></li>
                 <li><a href="#introduction">Introduction</a></li>
                 <li><a href="#visual-guide">Visual Guide</a></li>
                 <li><a href="#papers">Key Papers</a></li>
@@ -538,6 +573,73 @@
                     using intuitive LEGO analogies to make these concepts accessible.
                 </p>
             </div>
+
+            <!-- CASEWORK BANNER (Model · Romance of the Three Kingdoms lens) -->
+            <section class="casework-banner" aria-label="Romance of the Three Kingdoms inspired tokenization casework">
+                <div class="casework-art">
+                    <img src="../animations/rive-assets/stage-themes-v5/red-cliffs-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu as Zhuge Liang: sealing the Sun-Liu alliance with three forces as one, borrowing arrows on a straw boat, and presenting a scroll of segment rules">
+                </div>
+                <div class="casework-copy">
+                    <div class="kicker">Romance of the Three Kingdoms lens · divide &amp; merge</div>
+                    <h2>Battles are decided before the first arrow flies.</h2>
+                    <p>Campaigns are won in the ordering of the troops — how a vast, undisciplined host is divided
+                    into units a commander can actually direct. Tokenization is that ordering for AI:
+                    分久必合，合久必分 — split the sequence when it is too big to command,
+                    merge the pieces when they are too small to mean anything.</p>
+                </div>
+            </section>
+
+            <!-- STORY LINE: Romance of the Three Kingdoms -->
+            <section class="content-section story-section" id="three-kingdoms">
+                <figure class="story-hero">
+                    <img src="../animations/rive-assets/stage-themes-v5/red-cliffs-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu as Zhuge Liang in a campaign tent, pointing a feather fan at a battle map where the river is divided into dashed troop-unit segments">
+                </figure>
+                <h2><i class="fas fa-scroll"></i> 分久必合，合久必分</h2>
+                <p class="story-quote">「话说天下大势，分久必合，合久必分。」——《三国演义》开篇</p>
+                <p class="story-intro">One battle, six scenes: the Red Cliffs campaign (chapters 43–50), re-read as tokenization strategies — knowing when a sequence must divide (合久必分 — words into subwords, genomes into k-mers) and when units must merge (分久必合 — characters into BPE merges, bases into codons). <em>(Minor spoilers for a 650-year-old novel.)</em></p>
+                <figure class="content-figure">
+                    <img src="figures/tokenization-divide-and-merge.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Divide and merge token granularity: a sequence split into segments (genome into k-mer windows) on the left, characters merged into larger BPE units and codons on the right">
+                </figure>
+                <div class="library-grid">
+                    <div class="library-card">
+                        <div class="book-meta">Scene 1 · 孙刘结盟</div>
+                        <h4>Two houses, one army</h4>
+                        <p class="plot">Before a single arrow flies, Zhuge Liang sails to Jiangdong and welds Sun Quan and Liu Bei — two uneasy houses — into one allied command. Only as one unit can they face Cao Cao's million.</p>
+                        <p class="echo"><strong>Codon-level tokenization.</strong> Three nucleotides sworn as one codon, read as a single functional unit. <a href="#concept-codon">See the codon strategy ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 2 · 草船借箭</div>
+                        <h4>Borrow, don't build</h4>
+                        <p class="plot">Zhuge Liang needs a hundred thousand arrows in three days. He does not forge a single one — he sends straw boats into the fog and lets the enemy's archers supply them.</p>
+                        <p class="echo"><strong>BPE / subword units.</strong> Don't mint a token for every word; borrow the frequent reusable pieces from the corpus itself. <a href="#concept-bpe-iupac">See BPE ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 3 · 蒋干盗书</div>
+                        <h4>One misread letter</h4>
+                        <p class="plot">Jiang Gan steals a letter and reads it as treason. The unit is fake; the reading is confident; two admirals lose their heads and the campaign is crippled.</p>
+                        <p class="echo"><strong>Garbage tokens in, garbage out.</strong> A wrongly segmented unit poisons everything downstream — tokenize wrong, and the model wages war on a false premise.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 4 · 连环船</div>
+                        <h4>Ships chained stem to stern</h4>
+                        <p class="plot">Cao Cao chains his fleet into one interlocked platform: stable underfoot, every ship overlapping its neighbor — and devastatingly flammable as a whole.</p>
+                        <p class="echo"><strong>K-mer tokenization.</strong> Overlapping windows chained across the sequence: continuous coverage, but redundancy catches fire fast. <a href="#concept-kmer">See k-mer ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 5 · 苦肉计</div>
+                        <h4>Beaten apart, on purpose</h4>
+                        <p class="plot">Huang Gai takes a public flogging from Zhou Yu — his own body broken apart so Cao Cao will believe the surrender. The fire attack only works because one man accepted being split.</p>
+                        <p class="echo"><strong>Byte-level tokenization.</strong> Accept the most painful granularity — every byte its own token — to guarantee full coverage and zero OOV. <a href="#comparisons">See trade-offs ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 6 · 借东风</div>
+                        <h4>Everything but the wind</h4>
+                        <p class="plot">Ships chained, arrows borrowed, Huang Gai ready — and still nothing works until the east wind turns. One small borrowed condition ignites the whole campaign.</p>
+                        <p class="echo"><strong>Special tokens &amp; pretrained vocabularies.</strong> [CLS], [SEP], [MASK], a SentencePiece model you borrow instead of train — the small borrowed piece that makes the whole thing catch fire. <a href="#concept-basics">See the basics ↓</a></p>
+                    </div>
+                </div>
+                <p class="library-footnote">分合有度：没有唯一正确的粒度，只有适合任务的编制 —— the right tokenization is the one your task can command.</p>
+            </section>
 
             <!-- Introduction Section -->
             <div class="content-section" id="introduction">
@@ -1290,6 +1392,9 @@
                     </div>
 
                     <!-- Concept 8: BPE + IUPAC Tokenization -->
+                    <figure class="content-figure">
+                        <img src="figures/tokenization-straw-boats-bpe.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Straw boats as reusable merge memory: boats on a corpus stream collecting frequent fragments as arrows, with a merge pattern box above">
+                    </figure>
                     <div class="concept-pair" id="concept-bpe-iupac">
                         <div class="concept-visual">
                             <!-- SVG 8: BPE + IUPAC Tokenization for Diploid Genomes -->
@@ -1772,6 +1877,9 @@
             <!-- Comparisons & Trade-offs Section -->
             <div class="content-section" id="comparisons">
                 <h2>Comparisons &amp; Trade-offs</h2>
+                <figure class="content-figure">
+                    <img src="figures/tokenization-army-hierarchy.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Token hierarchy as an army organization: document as army, sentences as camps, words as squads, subwords and characters as soldiers">
+                </figure>
 
                 <h3>Tokenization Strategy Comparison</h3>
                 <table class="comparison-table">

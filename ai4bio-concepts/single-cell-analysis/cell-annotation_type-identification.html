@@ -12,6 +12,7 @@
         gtag('js', new Date());
         gtag('config', 'G-KSMFMG4TD5');
     </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -39,11 +40,14 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
             scroll-behavior: smooth;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Manrope', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
             line-height: 1.6;
@@ -697,8 +701,286 @@
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
+    <style>
+        body[data-sport="measure"] {
+            --case-blue:#005A9C;
+            --case-blue-dark:#003B68;
+            --case-blue-soft:#e8f3fa;
+            --case-blue-pale:#f5fbff;
+            --case-line:rgba(0,90,156,.18);
+        }
+        body[data-sport="measure"] .container { max-width:1180px; }
+        body[data-sport="measure"] .header {
+            background:
+                linear-gradient(135deg,rgba(0,59,104,.96),rgba(0,90,156,.92)),
+                radial-gradient(circle at 88% 18%,rgba(255,255,255,.22),transparent 28%);
+            color:white;
+            padding:64px 48px;
+            border-radius:20px;
+            margin:24px 0;
+            text-align:center;
+            box-shadow:0 8px 30px rgba(0,90,156,.25);
+            position:relative;
+            overflow:hidden;
+        }
+        body[data-sport="measure"] .header::before {
+            content:"CASE FILE  MARKERS  WITNESSES  RED HERRINGS";
+            position:absolute;
+            top:18px;
+            left:0;
+            right:0;
+            color:rgba(255,255,255,.14);
+            font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+            font-size:clamp(1.1rem,3vw,2.8rem);
+            letter-spacing:.32em;
+            white-space:nowrap;
+            pointer-events:none;
+        }
+        body[data-sport="measure"] .header h1 {
+            position:relative;
+            color:white !important;
+            font-size:clamp(2.1rem,5vw,3.6rem);
+            font-weight:300;
+            line-height:1.08;
+            margin:0 0 16px;
+        }
+        body[data-sport="measure"] .header p {
+            position:relative;
+            max-width:78ch;
+            margin:0 auto;
+            color:rgba(255,255,255,.9);
+            font-size:1.15rem;
+            line-height:1.65;
+        }
+        .stats-bar {
+            background:linear-gradient(135deg,#ffffff 0%,var(--case-blue-pale) 100%);
+            padding:28px;
+            border-radius:15px;
+            margin:25px 0;
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+            gap:22px;
+            box-shadow:0 4px 20px rgba(0,90,156,.1);
+            border:1px solid var(--case-line);
+        }
+        .stat-item {
+            text-align:center;
+            padding:18px;
+            border-left:4px solid var(--case-blue);
+            background:white;
+            border-radius:8px;
+            transition:transform .3s ease,box-shadow .3s ease;
+        }
+        .stat-item:hover { transform:translateY(-5px); box-shadow:0 6px 20px rgba(0,90,156,.15); }
+        .stat-number { display:block; color:var(--case-blue-dark); font-size:2.25em; font-weight:300; letter-spacing:-1px; }
+        .stat-label { display:block; color:var(--case-blue); font-size:.92em; margin-top:8px; font-weight:600; }
+        .casework-banner,
+        .overview-section,
+        .category-section {
+            background:#fff;
+            padding:44px 40px;
+            border-radius:15px;
+            margin:25px 0;
+            box-shadow:0 4px 15px rgba(0,0,0,.07);
+            border-top:4px solid var(--case-blue);
+        }
+        .overview-section h2,
+        .category-header h2 {
+            color:var(--case-blue-dark) !important;
+            border-bottom:2px solid var(--case-blue);
+            padding-bottom:15px;
+            margin:0 0 28px;
+            font-size:1.85em;
+            font-weight:700;
+            letter-spacing:.3px;
+        }
+        .category-header { display:flex; gap:18px; align-items:flex-start; margin-bottom:24px; }
+        .category-header > i {
+            width:3.1rem;
+            height:3.1rem;
+            display:grid;
+            place-items:center;
+            border-radius:50%;
+            background:var(--case-blue-soft);
+            color:var(--case-blue);
+            font-size:1.35rem;
+        }
+        .casework-banner {
+            display:grid;
+            grid-template-columns:minmax(16rem,.72fr) minmax(0,1.28fr);
+            align-items:center;
+            gap:clamp(1.5rem,4vw,4rem);
+            background:
+                linear-gradient(135deg,rgba(255,255,255,.92),rgba(232,243,250,.84)),
+                repeating-linear-gradient(110deg,transparent 0 70px,rgba(0,90,156,.10) 71px 73px);
+        }
+        .casework-art { position:relative; min-height:18rem; display:grid; place-items:end center; }
+        .casework-art::after {
+            content:"";
+            position:absolute;
+            left:14%;
+            right:14%;
+            bottom:7%;
+            height:14%;
+            border-radius:50%;
+            background:radial-gradient(ellipse at center,rgba(0,90,156,.18),transparent 70%);
+            filter:blur(10px);
+        }
+        .casework-art img {
+            position:relative;
+            z-index:1;
+            width:min(34rem,100%);
+            height:auto;
+            filter:drop-shadow(0 1rem 1.8rem rgba(32,52,59,.14));
+        }
+        .casework-copy .kicker {
+            color:var(--case-blue);
+            font:700 .78rem ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+            letter-spacing:.08em;
+            text-transform:uppercase;
+        }
+        .casework-copy h2 {
+            margin:.55rem 0 1rem;
+            color:var(--case-blue-dark);
+            font-size:clamp(2rem,4vw,4rem);
+            line-height:1;
+        }
+        .casework-copy p { color:#4b5f68; line-height:1.75; font-size:1.04rem; }
+        .case-analogy-grid {
+            display:grid;
+            grid-template-columns:repeat(3,minmax(0,1fr));
+            gap:16px;
+            margin:24px 0;
+        }
+        .case-card {
+            background:linear-gradient(135deg,#fff,var(--case-blue-pale));
+            border:1px solid var(--case-line);
+            border-left:4px solid var(--case-blue);
+            border-radius:12px;
+            padding:18px;
+        }
+        .case-card svg {
+            display:block;
+            width:100%;
+            height:auto;
+            margin-bottom:12px;
+            border-radius:10px;
+            background:var(--case-blue-soft);
+        }
+        .case-card h3 { color:var(--case-blue-dark); margin:0 0 8px; font-size:1.02rem; }
+        .case-card p { color:#4b5f68; margin:0; line-height:1.55; font-size:.93rem; }
+        .case-file-figure {
+            margin:24px 0 0;
+            border:1px solid var(--case-line);
+            border-radius:14px;
+            overflow:hidden;
+            background:white;
+        }
+        .case-file-figure svg { display:block; width:100%; height:auto; }
+        .case-file-caption {
+            padding:12px 16px;
+            color:#5d7078;
+            background:var(--case-blue-pale);
+            font-size:.92rem;
+        }
+        .toc-sidebar { top:70px; border-top:4px solid var(--case-blue); border-radius:12px; }
+        .quick-ref-table {
+            width:100%;
+            border-collapse:collapse;
+            background:white;
+            border-radius:10px;
+            overflow:hidden;
+            box-shadow:0 2px 10px rgba(0,90,156,.08);
+        }
+        .quick-ref-table th,
+        .quick-ref-table td { padding:13px 15px; border-bottom:1px solid rgba(0,90,156,.12); text-align:left; }
+        .quick-ref-table th { background:var(--case-blue); color:white; }
+        .quick-ref-table tr:hover { background:var(--case-blue-pale); }
+        .tools-grid { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); }
+        .tool-card { border-top:4px solid var(--case-blue); box-shadow:0 4px 15px rgba(0,0,0,.05); }
+        footer { text-align:center; padding:36px 30px; color:#5d7078; background:transparent; margin-top:30px; }
+        @media (max-width:900px) {
+            .casework-banner { grid-template-columns:1fr; }
+            .case-analogy-grid { grid-template-columns:1fr; }
+        }
+        @media (max-width:768px) {
+            body[data-sport="measure"] .header { padding:40px 24px; }
+            .casework-banner,.overview-section,.category-section { padding:28px 22px; }
+        }
+        /* Anchored tool cards, family tags, curation note, validate panel, decision flow */
+        .content-figure { margin: 24px 0; }
+        .content-figure img {
+            width: 100%; height: auto; display: block;
+            border-radius: 12px; background: #fff;
+            border: 1px solid var(--case-line, rgba(0,90,156,.18));
+        }
+        .validate-panel .content-figure { margin: 12px 0 18px; }
+        .tool-card { scroll-margin-top: 90px; }
+        .family-tag {
+            display: inline-block; padding: 2px 10px; border-radius: 999px;
+            font-size: .78em; font-weight: 700; white-space: nowrap;
+            background: var(--case-blue-soft, #e8f3fa); color: var(--case-blue-dark, #003B68);
+            border: 1px solid var(--case-line, rgba(0,90,156,.18));
+        }
+        .curation-note {
+            text-align: center; font-size: .84em; opacity: .78; margin: 4px 0 26px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+        .curation-note a { color: inherit; }
+        .validate-panel {
+            margin-top: 26px; padding: 22px 24px;
+            background: var(--case-blue-soft, #e8f3fa);
+            border: 1px solid var(--case-line, rgba(0,90,156,.18));
+            border-left: 4px solid var(--case-blue, #005A9C);
+            border-radius: 12px;
+        }
+        .validate-panel h3 { color: var(--case-blue-dark, #003B68); margin-bottom: 8px; }
+        .validate-panel h3 i { margin-right: 8px; }
+        .validate-panel ul { padding-left: 20px; margin: 0; }
+        .validate-panel li { margin-bottom: 10px; line-height: 1.6; }
+        .validate-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+        .validate-links a {
+            background: #fff; border: 1px solid var(--case-line, rgba(0,90,156,.18));
+            border-radius: 999px; padding: 4px 12px; font-size: .85em; font-weight: 700;
+            text-decoration: none;
+        }
+        .decision-flow {
+            display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+            margin: 6px 0 24px;
+        }
+        .flow-node {
+            background: #fff; border: 1.5px solid var(--case-line, rgba(0,90,156,.18));
+            border-radius: 12px; padding: 10px 14px; font-size: .9em;
+        }
+        .flow-node b { color: var(--case-blue, #005A9C); }
+        .flow-start { background: var(--case-blue, #005A9C); color: #fff; font-weight: 800; }
+        .flow-arrow { color: var(--case-blue, #005A9C); opacity: .55; }
+
+        /* story line: The Body in the Library */
+        .story-section { background: var(--case-blue-pale, #f5fbff); border: 1.5px solid var(--case-line, rgba(0,90,156,.18)); scroll-margin-top: 20px; }
+        .story-intro { max-width: 78ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--case-line, rgba(0,90,156,.18)); border-left: 5px solid var(--case-blue, #005A9C); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(0,59,104,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(0,59,104,.14); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: #5a6b7c; }
+        .library-card h4 { color: var(--case-blue-dark, #003B68); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--case-blue-dark, #003B68); background: var(--case-blue-soft, #e8f3fa); border: 1px dashed var(--case-line, rgba(0,90,156,.25)); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--case-blue, #005A9C); font-size: .95em; }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #7fb8e8; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #7fb8e8; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(0,90,156,.15); border-color: rgba(127,184,232,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #8b949e; }
+        [data-theme="dark"] .library-footnote { color: #7fb8e8; }
+        .story-hero { float: right; width: min(240px, 32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--case-line, rgba(0,90,156,.18)); box-shadow: 0 10px 28px rgba(0,59,104,.18); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width: 768px) { .story-hero { float: none; width: min(320px, 82%); margin: 0 auto 18px; } }
+    </style>
 </head>
-<body>
+<body data-sport="measure">
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
@@ -710,7 +992,7 @@
                 </li>
                 <li>
                     <a href="https://xqiu625.github.io/">
-                        <i class="fas fa-home"></i> Xinru's Homepage
+                        <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
             </ul>
@@ -718,10 +1000,93 @@
     </nav>
 
     <div class="container">
-        <header>
+        <header class="header">
             <h1><i class="fas fa-microscope"></i> Cell Annotation & Type Identification</h1>
-            <p>A Guide to Computational Tools for Single-Cell Analysis</p>
+            <p>A case-file guide to identifying every cellular witness before the model starts reasoning.</p>
         </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">22</span>
+                <span class="stat-label">Curated Tools</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Method Families</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2018-2025</span>
+                <span class="stat-label">Timeline Covered</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">01</span>
+                <span class="stat-label">Measure · Evidence</span>
+            </div>
+        </div>
+        <p class="curation-note">Last reviewed: July 2026 · Inclusion: maintained, benchmarked, or widely cited tools · Found an issue? <a href="https://github.com/xqiu625" target="_blank" rel="noopener noreferrer">Suggest a fix on GitHub</a></p>
+
+        <section class="casework-banner" aria-label="Agatha Christie inspired cell annotation casework">
+            <div class="casework-art">
+                <img src="../animations/rive-assets/stage-themes-v5/body-in-the-library-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu as Miss Marple: examining cell markers with a magnifier, matching a cell to a village photo album, and tying a name tag onto an anonymous cell">
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">Agatha Christie lens · identify the witness</div>
+                <h2>Every cell needs an identity before it can testify.</h2>
+                <p>
+                    In a detective story, a clue is only useful after you know who gave it, whether the witness is reliable,
+                    and which detail is a red herring. Cell annotation works the same way: marker genes, reference atlases,
+                    probability scores, and expert review turn anonymous expression profiles into interpretable biological identities.
+                </p>
+            </div>
+        </section>
+
+        <!-- THE BODY IN THE LIBRARY · story line -->
+        <section class="overview-section story-section" id="body-in-the-library">
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/body-in-the-library-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu as Miss Marple knitting in a library armchair, a strand of yarn leading to a small covered figure with a question-mark tag on the rug">
+            </figure>
+            <h2><i class="fas fa-book-open"></i> The Body in the Library</h2>
+            <p class="story-intro">Agatha Christie's <em>The Body in the Library</em> (1942), re-read as a cell-annotation parable: a nameless young woman is found in the Bantrys' respectable library, and Miss Marple can only give her back a name — by reading small telltale details and village parallels. <em>(Classic-novel spoilers inside.)</em></p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Scene 1 · The body in the library</div>
+                    <h4>"Who is she?"</h4>
+                    <p class="plot">The Bantrys find a young woman's body on their library hearthrug. She belongs to no one in the village, and nothing about her announces a name.</p>
+                    <p class="echo"><strong>The annotation problem.</strong> An anonymous expression profile lands in your matrix. Before it can testify — before any downstream analysis — it needs an identity.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 2 · Bitten nails and cheap dresses</div>
+                    <h4>Small details betray a name</h4>
+                    <p class="plot">Miss Marple doubts the official identification because of the girl's fingernails, her teeth, her clothes. Identity hides in details others dismiss as trivial.</p>
+                    <p class="echo"><strong>Marker genes.</strong> A handful of telltale signals gives a cell away. Markers are the bitten nails of a dataset — small, specific, and easy to overlook.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 3 · St. Mary Mead parallels</div>
+                    <h4>"She reminds me of old Mr. Harbottle"</h4>
+                    <p class="plot">Miss Marple solves cases by analogy: every stranger resembles someone she has known for decades in her village. Her village is a living reference atlas.</p>
+                    <p class="echo"><strong>Reference atlases.</strong> Azimuth, CellTypist, SingleR and Pan-human Azimuth do the same: match an unknown cell against curated references — "this one looks like a T cell I know".</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 4 · The wrong name on the tag</div>
+                    <h4>First label: Ruby Keene. Truth: Pamela Reeves</h4>
+                    <p class="plot">The body is confidently identified as a missing dancer — and the identification is wrong. The wrong name nearly sends the whole investigation astray.</p>
+                    <p class="echo"><strong>Misannotation.</strong> A confident first label is not the truth. Keep confidence scores visible, and let low-evidence cells stay unknown rather than forcing a name.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 5 · Gossip is evidence too</div>
+                    <h4>Every rumor gets cross-examined</h4>
+                    <p class="plot">Miss Marple listens to all the village gossip — then checks each piece against independent facts before believing any of it.</p>
+                    <p class="echo"><strong>Validation.</strong> Corroborate labels with independent evidence: confidence distributions, marker re-expression, and reference databases (CellMarker 2.0, PanglaoDB, HuBMAP).</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Epilogue · Every body has a name</div>
+                    <h4>The name, with its evidence attached</h4>
+                    <p class="plot">By the end, the nameless girl has her real name back — and every step of the identification can be retraced, clue by clue.</p>
+                    <p class="echo"><strong>The annotated matrix.</strong> The goal is not just labels, but labels with provenance: type, confidence, and the evidence chain that earned them.</p>
+                </div>
+            </div>
+            <p class="library-footnote">In St. Mary Mead, nobody is anonymous. That is the whole point of annotation: there are no anonymous cells — only cells whose evidence you have not read yet.</p>
+        </section>
 
         <div class="main-content-wrapper">
             <!-- Sticky Table of Contents Sidebar (Visible on large screens) -->
@@ -729,6 +1094,7 @@
                 <h3><i class="fas fa-list-ul"></i> Contents</h3>
                 <ul>
                     <li><a href="#overview"><i class="fas fa-chevron-right"></i> Overview & Workflow</a></li>
+                    <li><a href="#body-in-the-library"><i class="fas fa-chevron-right"></i> The Body in the Library</a></li>
                     <li><a href="#quick-ref"><i class="fas fa-chevron-right"></i> Quick Reference Table</a></li>
                     <li><a href="#reference-based"><i class="fas fa-chevron-right"></i> Reference-Based Methods</a></li>
                     <li><a href="#marker-based"><i class="fas fa-chevron-right"></i> Marker-Based Methods</a></li>
@@ -744,6 +1110,57 @@
                 <section class="overview-section" id="overview">
                     <h2><i class="fas fa-info-circle"></i> Overview</h2>
                     <p>Cell annotation assigns biological identities (cell types, states) to individual cells based on their transcriptomic profiles. This page provides a comprehensive guide to available tools, helping you choose the right method for your analysis.</p>
+
+                    <figure class="content-figure">
+                        <img src="figures/cell-annotation-anonymous-to-identified.webp" width="1820" height="864" loading="lazy" decoding="async" alt="UMAP comparison: anonymous grey question-mark cells on the left become labeled, color-coded cell types on the right, with one low-evidence cluster honestly left unassigned">
+                        <figcaption class="case-file-caption">From anonymous profiles to identified witnesses: annotation assigns interpretable identities — and leaves low-evidence cells unassigned rather than forcing a label.</figcaption>
+                    </figure>
+
+                    <div class="case-analogy-grid" aria-label="Agatha Christie analogy examples for cell annotation">
+                        <article class="case-card">
+                            <svg viewBox="0 0 320 150" role="img" aria-label="Case file and witnesses">
+                                <rect x="22" y="28" width="116" height="86" rx="10" fill="#fff" stroke="#005A9C" stroke-width="3"/>
+                                <path d="M34 48h78M34 68h56M34 88h70" stroke="#8ab9da" stroke-width="6" stroke-linecap="round"/>
+                                <circle cx="206" cy="56" r="20" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
+                                <circle cx="252" cy="56" r="20" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
+                                <circle cx="230" cy="101" r="20" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
+                                <path d="M138 72C162 58 172 56 186 56M138 82C164 96 184 102 210 101" stroke="#005A9C" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
+                                <text x="80" y="130" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">case file</text>
+                                <text x="230" y="130" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">witness lineup</text>
+                            </svg>
+                            <h3>St. Mary Mead logic</h3>
+                            <p>When many witnesses are plausible, compare multiple evidence sources: reference labels, marker genes, cluster context, and confidence scores.</p>
+                        </article>
+                        <article class="case-card">
+                            <svg viewBox="0 0 320 150" role="img" aria-label="Marker gene clues">
+                                <rect x="34" y="34" width="252" height="82" rx="14" fill="#fff" stroke="#005A9C" stroke-width="3"/>
+                                <circle cx="74" cy="75" r="18" fill="#cfe5f5"/>
+                                <circle cx="132" cy="75" r="18" fill="#cfe5f5"/>
+                                <circle cx="190" cy="75" r="18" fill="#cfe5f5"/>
+                                <circle cx="248" cy="75" r="18" fill="#f4d6d6" stroke="#d24747" stroke-width="3"/>
+                                <path d="M63 75h22M121 75h22M179 75h22M237 75h22" stroke="#003B68" stroke-width="4" stroke-linecap="round"/>
+                                <path d="M248 55v40M228 75h40" stroke="#d24747" stroke-width="4" stroke-linecap="round"/>
+                                <text x="160" y="132" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">pattern or red herring?</text>
+                            </svg>
+                            <h3>Bitten nails &amp; red herrings</h3>
+                            <p>A strong marker pattern can be a clue, but the method still has to test whether it is biology, batch structure, or an annotation artifact.</p>
+                        </article>
+                        <article class="case-card">
+                            <svg viewBox="0 0 320 150" role="img" aria-label="Elimination and final label">
+                                <g fill="#fff" stroke="#005A9C" stroke-width="3">
+                                    <rect x="34" y="34" width="56" height="56" rx="10"/>
+                                    <rect x="106" y="34" width="56" height="56" rx="10"/>
+                                    <rect x="178" y="34" width="56" height="56" rx="10"/>
+                                    <rect x="250" y="34" width="36" height="56" rx="10"/>
+                                </g>
+                                <path d="M46 46l32 32M78 46L46 78M118 46l32 32M150 46l-32 32" stroke="#d24747" stroke-width="4" stroke-linecap="round"/>
+                                <path d="M191 63l14 14l23-30" stroke="#0D6938" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                                <text x="160" y="128" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">eliminate impossible labels</text>
+                            </svg>
+                            <h3>The wrong name on the tag</h3>
+                            <p>Good annotation is often elimination: reject impossible labels, keep uncertainty visible, then validate the final identity with independent evidence.</p>
+                        </article>
+                    </div>
 
                     <!-- Workflow Diagram -->
                     <div class="workflow-diagram">
@@ -774,16 +1191,70 @@
                             </div>
                         </div>
                     </div>
+
+                    <figure class="case-file-figure">
+                        <svg viewBox="0 0 920 280" role="img" aria-label="Cell annotation as a case-file workflow">
+                            <defs>
+                                <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#005A9C"/></marker>
+                            </defs>
+                            <rect x="24" y="28" width="180" height="190" rx="16" fill="#f5fbff" stroke="#005A9C" stroke-width="3"/>
+                            <text x="114" y="62" text-anchor="middle" font-size="18" fill="#003B68" font-weight="700">Unknown cell</text>
+                            <circle cx="76" cy="112" r="16" fill="#8ab9da"/>
+                            <circle cx="119" cy="104" r="12" fill="#8ab9da"/>
+                            <circle cx="149" cy="136" r="19" fill="#cfe5f5"/>
+                            <path d="M62 170h104M72 188h78" stroke="#005A9C" stroke-width="7" stroke-linecap="round" opacity=".5"/>
+                            <path d="M210 122h86" stroke="#005A9C" stroke-width="4" marker-end="url(#arrowBlue)"/>
+                            <rect x="306" y="40" width="160" height="164" rx="16" fill="#fff" stroke="#8ab9da" stroke-width="3"/>
+                            <text x="386" y="72" text-anchor="middle" font-size="17" fill="#003B68" font-weight="700">Evidence</text>
+                            <path d="M340 106h92M340 132h76M340 158h104" stroke="#8ab9da" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M476 122h86" stroke="#005A9C" stroke-width="4" marker-end="url(#arrowBlue)"/>
+                            <rect x="572" y="40" width="160" height="164" rx="16" fill="#fff" stroke="#8ab9da" stroke-width="3"/>
+                            <text x="652" y="72" text-anchor="middle" font-size="17" fill="#003B68" font-weight="700">Suspects</text>
+                            <circle cx="616" cy="118" r="18" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
+                            <circle cx="652" cy="118" r="18" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
+                            <circle cx="688" cy="118" r="18" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
+                            <path d="M600 164h104" stroke="#8ab9da" stroke-width="8" stroke-linecap="round"/>
+                            <path d="M742 122h56" stroke="#005A9C" stroke-width="4" marker-end="url(#arrowBlue)"/>
+                            <rect x="808" y="56" width="88" height="132" rx="16" fill="#005A9C"/>
+                            <path d="M830 122l18 18l31-46" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                            <text x="852" y="222" text-anchor="middle" font-size="17" fill="#003B68" font-weight="700">Label + confidence</text>
+                        </svg>
+                        <figcaption class="case-file-caption">Annotation is a chain of evidence: expression profile -> marker/reference evidence -> candidate labels -> final identity with confidence and uncertainty.</figcaption>
+                    </figure>
+
+                    <div class="validate-panel" id="validate">
+                        <h3><i class="fas fa-scale-balanced"></i> Validate the verdict</h3>
+                        <figure class="content-figure">
+                            <img src="figures/cell-annotation-confidence-spectrum.webp" width="2048" height="768" loading="lazy" decoding="async" alt="Confidence spectrum from 0 to 1: low-confidence question-mark cells are set aside into an unknown basket, while high-confidence cells receive labels such as T cell, B cell and Mono">
+                        </figure>
+                        <ul>
+                            <li><strong>Score the confidence, not just the label.</strong> Inspect per-cell and per-cluster confidence distributions; keep low-confidence cells as <em>unknown</em> instead of forcing a verdict.</li>
+                            <li><strong>Re-check canonical markers.</strong> Confirm that assigned types re-express their expected marker genes in your own data.</li>
+                            <li><strong>Cross-examine with reference databases:</strong>
+                                <span class="validate-links">
+                                    <a href="http://bio-bigdata.hrbmu.edu.cn/CellMarker/" target="_blank" rel="noopener noreferrer">CellMarker 2.0</a>
+                                    <a href="https://panglaodb.se/" target="_blank" rel="noopener noreferrer">PanglaoDB</a>
+                                    <a href="https://azimuth.hubmapconsortium.org/" target="_blank" rel="noopener noreferrer">Azimuth · HuBMAP atlases</a>
+                                    <a href="https://data.humancellatlas.org/" target="_blank" rel="noopener noreferrer">Human Cell Atlas</a>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
                 </section>
 
                 <!-- Quick Reference Table -->
                 <section class="overview-section" id="quick-ref">
                     <h2><i class="fas fa-table"></i> Quick Reference</h2>
+                    <figure class="content-figure">
+                        <img src="figures/cell-annotation-tool-subway-map.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Subway map of all 21 cell annotation tools: five colored lines for reference-based, marker-based, machine learning, foundation model, and specialized methods, with each tool as a station">
+                        <figcaption class="case-file-caption">All 21 tools on one map, grouped by methodological concept — curated family assignments and full details in the table below.</figcaption>
+                    </figure>
                     <div style="overflow-x: auto;">
                         <table class="quick-ref-table">
                             <thead>
                                 <tr>
                                     <th>Tool</th>
+                                    <th class="hide-on-mobile">Family</th>
                                     <th class="hide-on-mobile">Year</th>
                                     <th>Approach</th>
                                     <th>Best For</th>
@@ -792,147 +1263,176 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>scmap</td>
+                                    <td><a href="#tool-scmap">scmap</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ref">Reference</span></td>
                                     <td class="hide-on-mobile">2018</td>
                                     <td>Projection to reference</td>
                                     <td>Fast large-scale annotation</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/nmeth.4644" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/hemberg-lab/scmap" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>SingleR</td>
+                                    <td><a href="#tool-singler">SingleR</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ref">Reference</span></td>
                                     <td class="hide-on-mobile">2019</td>
                                     <td>Correlation-based</td>
                                     <td>Bulk reference compatibility</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41590-018-0276-y" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/dviraran/SingleR" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>CellAssign</td>
+                                    <td><a href="#tool-cellassign">CellAssign</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-marker">Marker genes</span></td>
                                     <td class="hide-on-mobile">2019</td>
                                     <td>Probabilistic marker-based</td>
                                     <td>Multi-batch studies with markers</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-019-0529-1" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/irrationone/cellassign" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>SCINA</td>
+                                    <td><a href="#tool-scina">SCINA</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-marker">Marker genes</span></td>
                                     <td class="hide-on-mobile">2019</td>
                                     <td>Semi-supervised mixture</td>
                                     <td>Simple marker-based</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.3390/genes10070531" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/jcao89757/SCINA" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>SingleCellNet</td>
+                                    <td><a href="#tool-singlecellnet">SingleCellNet</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2019</td>
                                     <td>Random forest</td>
                                     <td>Cross-platform robustness</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cels.2019.06.004" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/pcahan1/singleCellNet" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>CHETAH</td>
+                                    <td><a href="#tool-chetah">CHETAH</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-marker">Marker genes</span></td>
                                     <td class="hide-on-mobile">2019</td>
                                     <td>Hierarchical tree</td>
                                     <td>Uncertain/intermediate cells</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1093/nar/gkz543" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/jdekanter/CHETAH" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>CellTypist</td>
+                                    <td><a href="#tool-celltypist">CellTypist</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2022</td>
                                     <td>Logistic regression</td>
                                     <td>Immune cell typing</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1126/science.abl5197" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/Teichlab/celltypist" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>Azimuth</td>
+                                    <td><a href="#tool-azimuth">Azimuth</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ref">Reference</span></td>
                                     <td class="hide-on-mobile">2023</td>
                                     <td>Reference mapping (Seurat)</td>
                                     <td>Seurat ecosystem users</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cell.2021.04.048" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/satijalab/azimuth" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>scGPT</td>
+                                    <td><a href="#tool-pan-human-azimuth">Pan-human Azimuth</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ref">Reference</span></td>
+                                    <td class="hide-on-mobile">2026</td>
+                                    <td>Supervised NN, organism-scale typology</td>
+                                    <td>Organism-wide reference mapping</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1101/2026.07.16.738997" target="_blank" rel="noopener noreferrer">Paper</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#tool-scgpt">scGPT</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-fm">Foundation</span></td>
                                     <td class="hide-on-mobile">2024</td>
                                     <td>Foundation model (Transformer)</td>
                                     <td>Multi-task learning</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-024-02201-0" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/bowang-lab/scGPT" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>scFoundation</td>
+                                    <td><a href="#tool-scfoundation">scFoundation</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-fm">Foundation</span></td>
                                     <td class="hide-on-mobile">2024</td>
                                     <td>Foundation model (100M params)</td>
                                     <td>Low-depth data enhancement</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-024-02305-7" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/biomap-research/scFoundation" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>CytoTRACE 2</td>
+                                    <td><a href="#tool-cytotrace-2">CytoTRACE 2</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-spec">Specialized</span></td>
                                     <td class="hide-on-mobile">2025</td>
                                     <td>Interpretable deep learning</td>
                                     <td>Developmental potential</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-025-02857-2" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/digitalcytometry/cytotrace2" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>scCATCH</td>
+                                    <td><a href="#tool-sccatch">scCATCH</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-marker">Marker genes</span></td>
                                     <td class="hide-on-mobile">2020</td>
                                     <td>Cluster-based + database</td>
                                     <td>Automatic cluster annotation</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.isci.2020.100882" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ZJUFanLab/scCATCH" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>scDeepSort</td>
+                                    <td><a href="#tool-scdeepsort">scDeepSort</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2021</td>
                                     <td>Pre-trained GNN</td>
                                     <td>Reference-free annotation</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1093/nar/gkab775" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ZJUFanLab/scDeepSort" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>scBERT</td>
+                                    <td><a href="#tool-scbert">scBERT</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2022</td>
                                     <td>BERT-based transformer</td>
                                     <td>Deep learning annotation</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s42256-022-00534-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/TencentAILabHealthcare/scBERT" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>Concerto</td>
+                                    <td><a href="#tool-concerto">Concerto</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2022</td>
                                     <td>Contrastive learning</td>
                                     <td>Million-scale mapping</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s42256-022-00518-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/melobio/Concerto-reproducibility" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>CellHint</td>
+                                    <td><a href="#tool-cellhint">CellHint</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2023</td>
                                     <td>Harmonization (PCT)</td>
                                     <td>Cross-dataset standardization</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cell.2023.11.026" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/Teichlab/cellhint" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>UCE</td>
+                                    <td><a href="#tool-uce">UCE</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-fm">Foundation</span></td>
                                     <td class="hide-on-mobile">2023</td>
                                     <td>Universal embeddings</td>
                                     <td>Zero-shot cross-species</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1101/2023.11.28.568918" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/snap-stanford/uce" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>scInterpreter</td>
+                                    <td><a href="#tool-scinterpreter">scInterpreter</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-fm">Foundation</span></td>
                                     <td class="hide-on-mobile">2024</td>
                                     <td>LLM-based (Llama)</td>
                                     <td>Gene knowledge integration</td>
                                     <td class="hide-on-mobile"><a href="https://arxiv.org/abs/2402.12405" target="_blank" rel="noopener noreferrer">Paper (arXiv)</a></td>
                                 </tr>
                                 <tr>
-                                    <td>TCellSI</td>
+                                    <td><a href="#tool-tcellsi">TCellSI</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-spec">Specialized</span></td>
                                     <td class="hide-on-mobile">2024</td>
                                     <td>T cell state scoring</td>
                                     <td>8 T cell functional states</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1002/imt2.231" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/GuoBioinfoLab/TCellSI" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>AIDO.Cell</td>
+                                    <td><a href="#tool-aido-cell">AIDO.Cell</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-fm">Foundation</span></td>
                                     <td class="hide-on-mobile">2024</td>
                                     <td>Full-transcriptome transformer</td>
                                     <td>19K gene context</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1101/2024.11.28.625303" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/genbio-ai/AIDO" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
-                                    <td>Nicheformer</td>
+                                    <td><a href="#tool-nicheformer">Nicheformer</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag family-fm">Foundation</span></td>
                                     <td class="hide-on-mobile">2025</td>
                                     <td>Spatial + dissociated FM</td>
                                     <td>Spatial context prediction</td>
@@ -954,7 +1454,7 @@
                     </div>
                     <div class="tools-grid">
                         <!-- scmap -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scmap">
                             <div class="tool-header">
                                 <span class="tool-name">scmap</span>
                                 <span class="tool-best-for">Best for: Fast large-scale annotation</span>
@@ -993,7 +1493,7 @@
                         </div>
 
                         <!-- SingleR -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-singler">
                             <div class="tool-header">
                                 <span class="tool-name">SingleR</span>
                                 <span class="tool-best-for">Best for: Bulk reference compatibility</span>
@@ -1032,7 +1532,7 @@
                         </div>
 
                         <!-- Azimuth -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-azimuth">
                             <div class="tool-header">
                                 <span class="tool-name">Azimuth</span>
                                 <span class="tool-best-for">Best for: Seurat ecosystem users</span>
@@ -1070,6 +1570,41 @@
                                 </a>
                             </div>
                         </div>
+
+                        <!-- Pan-human Azimuth -->
+                        <div class="tool-card" id="tool-pan-human-azimuth">
+                            <div class="tool-header">
+                                <span class="tool-name">Pan-human Azimuth</span>
+                                <span class="tool-best-for">Best for: Organism-wide reference mapping</span>
+                                <span class="tool-year">2026</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> bioRxiv | NYGC · Satija Lab
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">Organism-Scale</span>
+                                <span class="tool-tag">Hierarchical Typology</span>
+                                <span class="tool-tag">HuBMAP</span>
+                                <span class="tool-tag">Spatial-Ready</span>
+                            </div>
+                            <div class="tool-description">
+                                Supervised neural network that maps human cells from diverse tissues and datasets onto a single hierarchical organism-scale typology — the whole-organism successor of Azimuth, developed through NIH HuBMAP with a uniformly curated, QC-stringent training corpus.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>One unified reference across tissues and technologies</li>
+                                    <li>Mapped tens of millions of cells (Tabula Sapiens, scBaseCamp)</li>
+                                    <li>Extends to spatial transcriptomics: recovers kidney cortical structures, glomerular states matching expert pathology</li>
+                                    <li>Cloud, R, and Python interfaces</li>
+                                    <li class="limitation-item">bioRxiv preprint (July 2026); peer review pending</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1101/2026.07.16.738997" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="back-to-top-container">
                         <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
@@ -1087,7 +1622,7 @@
                     </div>
                     <div class="tools-grid">
                         <!-- CellAssign -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-cellassign">
                             <div class="tool-header">
                                 <span class="tool-name">CellAssign</span>
                                 <span class="tool-best-for">Best for: Multi-batch studies with markers</span>
@@ -1123,7 +1658,7 @@
                         </div>
 
                         <!-- SCINA -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scina">
                             <div class="tool-header">
                                 <span class="tool-name">SCINA</span>
                                 <span class="tool-best-for">Best for: Simple marker-based annotation</span>
@@ -1159,7 +1694,7 @@
                         </div>
 
                         <!-- CHETAH -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-chetah">
                             <div class="tool-header">
                                 <span class="tool-name">CHETAH</span>
                                 <span class="tool-best-for">Best for: Uncertain/intermediate cells</span>
@@ -1198,7 +1733,7 @@
                         </div>
 
                         <!-- scCATCH -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-sccatch">
                             <div class="tool-header">
                                 <span class="tool-name">scCATCH</span>
                                 <span class="tool-best-for">Best for: Automatic cluster annotation</span>
@@ -1249,7 +1784,7 @@
                     </div>
                     <div class="tools-grid">
                         <!-- SingleCellNet -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-singlecellnet">
                             <div class="tool-header">
                                 <span class="tool-name">SingleCellNet</span>
                                 <span class="tool-best-for">Best for: Cross-platform robustness</span>
@@ -1285,7 +1820,7 @@
                         </div>
 
                         <!-- CellTypist -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-celltypist">
                             <div class="tool-header">
                                 <span class="tool-name">CellTypist</span>
                                 <span class="tool-best-for">Best for: Immune cell typing</span>
@@ -1325,7 +1860,7 @@
                         </div>
 
                         <!-- scDeepSort -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scdeepsort">
                             <div class="tool-header">
                                 <span class="tool-name">scDeepSort</span>
                                 <span class="tool-best-for">Best for: Reference-free annotation</span>
@@ -1361,7 +1896,7 @@
                         </div>
 
                         <!-- scBERT -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scbert">
                             <div class="tool-header">
                                 <span class="tool-name">scBERT</span>
                                 <span class="tool-best-for">Best for: Deep learning annotation</span>
@@ -1397,7 +1932,7 @@
                         </div>
 
                         <!-- Concerto -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-concerto">
                             <div class="tool-header">
                                 <span class="tool-name">Concerto</span>
                                 <span class="tool-best-for">Best for: Million-scale mapping</span>
@@ -1433,7 +1968,7 @@
                         </div>
 
                         <!-- CellHint -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-cellhint">
                             <div class="tool-header">
                                 <span class="tool-name">CellHint</span>
                                 <span class="tool-best-for">Best for: Cross-dataset standardization</span>
@@ -1487,7 +2022,7 @@
                     </div>
                     <div class="tools-grid">
                         <!-- scGPT -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scgpt">
                             <div class="tool-header">
                                 <span class="tool-name">scGPT</span>
                                 <span class="tool-best-for">Best for: Multi-task learning</span>
@@ -1524,7 +2059,7 @@
                         </div>
 
                         <!-- scFoundation -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scfoundation">
                             <div class="tool-header">
                                 <span class="tool-name">scFoundation</span>
                                 <span class="tool-best-for">Best for: Low-depth data enhancement</span>
@@ -1561,7 +2096,7 @@
                         </div>
 
                         <!-- UCE -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-uce">
                             <div class="tool-header">
                                 <span class="tool-name">UCE</span>
                                 <span class="tool-best-for">Best for: Zero-shot cross-species</span>
@@ -1598,7 +2133,7 @@
                         </div>
 
                         <!-- scInterpreter -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-scinterpreter">
                             <div class="tool-header">
                                 <span class="tool-name">scInterpreter</span>
                                 <span class="tool-best-for">Best for: Gene knowledge integration</span>
@@ -1632,7 +2167,7 @@
                         </div>
 
                         <!-- AIDO.Cell -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-aido-cell">
                             <div class="tool-header">
                                 <span class="tool-name">AIDO.Cell</span>
                                 <span class="tool-best-for">Best for: Full 19K gene context</span>
@@ -1669,7 +2204,7 @@
                         </div>
 
                         <!-- Nicheformer -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-nicheformer">
                             <div class="tool-header">
                                 <span class="tool-name">Nicheformer</span>
                                 <span class="tool-best-for">Best for: Spatial context prediction</span>
@@ -1723,7 +2258,7 @@
                     </div>
                     <div class="tools-grid">
                         <!-- CytoTRACE 2 -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-cytotrace-2">
                             <div class="tool-header">
                                 <span class="tool-name">CytoTRACE 2</span>
                                 <span class="tool-best-for">Best for: Developmental potential</span>
@@ -1763,7 +2298,7 @@
                         </div>
 
                         <!-- TCellSI -->
-                        <div class="tool-card">
+                        <div class="tool-card" id="tool-tcellsi">
                             <div class="tool-header">
                                 <span class="tool-name">TCellSI</span>
                                 <span class="tool-best-for">Best for: T cell functional states</span>
@@ -1807,11 +2342,23 @@
                 <!-- Method Selection Guide -->
                 <section class="overview-section decision-section-container" id="decision-guide">
                     <h2><i class="fas fa-compass"></i> Which Tool Should I Use?</h2>
+                    <div class="decision-flow" aria-label="Decision path">
+                        <span class="flow-node flow-start">Start here</span>
+                        <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                        <span class="flow-node">Trusted reference atlas? <b>Azimuth · CellTypist · SingleR · scmap</b></span>
+                        <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                        <span class="flow-node">Only marker genes? <b>CellAssign · SCINA · CHETAH</b></span>
+                        <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                        <span class="flow-node">Nothing curated yet? <b>scGPT · UCE · scFoundation</b></span>
+                        <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                        <span class="flow-node">Special states? <b>CytoTRACE 2 · TCellSI · Concerto</b></span>
+                    </div>
                     <div class="decision-grid">
                         <div class="decision-card">
                             <h3><i class="fas fa-database"></i> Have a Reference Atlas?</h3>
                             <ul>
                                 <li>Seurat user: <strong>Azimuth</strong></li>
+                                <li>Organism-wide reference: <strong>Pan-human Azimuth</strong></li>
                                 <li>Immune cells: <strong>CellTypist</strong></li>
                                 <li>Bulk reference: <strong>SingleR</strong></li>
                                 <li>Fast/simple: <strong>scmap</strong></li>
@@ -1853,7 +2400,7 @@
             <h3>AI4Bio Concepts Handbook</h3>
             <p>Cell Annotation & Type Identification</p>
             <p style="margin-top: 15px;">
-                <strong>21 Tools Covered:</strong> scmap | SingleR | CHETAH | SCINA | CellAssign | SingleCellNet | CellTypist | Azimuth | scCATCH | scDeepSort | scBERT | Concerto | CellHint | UCE | scGPT | scFoundation | scInterpreter | AIDO.Cell | Nicheformer | CytoTRACE 2 | TCellSI
+                <strong>22 Tools Covered:</strong> scmap | SingleR | CHETAH | SCINA | CellAssign | SingleCellNet | CellTypist | Azimuth | scCATCH | scDeepSort | scBERT | Concerto | CellHint | UCE | scGPT | scFoundation | scInterpreter | AIDO.Cell | Nicheformer | CytoTRACE 2 | TCellSI | Pan-human Azimuth
             </p>
             <p style="margin-top: 15px; opacity: 0.8;">Last updated: November 2025</p>
             <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.7;">

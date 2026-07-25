@@ -13,109 +13,109 @@
         gtag('js', new Date());
         gtag('config', 'G-KSMFMG4TD5');
     </script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root{
-            --sans:'Lato',sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
-            --bg:#fbf9ed; --paper:#ffffff; --paper-2:#fdfbf0;
-            --ink:#2c2a22; --ink-2:#555048; --ink-3:#857f6e; --ink-4:#aaa48f;
-            --rule:#e6dfc2; --rule-soft:#f1ecd6;
-            --accent:#F7E14D; --accent-2:#e3c81f; --accent-tint:#fdf7d0; --accent-ink:#6b5d00;
+            --sans:'Manrope',sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+            --bg:#f5fbff; --paper:#ffffff; --paper-2:#f5fbff;
+            --ink:#2c2a22; --ink-2:#555048; --ink-3:#5a6b7c; --ink-4:#8ba3b8;
+            --rule:#d3e2ef; --rule-soft:#e8f3fa;
+            --accent:#005a9c; --accent-2:#003b68; --accent-tint:#e8f3fa; --accent-ink:#005a9c;
             --warn:#b8801c; --warn-tint:#fff5e6;
-            --primary:#6b5d00; --primary-dark:#4d4406; --secondary:#8a7700;
+            --primary:#005a9c; --primary-dark:#003b68; --secondary:#8a7700;
             --text-dark:#2c2a22; --text-light:#555048;
         }
         *{box-sizing:border-box;}
-        body{font-family:var(--sans); background:linear-gradient(135deg,#fbf9ed 0%,#f5efce 50%,#efe7b8 100%); line-height:1.7; color:#2c2a22; margin:0; padding:0;}
-        ::selection{background:#F7E14D; color:#3a3300;}
-        a{color:#6b5d00;}
+        body{font-family:var(--sans); background:linear-gradient(135deg,#f5fbff 0%,#e8f3fa 50%,#dceef8 100%); line-height:1.7; color:#2c2a22; margin:0; padding:0;}
+        ::selection{background:#005a9c; color:#fff;}
+        a{color:#005a9c;}
         .container{max-width:1180px; margin:0 auto; padding:20px;}
-        .navbar{background:#fff; border-bottom:1px solid #e6dfc2; padding:10px 0; position:sticky; top:0; z-index:1000; box-shadow:0 2px 5px rgba(80,70,0,0.08);}
+        .navbar{background:#fff; border-bottom:1px solid #d3e2ef; padding:10px 0; position:sticky; top:0; z-index:1000; box-shadow:0 2px 5px rgba(0,59,104,0.08);}
         .navbar-nav{list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; flex-wrap:wrap;}
         .navbar-nav li{margin:5px 15px;}
         .navbar-nav a{color:#666; text-decoration:none; font-weight:bold; font-size:14.5px; display:inline-flex; align-items:center; gap:7px; transition:color .25s;}
-        .navbar-nav a:hover{color:#6b5d00;}
+        .navbar-nav a:hover{color:#005a9c;}
         .navbar-nav a i{font-size:13px; opacity:.75;}
-        .home-link{color:#4d4406 !important;}
-        .header{background:linear-gradient(135deg,#26230f 0%,#403a1a 50%,#5e5424 100%); color:#fff; padding:64px 48px; border-radius:20px; margin:24px 0; text-align:center; box-shadow:0 8px 30px rgba(60,52,10,0.4); position:relative; overflow:hidden;}
-        .header::before{content:"scRNA  UMAP  k-NN  \03BC  \03C3  \2207"; position:absolute; top:18px; left:0; right:0; text-align:center; font-size:3em; opacity:0.10; letter-spacing:20px; font-family:var(--mono); pointer-events:none; white-space:nowrap; color:#F7E14D;}
-        .header h1{margin:0 0 16px; font-size:2.7em; font-weight:300; letter-spacing:.5px; position:relative; line-height:1.12; color:#F7E14D;}
-        .header .subtitle{font-size:1.25em; color:#f3edc6; margin:0 auto 18px; font-weight:300; font-style:italic; max-width:72ch; line-height:1.5; position:relative;}
+        .home-link{color:#003b68 !important;}
+        .header{background:linear-gradient(135deg,#0d2137 0%,#005a9c 50%,#2b7bc4 100%); color:#fff; padding:64px 48px; border-radius:20px; margin:24px 0; text-align:center; box-shadow:0 8px 30px rgba(0,59,104,0.4); position:relative; overflow:hidden;}
+        .header::before{content:"scRNA  UMAP  k-NN  \03BC  \03C3  \2207"; position:absolute; top:18px; left:0; right:0; text-align:center; font-size:3em; opacity:0.10; letter-spacing:20px; font-family:var(--mono); pointer-events:none; white-space:nowrap; color:#fff;}
+        .header h1{margin:0 0 16px; font-size:2.7em; font-weight:300; letter-spacing:.5px; position:relative; line-height:1.12; color:#fff;}
+        .header .subtitle{font-size:1.25em; color:#dceef8; margin:0 auto 18px; font-weight:300; font-style:italic; max-width:72ch; line-height:1.5; position:relative;}
         .header .description, .header .intro{font-size:1.02em; max-width:880px; margin:0 auto; line-height:1.8; font-weight:300; color:rgba(255,255,255,0.9); position:relative; text-align:left;}
-        .stats-bar{background:linear-gradient(135deg,#ffffff 0%,#fdfbf0 100%); padding:28px; border-radius:15px; margin:25px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:22px; box-shadow:0 4px 20px rgba(80,70,0,0.1); border:1px solid rgba(120,105,0,0.18);}
-        .stat-item{text-align:center; padding:18px; border-left:4px solid #F7E14D; background:#fff; border-radius:8px; transition:transform .3s ease,box-shadow .3s ease;}
-        .stat-item:hover{transform:translateY(-5px); box-shadow:0 6px 20px rgba(120,105,0,0.18);}
-        .stat-number{font-size:2.6em; font-weight:300; color:#4d4406; display:block; letter-spacing:-1px;}
-        .stat-label{color:#6b5d00; font-size:.92em; margin-top:8px; font-weight:500;}
-        .content-section, .section, .overview-section, .category-section{background:#fff; padding:44px 40px; border-radius:15px; margin:25px 0; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-top:4px solid #F7E14D;}
-        .content-section h2, .section h2, .overview-section h2, .category-header h2{color:#4d4406; border-bottom:2px solid #F7E14D; padding-bottom:15px; margin:0 0 28px; font-size:1.85em; font-weight:700; letter-spacing:.3px;}
-        .content-section h3, .section h3{color:#6b5d00; margin:35px 0 18px; font-size:1.4em; font-weight:700; border-left:4px solid #F7E14D; padding-left:15px; line-height:1.25;}
-        .content-section h4, .section h4{color:#4d4406;}
+        .stats-bar{background:linear-gradient(135deg,#ffffff 0%,#f5fbff 100%); padding:28px; border-radius:15px; margin:25px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:22px; box-shadow:0 4px 20px rgba(0,59,104,0.1); border:1px solid rgba(0,90,156,0.18);}
+        .stat-item{text-align:center; padding:18px; border-left:4px solid #005a9c; background:#fff; border-radius:8px; transition:transform .3s ease,box-shadow .3s ease;}
+        .stat-item:hover{transform:translateY(-5px); box-shadow:0 6px 20px rgba(0,90,156,0.18);}
+        .stat-number{font-size:2.6em; font-weight:300; color:#003b68; display:block; letter-spacing:-1px;}
+        .stat-label{color:#005a9c; font-size:.92em; margin-top:8px; font-weight:500;}
+        .content-section, .section, .overview-section, .category-section{background:#fff; padding:44px 40px; border-radius:15px; margin:25px 0; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-top:4px solid #005a9c;}
+        .content-section h2, .section h2, .overview-section h2, .category-header h2{color:#003b68; border-bottom:2px solid #005a9c; padding-bottom:15px; margin:0 0 28px; font-size:1.85em; font-weight:700; letter-spacing:.3px;}
+        .content-section h3, .section h3{color:#005a9c; margin:35px 0 18px; font-size:1.4em; font-weight:700; border-left:4px solid #005a9c; padding-left:15px; line-height:1.25;}
+        .content-section h4, .section h4{color:#003b68;}
         .content-section p, .section p{color:#4a463b; line-height:1.75; margin:0 0 15px;}
         .content-section ul, .content-section ol, .section ul, .section ol{line-height:1.9; color:#4a463b;}
         .content-section li, .section li{margin-bottom:6px;}
-        .content-section li::marker, .section li::marker{color:#c9ab10;}
-        strong{color:#4d4406;}
-        em{color:#7a6a10;}
-        blockquote{border-left:4px solid #F7E14D; background:#fdfbf0; margin:22px 0; padding:16px 22px; border-radius:0 8px 8px 0; color:#4a463b; font-style:italic;}
-        pre{background:#26230f; color:#f3edc6; padding:18px 20px; border-radius:10px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.55;}
+        .content-section li::marker, .section li::marker{color:#005a9c;}
+        strong{color:#003b68;}
+        em{color:#005a9c;}
+        blockquote{border-left:4px solid #005a9c; background:#f5fbff; margin:22px 0; padding:16px 22px; border-radius:0 8px 8px 0; color:#4a463b; font-style:italic;}
+        pre{background:#0d2137; color:#dceef8; padding:18px 20px; border-radius:10px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.55;}
         code{font-family:var(--mono);}
         .paper-grid, .method-grid, .glossary-grid, .tools-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:22px; margin:26px 0;}
-        .paper-card, .method-card, .tool-card{border:1px solid #e6dfc2; border-top:4px solid #F7E14D; border-radius:12px; padding:24px; background:linear-gradient(135deg,#ffffff 0%,#fdfbf0 100%); transition:all .3s ease; display:flex; flex-direction:column;}
-        .paper-card:hover, .method-card:hover, .tool-card:hover{border-color:#e3c81f; box-shadow:0 8px 25px rgba(120,105,0,0.2); transform:translateY(-4px);}
-        .paper-card h4, .method-card h4, .tool-name{color:#4d4406; margin:0 0 12px; font-size:1.12em; line-height:1.4; font-weight:700;}
+        .paper-card, .method-card, .tool-card{border:1px solid #d3e2ef; border-top:4px solid #005a9c; border-radius:12px; padding:24px; background:linear-gradient(135deg,#ffffff 0%,#f5fbff 100%); transition:all .3s ease; display:flex; flex-direction:column;}
+        .paper-card:hover, .method-card:hover, .tool-card:hover{border-color:#003b68; box-shadow:0 8px 25px rgba(0,90,156,0.2); transform:translateY(-4px);}
+        .paper-card h4, .method-card h4, .tool-name{color:#003b68; margin:0 0 12px; font-size:1.12em; line-height:1.4; font-weight:700;}
         .paper-meta, .meta, .tool-header, .tool-tags{display:flex; flex-wrap:wrap; gap:7px; margin:0 0 14px; align-items:center;}
-        .meta-badge, .year-badge, .journal-badge, .pipeline-badge, .doublet-badge, .ambient-badge, .impute-badge, .tool-tag, .tool-year, .tool-journal, .concept-tag, .model-tag, .year, .journal{display:inline-block; padding:4px 10px; border-radius:12px; font-size:.72em; font-weight:700; text-transform:uppercase; letter-spacing:.04em; background:#F7E14D; color:#3a3300;}
-        .journal-badge, .tool-journal, .journal{background:#fdf3b0; color:#5a4d00;}
-        .type-badge, .concept-tag{background:#4d4406; color:#fff;}
+        .meta-badge, .year-badge, .journal-badge, .pipeline-badge, .doublet-badge, .ambient-badge, .impute-badge, .tool-tag, .tool-year, .tool-journal, .concept-tag, .model-tag, .year, .journal{display:inline-block; padding:4px 10px; border-radius:12px; font-size:.72em; font-weight:700; text-transform:uppercase; letter-spacing:.04em; background:#005a9c; color:#fff;}
+        .journal-badge, .tool-journal, .journal{background:#e8f3fa; color:#003b68;}
+        .type-badge, .concept-tag{background:#003b68; color:#fff;}
         .paper-description, .tool-best-for, .description{color:#4a463b; line-height:1.6; margin:0 0 14px; font-size:.93em;}
-        .key-contributions, .paper-highlights, .key-features{list-style:none; padding:0; margin:0 0 14px; border-top:1px dashed #e6dfc2; padding-top:12px;}
+        .key-contributions, .paper-highlights, .key-features{list-style:none; padding:0; margin:0 0 14px; border-top:1px dashed #d3e2ef; padding-top:12px;}
         .key-contributions li, .paper-highlights li, .key-features li{padding-left:20px; position:relative; margin:7px 0; font-size:.86em; color:#4a463b; line-height:1.5;}
         .key-contributions li::before, .paper-highlights li::before, .key-features li::before{content:"\2713"; position:absolute; left:0; color:#2e9e6b; font-weight:bold;}
         .paper-links, .links{margin-top:auto; display:flex; gap:8px; flex-wrap:wrap;}
-        .paper-links a, .paper-link, .links a, .ref-link{padding:6px 13px; background:#F7E14D; color:#3a3300; text-decoration:none; border-radius:6px; font-size:.8em; font-weight:700; display:inline-flex; align-items:center; gap:6px; transition:all .25s ease; border:1px solid #e3c81f;}
-        .paper-links a:hover, .paper-link:hover, .links a:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(120,105,0,0.3); background:#ffe96b;}
-        .highlight-box, .feature-highlight, .highlight{background:linear-gradient(135deg,#fffdf0 0%,#fcf3bf 100%); border:2px solid #F7E14D; border-left:6px solid #e3c81f; padding:28px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(120,105,0,0.1);}
-        .highlight-box h3, .highlight-box h4, .feature-highlight h4{color:#4d4406; margin:0 0 16px; font-size:1.3em; font-weight:700; border-bottom:2px solid #F7E14D; padding-bottom:10px;}
+        .paper-links a, .paper-link, .links a, .ref-link{padding:6px 13px; background:#005a9c; color:#fff; text-decoration:none; border-radius:6px; font-size:.8em; font-weight:700; display:inline-flex; align-items:center; gap:6px; transition:all .25s ease; border:1px solid #003b68;}
+        .paper-links a:hover, .paper-link:hover, .links a:hover{transform:translateY(-2px); box-shadow:0 4px 12px rgba(0,90,156,0.3); background:#2b7bc4;}
+        .highlight-box, .feature-highlight, .highlight{background:linear-gradient(135deg,#f5fbff 0%,#dceef8 100%); border:2px solid #005a9c; border-left:6px solid #003b68; padding:28px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(0,90,156,0.1);}
+        .highlight-box h3, .highlight-box h4, .feature-highlight h4{color:#003b68; margin:0 0 16px; font-size:1.3em; font-weight:700; border-bottom:2px solid #005a9c; padding-bottom:10px;}
         .highlight-box p, .highlight-box li, .feature-highlight p{color:#4a463b;}
-        .comparison-table, .quick-ref-table{width:100%; border-collapse:collapse; margin:22px 0; font-size:.93em; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(120,105,0,0.08);}
-        .comparison-table th, .comparison-table td, .quick-ref-table th, .quick-ref-table td{padding:13px 15px; text-align:left; border-bottom:1px solid #f1ecd6;}
-        .comparison-table th, .quick-ref-table th{background:#F7E14D; color:#3a3300; font-weight:bold;}
-        .comparison-table tr:hover, .quick-ref-table tr:hover{background:#fdfbf0;}
-        .comparison-table td:first-child{font-weight:bold; color:#6b5d00;}
+        .comparison-table, .quick-ref-table{width:100%; border-collapse:collapse; margin:22px 0; font-size:.93em; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(0,90,156,0.08);}
+        .comparison-table th, .comparison-table td, .quick-ref-table th, .quick-ref-table td{padding:13px 15px; text-align:left; border-bottom:1px solid #e8f3fa;}
+        .comparison-table th, .quick-ref-table th{background:#005a9c; color:#fff; font-weight:bold;}
+        .comparison-table tr:hover, .quick-ref-table tr:hover{background:#f5fbff;}
+        .comparison-table td:first-child{font-weight:bold; color:#005a9c;}
         .yes-icon{color:#2e9e6b; font-weight:bold;} .no-icon{color:#c0392b; font-weight:bold;}
-        .concept-card{background:#fff; border:1px solid #e6dfc2; border-top:3px solid #F7E14D; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.05); display:flex; flex-direction:column;}
-        .concept-card h4{color:#4d4406; font-size:1.08em; margin:4px 0 12px; line-height:1.3;}
+        .concept-card{background:#fff; border:1px solid #d3e2ef; border-top:3px solid #005a9c; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.05); display:flex; flex-direction:column;}
+        .concept-card h4{color:#003b68; font-size:1.08em; margin:4px 0 12px; line-height:1.3;}
         .concept-card p{color:#4a463b; font-size:13.5px; line-height:1.6; margin:0;}
         .timeline{position:relative; margin:25px 0 0; padding:4px 0;}
-        .timeline::before{content:''; position:absolute; left:8px; top:6px; bottom:6px; width:2px; background:linear-gradient(#f1d93a,#c9ab10); border-radius:2px;}
+        .timeline::before{content:''; position:absolute; left:8px; top:6px; bottom:6px; width:2px; background:linear-gradient(#005a9c,#005a9c); border-radius:2px;}
         .timeline-item{position:relative; padding-left:40px; padding-bottom:28px;}
-        .timeline-item::before{content:''; position:absolute; left:0; top:5px; width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid #e3c81f; box-shadow:0 0 0 4px rgba(227,200,31,0.18);}
-        .timeline-item h3, .timeline-item h4{color:#4d4406; margin:0 0 6px; font-weight:700; border:0; padding:0;}
+        .timeline-item::before{content:''; position:absolute; left:0; top:5px; width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid #003b68; box-shadow:0 0 0 4px rgba(227,200,31,0.18);}
+        .timeline-item h3, .timeline-item h4{color:#003b68; margin:0 0 6px; font-weight:700; border:0; padding:0;}
         .category-intro, .category-header{color:#4a463b;}
         /* annotation page bespoke */
         .main-content-wrapper{display:flex; gap:28px; align-items:flex-start; max-width:1180px; margin:0 auto; padding:0 20px;}
-        .toc-sidebar{position:sticky; top:70px; width:240px; flex-shrink:0; background:#fff; border:1px solid #e6dfc2; border-top:4px solid #F7E14D; border-radius:12px; padding:18px 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); font-size:.9em;}
-        .toc-sidebar a{display:block; color:#555048; text-decoration:none; padding:5px 0; border-bottom:1px solid #f1ecd6;}
-        .toc-sidebar a:hover{color:#6b5d00;}
+        .toc-sidebar{position:sticky; top:70px; width:240px; flex-shrink:0; background:#fff; border:1px solid #d3e2ef; border-top:4px solid #005a9c; border-radius:12px; padding:18px 20px; box-shadow:0 4px 15px rgba(0,0,0,0.05); font-size:.9em;}
+        .toc-sidebar a{display:block; color:#555048; text-decoration:none; padding:5px 0; border-bottom:1px solid #e8f3fa;}
+        .toc-sidebar a:hover{color:#005a9c;}
         .content-area{flex:1; min-width:0;}
-        .workflow-diagram{background:linear-gradient(135deg,#fffdf0 0%,#fcf3bf 100%); border:1px solid #e6dfc2; border-radius:12px; padding:24px; margin:22px 0;}
+        .workflow-diagram{background:linear-gradient(135deg,#f5fbff 0%,#dceef8 100%); border:1px solid #d3e2ef; border-radius:12px; padding:24px; margin:22px 0;}
         .workflow-steps{display:flex; flex-wrap:wrap; align-items:center; gap:10px;}
-        .workflow-step{background:#fff; border:1px solid #e3c81f; border-radius:8px; padding:10px 16px; font-weight:600; color:#4d4406;}
-        .workflow-arrow{color:#c9ab10; font-weight:bold; font-size:1.2em;}
+        .workflow-step{background:#fff; border:1px solid #003b68; border-radius:8px; padding:10px 16px; font-weight:600; color:#003b68;}
+        .workflow-arrow{color:#005a9c; font-weight:bold; font-size:1.2em;}
         .tool-header{justify-content:space-between;}
         /* batch demo bespoke */
-        .demo-container{background:#fff; border:1px solid #e6dfc2; border-radius:12px; padding:24px; margin:22px 0; box-shadow:0 4px 15px rgba(0,0,0,0.06);}
+        .demo-container{background:#fff; border:1px solid #d3e2ef; border-radius:12px; padding:24px; margin:22px 0; box-shadow:0 4px 15px rgba(0,0,0,0.06);}
         .demo-controls{display:flex; gap:10px; justify-content:center; margin-bottom:16px;}
-        .demo-btn{padding:9px 20px; border-radius:8px; border:1px solid #e3c81f; background:#fff; color:#4d4406; font-weight:700; cursor:pointer; transition:all .2s;}
-        .demo-btn.active, .demo-btn:hover{background:#F7E14D; color:#3a3300;}
-        .svg-canvas{background:#fdfbf0; border:1px solid #e6dfc2; border-radius:10px; margin:0 auto; display:block;}
+        .demo-btn{padding:9px 20px; border-radius:8px; border:1px solid #003b68; background:#fff; color:#003b68; font-weight:700; cursor:pointer; transition:all .2s;}
+        .demo-btn.active, .demo-btn:hover{background:#005a9c; color:#fff;}
+        .svg-canvas{background:#f5fbff; border:1px solid #d3e2ef; border-radius:10px; margin:0 auto; display:block;}
         .demo-legend{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin-top:14px; font-size:.9em; color:#4a463b;}
         .legend-item{display:flex; align-items:center; gap:6px;}
         .legend-dot{width:12px; height:12px; border-radius:50%; display:inline-block;}
-        footer{text-align:center; padding:36px 30px; color:#857f6e; background:transparent; margin-top:30px;}
-        footer a{color:#6b5d00; text-decoration:none; font-weight:600;}
+        footer{text-align:center; padding:36px 30px; color:#5a6b7c; background:transparent; margin-top:30px;}
+        footer a{color:#005a9c; text-decoration:none; font-weight:600;}
         /* SVG helper classes */
         svg .paper{fill:#ffffff;stroke:var(--rule);}
         svg .paper-2{fill:var(--paper-2);stroke:var(--rule);}
@@ -132,8 +132,59 @@
         svg rect.accent,svg circle.accent,svg text.accent,svg ellipse.accent{fill:var(--accent-2);}
         svg rect.warn,svg circle.warn,svg text.warn,svg ellipse.warn{fill:var(--warn);}
         @media (max-width:768px){.header{padding:40px 24px;} .header h1{font-size:2em;} .header::before{display:none;} .content-section,.section,.overview-section,.category-section{padding:28px 22px;} .paper-grid,.method-grid,.glossary-grid,.tools-grid,.stats-bar{grid-template-columns:1fr;} .main-content-wrapper{flex-direction:column;} .toc-sidebar{position:static; width:100%;}}
-    
+
+        /* ===== Case-file (Measure) additions ===== */
+        .curation-note{text-align:center; font-size:.84em; color:var(--ink-3); margin:4px 0 26px; font-family:var(--mono);}
+        .curation-note a{color:inherit;}
+        .casework-banner{display:grid; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); gap:30px; align-items:center; background:linear-gradient(135deg,#0d2137 0%,#005a9c 60%,#1c496e 100%); border-radius:16px; padding:34px 38px; margin:10px 0 25px; box-shadow:0 8px 30px rgba(0,59,104,0.35);}
+        .casework-banner .casework-art img{width:100%; height:auto; display:block; filter:drop-shadow(0 1rem 2rem rgba(0,0,0,.3));}
+        .casework-banner .kicker{font-family:var(--mono); font-size:.74em; letter-spacing:.14em; text-transform:uppercase; color:#cfe5f5;}
+        .casework-banner h2{color:#fff; font-size:clamp(1.5rem,3vw,2.15rem); line-height:1.16; margin:12px 0 14px; font-weight:700; border:0; padding:0;}
+        .casework-banner p{color:#e9e2c2; line-height:1.75; margin:0; font-size:.98em;}
+        .decision-flow{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:6px 0 24px;}
+        .flow-node{background:#fff; border:1.5px solid #d3e2ef; border-radius:12px; padding:10px 14px; font-size:.9em; color:#4a463b;}
+        .flow-node b{color:#005a9c;}
+        .flow-start{background:#005a9c; color:#fff; font-weight:800; border-color:#003b68;}
+        .flow-arrow{color:#005a9c; opacity:.7;}
+        [data-theme="dark"] .flow-node{background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.14); color:#dbe4ee;}
+        [data-theme="dark"] .flow-node b{color:#7fb8e8;}
+        [data-theme="dark"] .curation-note{color:#8b949e;}
+        @media (max-width:900px){.casework-banner{grid-template-columns:1fr; padding:26px 24px;}}
+
+        /* method index table + anchors */
+        .paper-card{scroll-margin-top:90px;}
+        .family-tag{display:inline-block; padding:2px 10px; border-radius:999px; font-size:.75em; font-weight:700; white-space:nowrap; background:var(--accent-tint); color:#003b68; border:1px solid #003b68;}
+        .quick-ref-table td a{font-weight:700;}
+
+        /* toc sidebar */
+        .main-content-wrapper{padding:0;}
+        .toc-title{display:block; color:#003b68; font-size:1.05em; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid #005a9c;}
+        .content-section{scroll-margin-top:70px;}
+        @media (max-width:1100px){.toc-sidebar{display:none;}}
+
+        /* Poirot's case library */
+        .library-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; margin:24px 0 6px;}
+        .library-card{background:linear-gradient(135deg,#f5fbff,#f5fbff); border:1px solid #d3e2ef; border-left:5px solid #003b68; border-radius:8px; padding:20px; box-shadow:2px 2px 0 rgba(0,59,104,.12); transition:transform .25s ease, box-shadow .25s ease;}
+        .library-card:hover{transform:translateY(-4px); box-shadow:4px 6px 0 rgba(0,59,104,.16);}
+        .library-card .book-meta{font-family:var(--mono); font-size:.72em; letter-spacing:.1em; text-transform:uppercase; color:#5a6b7c;}
+        .library-card h4{color:#003b68; font-style:italic; margin:6px 0 10px; font-size:1.08em;}
+        .library-card .plot{font-size:.88em; color:#4a463b; line-height:1.6; margin:0 0 10px;}
+        .library-card .echo{font-size:.88em; line-height:1.6; color:#003b68; background:var(--accent-tint); border:1px dashed #003b68; border-radius:8px; padding:10px 12px; margin:0;}
+        .library-footnote{margin:18px 0 0; font-style:italic; color:#005a9c; font-size:.95em;}
+        [data-theme="dark"] .toc-title{color:#e6edf3;}
+        [data-theme="dark"] .library-card{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.14); border-left-color:#7fb8e8; box-shadow:none;}
+        [data-theme="dark"] .library-card h4{color:#7fb8e8;}
+        [data-theme="dark"] .library-card .plot{color:#c9d1d9;}
+        [data-theme="dark"] .library-card .echo{color:#e6edf3; background:rgba(0,90,156,.08); border-color:rgba(0,90,156,.28);}
+        [data-theme="dark"] .library-card .book-meta{color:#8b949e;}
+        [data-theme="dark"] .library-footnote{color:#7fb8e8;}
+        [data-theme="dark"] .family-tag{background:rgba(0,90,156,.12); color:#7fb8e8; border-color:rgba(0,90,156,.3);}
+
+        /* seven saves */
     </style>
+    <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
+    <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -147,7 +198,7 @@
                 </li>
                 <li>
                     <a href="https://xqiu625.github.io/">
-                        <i class="fas fa-home"></i> Xinru's Homepage
+                        <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
                 <li>
@@ -196,9 +247,115 @@
                     <span class="stat-label">Hub</span>
                 </div>
             </div>
+            <p class="curation-note">Last reviewed: July 2026 · Inclusion: maintained, benchmarked, or widely cited methods · Found an issue? <a href="https://github.com/xqiu625" target="_blank" rel="noopener noreferrer">Suggest a fix on GitHub</a></p>
+
+            <!-- CASE-FILE BANNER (Measure · Agatha Christie lens) -->
+            <section class="casework-banner" aria-label="Agatha Christie inspired quality control casework">
+                <div class="casework-art">
+                    <img src="../animations/rive-assets/stage-themes-v5/and-then-there-were-some-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu detective poses for the And Then There Were None storyline: the invitation, the double identity, and the verdict">
+                </div>
+                <div class="casework-copy">
+                    <div class="kicker">Case file · Separate clues from red herrings</div>
+                    <h2>Every barcode is a suspect until the evidence clears it.</h2>
+                    <p>QC is detective work, not paperwork. Each barcode arrives claiming to be a single, healthy cell —
+                    and some are lying: two witnesses sharing one identity, evidence contaminated at the scene,
+                    witnesses who never existed, and dramatic structure that is technique, not biology.
+                    Archive the clues (QC metrics), cross-examine the witnesses (cells and genes),
+                    remove the red herrings (doublets, ambient RNA, batch artifacts) — and only then let the surviving
+                    biological signals enter the model.</p>
+                </div>
+            </section>
+
+            <div class="main-content-wrapper">
+                <aside class="toc-sidebar" aria-label="Page contents">
+                    <strong class="toc-title">Contents</strong>
+                    <a href="#and-then-there-were-some">And Then There Were Some</a>
+                    <a href="#pipelines">Core QC Pipelines</a>
+                    <a href="#doublets">Doublet Detection</a>
+                    <a href="#ambient">Ambient RNA Removal</a>
+                    <a href="#feature-selection">Feature Selection</a>
+                    <a href="#foundation">Foundation Models</a>
+                    <a href="#metacell">Metacell &amp; Stats</a>
+                    <a href="#repositories">Data Repositories</a>
+                    <a href="#compare">SoupX vs DecontX</a>
+                    <a href="#quick-ref">Quick Reference</a>
+                    <a href="#hands-on">Hands-on Practice</a>
+                </aside>
+                <div class="content-area">
+
+
+            <!-- AND THEN THERE WERE SOME · And Then There Were None parable -->
+            <section class="content-section" id="and-then-there-were-some">
+                <h2><i class="fas fa-book-open"></i> And Then There Were Some · Ten Guests</h2>
+                <p>Agatha Christie's <em>And Then There Were None</em> (1939): ten guests on Soldier Island, judged one by one against a nursery rhyme. Here each guest stands for one quality-control theme: ten ways the analysis can die on the island, and ten ways to prevent it. <em>(Classic-novel spoilers inside.)</em></p>
+                <div class="library-grid">
+                    <div class="library-card">
+                        <div class="book-meta">Guest 1 · The poem on the wall</div>
+                        <h4>MAD Filtering</h4>
+                        <p class="plot">Each death on the island follows the nursery rhyme exactly — one rigid verse applied to ten very different people, and the innocent die on schedule.</p>
+                        <p class="echo"><strong>Let the data call the outlier.</strong> Good QC is not about choosing arbitrary cutoffs — it is about letting the data identify outliers for you, with Median Absolute Deviation instead of one rigid line for every sample.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 2 · Letters from U.N. Owen</div>
+                        <h4>Reference Optimization</h4>
+                        <p class="plot">Every guest trusted the invitation because it came signed by an old acquaintance. Nobody checked the reference — and it cost them everything.</p>
+                        <p class="echo"><strong>Start from the right map.</strong> Start with the right gene annotations and transcriptome references to ensure accurate quantification — a wrong reference poisons every count downstream.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 3 · The guest with a secret</div>
+                        <h4>Doublet Detection</h4>
+                        <p class="plot">The killer is not an intruder; it is one of the guests, smiling at the dinner table under a borrowed identity.</p>
+                        <p class="echo"><strong>Catch the borrowed identity.</strong> Identify droplets that accidentally captured two or more cells before they distort biological interpretation.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 4 · The poisoned glass</div>
+                        <h4>Ambient RNA Removal</h4>
+                        <p class="plot">One by one the guests are poisoned — the danger was dissolved in what everyone at the table drank and breathed.</p>
+                        <p class="echo"><strong>Clean the scene.</strong> Remove unwanted background transcripts to improve the signal-to-noise ratio.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 5 · Everyone hides a crime</div>
+                        <h4>Contamination Cells Removal</h4>
+                        <p class="plot">Each guest was lured to the island because of a hidden past — none of them truly belongs in polite company, and the host knows it.</p>
+                        <p class="echo"><strong>Off the team sheet.</strong> Identify and remove cells that do not truly belong to the target population before they lead to misleading biological conclusions.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 6 · The elimination</div>
+                        <h4>Feature Selection &amp; Dimensionality Reduction</h4>
+                        <p class="plot">Solving the case means stripping ten suspects, ten stories, and a room full of props down to a single thread of truth.</p>
+                        <p class="echo"><strong>Keep the signal, cut the noise.</strong> Preserve meaningful biological variation while reducing noise and complexity.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 7 · The rhyme as protocol</div>
+                        <h4>Statistical Robustness &amp; Standardization</h4>
+                        <p class="plot">Every step on the island is executed the same way, in the same order, by the same verse — a chillingly reproducible method.</p>
+                        <p class="echo"><strong>Make it reproducible.</strong> Apply scalable, reproducible methods that make downstream results more reliable.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 8 · The storm around the island</div>
+                        <h4>Batch Effects</h4>
+                        <p class="plot">A storm cuts the island off from the mainland. Everything the guests do is shaped by where they are, not who they are.</p>
+                        <p class="echo"><strong>Check the weather before blaming the guests.</strong> The island is the batch: dramatic structure that is circumstance, not biology — handle it with integration-aware QC.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 9 · The wrong accusation</div>
+                        <h4>Batch Mishandling</h4>
+                        <p class="plot">Terrified, Vera shoots Lombard on suspicion — an innocent man dies because someone acted on a wrong guess. Mishandled suspicion kills.</p>
+                        <p class="echo"><strong>Wrong correction convicts the innocent.</strong> Over-correct batch effects and you erase real biology; under-correct and the island's ghosts keep testifying as fake structure. Correct the right covariate, and only that one.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Guest 10 · The invitations</div>
+                        <h4>Empty Droplets &amp; Cell Calling</h4>
+                        <p class="plot">Ten strangers arrive invited by "U.N. Owen" — a name on the guest list with no one behind it, because the host never existed.</p>
+                        <p class="echo"><strong>A name is not a guest.</strong> Barcodes with almost no transcripts are invitations with no one behind them. Cell calling checks whether each guest actually showed up.</p>
+                    </div>
+                </div>
+                <p class="library-footnote">"And then there were none" is the warning, not the goal: ten guests, zero executions — the matrix that enters the model is the witnesses who survived cross-examination.</p>
+            </section>
+
 
             <!-- CATEGORY 1: Core QC Pipelines -->
-            <section class="content-section">
+            <section class="content-section" id="pipelines">
                 <h2><i class="fas fa-cogs"></i> Core QC Pipelines & Frameworks</h2>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -207,7 +364,7 @@
 
                 <div class="paper-grid">
                     <!-- SCTK -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-sctk-singlecelltk">
                         <h4>SCTK (singleCellTK)</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2022</span>
@@ -224,7 +381,7 @@
                     </div>
 
                     <!-- Reference Optimization -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-reference-optimization">
                         <h4>Reference Optimization</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2023</span>
@@ -243,51 +400,51 @@
             </section>
 
             <!-- CATEGORY 2: Doublet Detection -->
-            <section class="content-section">
+            <section class="content-section" id="doublets">
                 <h2><i class="fas fa-clone"></i> Doublet Detection</h2>
-                <div style="background:linear-gradient(135deg,#fffdf0 0%,#ffffff 100%); border:2px solid #F7E14D; border-radius:12px; padding:26px; margin:0 0 24px;">
-                    <h4 style="text-align:center; color:#4d4406; margin:0 0 4px; font-size:1.18em;">What a doublet is — and how simulation catches it</h4>
-                    <p style="text-align:center; color:#857f6e; font-size:0.9em; margin:0 0 16px;">Two cells captured in one droplet share a barcode, so they look like a single cell with a blended profile. Detectors spot them by simulating artificial doublets and asking which real cells resemble them.</p>
-                    <svg viewBox="0 0 900 290" style="width:100%; height:auto; font-family:'Lato',sans-serif;">
-                        <defs><marker id="dbA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c9ab10"/></marker></defs>
+                <div style="background:linear-gradient(135deg,#f5fbff 0%,#ffffff 100%); border:2px solid #005a9c; border-radius:12px; padding:26px; margin:0 0 24px;">
+                    <h4 style="text-align:center; color:#003b68; margin:0 0 4px; font-size:1.18em;">What a doublet is — and how simulation catches it</h4>
+                    <p style="text-align:center; color:#5a6b7c; font-size:0.9em; margin:0 0 16px;">Two cells captured in one droplet share a barcode, so they look like a single cell with a blended profile. Detectors spot them by simulating artificial doublets and asking which real cells resemble them.</p>
+                    <svg viewBox="0 0 900 290" style="width:100%; height:auto; font-family:'Manrope',sans-serif;">
+                        <defs><marker id="dbA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#005a9c"/></marker></defs>
                         <!-- droplet capture -->
-                        <text x="150" y="32" text-anchor="middle" font-size="13" fill="#4d4406" font-weight="bold">droplet capture</text>
-                        <circle cx="105" cy="95" r="34" fill="#fdf7d0" stroke="#e3c81f" stroke-width="1.5"/>
+                        <text x="150" y="32" text-anchor="middle" font-size="13" fill="#003b68" font-weight="bold">droplet capture</text>
+                        <circle cx="105" cy="95" r="34" fill="#e8f3fa" stroke="#003b68" stroke-width="1.5"/>
                         <circle cx="96" cy="90" r="11" fill="#4A90D9"/><circle cx="116" cy="100" r="11" fill="#e74c3c"/>
-                        <text x="105" y="148" text-anchor="middle" font-size="10.5" fill="#857f6e">2 cells, 1 barcode</text>
+                        <text x="105" y="148" text-anchor="middle" font-size="10.5" fill="#5a6b7c">2 cells, 1 barcode</text>
                         <text x="105" y="163" text-anchor="middle" font-size="10.5" fill="#c0392b" font-weight="bold">= doublet</text>
-                        <circle cx="205" cy="95" r="28" fill="#fdf7d0" stroke="#e3c81f" stroke-width="1.5"/>
+                        <circle cx="205" cy="95" r="28" fill="#e8f3fa" stroke="#003b68" stroke-width="1.5"/>
                         <circle cx="205" cy="95" r="11" fill="#2ecc71"/>
-                        <text x="205" y="148" text-anchor="middle" font-size="10.5" fill="#857f6e">1 cell</text>
+                        <text x="205" y="148" text-anchor="middle" font-size="10.5" fill="#5a6b7c">1 cell</text>
                         <text x="205" y="163" text-anchor="middle" font-size="10.5" fill="#1e7e34" font-weight="bold">= singlet</text>
 
-                        <line x1="250" y1="100" x2="312" y2="100" stroke="#c9ab10" stroke-width="2" marker-end="url(#dbA)"/>
+                        <line x1="250" y1="100" x2="312" y2="100" stroke="#005a9c" stroke-width="2" marker-end="url(#dbA)"/>
 
                         <!-- expression blend -->
-                        <text x="430" y="32" text-anchor="middle" font-size="13" fill="#4d4406" font-weight="bold">blended expression</text>
+                        <text x="430" y="32" text-anchor="middle" font-size="13" fill="#003b68" font-weight="bold">blended expression</text>
                         <g font-family="'IBM Plex Mono',monospace" font-size="10">
                             <rect x="330" y="56" width="200" height="22" rx="3" fill="#eaf3fc" stroke="#4A90D9"/><text x="340" y="71" fill="#2c5aa0">T-cell genes: CD3D ▮▮▮</text>
                             <rect x="330" y="84" width="200" height="22" rx="3" fill="#fdecec" stroke="#e74c3c"/><text x="340" y="99" fill="#c0392b">B-cell genes: MS4A1 ▮▮▮</text>
-                            <rect x="330" y="116" width="200" height="26" rx="3" fill="#fff7c9" stroke="#e3c81f" stroke-width="1.5"/><text x="340" y="133" fill="#6b5d00">BOTH high — impossible for</text>
+                            <rect x="330" y="116" width="200" height="26" rx="3" fill="#fff7c9" stroke="#003b68" stroke-width="1.5"/><text x="340" y="133" fill="#005a9c">BOTH high — impossible for</text>
                         </g>
-                        <text x="430" y="160" text-anchor="middle" font-size="10.5" fill="#857f6e">one real cell type</text>
+                        <text x="430" y="160" text-anchor="middle" font-size="10.5" fill="#5a6b7c">one real cell type</text>
 
-                        <line x1="540" y1="100" x2="602" y2="100" stroke="#c9ab10" stroke-width="2" marker-end="url(#dbA)"/>
+                        <line x1="540" y1="100" x2="602" y2="100" stroke="#005a9c" stroke-width="2" marker-end="url(#dbA)"/>
 
                         <!-- simulation scoring -->
-                        <text x="730" y="32" text-anchor="middle" font-size="13" fill="#4d4406" font-weight="bold">simulate &amp; score</text>
-                        <rect x="620" y="50" width="240" height="150" rx="10" fill="#fdfbf0" stroke="#e6dfc2"/>
+                        <text x="730" y="32" text-anchor="middle" font-size="13" fill="#003b68" font-weight="bold">simulate &amp; score</text>
+                        <rect x="620" y="50" width="240" height="150" rx="10" fill="#f5fbff" stroke="#d3e2ef"/>
                         <!-- real cells -->
                         <g fill="#2ecc71"><circle cx="670" cy="95" r="5"/><circle cx="690" cy="115" r="5"/><circle cx="660" cy="130" r="5"/><circle cx="700" cy="90" r="5"/><circle cx="685" cy="150" r="5"/></g>
                         <!-- simulated doublets -->
-                        <g fill="#c9ab10"><circle cx="790" cy="100" r="5"/><circle cx="805" cy="120" r="5"/><circle cx="780" cy="135" r="5"/><circle cx="800" cy="85" r="5"/></g>
+                        <g fill="#005a9c"><circle cx="790" cy="100" r="5"/><circle cx="805" cy="120" r="5"/><circle cx="780" cy="135" r="5"/><circle cx="800" cy="85" r="5"/></g>
                         <!-- suspect real cell near simulated cluster -->
-                        <circle cx="775" cy="112" r="6" fill="#e74c3c" stroke="#3a3300" stroke-width="1.5"/>
+                        <circle cx="775" cy="112" r="6" fill="#e74c3c" stroke="#003b68" stroke-width="1.5"/>
                         <text x="740" y="180" text-anchor="middle" font-size="9.5" fill="#1e7e34">real singlets</text>
-                        <text x="800" y="180" text-anchor="middle" font-size="9.5" fill="#6b5d00">simulated doublets</text>
+                        <text x="800" y="180" text-anchor="middle" font-size="9.5" fill="#005a9c">simulated doublets</text>
                         <text x="775" y="78" text-anchor="middle" font-size="9" fill="#c0392b">flagged</text>
                     </svg>
-                    <p style="text-align:center; color:#666; margin:14px 0 0; font-size:0.92em;"><strong style="color:#6b5d00;">Key insight:</strong> tools like Scrublet and DoubletFinder generate synthetic doublets by averaging random pairs of real cells, embed everything together, and score each real cell by how many simulated doublets sit nearby. Cells in dense simulated-doublet neighborhoods are flagged and removed before analysis.</p>
+                    <p style="text-align:center; color:#666; margin:14px 0 0; font-size:0.92em;"><strong style="color:#005a9c;">Key insight:</strong> tools like Scrublet and DoubletFinder generate synthetic doublets by averaging random pairs of real cells, embed everything together, and score each real cell by how many simulated doublets sit nearby. Cells in dense simulated-doublet neighborhoods are flagged and removed before analysis.</p>
                 </div>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -296,7 +453,7 @@
 
                 <div class="paper-grid">
                     <!-- DoubletFinder -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-doubletfinder">
                         <h4>DoubletFinder</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2019</span>
@@ -313,7 +470,7 @@
                     </div>
 
                     <!-- Scrublet -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-scrublet">
                         <h4>Scrublet</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2019</span>
@@ -332,7 +489,7 @@
             </section>
 
             <!-- CATEGORY 3: Ambient RNA & Contamination Removal -->
-            <section class="content-section">
+            <section class="content-section" id="ambient">
                 <h2><i class="fas fa-broom"></i> Ambient RNA & Contamination Removal</h2>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -341,7 +498,7 @@
 
                 <div class="paper-grid">
                     <!-- SoupX -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-soupx">
                         <h4>SoupX</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2020</span>
@@ -358,7 +515,7 @@
                     </div>
 
                     <!-- DecontX -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-decontx">
                         <h4>DecontX</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2020</span>
@@ -375,7 +532,7 @@
                     </div>
 
                     <!-- scCLEAN -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-scclean">
                         <h4>scCLEAN</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2025</span>
@@ -392,7 +549,7 @@
                     </div>
 
                     <!-- Ambient RNA snRNA-seq -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-ambient-rna-analysis-snrna-seq">
                         <h4>Ambient RNA Analysis (snRNA-seq)</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2022</span>
@@ -409,8 +566,8 @@
                 </div>
             </section>
 
-            <!-- CATEGORY 5: Feature Selection & Dimensionality Reduction -->
-            <section class="content-section">
+            <!-- CATEGORY 4: Feature Selection & Dimensionality Reduction -->
+            <section class="content-section" id="feature-selection">
                 <h2><i class="fas fa-filter"></i> Feature Selection & Dimensionality Reduction</h2>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -419,7 +576,7 @@
 
                 <div class="paper-grid">
                     <!-- DELVE -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-delve">
                         <h4>DELVE</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2024</span>
@@ -436,7 +593,7 @@
                     </div>
 
                     <!-- SnapATAC2 -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-snapatac2">
                         <h4>SnapATAC2</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2024</span>
@@ -454,8 +611,8 @@
                 </div>
             </section>
 
-            <!-- CATEGORY 6: Foundation Models -->
-            <section class="content-section">
+            <!-- CATEGORY 5: Foundation Models -->
+            <section class="content-section" id="foundation">
                 <h2><i class="fas fa-brain"></i> Foundation Models for Single-Cell Analysis</h2>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -464,7 +621,7 @@
 
                 <div class="paper-grid">
                     <!-- scPRINT -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-scprint">
                         <h4>scPRINT</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2025</span>
@@ -481,7 +638,7 @@
                     </div>
 
                     <!-- SIGnature -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-signature">
                         <h4>SIGnature</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2026</span>
@@ -494,8 +651,6 @@
                         <ul class="key-contributions">
                             <li>Attributions promote cell-type marker genes and lineage TFs (GATA3, RORC, FOXP3) while demoting ribo/mito genes vs expression (Wilcoxon P&lt;0.01)</li>
                             <li>Top-ranked genes 93% stable under 50% dropout simulation — robust to the very missingness QC filters aim to reduce</li>
-                            <li>Attribution-based NMF gene programs less batch/study-specific than expression-based; FOXP3 a top Treg gene in 98% of attribution configs vs 4% for expression</li>
-                            <li>Attribution signature scoring tops F1 in 23/32 tasks, beating ANS, Scanpy, UCell, JASMINE, and mean expression</li>
                             <li>Scales to ~22 million cells / 412 studies in minutes; enables large-scale QC-aware gene-program discovery</li>
                         </ul>
                         <div class="paper-links">
@@ -505,8 +660,8 @@
                 </div>
             </section>
 
-            <!-- CATEGORY 8: Metacell & Statistical Methods -->
-            <section class="content-section">
+            <!-- CATEGORY 6: Metacell & Statistical Methods -->
+            <section class="content-section" id="metacell">
                 <h2><i class="fas fa-cubes"></i> Metacell & Statistical Methods</h2>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -515,7 +670,7 @@
 
                 <div class="paper-grid">
                     <!-- MetaQ -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-metaq">
                         <h4>MetaQ</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2025</span>
@@ -532,7 +687,7 @@
                     </div>
 
                     <!-- Memento -->
-                    <div class="paper-card">
+                    <div class="paper-card" id="method-memento">
                         <h4>Memento</h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2024</span>
@@ -550,8 +705,8 @@
                 </div>
             </section>
 
-            <!-- CATEGORY 9: Data Repositories -->
-            <section class="content-section">
+            <!-- CATEGORY 7: Data Repositories -->
+            <section class="content-section" id="repositories">
                 <h2><i class="fas fa-database"></i> Data Repositories & Standardization</h2>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -560,8 +715,8 @@
 
                 <div class="paper-grid">
                     <!-- scBaseCount (formerly scBaseCamp) -->
-                    <div class="paper-card">
-                        <h4>scBaseCount <span style="font-weight:400; font-size:.8em; color:#857f6e;">(formerly scBaseCamp)</span></h4>
+                    <div class="paper-card" id="method-scbasecount">
+                        <h4>scBaseCount <span style="font-weight:400; font-size:.8em; color:#5a6b7c;">(formerly scBaseCamp)</span></h4>
                         <div class="paper-meta">
                             <span class="meta-badge year-badge">2025</span>
                             <span class="meta-badge data-badge">Repository</span>
@@ -643,10 +798,135 @@
 </section>
 
             <!-- Quick Reference -->
-            <section class="content-section">
+            <section class="content-section" id="quick-ref">
                 <h2><i class="fas fa-compass"></i> Quick Reference: Choosing the Right Tool</h2>
+                <div class="decision-flow" aria-label="Decision path">
+                    <span class="flow-node flow-start">What went wrong at the scene?</span>
+                    <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                    <span class="flow-node">Two profiles, one barcode? <b>DoubletFinder · Scrublet</b></span>
+                    <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                    <span class="flow-node">Soup in the scene? <b>SoupX · DecontX · scCLEAN</b></span>
+                    <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                    <span class="flow-node">Witnesses look unreliable? <b>MAD thresholds, not hard cutoffs</b></span>
+                    <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                    <span class="flow-node">Scene too big (&gt;1M)? <b>SnapATAC2 · scPRINT · scBaseCount</b></span>
+                </div>
 
-                <div class="highlight-box">
+                <h3><i class="fas fa-list"></i> All methods at a glance</h3>
+                <div style="overflow-x:auto;">
+                    <table class="quick-ref-table">
+                        <thead><tr><th>Method</th><th>Family</th><th class="hide-on-mobile">Year</th><th class="hide-on-mobile">Journal</th><th class="hide-on-mobile">Links</th></tr></thead>
+                        <tbody>
+                                <tr>
+                                    <td><a href="#method-sctk-singlecelltk">SCTK (singleCellTK)</a></td>
+                                    <td><span class="family-tag">Pipeline</span></td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td class="hide-on-mobile">Nat Commun</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41467-022-34591-0" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/compbiomed/singleCellTK" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-reference-optimization">Reference Optimization</a></td>
+                                    <td><span class="family-tag">Pipeline</span></td>
+                                    <td class="hide-on-mobile">2023</td>
+                                    <td class="hide-on-mobile">Nat Methods</td>
+                                    <td class="hide-on-mobile"><a href="https://www.nature.com/articles/s41592-023-02003-w" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/PoolLab/ReferenceEnhancer" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-doubletfinder">DoubletFinder</a></td>
+                                    <td><span class="family-tag">Doublets</span></td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td class="hide-on-mobile">Cell Systems</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cels.2019.03.003" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/chris-mcginnis-ucsf/DoubletFinder" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-scrublet">Scrublet</a></td>
+                                    <td><span class="family-tag">Doublets</span></td>
+                                    <td class="hide-on-mobile">2019</td>
+                                    <td class="hide-on-mobile">Cell Systems</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cels.2018.11.005" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/swolock/scrublet" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-soupx">SoupX</a></td>
+                                    <td><span class="family-tag">Ambient RNA</span></td>
+                                    <td class="hide-on-mobile">2020</td>
+                                    <td class="hide-on-mobile">GigaScience</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1093/gigascience/giaa151" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/constantAmateur/SoupX" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-decontx">DecontX</a></td>
+                                    <td><span class="family-tag">Ambient RNA</span></td>
+                                    <td class="hide-on-mobile">2020</td>
+                                    <td class="hide-on-mobile">Genome Biology</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1186/s13059-020-02050-0" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/campbio/celda" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-scclean">scCLEAN</a></td>
+                                    <td><span class="family-tag">Ambient RNA</span></td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td class="hide-on-mobile">Nat Commun</td>
+                                    <td class="hide-on-mobile"><a href="https://www.nature.com/articles/s41467-025-59880-2" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/acpandey/scCLEAN" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-ambient-rna-analysis-snrna-seq">Ambient RNA Analysis (snRNA-seq)</a></td>
+                                    <td><span class="family-tag">Ambient RNA</span></td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td class="hide-on-mobile">Neuron</td>
+                                    <td class="hide-on-mobile"><a href="https://www.cell.com/neuron/fulltext/S0896-6273(22)00815-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627322008157%3Fshowall%3Dtrue" target="_blank" rel="noopener noreferrer">Paper</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-delve">DELVE</a></td>
+                                    <td><span class="family-tag">Features</span></td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td class="hide-on-mobile">Nat Commun</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41467-024-46773-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/jranek/delve" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-snapatac2">SnapATAC2</a></td>
+                                    <td><span class="family-tag">Features</span></td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td class="hide-on-mobile">Nat Methods</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-023-02139-9" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/kaizhang/SnapATAC2" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-scprint">scPRINT</a></td>
+                                    <td><span class="family-tag">Foundation</span></td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td class="hide-on-mobile">Nat Commun</td>
+                                    <td class="hide-on-mobile"><a href="https://www.nature.com/articles/s41467-025-58699-1" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/cantinilab/scPRINT" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-signature">SIGnature</a></td>
+                                    <td><span class="family-tag">Foundation</span></td>
+                                    <td class="hide-on-mobile">2026</td>
+                                    <td class="hide-on-mobile">Nat Biotechnol</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41587-026-03112-5" target="_blank" rel="noopener noreferrer">Paper</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-metaq">MetaQ</a></td>
+                                    <td><span class="family-tag">Metacell · Stats</span></td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td class="hide-on-mobile">Nat Commun</td>
+                                    <td class="hide-on-mobile"><a href="https://www.nature.com/articles/s41467-025-56424-6" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/XLearning-SCU/MetaQ" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-memento">Memento</a></td>
+                                    <td><span class="family-tag">Metacell · Stats</span></td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td class="hide-on-mobile">Cell</td>
+                                    <td class="hide-on-mobile"><a href="https://www.cell.com/cell/fulltext/S0092-8674(24)01144-9" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/yelabucsf/scrna-parameter-estimation" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-scbasecount">scBaseCount</a></td>
+                                    <td><span class="family-tag">Repository</span></td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td class="hide-on-mobile">bioRxiv</td>
+                                    <td class="hide-on-mobile"><a href="https://www.biorxiv.org/content/10.1101/2025.02.27.640494v3" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ArcInstitute/SRAgent" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+<div class="highlight-box">
                     <h4>By Preprocessing Task</h4>
                     <ul>
                         <li><strong>Doublet Removal:</strong> DoubletFinder (Seurat) or Scrublet (Scanpy)</li>
@@ -767,6 +1047,9 @@ print("Saved adata_qc.h5ad")</code></pre>
                     <li><strong>Scrublet needs unnormalised counts.</strong> Always pass raw integer counts (<code>adata.X</code> before <code>sc.pp.normalize_total</code>) to Scrublet or SOLO; normalised or log-transformed input distorts the simulated doublet distribution.</li>
                 </ul>
             </section>
+
+                </div>
+            </div>
 
         </div>
     </main>
