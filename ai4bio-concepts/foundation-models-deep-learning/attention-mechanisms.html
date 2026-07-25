@@ -566,6 +566,41 @@
             }
         }
     </style>
+    <style>
+        /* casework banner + story section + figures (LEGO lens) */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#2a1a52 0%,#3B276E 55%,#4a3488 100%); border-radius: 16px; padding: 34px 38px; margin: 24px 0 25px; box-shadow: 0 8px 30px rgba(59,39,110,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #C9B7EE; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; }
+        .casework-banner p { color: #e6ddf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: var(--sport-soft, #fbf7ff); border: 1.5px solid var(--sport-pale, #f4ecfa); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #3B276E); border-left: 4px solid var(--sport-primary, #7A5FB8); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #f4ecfa); border-left: 5px solid var(--sport-primary, #7A5FB8); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(59,39,110,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(59,39,110,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); }
+        .library-card h4 { color: var(--sport-dark, #3B276E); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #3B276E); background: var(--sport-pale, #f4ecfa); border: 1px dashed var(--sport-secondary, #C9B7EE); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #7A5FB8); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #7A5FB8); font-size: .95em; }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#f4ecfa); box-shadow: 0 10px 28px rgba(59,39,110,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #b9a5f0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(122,95,184,.15); border-color: rgba(185,165,240,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #b9a5f0; }
+        [data-theme="dark"] .library-footnote { color: #c9b7ee; }
+    </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
     <link rel="stylesheet" href="../sport-themes.css">
@@ -599,6 +634,66 @@
                     explicitly programmed with that knowledge.
                 </p>
             </div>
+
+            <section class="casework-banner" aria-label="LEGO inspired attention casework">
+                <div class="casework-art">
+                    <!-- TODO: IP asset pending — lego-attention-three-poses.webp -->
+                </div>
+                    <div class="casework-copy">
+                        <div class="kicker">LEGO lens · look where it matters</div>
+                        <h2>Not every brick deserves your eyes.</h2>
+                        <p>A full tray of bricks and only two hands — the build moves fastest when you know exactly
+                        which pieces to look at. Attention is that instinct for AI: 满盘皆砖，先看哪块 —
+                        score every piece by how much it matters for the next step, then reach for the brightest.</p>
+                    </div>
+                </section>
+
+            <!-- STORY LINE: LEGO attention -->
+            <section class="content-section story-section" id="lego-story">
+                <!-- TODO: story hero pending — lego-attention-hero.webp -->
+                <h2><i class="fas fa-cubes"></i> Look Where It Matters.</h2>
+                <p class="story-quote">「满盘皆砖，先看哪块。」</p>
+                <p class="story-intro">Attention is the builder's spotlight over a full tray: the next step in the instructions (Query) checks every brick's label (Key), lights up the best matches, and reaches for what glows (Value). Six scenes from the workbench, re-read as attention mechanics.</p>
+                <div class="library-grid">
+                    <div class="library-card">
+                        <div class="book-meta">Scene 1 · 图纸与件号</div>
+                        <h4>The plan checks the labels first</h4>
+                        <p class="plot">What shape does the next step in the booklet need? You scan the tray for its part number — only when the label matches does your hand reach out.</p>
+                        <p class="echo"><strong>Query meets Key.</strong> The instruction (Q) is matched against every brick's label (K); the match score decides the reach. <a href="#overview">See why it matters ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 2 · 满盘砖里的聚光灯</div>
+                        <h4>Every brick eyes its neighbors</h4>
+                        <p class="plot">In a tray of loose bricks, each one turns to look at the neighbors that share its color — no foreman, just bricks sizing each other up.</p>
+                        <p class="echo"><strong>Self-attention.</strong> Every token attends to every other token in the same sequence. <a href="#types">See the group chat of bricks ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 3 · 八双眼睛</div>
+                        <h4>Eight pairs of eyes</h4>
+                        <p class="plot">One pair watches color, one watches length, one watches studs, one watches the connectors — eight pairs of eyes each track one feature, and together they choose the piece.</p>
+                        <p class="echo"><strong>Multi-head attention.</strong> Parallel heads, each watching a different feature subspace. <a href="#types">See the specialists ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 4 · 照别人的图纸施工</div>
+                        <h4>Building from someone else's booklet</h4>
+                        <p class="plot">One hand pins down someone else's instruction sheet, the other builds on your own baseplate — your eyes flick back and forth between the two plans.</p>
+                        <p class="echo"><strong>Cross-attention.</strong> The decoder's queries attend to the encoder's bricks. <a href="#types">See cross-attention ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 5 · 只看手边一圈</div>
+                        <h4>Just the circle within reach</h4>
+                        <p class="plot">When the tray is too big to scan, you look only at the small circle around your hand — neighbors first; neighbors of neighbors later.</p>
+                        <p class="echo"><strong>Graph &amp; sparse attention.</strong> Attend to the local neighborhood first — that is how models scale to millions of cells. <a href="#types">See graph attention ↓</a></p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Scene 6 · 按亮度伸手</div>
+                        <h4>Grab by glow</h4>
+                        <p class="plot">The spotlight finishes its sweep, and the brightest pieces simply fall into your palm — the glow is the share each piece earns.</p>
+                        <p class="echo"><strong>Softmax → weighted sum.</strong> Scores become weights; the output is the weighted sum of Values. <a href="#overview">See the mechanics ↓</a></p>
+                    </div>
+                </div>
+                <p class="library-footnote">好工匠不是看得多，是看得准 —— attention is not seeing more, but seeing what matters.</p>
+            </section>
 
             <div class="content-section" id="overview">
                 <h2>Why Attention Mechanisms Matter in Biology</h2>
