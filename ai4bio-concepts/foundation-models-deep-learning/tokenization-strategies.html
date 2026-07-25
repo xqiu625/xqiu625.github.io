@@ -568,7 +568,7 @@
             <ul class="navbar-nav">
                 <li><a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
                 <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
-                <li><a href="#three-kingdoms"><i class="fas fa-scroll"></i> Three Kingdoms</a></li>
+                <li><a href="#lego-story"><i class="fas fa-cubes"></i> LEGO</a></li>
                 <li><a href="#introduction">Introduction</a></li>
                 <li><a href="#visual-guide">Visual Guide</a></li>
                 <li><a href="#papers">Key Papers</a></li>
@@ -589,71 +589,67 @@
                 </p>
             </div>
 
-            <!-- CASEWORK BANNER (Model · Romance of the Three Kingdoms lens) -->
-            <section class="casework-banner" aria-label="Romance of the Three Kingdoms inspired tokenization casework">
+            <!-- CASEWORK BANNER (Model · LEGO lens) -->
+            <section class="casework-banner" aria-label="LEGO inspired tokenization casework">
                 <div class="casework-art">
-                    <img src="../animations/rive-assets/stage-themes-v5/red-cliffs-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu as Zhuge Liang: sealing the Sun-Liu alliance with three forces as one, borrowing arrows on a straw boat, and presenting a scroll of segment rules">
+                    <!-- TODO: IP asset pending — lego-master-three-poses.webp -->
                 </div>
                 <div class="casework-copy">
-                    <div class="kicker">Romance of the Three Kingdoms lens · divide &amp; merge</div>
-                    <h2>Battles are decided before the first arrow flies.</h2>
-                    <p>Campaigns are won in the ordering of the troops — how a vast, undisciplined host is divided
-                    into units a commander can actually direct. Tokenization is that ordering for AI:
-                    分久必合，合久必分 — split the sequence when it is too big to command,
-                    merge the pieces when they are too small to mean anything.</p>
+                    <div class="kicker">LEGO lens · sort &amp; snap</div>
+                    <h2>No castle without a parts list.</h2>
+                    <p>Every LEGO castle begins before the first brick snaps in — with someone deciding which
+                    pieces exist and in what order. Tokenization is that decision for AI: how a messy bucket
+                    of biology becomes a neat line of parts a model can build with.</p>
                 </div>
             </section>
 
             <!-- STORY LINE: Romance of the Three Kingdoms -->
-            <section class="content-section story-section" id="three-kingdoms">
-                <figure class="story-hero">
-                    <img src="../animations/rive-assets/stage-themes-v5/red-cliffs-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu as Zhuge Liang in a campaign tent, pointing a feather fan at a battle map where the river is divided into dashed troop-unit segments">
-                </figure>
-                <h2><i class="fas fa-scroll"></i> 分久必合，合久必分</h2>
-                <p class="story-quote">「话说天下大势，分久必合，合久必分。」——《三国演义》开篇</p>
-                <p class="story-intro">One battle, six scenes: the Red Cliffs campaign (chapters 43–50), re-read as tokenization strategies — knowing when a sequence must divide (合久必分 — words into subwords, genomes into k-mers) and when units must merge (分久必合 — characters into BPE merges, bases into codons). <em>(Minor spoilers for a 650-year-old novel.)</em></p>
+            <section class="content-section story-section" id="lego-story">
+                <h2><i class="fas fa-cubes"></i> Split, Then Snap.</h2>
+                <p class="story-quote">「先分件，再拼装。」— Every LEGO build starts with sorting the bucket.</p>
+                <p class="story-intro">No builder dumps the bucket straight onto the table and hopes for a castle. You sort first: decide which units exist, in what order, at what size. Tokenization is exactly that sorting step for AI — six scenes from the workbench, re-read as tokenization strategies.</p>
                 <figure class="content-figure">
                     <img src="figures/tokenization-divide-and-merge.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Divide and merge token granularity: a sequence split into segments (genome into k-mer windows) on the left, characters merged into larger BPE units and codons on the right">
                 </figure>
                 <div class="library-grid">
                     <div class="library-card">
-                        <div class="book-meta">Scene 1 · 孙刘结盟</div>
-                        <h4>Two houses, one army</h4>
-                        <p class="plot">Before a single arrow flies, Zhuge Liang sails to Jiangdong and welds Sun Quan and Liu Bei — two uneasy houses — into one allied command. Only as one unit can they face Cao Cao's million.</p>
-                        <p class="echo"><strong>Codon-level tokenization.</strong> Three nucleotides sworn as one codon, read as a single functional unit. <a href="#concept-codon">See the codon strategy ↓</a></p>
+                        <div class="book-meta">Scene 1 · 说明书第一页</div>
+                        <h4>No build without a plan</h4>
+                        <p class="plot">Every LEGO set opens with the instruction booklet: before a single brick is placed, someone has already decided which pieces exist and in what order they connect.</p>
+                        <p class="echo"><strong>Tokenization itself.</strong> The plan that turns a messy bucket into a buildable sequence — without it, the model has a pile, not a project.</p>
                     </div>
                     <div class="library-card">
-                        <div class="book-meta">Scene 2 · 草船借箭</div>
-                        <h4>Borrow, don't build</h4>
-                        <p class="plot">Zhuge Liang needs a hundred thousand arrows in three days. He does not forge a single one — he sends straw boats into the fog and lets the enemy's archers supply them.</p>
-                        <p class="echo"><strong>BPE / subword units.</strong> Don't mint a token for every word; borrow the frequent reusable pieces from the corpus itself. <a href="#concept-bpe-iupac">See BPE ↓</a></p>
+                        <div class="book-meta">Scene 2 · 三块砖按成一块</div>
+                        <h4>Three bricks, one click</h4>
+                        <p class="plot">Three small bricks click together and hold as one larger piece. The wall no longer cares about the three — only about the unit they became.</p>
+                        <p class="echo"><strong>Codon-level tokenization.</strong> Three nucleotides snapped as one codon, read as a single functional unit. <a href="#concept-codon">See the codon strategy ↓</a></p>
                     </div>
                     <div class="library-card">
-                        <div class="book-meta">Scene 3 · 蒋干盗书</div>
-                        <h4>One misread letter</h4>
-                        <p class="plot">Jiang Gan steals a letter and misreads it as proof of betrayal. The unit is forged; the reading is confident; two admirals are wrongly condemned — and the campaign is crippled.</p>
-                        <p class="echo"><strong>Garbage tokens in, garbage out.</strong> A wrongly segmented unit poisons everything downstream — tokenize wrong, and the model wages war on a false premise.</p>
+                        <div class="book-meta">Scene 3 · 分选盘挑高频件</div>
+                        <h4>Pick from the tray, don't mold new bricks</h4>
+                        <p class="plot">A master builder rarely molds custom pieces. They reach into the sorting tray and reuse the common bricks that fit everywhere — cheaper, faster, and the castle stands the same.</p>
+                        <p class="echo"><strong>BPE / subword units.</strong> Don't mint a token for every word; pick the frequent reusable pieces already lying in the corpus. <a href="#concept-bpe-iupac">See BPE ↓</a></p>
                     </div>
                     <div class="library-card">
-                        <div class="book-meta">Scene 4 · 连环船</div>
-                        <h4>Ships chained stem to stern</h4>
-                        <p class="plot">Cao Cao chains his fleet into one interlocked platform: stable underfoot, every ship overlapping its neighbor — and devastatingly flammable as a whole.</p>
-                        <p class="echo"><strong>K-mer tokenization.</strong> Overlapping windows chained across the sequence: continuous coverage, but redundancy catches fire fast. <a href="#concept-kmer">See k-mer ↓</a></p>
+                        <div class="book-meta">Scene 4 · 拿错一页说明书</div>
+                        <h4>The wrong page of instructions</h4>
+                        <p class="plot">You follow the booklet faithfully, step by step — but it is the page from a different set. Every brick clicks perfectly, and the wrong castle rises anyway.</p>
+                        <p class="echo"><strong>Garbage tokens in, garbage out.</strong> A wrongly segmented unit poisons everything downstream — tokenize wrong, and the model builds confidently on a false plan.</p>
                     </div>
                     <div class="library-card">
-                        <div class="book-meta">Scene 5 · 苦肉计</div>
-                        <h4>Beaten apart, on purpose</h4>
-                        <p class="plot">Huang Gai takes a public beating from Zhou Yu — accepting real pain so Cao Cao will believe the surrender. The fire attack only works because one man accepted being split.</p>
-                        <p class="echo"><strong>Byte-level tokenization.</strong> Accept the most painful granularity — every byte its own token — to guarantee full coverage and zero OOV. <a href="#comparisons">See trade-offs ↓</a></p>
+                        <div class="book-meta">Scene 5 · 错缝重叠的砖墙</div>
+                        <h4>A wall laid with offset bricks</h4>
+                        <p class="plot">Each course overlaps the last by half a brick: stronger than stacked columns — but you spend far more bricks to cover the same wall.</p>
+                        <p class="echo"><strong>K-mer tokenization.</strong> Overlapping windows chained across the sequence: continuous coverage, redundancy that burns budget. <a href="#concept-kmer">See k-mer ↓</a></p>
                     </div>
                     <div class="library-card">
-                        <div class="book-meta">Scene 6 · 借东风</div>
-                        <h4>Everything but the wind</h4>
-                        <p class="plot">Ships chained, arrows borrowed, Huang Gai ready — and still nothing works until the east wind turns. One small borrowed condition ignites the whole campaign.</p>
-                        <p class="echo"><strong>Special tokens &amp; pretrained vocabularies.</strong> [CLS], [SEP], [MASK], a SentencePiece model you borrow instead of train — the small borrowed piece that makes the whole thing catch fire. <a href="#concept-basics">See the basics ↓</a></p>
+                        <div class="book-meta">Scene 6 · 缺件与万能小砖</div>
+                        <h4>When a piece is missing</h4>
+                        <p class="plot">One big custom piece missing stops the whole build. The tiniest universal brick is never out of stock — slow, but it always fits.</p>
+                        <p class="echo"><strong>Byte-level tokenization.</strong> The smallest unit never goes OOV: full coverage and zero missing pieces, at the price of very long builds. <a href="#comparisons">See trade-offs ↓</a></p>
                     </div>
                 </div>
-                <p class="library-footnote">分合有度：没有唯一正确的粒度，只有适合任务的编制 —— the right tokenization is the one your task can command.</p>
+                <p class="library-footnote">按任务选套装：没有最好的粒度，只有合适的套装 —— the right tokenization is the set your task can build with.</p>
             </section>
 
             <!-- Introduction Section -->
@@ -1407,10 +1403,7 @@
                     </div>
 
                     <!-- Concept 8: BPE + IUPAC Tokenization -->
-                    <figure class="content-figure">
-                        <img src="figures/tokenization-straw-boats-bpe.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Straw boats as reusable merge memory: boats on a corpus stream collecting frequent fragments as arrows, with a merge pattern box above">
-                    </figure>
-                    <div class="concept-pair" id="concept-bpe-iupac">
+                        <div class="concept-pair" id="concept-bpe-iupac">
                         <div class="concept-visual">
                             <!-- SVG 8: BPE + IUPAC Tokenization for Diploid Genomes -->
                             <svg class="lego-svg" viewBox="0 0 520 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg8-title svg8-desc">
