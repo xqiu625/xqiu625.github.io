@@ -29,7 +29,9 @@
         .navbar-nav a { color: #666666; text-decoration: none; font-weight: bold; font-size: 18px; }
         .profile-container { display: flex; margin-top: 40px; }
         .profile-image-container { flex: 0 0 250px; margin-right: 40px; }
-        .profile-image { width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 5px solid #6c8cc0; }
+        .profile-portrait-wrap { position: relative; display: inline-block; width: 230px; max-width: 100%; }
+        .profile-image { position: relative; z-index: 1; width: 220px; height: 220px; border-radius: 50%; object-fit: cover; border: 5px solid #6c8cc0; }
+        .profile-mascot { position: absolute; z-index: 2; left: -58px; bottom: -4px; width: 118px; height: auto; pointer-events: none; filter: drop-shadow(0 12px 18px rgba(26, 95, 122, 0.22)); transform: rotate(3deg); transform-origin: 70% 80%; }
         .profile-links { list-style-type: none; padding: 0; margin-top: 20px; }
         .profile-links li { margin-bottom: 10px; }
         .profile-links a { color: #666; text-decoration: none; font-size: 16px; }
@@ -76,6 +78,8 @@
         @media (max-width: 768px) {
             .profile-container { flex-direction: column; }
             .profile-image-container { margin-right: 0; margin-bottom: 20px; text-align: center; }
+            .profile-portrait-wrap { width: 230px; }
+            .profile-mascot { left: -34px; bottom: 2px; width: 96px; }
             .profile-links { text-align: center; }
             .research-image { padding: 10px; margin: 10px 0; }
             .capability-grid { grid-template-columns: 1fr; }
@@ -101,7 +105,10 @@
         <div class="container">
             <div class="profile-container">
                 <div class="profile-image-container">
-                    <img src="./photo.JPG" alt="Xinru Qiu" class="profile-image">
+                    <div class="profile-portrait-wrap">
+                        <img src="./photo.JPG" alt="Xinru Qiu" class="profile-image">
+                        <img src="./healshu-cucurella-spain24-lean.webp" alt="Healshu mascot wearing a red Spain-inspired number 24 football jersey" class="profile-mascot" width="1254" height="1254" decoding="async">
+                    </div>
                     <ul class="profile-links">
                         <li><a href="mailto:xinru.reina.qiu@gmail.com" title="Email"><i class="fas fa-envelope"></i>Email</a></li>
                         <li><a href="https://www.linkedin.com/in/xinru-qiu" title="LinkedIn"><i class="fab fa-linkedin"></i>LinkedIn</a></li>
