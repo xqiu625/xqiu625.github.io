@@ -2184,6 +2184,66 @@
         </div>
         <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision — <strong style="color:#5ec2a8;">rank ordering</strong> vs <strong style="color:#d6a44f;">value binning</strong>. Geneformer discards absolute magnitude (50 vs 5 collapses to just 1st vs 2nd), which makes it naturally depth- and batch-robust but blind to dosage; scGPT keeps magnitude as an explicit token, which is exactly what perturbation and dosage modeling need but leaves it sensitive to normalization and batch. Vocabulary size, sequence length, and out-of-vocabulary behavior all follow from that one choice.</p>
     </div>
+
+    <h3 style="margin-top:34px;">Up a Level: Cells as Tokens — STACK vs STATE</h3>
+    <p>The two models above tokenize <em>genes within a cell</em>. STACK and STATE (both from the <a href="https://arcinstitute.org/tools" target="_blank" rel="noopener noreferrer">Arc Institute</a>) move up a granularity — the token is the whole <em>cell</em>, and attention runs over a set or table of cells. They diverge on how a set of cells becomes a perturbation prediction: <a href="https://arcinstitute.org/tools/stack" target="_blank" rel="noopener noreferrer">STACK</a> learns <em>in context</em> from unlabeled example cells at inference, while <a href="https://arcinstitute.org/tools/state" target="_blank" rel="noopener noreferrer">STATE</a> trains an explicit embedding-plus-transition pipeline.</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">The same set of cells becomes a perturbation prediction two different ways — by learning in context at inference, or by a separately trained transition operator:</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — STACK -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">STACK</div>
+                    <div style="color:#9fc7bb;font-size:12px;">tabular in-context learning (2025)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Tabular attention over a cell &times; gene table</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">attend within a cell (across genes) and across cells (inter-cell), treating the matrix as a table</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Learn in context at inference</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">unlabeled example cells (conditions, donors) guide the prediction &mdash; no task-specific fine-tuning</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">context_cells</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">predicted_effect</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">149M cells &middot; cell-as-token &middot; in-context &middot; no fine-tuning &middot; Perturb Sapiens atlas</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — STATE -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">STATE</div>
+                    <div style="color:#c7a877;font-size:12px;">embedding + set transition (2025)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">State Embedding (SE): one vector per cell</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">trained on 167M observational cells to represent each cell independently</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">State Transition (ST): trained set operator</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">maps a set of control cells &rarr; their perturbed state, trained on 100M perturbation cells</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">SE_embedding</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">ST_prediction</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">167M + 100M cells &middot; cell-as-token &middot; trained transition &middot; set-based attention &middot; perturbation-specialized</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The root decision here is <strong style="color:#5ec2a8;">in-context learning from example cells</strong> vs a <strong style="color:#d6a44f;">separately trained embedding-and-transition pipeline</strong>. Both treat the cell (not the gene) as the token and attend across a set of cells — a step up in granularity from the gene-level tokens above. STACK trades a training step for flexible, fine-tuning-free generalization to new conditions; STATE's dedicated transition model gives an explicit control&rarr;perturbed operator built specifically for perturbation-effect prediction.</p>
+    </div>
 </div>
 
             <!-- Hands-On Practice -->
