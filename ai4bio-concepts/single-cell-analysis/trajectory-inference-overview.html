@@ -262,9 +262,21 @@
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-nav">
-                <li><a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
-                <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
-                
+                <li>
+                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
+                </li>
+                <li>
+                    <a href="https://xqiu625.github.io/">
+                        <i class="fas fa-home"></i> Homepage
+                    </a>
+                </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -938,14 +950,155 @@
                 <li>Exploratory analysis of trajectory topology (PAGA)</li>
                 <li>When data spans multiple timepoints with gaps</li>
                 <li>Need for pseudotime ordering along complex paths</li>
-            </ul>            
-        </div>        
+            </ul>
+        </div>
+
+        <!-- Hands-On Practice -->
+        <div class="content-section" id="hands-on">
+            <h2>🛠️ Hands-On Practice</h2>
+            <p>The walkthrough below takes a QC'd <code>AnnData</code> object end to end through a standard Python trajectory stack: neighbor graph and UMAP, Leiden clusters, PAGA for coarse topology, diffusion pseudotime for a continuous ordering, RNA velocity with scVelo, and finally CellRank to turn velocity plus connectivity into terminal states and fate probabilities. Every step is retrospective and computational — the point is to interrogate an existing dataset, not to generate new material.</p>
+
+            <h3>Environment &amp; packages</h3>
+            <p>Scanpy, scVelo, and CellRank evolve quickly and pin overlapping dependencies, so install them into one dedicated environment rather than adding them to a general analysis env. CellRank 2 expects <code>scvelo &gt;= 0.3</code> and <code>scanpy &gt;= 1.9</code>; installing all three in a single <code>pip</code> call lets the resolver pick a mutually consistent set.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n traj python=3.10 -y
+conda activate traj
+
+# install together so the resolver reconciles shared pins
+pip install "scanpy&gt;=1.9" "scvelo&gt;=0.3" "cellrank&gt;=2.0" leidenalg igraph
+
+# only needed if you must GENERATE spliced/unspliced counts yourself
+# pip install velocyto scvelo[louvain] loompy
+# (alternative: STARsolo --soloFeatures Gene Velocyto, or kb-python with --workflow lamanno)</code></pre>
+            <p><strong>Hardware.</strong> A laptop with 16 GB RAM comfortably handles ~50k cells through PAGA, DPT, and the stochastic velocity model. The scVelo <em>dynamical</em> model is the bottleneck: it fits a full splicing ODE per gene by EM and can take hours on 100k cells, so run it on a compute node with <code>n_jobs</code> set to the available cores. CellRank's kernels and GPCCA decomposition are sparse-matrix operations and stay cheap by comparison. No GPU is required anywhere in this pipeline.</p>
+
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><strong><code>AnnData</code></strong> — the container everything reads and writes: <code>adata.X</code> (expression), <code>adata.obs</code> (per-cell annotation, where pseudotime and cluster labels land), <code>adata.obsm</code> (embeddings such as <code>X_pca</code>, <code>X_umap</code>, <code>X_diffmap</code>), <code>adata.uns</code> (graph and PAGA results)</li>
+                <li><strong><code>adata.layers["spliced"]</code> / <code>adata.layers["unspliced"]</code></strong> — <em>hard prerequisite for RNA velocity</em>. These are separate count matrices produced by a velocity-aware quantifier (velocyto on the CellRanger BAM, STARsolo Velocyto mode, or kb-python's La Manno workflow). They cannot be derived from a standard filtered count matrix: the spliced/unspliced split requires read-to-intron alignment, and that information is gone once you have only a gene-by-cell matrix.</li>
+                <li><strong>loom</strong> — velocyto's native output (<code>.loom</code>), loaded with <code>scv.read()</code> and merged onto your QC'd object with <code>scv.utils.merge()</code>; barcode suffixes rarely match out of the box and usually need cleaning first</li>
+                <li><strong>Neighbor graph</strong> — <code>adata.obsp["connectivities"]</code> and <code>adata.obsp["distances"]</code>; PAGA, DPT, and CellRank's connectivity kernel are all functions of this single graph, so its parameters propagate everywhere</li>
+                <li><strong>Velocity outputs</strong> — <code>adata.layers["velocity"]</code> (per-gene rates), <code>adata.uns["velocity_graph"]</code> (cell-cell transition scores); the dynamical model additionally writes <code>adata.obs["latent_time"]</code></li>
+                <li><strong>CellRank outputs</strong> — a transition matrix on the kernel, then <code>adata.obsm["lineages_fwd"]</code> holding per-cell absorption probabilities toward each terminal state</li>
+            </ul>
+
+            <h3>Minimal code walkthrough</h3>
+            <p>Start from the QC-filtered object, build the graph, run PAGA for topology, anchor a root cell using biology and compute diffusion pseudotime, then bring in the spliced/unspliced layers for velocity and hand both signals to CellRank.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import scvelo as scv
+import cellrank as cr
+import numpy as np
+
+# 1. Start from a QC'd object (doublets removed, ambient corrected).
+#    Trajectory methods are extremely sensitive to junk cells: a stray
+#    doublet sits "between" two clusters and looks exactly like a
+#    transitional state to any graph-based method.
+adata = sc.read_h5ad("adata_qc.h5ad")
+adata.layers["counts"] = adata.X.copy()          # keep raw counts for later
+
+# 2. Standard normalisation -> HVGs -> PCA
+sc.pp.normalize_total(adata, target_sum=1e4)
+sc.pp.log1p(adata)
+adata.raw = adata                                 # log-norm values for plots/markers
+sc.pp.highly_variable_genes(adata, n_top_genes=2000)
+adata = adata[:, adata.var.highly_variable].copy()
+sc.pp.scale(adata, max_value=10)
+sc.tl.pca(adata, n_comps=50, svd_solver="arpack")
+
+# 3. Neighbour graph -> UMAP -> Leiden.
+#    n_neighbors is the single most consequential knob downstream: PAGA,
+#    DPT and CellRank's connectivity kernel all read this same graph.
+sc.pp.neighbors(adata, n_neighbors=15, n_pcs=30)
+sc.tl.umap(adata)
+sc.tl.leiden(adata, resolution=1.0, key_added="leiden")
+
+# 4. PAGA: coarse-grained topology between clusters. Read this BEFORE
+#    committing to a pseudotime -- it tells you whether the data is one
+#    connected continuum or several disconnected islands.
+sc.tl.paga(adata, groups="leiden")
+sc.pl.paga(adata, threshold=0.05, show=False)     # prune weak edges
+sc.tl.umap(adata, init_pos="paga")                # PAGA-initialised embedding
+
+# 5. Diffusion pseudotime. The root must come from BIOLOGY, not convenience:
+#    pick the cluster expressing your known progenitor/stem markers, then
+#    take an extreme cell within it along the first diffusion component.
+sc.tl.diffmap(adata)
+root_cluster = "3"                                 # e.g. HSC/progenitor cluster
+mask = (adata.obs["leiden"] == root_cluster).values
+dc1 = adata.obsm["X_diffmap"][:, 1]
+adata.uns["iroot"] = np.flatnonzero(mask)[np.argmin(dc1[mask])]
+sc.tl.dpt(adata, n_dcs=15)                         # writes adata.obs["dpt_pseudotime"]
+
+# Sanity check: pseudotime should INCREASE away from the progenitors.
+# If your known mature markers sit at low pseudotime, the root is wrong
+# and the whole trajectory is silently reversed.
+print(adata.obs.groupby("leiden")["dpt_pseudotime"].median())
+
+# 6. RNA velocity. This step REQUIRES spliced/unspliced layers -- they come
+#    from velocyto/STARsolo/kb-python, and cannot be recovered from a plain
+#    filtered count matrix. Merge the loom onto the QC'd object by barcode.
+ldata = scv.read("sample.loom", cache=True)
+ldata.var_names_make_unique()
+adata = scv.utils.merge(adata, ldata)              # intersects on barcodes
+assert "spliced" in adata.layers and "unspliced" in adata.layers
+
+scv.pp.filter_and_normalize(adata, min_shared_counts=20, n_top_genes=2000)
+scv.pp.moments(adata, n_pcs=30, n_neighbors=30)    # kNN-smoothed first/second moments
+
+# stochastic: seconds-to-minutes, assumes a common steady state
+scv.tl.velocity(adata, mode="stochastic")
+
+# dynamical: fits the full splicing ODE per gene by EM. Much slower
+# (hours at 100k cells) but relaxes the steady-state assumption and is the
+# only mode that yields latent time.
+# scv.tl.recover_dynamics(adata, n_jobs=8)
+# scv.tl.velocity(adata, mode="dynamical")
+# scv.tl.latent_time(adata)                        # adata.obs["latent_time"]
+
+scv.tl.velocity_graph(adata, n_jobs=8)
+scv.pl.velocity_embedding_stream(adata, basis="umap", color="leiden")
+
+# Confidence diagnostics -- low values mean the arrows are not trustworthy.
+scv.tl.velocity_confidence(adata)
+scv.pl.scatter(adata, c=["velocity_length", "velocity_confidence"], cmap="coolwarm")
+
+# 7. CellRank: combine a directional signal (velocity) with a similarity
+#    signal (connectivity). The connectivity kernel regularises velocity,
+#    which is noisy at the single-cell level.
+vk = cr.kernels.VelocityKernel(adata).compute_transition_matrix()
+ck = cr.kernels.ConnectivityKernel(adata).compute_transition_matrix()
+combined = 0.8 * vk + 0.2 * ck                     # weights are a real choice
+
+g = cr.estimators.GPCCA(combined)
+g.compute_schur(n_components=20)
+g.compute_macrostates(n_states=6, cluster_key="leiden")
+g.predict_terminal_states()                        # inspect against known endpoints
+g.compute_fate_probabilities()                     # adata.obsm["lineages_fwd"]
+g.plot_fate_probabilities(same_plot=False)
+
+# 8. Genes correlated with commitment to one fate
+drivers = g.compute_lineage_drivers(lineages=["Erythroid"])
+print(drivers.head(20))
+
+adata.write_h5ad("adata_trajectory.h5ad")</code></pre>
+
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>Pseudotime is a rank ordering, not real time.</strong> DPT and latent time produce a monotone coordinate along the graph, not hours or days. Two cells one pseudotime unit apart may be minutes or weeks apart biologically, and pseudotime is not comparable across datasets. Never report it in physical units or use differences in it as rates.</li>
+                <li><strong>A wrong root silently reverses the trajectory.</strong> <code>sc.tl.dpt</code> will happily run from any <code>iroot</code> and return a smooth, plausible-looking ordering. Choose the root from progenitor markers, then verify that known mature populations land at high pseudotime — nothing in the output warns you when the direction is flipped.</li>
+                <li><strong>Ask whether a trajectory is warranted at all.</strong> These methods fit a continuum to whatever they are given, including discrete, terminally differentiated populations with no transitions between them. Check PAGA connectivity first: sparse, near-zero edges between clusters mean you are looking at distinct cell types, and any pseudotime you compute across them is an artifact.</li>
+                <li><strong>Velocity fails when kinetics vary or genes are off steady state.</strong> The steady-state (stochastic) model assumes one global splicing/degradation ratio per gene; if a gene has different kinetics across cell types, or the system was never at equilibrium, the arrows can point confidently backwards. Mature neurons and other slow-turnover populations are classic failure cases. Always inspect <code>velocity_confidence</code> and check a few phase portraits with <code>scv.pl.velocity()</code> instead of trusting the streamline plot alone.</li>
+                <li><strong>Smoothing and kNN parameters reshape the topology.</strong> <code>n_neighbors</code> in <code>sc.pp.neighbors</code> and <code>scv.pp.moments</code>, the number of PCs, and the PAGA edge threshold all change which branches appear. Small neighborhoods fragment a real continuum; large ones bridge unrelated populations. Re-run the pipeline across a parameter grid and only report branches that survive.</li>
+                <li><strong>Batch effects manufacture false branches.</strong> Two samples that separate in PCA become two "lineages" in any graph-based method. Integrate (Harmony, scVI, BBKNN) before building the neighbor graph, and colour the final trajectory by <code>batch</code> or <code>orig.ident</code> — if a branch is one sample, it is technical.</li>
+                <li><strong>Validate branch assignments with known markers.</strong> Terminal states from GPCCA and fate probabilities are model outputs, not ground truth. Score each predicted endpoint with an established lineage marker set before naming it; if a terminal state has no marker support, treat it as a numerical artifact of the macrostate count you chose.</li>
+            </ul>
+        </div>
     </div>
 
     <footer style="text-align: center; padding: 20px; color: #666;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
 </body>
 </html>

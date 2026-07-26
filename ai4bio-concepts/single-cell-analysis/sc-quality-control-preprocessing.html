@@ -160,7 +160,24 @@
         .main-content-wrapper{padding:0;}
         .toc-title{display:block; color:#003b68; font-size:1.05em; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid #005a9c;}
         .content-section{scroll-margin-top:70px;}
-        @media (max-width:1100px){.toc-sidebar{display:none;}}
+        /* Contents: plain sidebar on desktop, collapsible sticky menu on narrow screens */
+        .toc-sidebar > summary.toc-title{list-style:none;}
+        .toc-sidebar > summary.toc-title::-webkit-details-marker{display:none;}
+        @media (min-width:1101px){.toc-sidebar > summary.toc-title{cursor:default; pointer-events:none;}}
+        @media (max-width:1100px){
+            .main-content-wrapper{flex-direction:column;}
+            .toc-sidebar{position:sticky; top:46px; z-index:900; width:100%; margin:0 0 20px; padding:10px 16px;}
+            .toc-sidebar > summary.toc-title{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0; padding:6px 0 8px; cursor:pointer;}
+            .toc-sidebar > summary.toc-title::after{content:'\25BE'; font-size:.95em; color:#005a9c; transition:transform .2s ease;}
+            .toc-sidebar[open] > summary.toc-title::after{transform:rotate(180deg);}
+            .toc-sidebar:not([open]) > summary.toc-title{border-bottom:0; padding-bottom:2px;}
+            .toc-sidebar[open]{max-height:70vh; overflow-y:auto; -webkit-overflow-scrolling:touch;}
+            .toc-sidebar a{padding:11px 2px;}
+            .toc-sidebar a:last-child{border-bottom:0;}
+            /* clear the sticky navbar + collapsed Contents bar when jumping to a section */
+            .content-section{scroll-margin-top:108px;}
+            .paper-card{scroll-margin-top:118px;}
+        }
 
         /* Poirot's case library */
         .library-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; margin:24px 0 6px;}
@@ -171,6 +188,11 @@
         .library-card .plot{font-size:.88em; color:#4a463b; line-height:1.6; margin:0 0 10px;}
         .library-card .echo{font-size:.88em; line-height:1.6; color:#003b68; background:var(--accent-tint); border:1px dashed #003b68; border-radius:8px; padding:10px 12px; margin:0;}
         .library-footnote{margin:18px 0 0; font-style:italic; color:#005a9c; font-size:.95em;}
+        .story-figure{margin:22px auto 28px; max-width:560px;}
+        .story-figure img{width:100%; height:auto; display:block; border:1px solid #d3e2ef; border-radius:12px; box-shadow:0 4px 18px rgba(0,59,104,.12);}
+        .story-figure figcaption{margin-top:10px; font-size:.88em; line-height:1.55; color:#5a6b7c; text-align:center;}
+        [data-theme="dark"] .story-figure img{border-color:rgba(255,255,255,.14);}
+        [data-theme="dark"] .story-figure figcaption{color:#8b949e;}
         [data-theme="dark"] .toc-title{color:#e6edf3;}
         [data-theme="dark"] .library-card{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.14); border-left-color:#7fb8e8; box-shadow:none;}
         [data-theme="dark"] .library-card h4{color:#7fb8e8;}
@@ -207,11 +229,6 @@
                 <li>
                     <a href="https://xqiu625.github.io/">
                         <i class="fas fa-home"></i> Homepage
-                    </a>
-                </li>
-                <li>
-                    <a href="#compare">
-                        <i class="fas fa-code-compare"></i> Compare
                     </a>
                 </li>
                 <li>
@@ -258,8 +275,8 @@
             </section>
 
             <div class="main-content-wrapper">
-                <aside class="toc-sidebar" aria-label="Page contents">
-                    <strong class="toc-title">Contents</strong>
+                <details class="toc-sidebar" id="tocSidebar" open>
+                    <summary class="toc-title">Contents</summary>
                     <a href="#and-then-there-were-some">And Then There Were Some</a>
                     <a href="#pipelines">Core QC Pipelines</a>
                     <a href="#doublets">Doublet Detection</a>
@@ -271,7 +288,7 @@
                     <a href="#compare">SoupX vs DecontX</a>
                     <a href="#quick-ref">Quick Reference</a>
                     <a href="#hands-on">Hands-on Practice</a>
-                </aside>
+                </details>
                 <div class="content-area">
 
 
@@ -279,6 +296,10 @@
             <section class="content-section" id="and-then-there-were-some">
                 <h2><i class="fas fa-book-open"></i> And Then There Were Some · Ten Guests</h2>
                 <p>Agatha Christie's <em>And Then There Were None</em> (1939): ten guests on Soldier Island, judged one by one against a nursery rhyme. Here each guest stands for one quality-control theme: ten ways the analysis can die on the island, and ten ways to prevent it. <em>(Classic-novel spoilers inside.)</em></p>
+                <figure class="story-figure">
+                    <img src="figures/and-then-there-were-some-qc-comic.webp" width="1254" height="1254" loading="lazy" decoding="async" alt="Comic retelling of And Then There Were None as a single-cell QC parable: ten guests arrive on the island and are eliminated one by one, each standing for a quality-control failure mode">
+                    <figcaption>Ten guests, ten ways an analysis dies on the island — the quality-control parable in one panel.</figcaption>
+                </figure>
                 <div class="library-grid">
                     <div class="library-card">
                         <div class="book-meta">Guest 1 · The poem on the wall</div>
@@ -1049,7 +1070,20 @@ print("Saved adata_qc.h5ad")</code></pre>
     <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
+    <script>
+        (function () {
+            var toc = document.getElementById('tocSidebar');
+            if (!toc) return;
+            var wide = window.matchMedia('(min-width:1101px)');
+            function sync() { toc.open = wide.matches; }
+            sync();
+            wide.addEventListener('change', sync);
+            toc.addEventListener('click', function (e) {
+                if (e.target.closest('a') && !wide.matches) toc.open = false;
+            });
+        })();
+    </script>
 </body>
 </html>

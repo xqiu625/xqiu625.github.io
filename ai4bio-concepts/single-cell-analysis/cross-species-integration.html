@@ -458,12 +458,21 @@
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-nav">
-                <li><a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
-                <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
-                <li><a href="#challenge">Challenge</a></li>
-                <li><a href="#strategies">Strategies</a></li>
-                <li><a href="#methods">Methods</a></li>
-                <li><a href="#decision">Decision Guide</a></li>
+                <li>
+                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
+                </li>
+                <li>
+                    <a href="https://xqiu625.github.io/">
+                        <i class="fas fa-home"></i> Homepage
+                    </a>
+                </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -850,6 +859,150 @@
                 </div>
             </div>
 
+            <!-- Hands-On Practice -->
+            <div class="content-section" id="hands-on">
+                <h2><i class="fas fa-wrench"></i> Hands-On Practice</h2>
+                <p>The walkthrough below builds a joint human–mouse embedding end to end: fetch one-to-one orthologs from Ensembl, rename mouse genes into the human symbol space, concatenate the two <code>AnnData</code> objects under a <code>species</code> key, integrate with scVI (or Harmony) using species as the batch covariate, and then <em>quantitatively</em> check the result with label-transfer accuracy and a batch-mixing metric. Everything is retrospective and computational — no new data generation required.</p>
+
+                <h3>Environment &amp; packages</h3>
+                <p>The ortholog route needs only the standard Scanpy stack plus <code>pybiomart</code> for the Ensembl query and <code>scib</code> for the integration metrics. SAMap (the ortholog-free alternative) has conflicting pins and an external BLAST dependency, so keep it in its own environment.</p>
+                <pre class="code-block"><code># conda / mamba recommended
+conda create -n xspecies python=3.10 -y
+conda activate xspecies
+
+pip install scanpy anndata pybiomart scib
+pip install scvi-tools        # deep generative integration (GPU strongly preferred)
+pip install harmonypy         # fast CPU alternative used via sc.external.pp
+
+# SAMap lives in a SEPARATE env - it pulls its own numpy/numba pins and needs BLAST
+# conda create -n samap -c conda-forge -c bioconda python=3.9 blast samap -y</code></pre>
+                <p><strong>Hardware.</strong> Harmony on a 100k-cell joint object runs in a few minutes on a laptop; scVI on the same object takes roughly 20–40 minutes on a single consumer GPU (hours on CPU). SAMap's cost is dominated by the one-time reciprocal all-vs-all BLAST of the two proteomes — budget several CPU-hours, but it is cached and reused across runs.</p>
+
+                <h3>Data structures &amp; formats</h3>
+                <ul>
+                    <li><strong>Per-species <code>AnnData</code></strong> — raw integer counts in <code>adata.layers["counts"]</code> (scVI requires counts, not log data) and a <em>harmonized</em> annotation column, e.g. <code>adata.obs["cell_type"]</code>, using the same label vocabulary in both species</li>
+                    <li><strong>Ortholog table</strong> — a dataframe with human symbol, mouse symbol, <code>orthology_type</code> (<code>ortholog_one2one</code> / <code>one2many</code> / <code>many2many</code>) and <code>orthology_confidence</code>; from Ensembl BioMart via <code>pybiomart</code>, or a static release-pinned CSV / NCBI HomoloGene table for reproducibility</li>
+                    <li><strong>Joint <code>AnnData</code></strong> — the concatenation of both objects over the shared ortholog <code>var_names</code>, with <code>adata.obs["species"]</code> as the batch key</li>
+                    <li><strong>Integrated latent space</strong> — <code>adata.obsm["X_scVI"]</code> or <code>adata.obsm["X_pca_harmony"]</code>; all neighbours, UMAP and metrics must be computed on this representation, never on raw PCA</li>
+                    <li><strong>SAMap inputs</strong> — per-species <code>h5ad</code> files plus the two proteome FASTAs and a <code>maps/</code> directory holding the reciprocal BLAST tables (e.g. <code>maps/hsmm/hs_to_mm.txt</code>); SAMap builds a weighted gene–gene graph rather than a one-to-one gene list</li>
+                    <li><strong>Foundation-model embeddings</strong> — UCE and scGPT emit a per-cell vector into <code>adata.obsm["X_uce"]</code> / <code>adata.obsm["X_scGPT"]</code>; UCE in particular maps genes through protein embeddings, so it produces a shared space <em>without</em> any ortholog table and can be evaluated with exactly the same metrics below</li>
+                </ul>
+
+                <h3>Minimal code walkthrough</h3>
+                <p>Query BioMart, keep only high-confidence 1:1 pairs, rewrite the mouse <code>var_names</code>, concatenate, select HVGs in a species-aware way, train scVI with <code>batch_key="species"</code>, and score the embedding.</p>
+                <pre class="code-block"><code>import scanpy as sc
+import anndata as ad
+import numpy as np
+from pybiomart import Dataset
+
+# 1. Fetch the human/mouse homology table from Ensembl BioMart.
+#    Pin an archive host (e.g. host="http://may2024.archive.ensembl.org") so the
+#    mapping is reproducible - the "current" release changes under you.
+hs = Dataset(name="hsapiens_gene_ensembl", host="http://www.ensembl.org")
+orth = hs.query(attributes=[
+    "external_gene_name",                      # human symbol
+    "mmusculus_homolog_associated_gene_name",  # mouse symbol
+    "mmusculus_homolog_orthology_type",        # one2one / one2many / many2many
+    "mmusculus_homolog_orthology_confidence",  # 1 = high confidence
+])
+orth.columns = ["human", "mouse", "otype", "conf"]
+
+# 2. Keep high-confidence 1:1 pairs only, then drop residual duplicates on BOTH
+#    sides so the rename stays a genuine bijection.
+o2o = orth[(orth["otype"] == "ortholog_one2one") &amp; (orth["conf"] == 1)].dropna()
+o2o = o2o.drop_duplicates("human").drop_duplicates("mouse")
+mouse2human = dict(zip(o2o["mouse"], o2o["human"]))
+print(f"1:1 orthologs available: {len(mouse2human)}")
+
+# 3. Load both datasets and rename mouse genes into human symbol space.
+#    NEVER do mouse_symbol.upper(): Cd8a -> CD8A happens to work, but Gzmb/GZMB
+#    style luck breaks for renamed or expanded families and silently drops genes.
+h = sc.read_h5ad("human_spleen.h5ad")   # raw counts in .X
+m = sc.read_h5ad("mouse_spleen.h5ad")
+for a in (h, m):
+    a.var_names_make_unique()
+
+m = m[:, m.var_names.isin(mouse2human)].copy()
+m.var["human_symbol"] = [mouse2human[g] for g in m.var_names]
+m.var_names = m.var["human_symbol"].astype(str).values
+m.var_names_make_unique()
+
+# 4. Restrict to the shared ortholog space and concatenate under a species key.
+shared = h.var_names.intersection(m.var_names)
+print(f"shared genes: {len(shared)}  "
+      f"({len(shared) / h.n_vars:.1%} of the human panel retained)")
+
+adata = ad.concat({"human": h[:, shared], "mouse": m[:, shared]},
+                  label="species", index_unique="-")
+adata.obs["species"] = adata.obs["species"].astype("category")
+adata.layers["counts"] = adata.X.copy()          # keep integers for scVI
+
+# 5. Species-aware HVG selection: batch_key stops genes that are variable purely
+#    because of one species' annotation/chemistry from dominating the feature set.
+sc.pp.highly_variable_genes(adata, n_top_genes=2000, flavor="seurat_v3",
+                            layer="counts", batch_key="species", subset=True)
+sc.pp.normalize_total(adata, target_sum=1e4)
+sc.pp.log1p(adata)
+
+# 6a. scVI with SPECIES as the batch covariate (nonlinear, handles count noise).
+import scvi
+scvi.model.SCVI.setup_anndata(adata, layer="counts", batch_key="species")
+model = scvi.model.SCVI(adata, n_layers=2, n_latent=30, gene_likelihood="nb")
+model.train(max_epochs=200, early_stopping=True)
+adata.obsm["X_int"] = model.get_latent_representation()
+
+# 6b. Cheaper CPU alternative - PCA + Harmony on the same batch key:
+# sc.pp.scale(adata, max_value=10); sc.tl.pca(adata, n_comps=50)
+# sc.external.pp.harmony_integrate(adata, key="species",
+#                                  adjusted_basis="X_int")
+
+sc.pp.neighbors(adata, use_rep="X_int")
+sc.tl.umap(adata)
+
+# 7. EVALUATION 1 - label transfer: train on human cells, predict mouse cells.
+#    Only meaningful if both annotations use the SAME label vocabulary.
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, balanced_accuracy_score
+
+Z = adata.obsm["X_int"]
+is_h = (adata.obs["species"] == "human").values
+knn = KNeighborsClassifier(n_neighbors=15, weights="distance")
+knn.fit(Z[is_h], adata.obs.loc[is_h, "cell_type"])
+pred = knn.predict(Z[~is_h])
+truth = adata.obs.loc[~is_h, "cell_type"]
+print("label-transfer accuracy :", round(accuracy_score(truth, pred), 3))
+print("balanced accuracy       :", round(balanced_accuracy_score(truth, pred), 3))
+
+# 8. EVALUATION 2 - mixing vs. biology. Report BOTH: iLISI rewards species
+#    mixing, cLISI penalises cell types smeared together by over-correction.
+import scib
+ilisi = scib.me.ilisi_graph(adata, batch_key="species", type_="embed",
+                            use_rep="X_int")
+clisi = scib.me.clisi_graph(adata, label_key="cell_type", type_="embed",
+                            use_rep="X_int")
+print(f"iLISI (batch mixing, higher = better): {ilisi:.3f}")
+print(f"cLISI (bio conservation, higher = better): {clisi:.3f}")
+# scib.me.kBET(adata, batch_key="species", label_key="cell_type",
+#              type_="embed", embed="X_int")   # per-label acceptance rate
+
+# 9. Sanity check on conserved markers BEFORE believing any of the above.
+sc.pl.umap(adata, color=["species", "cell_type", "CD3E", "MS4A1", "LYZ"],
+           ncols=3)
+adata.write_h5ad("human_mouse_integrated.h5ad")</code></pre>
+                <p>If step 4 reports that only a small fraction of the panel survives — a common outcome for immune or secreted-protein compartments, and the norm for anything more distant than human–mouse — the ortholog route is throwing away the signal you care about. That is the point to switch to <strong>SAMap</strong>, which never asks for a gene-name mapping: it builds a weighted gene–gene graph from reciprocal BLAST sequence similarity, keeps many-to-many relationships (paralog families included), and iteratively refines gene weights against the emerging cell-type mapping. Its outputs — an alignment score per cell-type pair from <code>sm.run()</code> plus a joint manifold — can be scored with the same label-transfer and LISI metrics used above. Protein-language-model methods (SATURN) and cross-species foundation models (UCE, scGPT) occupy the same niche from the embedding side.</p>
+
+                <h3>Common pitfalls &amp; tips</h3>
+                <ul>
+                    <li><strong>1:1 filtering silently deletes the interesting biology.</strong> Restricting to <code>ortholog_one2one</code> discards exactly the paralog-expanded families — immune receptors (human KIR vs. mouse Ly49), MHC/H-2, olfactory receptors, granzymes, interferons — that diverged because they were under selection. Always print how many genes survived, and check whether your marker panel is among the casualties before trusting the result.</li>
+                    <li><strong>Uppercasing mouse symbols is not ortholog mapping.</strong> <code>Cd8a.upper()</code> happens to give <code>CD8A</code>, which makes the shortcut look like it works, then it fails invisibly for every gene where the two nomenclatures diverged and can even create false matches between unrelated genes. Use an Ensembl/HomoloGene table, pin the release, and log the genes that failed to map.</li>
+                    <li><strong>The species effect is often larger than the biological effect.</strong> Correcting hard enough to make the UMAP look mixed will happily erase genuine evolutionary divergence — a species-restricted subtype gets folded into its nearest neighbour and disappears. Run the pipeline with and without correction, and confirm that populations present before integration are still resolvable after.</li>
+                    <li><strong>Validate with known conserved markers, not with the UMAP.</strong> Check that <code>CD3E</code>, <code>MS4A1</code>, <code>LYZ</code>, <code>PECAM1</code> and similar canonical markers light up the <em>same</em> joint cluster in both species. A conserved marker landing in two different clusters means the alignment is wrong regardless of how good the mixing metric looks.</li>
+                    <li><strong>Co-embedding is not homology.</strong> Two clusters sharing a region of latent space means their ortholog-restricted expression profiles are similar under your model — nothing more. Calling them the same cell type requires independent evidence: shared TF programs, developmental origin, chromatin accessibility, or reciprocal-best-match consistency across methods.</li>
+                    <li><strong>Report mixing and conservation together.</strong> A single batch metric (iLISI, kBET) can be maximised by destroying biology. Pair it with a bio-conservation metric (cLISI, isolated-label ASW, NMI/ARI against the pre-integration labels), or use the composite scIB score, and state both numbers.</li>
+                    <li><strong>Annotation completeness differs between species.</strong> Mouse lncRNA and pseudogene annotation is less complete than human, so gene-count and detection differences partly reflect the GTF rather than biology. Select HVGs with <code>batch_key</code> set and avoid interpreting cross-species differences in total genes detected as a biological finding.</li>
+                </ul>
+            </div>
+
             <!-- CTA Section -->
             <div class="cta-section">
                 <h3>📚 Continue Learning</h3>
@@ -867,7 +1020,7 @@
     <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
 </body>
 </html>

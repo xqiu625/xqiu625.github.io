@@ -445,6 +445,11 @@
                         <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -1199,6 +1204,176 @@
                 </div>
             </section>
 
+            <!-- Hands-On Practice -->
+            <section class="content-section" id="hands-on">
+                <h2>🛠️ Hands-On Practice</h2>
+                <p>The walkthrough below takes a QC'd tumour <code>AnnData</code> object all the way to a per-cell drug-sensitivity readout, along the two routes the field actually uses. <strong>Path A</strong> is training-free: score every cell against a curated drug signature collection (the beyondcell SSc/PSc idea, run here with <code>decoupler</code> in Python). <strong>Path B</strong> is the bulk-to-single-cell transfer route made popular by scDEAL and SCAD: train a sensitivity model on GDSC/CCLE cell-line expression with measured IC<sub>50</sub> labels, then move it onto unlabelled single cells with an explicit domain-adaptation term. Everything is computational and retrospective — no assay is run, and every conclusion is a hypothesis to be checked against existing data.</p>
+
+                <h3>Environment &amp; packages</h3>
+                <p>The Python side (<code>scanpy</code> + <code>decoupler</code> + <code>torch</code>) covers signature scoring and the transfer model. beyondcell itself is an R/Seurat package, so it is installed separately if you want its native SSc/PSc collections and BCS ranking plots; the signature tables it ships can also be exported and consumed from Python.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n scdrug python=3.10 -y
+conda activate scdrug
+
+pip install scanpy anndata decoupler
+pip install torch --index-url https://download.pytorch.org/whl/cpu   # or a CUDA wheel
+
+# optional: beyondcell (R/Seurat) for native SSc + PSc signature collections
+# R: install.packages(c("Seurat", "remotes"))
+# R: remotes::install_github("cnio-bu/beyondcell")</code></pre>
+                <p><strong>Hardware.</strong> Signature scoring on ~50k cells against a few thousand drug signatures runs in minutes on a laptop (8–16 GB RAM). The transfer model in Path B is small — a two-layer encoder over a few thousand shared genes — and trains on CPU in under a minute; a GPU only matters if you scale to hundreds of drugs or use a large autoencoder pretraining stage as scDEAL does.</p>
+
+                <h3>Data structures &amp; formats</h3>
+                <ul>
+                    <li><strong><code>AnnData</code> (target domain)</strong> — the single-cell object: <code>adata.X</code> normalised/log1p expression, <code>adata.obs</code> per-cell metadata, <code>adata.obsm</code> for the cells × drugs score matrices produced below. No drug labels exist here — that is the whole problem.</li>
+                    <li><strong>Bulk expression matrix (source domain)</strong> — GDSC or CCLE cell lines × genes, typically log<sub>2</sub> TPM or RMA-normalised microarray. A few hundred to ~1,000 rows only, which is why overfitting is a real risk.</li>
+                    <li><strong>Drug response table</strong> — one row per (cell line, drug) pair with <code>LN_IC50</code> and/or <code>AUC</code>. Binarising at the per-drug median gives the sensitive/resistant labels used for classification; keeping ln(IC<sub>50</sub>) continuous turns it into regression.</li>
+                    <li><strong>Drug signature collection</strong> — long-format table of <code>drug, gene, weight</code>. beyondcell's <em>SSc</em> signatures are built from genes that separate sensitive from resistant cell lines; its <em>PSc</em> signatures are the transcriptional changes caused by the drug itself (LINCS L1000 / CMap). <code>decoupler</code> consumes exactly this long format as its <code>net</code>.</li>
+                    <li><strong>Score matrix (BCS-equivalent)</strong> — cells × drugs enrichment scores, stored in <code>adata.obsm["mlm_estimate"]</code>; ranking cells within a drug, or drugs within a cell, is the usual downstream move.</li>
+                    <li><strong>Model artefacts</strong> — the shared gene list, the per-domain scaling parameters, and the encoder weights must be saved together. Re-applying a model without the exact gene order and scaler it was trained with silently produces garbage.</li>
+                </ul>
+
+                <h3>Minimal code walkthrough</h3>
+                <p>Path A scores cells against a signature collection with no training at all. Path B trains on GDSC bulk with a held-out cell-line split, then transfers to single cells while an MMD penalty pulls the two domains' latent distributions together — the step that makes bulk-trained weights usable on dropout-heavy, shallow single-cell profiles.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import numpy as np
+import pandas as pd
+import decoupler as dc
+import torch
+import torch.nn as nn
+
+# =====================================================================
+# PATH A - signature scoring (beyondcell-style): no training required
+# =====================================================================
+
+# 1. Load a QC'd tumour object and normalise. Signature scoring expects
+#    log-normalised values, NOT raw counts.
+adata = sc.read_h5ad("tumor_qc.h5ad")
+sc.pp.normalize_total(adata, target_sum=1e4)
+sc.pp.log1p(adata)
+
+# 2. Drug signature collection as a long table: drug -&gt; gene -&gt; weight.
+#    SSc = genes separating sensitive from resistant cell lines.
+#    PSc = genes changed BY the drug (LINCS/CMap perturbation profiles).
+#    Restrict to genes actually measured in this dataset, or the scores
+#    are diluted by signature members that can never be detected.
+sig = pd.read_csv("lincs_drug_signatures.tsv", sep="\t")   # drug, gene, weight
+sig = sig[sig["gene"].isin(adata.var_names)]
+sig = sig.groupby("drug").filter(lambda g: len(g) &gt;= 15)   # drop thin signatures
+
+# 3. Score every cell against every drug signature.
+dc.run_mlm(mat=adata, net=sig, source="drug", target="gene",
+           weight="weight", use_raw=False, verbose=True)
+bcs = adata.obsm["mlm_estimate"]            # cells x drugs, the BCS analogue
+adata.obs["bortezomib_sig"] = bcs["bortezomib"].values
+
+# 4. Immediately ask whether a "resistant-looking" group is real biology.
+#    Overlay depth and cell-cycle phase on the same embedding: low-depth
+#    or cycling cells routinely masquerade as a resistant subpopulation.
+sc.pl.umap(adata, color=["bortezomib_sig", "total_counts", "phase", "leiden"])
+
+# =====================================================================
+# PATH B - bulk -&gt; single-cell transfer (the scDEAL / SCAD idea)
+# =====================================================================
+
+# 5. SOURCE domain: GDSC bulk cell lines with measured drug response.
+#    IC50 is a POPULATION summary - one number per cell line, per drug.
+#    There is no per-cell equivalent anywhere in this pipeline.
+expr = pd.read_csv("GDSC_expression.tsv", sep="\t", index_col=0)   # lines x genes
+resp = pd.read_csv("GDSC_ic50.tsv", sep="\t", index_col=0)["Bortezomib"]
+
+lines = expr.index.intersection(resp.dropna().index)
+genes = expr.columns.intersection(adata.var_names)                 # shared features
+Xb = expr.loc[lines, genes].to_numpy("float32")
+yb = (resp.loc[lines] &lt; resp.loc[lines].median()).to_numpy("float32")  # 1 = sensitive
+
+# 6. TARGET domain: the single cells, same gene order, zero labels.
+Xs = adata[:, genes].X
+Xs = np.asarray(Xs.todense() if hasattr(Xs, "todense") else Xs, dtype="float32")
+
+# 7. WHY DOMAIN ADAPTATION IS NOT OPTIONAL. Bulk RNA-seq of a cell line and
+#    a single-cell profile of a tumour cell do not share a distribution:
+#    scRNA has heavy dropout (most genes read as exact zeros), 10-100x lower
+#    effective depth, and a compressed dynamic range. A model fit on bulk and
+#    applied naively is evaluated far off its training manifold. Per-domain
+#    standardisation is the MINIMUM, and is not sufficient on its own.
+Xb = (Xb - Xb.mean(0)) / (Xb.std(0) + 1e-6)
+Xs = (Xs - Xs.mean(0)) / (Xs.std(0) + 1e-6)
+
+# 8. Held-out split ON THE SOURCE domain, so the bulk model's own skill is
+#    measurable before anything is transferred. Split by cell line - never
+#    let the same line appear in both halves.
+rng = np.random.default_rng(0)
+perm = rng.permutation(len(Xb))
+cut = int(0.8 * len(Xb))
+tr, te = perm[:cut], perm[cut:]
+
+# 9. Shared encoder + sensitivity head. The adaptation term forces the encoder
+#    to produce features whose bulk and single-cell distributions overlap.
+#    scDEAL uses a DaNN/MMD penalty; SCAD uses an adversarial discriminator.
+#    A linear-kernel MMD is shown here for readability.
+class Net(nn.Module):
+    def __init__(self, p):
+        super().__init__()
+        self.enc = nn.Sequential(
+            nn.Linear(p, 512), nn.ReLU(), nn.Dropout(0.3),
+            nn.Linear(512, 128), nn.ReLU(),
+        )
+        self.head = nn.Linear(128, 1)
+
+    def forward(self, x):
+        z = self.enc(x)
+        return z, self.head(z).squeeze(-1)
+
+def mmd(a, b):                      # linear-kernel MMD between batch means
+    return ((a.mean(0) - b.mean(0)) ** 2).sum()
+
+net = Net(len(genes))
+opt = torch.optim.Adam(net.parameters(), lr=1e-3)
+bce = nn.BCEWithLogitsLoss()
+Xb_t, yb_t, Xs_t = torch.tensor(Xb), torch.tensor(yb), torch.tensor(Xs)
+
+for epoch in range(300):
+    net.train()
+    bi = torch.randint(0, len(tr), (64,))        # labelled bulk lines
+    si = torch.randint(0, len(Xs_t), (256,))     # UNLABELLED single cells
+    zb, logit = net(Xb_t[tr][bi])
+    zs, _     = net(Xs_t[si])
+    loss = bce(logit, yb_t[tr][bi]) + 1.0 * mmd(zb, zs)   # lambda = 1.0
+    opt.zero_grad()
+    loss.backward()
+    opt.step()
+
+# 10. Sanity-check the SOURCE fit first; only then transfer to the cells.
+net.eval()
+with torch.no_grad():
+    _, lo = net(Xb_t[te])
+    acc_bulk = ((torch.sigmoid(lo) &gt; 0.5).float() == yb_t[te]).float().mean()
+    _, ls = net(Xs_t)
+    adata.obs["pred_sensitivity"] = torch.sigmoid(ls).numpy()
+print(f"held-out cell-line accuracy: {acc_bulk:.3f}")
+
+# 11. Validation is necessarily INDIRECT - no per-cell ground truth exists.
+#     (a) do the two paths agree? (b) are predicted-resistant cells enriched
+#     for plausible resistance programmes? (c) does a known-sensitive vs
+#     known-resistant cell line pair, pushed through the same model, come
+#     out in the expected order?
+print(np.corrcoef(adata.obs["pred_sensitivity"], adata.obs["bortezomib_sig"])[0, 1])
+sc.tl.rank_genes_groups(adata, groupby="leiden", method="wilcoxon")
+sc.pl.umap(adata, color=["pred_sensitivity", "bortezomib_sig", "leiden"])</code></pre>
+
+                <h3>Common pitfalls &amp; tips</h3>
+                <ul>
+                    <li><strong>IC<sub>50</sub> has no single-cell ground truth.</strong> Every label in GDSC/CCLE is a population-level summary of a bulk viability curve; nothing in a scRNA-seq experiment measures the sensitivity of an individual cell. Per-cell predictions can therefore only be validated <em>indirectly</em> — agreement between independent methods, enrichment of known resistance programmes, or consistency with a downstream clinical/response annotation — never against a per-cell IC<sub>50</sub>.</li>
+                    <li><strong>Cell lines do not contain a tumour microenvironment.</strong> A model trained on GDSC has never seen stroma, immune infiltrate, hypoxia gradients, or drug-penetration limits. Resistance that is microenvironment-mediated is invisible to it by construction, so restrict scoring to the malignant compartment and do not read the scores of T cells or fibroblasts as drug predictions.</li>
+                    <li><strong>Batch/domain shift is the dominant error source.</strong> GDSC bulk and patient scRNA differ in platform, depth, dropout, and dynamic range at once. Always check that the encoder's latent bulk and single-cell clouds actually overlap (UMAP the latent space, colour by domain); if they sit in separate blobs, the adaptation weight is too low and the transferred predictions are extrapolation.</li>
+                    <li><strong>Signature collections carry their own context.</strong> SSc/PSc and LINCS signatures were derived in specific cell lines at specific doses and time points. A signature built in a haematological line at 10 µM says little about an epithelial tumour at physiological exposure — check the provenance of every collection before interpreting its scores as drug response.</li>
+                    <li><strong>A "resistant" cluster is often a technical cluster.</strong> Low-depth cells score flat on every signature, and cycling cells score high on anything with a proliferation component. Before believing a resistant subpopulation, colour it by <code>total_counts</code>, <code>n_genes_by_counts</code>, mitochondrial fraction, and cell-cycle phase; regress or stratify if it tracks any of them.</li>
+                    <li><strong>Always run a known-sensitive / known-resistant control pair.</strong> Push two cell lines with well-documented, opposite response to your drug through the identical pipeline. If the model cannot separate that pair, its single-cell output is not interpretable — this is the cheapest and most informative sanity check available, and it catches gene-order and scaler mismatches immediately.</li>
+                    <li><strong>Do not compare raw scores across drugs.</strong> Signature scores and model logits are on arbitrary, per-drug scales driven by signature size and label balance. Rank cells within a drug, or z-score each drug across cells, before making any "drug X beats drug Y" statement.</li>
+                </ul>
+            </section>
+
         </div>
     </main>
 
@@ -1206,7 +1381,7 @@
     <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
 </body>
 </html>

@@ -614,13 +614,53 @@
             }
         }
 
+        /* Contents: plain sidebar on desktop, collapsible sticky menu on narrow screens */
+        .toc-sidebar > summary { list-style: none; }
+        .toc-sidebar > summary::-webkit-details-marker { display: none; }
+
+        @media (min-width: 1100px) {
+            .toc-sidebar > summary { cursor: default; pointer-events: none; }
+        }
+
         @media (max-width: 1099px) {
             .main-content-wrapper {
                 flex-direction: column;
             }
-            .toc-sidebar {
-                display: none; /* Hide sidebar on smaller screens */
+            details.toc-sidebar {
+                display: block;
+                position: sticky;
+                top: 46px;
+                z-index: 900;
+                width: 100%;
+                margin: 0 0 20px;
+                padding: 10px 16px;
             }
+            .toc-sidebar[open] {
+                max-height: 70vh;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .toc-sidebar > summary {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                cursor: pointer;
+                padding: 6px 0;
+            }
+            .toc-sidebar > summary h3 { margin-bottom: 0; }
+            .toc-sidebar > summary::after {
+                content: '\25BE';
+                color: var(--secondary-color);
+                transition: transform 0.2s ease;
+            }
+            .toc-sidebar[open] > summary::after { transform: rotate(180deg); }
+            .toc-sidebar[open] > ul { margin-top: 12px; }
+            .toc-sidebar li { margin-bottom: 0; }
+            .toc-sidebar a { padding: 11px 2px; }
+            /* clear the sticky navbar + collapsed Contents bar when jumping to a section */
+            .overview-section, .category-section, .content-section { scroll-margin-top: 108px; }
+            .tool-card { scroll-margin-top: 118px; }
         }
 
         @media (max-width: 768px) {
@@ -924,6 +964,8 @@
             border: 1px solid var(--case-line, rgba(0,90,156,.18));
         }
         .validate-panel .content-figure { margin: 12px 0 18px; }
+        /* square comic panels: cap the width so they do not fill the viewport */
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
         .tool-card { scroll-margin-top: 90px; }
         .family-tag {
             display: inline-block; padding: 2px 10px; border-radius: 999px;
@@ -1003,6 +1045,11 @@
                         <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -1076,13 +1123,17 @@
                     <p class="echo"><strong>The annotated matrix.</strong> The goal is not just labels, but labels with provenance: type, confidence, and the evidence chain that earned them.</p>
                 </div>
             </div>
+            <figure class="content-figure comic-figure">
+                <img src="figures/body-in-the-library-annotation-comic.webp" width="1254" height="1254" loading="lazy" decoding="async" alt="Four-panel comic retelling The Body in the Library as a cell-annotation parable: an unidentified cell is found, its marker genes are read as telltale details, it is matched against a reference atlas of known cells, and it is finally given a name with its confidence recorded">
+                <figcaption class="case-file-caption">Four scenes, one identification: the anonymous cell, the telltale markers, the village parallel, and the name that finally sticks — with its evidence attached.</figcaption>
+            </figure>
             <p class="library-footnote">In St. Mary Mead, nobody is anonymous. That is the whole point of annotation: there are no anonymous cells — only cells whose evidence you have not read yet.</p>
         </section>
 
         <div class="main-content-wrapper">
             <!-- Sticky Table of Contents Sidebar (Visible on large screens) -->
-            <nav class="toc-sidebar">
-                <h3><i class="fas fa-list-ul"></i> Contents</h3>
+            <details class="toc-sidebar" id="tocSidebar" open>
+                <summary><h3><i class="fas fa-list-ul"></i> Contents</h3></summary>
                 <ul>
                     <li><a href="#overview"><i class="fas fa-chevron-right"></i> Overview & Workflow</a></li>
                     <li><a href="#body-in-the-library"><i class="fas fa-chevron-right"></i> The Body in the Library</a></li>
@@ -1093,8 +1144,9 @@
                     <li><a href="#foundation-models"><i class="fas fa-chevron-right"></i> Foundation Models</a></li>
                     <li><a href="#specialized"><i class="fas fa-chevron-right"></i> Specialized Methods</a></li>
                     <li><a href="#decision-guide"><i class="fas fa-chevron-right"></i> <strong>Selection Guide</strong></a></li>
+                    <li><a href="#hands-on"><i class="fas fa-chevron-right"></i> Hands-On Practice</a></li>
                 </ul>
-            </nav>
+            </details>
 
             <main class="content-area">
                 <!-- Overview -->
@@ -2384,14 +2436,186 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Hands-On Practice -->
+                <section class="overview-section" id="hands-on">
+                    <h2><i class="fas fa-wrench"></i> 🛠️ Hands-On Practice</h2>
+                    <p>The walkthrough below takes a QC'd <code>AnnData</code> object and gives every cell a name, end to end: normalize to the exact scale CellTypist expects, run a pretrained immune model with majority voting over Leiden clusters, keep the per-cell probability as a confidence score, cross-examine the labels against a hand-picked marker panel, and leave low-evidence cells honestly marked <code>Unknown</code>. Everything is computational and retrospective — the only evidence used is the count matrix you already have.</p>
+
+                    <h3>Environment &amp; packages</h3>
+                    <p>CellTypist is a light logistic-regression classifier and installs cleanly alongside Scanpy. <code>leidenalg</code> supplies the over-clustering used for majority voting; <code>decoupler</code> is optional but convenient for signature-based marker scoring. Keep an R environment on hand only if you want the SingleR cross-check.</p>
+                    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n scannot python=3.10 -y
+conda activate scannot
+
+pip install scanpy celltypist leidenalg
+pip install decoupler            # optional: signature / marker scoring
+
+# optional R cross-check with SingleR
+# R: BiocManager::install(c("SingleR", "celldex", "SingleCellExperiment"))</code></pre>
+                    <p><strong>Hardware.</strong> CellTypist inference is CPU-only and fast: a 50k-cell dataset annotates in under a minute on a laptop, and 500k cells fit comfortably on a 32–64 GB compute node. Only the foundation-model route (scGPT, UCE, scFoundation fine-tuning) needs a GPU; reference mapping with Azimuth or scArches sits in between.</p>
+
+                    <h3>Data structures &amp; formats</h3>
+                    <ul>
+                        <li><strong><code>AnnData</code> (input)</strong> — must carry <em>log1p-normalized</em> expression in <code>adata.X</code>; stash the raw integers in <code>adata.layers["counts"]</code> before normalizing so differential expression and doublet tools can still reach them</li>
+                        <li><strong>CellTypist model (<code>.pkl</code>)</strong> — a pickled logistic-regression classifier plus its label set; downloaded once into <code>~/.celltypist/data/models/</code>. <code>Immune_All_Low.pkl</code> covers fine-grained immune subtypes, <code>Immune_All_High.pkl</code> the coarse ones</li>
+                        <li><strong><code>AnnotationResult</code></strong> — returned by <code>celltypist.annotate()</code>, with <code>.predicted_labels</code> (a DataFrame holding <code>predicted_labels</code>, <code>over_clustering</code>, <code>majority_voting</code>), <code>.probability_matrix</code> (cells × labels), and <code>.decision_matrix</code> (raw decision scores)</li>
+                        <li><strong>Per-cell obs columns</strong> — after <code>result.to_adata()</code>: <code>adata.obs["predicted_labels"]</code>, <code>adata.obs["majority_voting"]</code>, <code>adata.obs["conf_score"]</code></li>
+                        <li><strong>Marker dictionary</strong> — a plain <code>dict</code> of <code>{"cell type": [genes]}</code> fed to <code>sc.pl.dotplot()</code>; the orthogonal evidence you judge the classifier against</li>
+                        <li><strong>h5ad</strong> — write the annotated object with <code>adata.write_h5ad()</code>; for the R/SingleR route export counts + <code>obs</code> to a <code>SingleCellExperiment</code> or via <code>zellkonverter::readH5AD()</code></li>
+                    </ul>
+
+                    <h3>Minimal code walkthrough</h3>
+                    <p>Load a QC-filtered object, normalize to exactly 10,000 counts per cell and log1p-transform, build a Leiden over-clustering, run CellTypist with <code>majority_voting=True</code>, record per-cell confidence, demote low-confidence cells to <code>Unknown</code>, and cross-check the result with a marker dot plot.</p>
+                    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import numpy as np
+import celltypist
+from celltypist import models
+
+# 1. Load the QC'd object (post filtering / doublet removal, raw counts in X)
+adata = sc.read_h5ad("adata_qc.h5ad")
+adata.layers["counts"] = adata.X.copy()      # keep integers for later DE
+
+# 2. NORMALIZATION CONTRACT — the classic CellTypist mistake.
+#    CellTypist models were trained on expression normalized to exactly
+#    10,000 counts per cell and then log1p-transformed. target_sum=1e4 is
+#    NOT optional: use 1e6 (CPM), SCTransform residuals, or scaled/z-scored
+#    values and the probabilities are silently wrong, not an error.
+sc.pp.normalize_total(adata, target_sum=1e4)
+sc.pp.log1p(adata)
+adata.raw = adata                            # log-normalized snapshot
+
+# 3. Over-clustering for majority voting. CellTypist can compute its own,
+#    but reusing your analysis Leiden keeps labels consistent with the UMAP
+#    you will actually show. Slightly over-cluster (higher resolution).
+sc.pp.highly_variable_genes(adata, n_top_genes=2000, batch_key=None)
+sc.pp.pca(adata, n_comps=50, mask_var="highly_variable")
+sc.pp.neighbors(adata, n_neighbors=15)
+sc.tl.leiden(adata, resolution=1.5, key_added="leiden", flavor="igraph",
+             n_iterations=2, directed=False)
+sc.tl.umap(adata)
+
+# 4. Download and load a pretrained model. Immune_All_Low = fine-grained
+#    immune subtypes; Immune_All_High = coarse lineages. Pick the resolution
+#    your tissue actually supports.
+models.download_models(model=["Immune_All_Low.pkl"])
+model = models.Model.load(model="Immune_All_Low.pkl")
+print(model.cell_types[:10], "...", len(model.cell_types), "labels")
+
+# 5. Annotate. majority_voting=True refines per-cell calls by taking the
+#    dominant label within each over-clustering group -- it removes salt-and-
+#    pepper noise but can erase genuinely rare populations (see pitfalls).
+predictions = celltypist.annotate(
+    adata,
+    model=model,
+    majority_voting=True,
+    over_clustering="leiden",
+)
+
+# 6. Per-cell confidence = max class probability. Keep it visible; it is the
+#    only honest signal that a cell was a coin flip between two labels.
+prob = predictions.probability_matrix
+adata.obs["predicted_labels"]  = predictions.predicted_labels["predicted_labels"].values
+adata.obs["majority_voting"]   = predictions.predicted_labels["majority_voting"].values
+adata.obs["conf_score"]        = prob.max(axis=1).values
+adata.obs["runner_up"]         = prob.apply(
+    lambda r: r.sort_values(ascending=False).index[1], axis=1
+).values
+
+# 7. Do NOT force a name on weak evidence. Demote low-probability cells to
+#    "Unknown" rather than letting the argmax invent an identity.
+LOW_CONF = 0.5
+adata.obs["cell_type"] = adata.obs["majority_voting"].astype(str)
+adata.obs.loc[adata.obs["conf_score"] &lt; LOW_CONF, "cell_type"] = "Unknown"
+n_unknown = (adata.obs["cell_type"] == "Unknown").sum()
+print(f"Unknown (conf &lt; {LOW_CONF}): {n_unknown} / {adata.n_obs} cells")
+print(adata.obs["cell_type"].value_counts().head(20))
+
+# 8. ORTHOGONAL CROSS-EXAMINATION. A classifier label is a hypothesis; a
+#    canonical marker panel is the independent witness. Every called type
+#    should light up its own markers and stay dark elsewhere.
+markers = {
+    "T cell":        ["CD3D", "CD3E", "TRAC"],
+    "CD8 T":         ["CD8A", "CD8B", "GZMK"],
+    "CD4 T":         ["IL7R", "CCR7", "CD40LG"],
+    "NK":            ["NKG7", "GNLY", "KLRD1"],
+    "B cell":        ["MS4A1", "CD79A", "CD79B"],
+    "Plasma":        ["JCHAIN", "MZB1", "XBP1"],
+    "Monocyte":      ["LYZ", "CD14", "FCN1"],
+    "cDC":           ["FCER1A", "CD1C", "CLEC9A"],
+    "Platelet":      ["PPBP", "PF4", "ITGA2B"],
+}
+markers = {k: [g for g in v if g in adata.var_names] for k, v in markers.items()}
+sc.pl.dotplot(adata, markers, groupby="cell_type",
+              standard_scale="var", dendrogram=True)
+sc.pl.umap(adata, color=["cell_type", "conf_score"], legend_loc="on data")
+
+# 9. Quantify agreement between the two lines of evidence: score each cell
+#    for each marker panel and check the argmax against the classifier.
+for ct, genes in markers.items():
+    sc.tl.score_genes(adata, genes, score_name=f"score_{ct}")
+scores = adata.obs[[f"score_{ct}" for ct in markers]]
+adata.obs["marker_call"] = (
+    scores.idxmax(axis=1).str.replace("score_", "", regex=False)
+)
+print(sc.metrics.confusion_matrix("cell_type", "marker_call", adata.obs))
+
+# 10. Save. Store the full probability matrix so downstream reviewers can
+#     re-threshold without re-running the classifier.
+adata.obsm["celltypist_prob"] = prob.reindex(adata.obs_names).values
+adata.uns["celltypist_labels"] = list(prob.columns)
+adata.write_h5ad("adata_annotated.h5ad")
+print("Saved adata_annotated.h5ad")</code></pre>
+                    <p><strong>Fallback routes.</strong> If no CellTypist model fits your tissue, two alternatives use the same annotated object. <em>SingleR</em> (R) correlates each cell against a bulk or single-cell reference and reports a per-cell delta score, so it flags weak assignments explicitly:</p>
+                    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># R -- SingleR cross-check on the same log-normalized matrix
+library(SingleR); library(celldex); library(zellkonverter)
+
+sce &lt;- readH5AD("adata_annotated.h5ad")            # X = log-normalized
+assayNames(sce) &lt;- "logcounts"
+ref &lt;- celldex::HumanPrimaryCellAtlasData()        # or MonacoImmuneData()
+
+pred &lt;- SingleR(test = sce, ref = ref, labels = ref$label.fine,
+                de.method = "wilcox")
+table(pred$pruned.labels, useNA = "ifany")         # NA = pruned, low confidence
+plotDeltaDistribution(pred)                        # per-cell assignment margin</code></pre>
+                    <p>Or take the <em>reference-mapping</em> route — Azimuth (Seurat) or scArches/scANVI — which projects your query into a curated atlas embedding and transfers labels with a mapping score. That route handles batch effects between query and reference far better than a plain classifier, at the cost of needing a well-matched atlas.</p>
+
+                    <h3>Common pitfalls &amp; tips</h3>
+                    <ul>
+                        <li><strong>The 10,000-count normalization is a hard requirement.</strong> CellTypist expects <code>sc.pp.normalize_total(adata, target_sum=1e4)</code> followed by <code>sc.pp.log1p()</code>. Feeding CPM (<code>1e6</code>), raw counts, scaled/z-scored values, or SCTransform residuals produces confidently wrong labels with no warning — the model still returns probabilities, they are just meaningless. Check <code>np.expm1(adata.X[:5]).sum(1)</code> ≈ 10,000 before you trust anything.</li>
+                        <li><strong>Majority voting over-merges rare types.</strong> Smoothing to the dominant label inside each over-cluster cleans up noise, but a 30-cell pDC or MAIT population sitting inside a larger cluster is erased outright. Always keep the raw <code>predicted_labels</code> column beside <code>majority_voting</code>, and over-cluster (Leiden resolution 1.5–2.0) so rare types get their own group before voting.</li>
+                        <li><strong>A missing cell type gets mislabeled, not flagged.</strong> Classifiers are closed-world: if your tumor sample contains malignant epithelium and the reference only knows immune cells, those cells are assigned to the nearest immune label with a plausible-looking probability. Absence of a class is never reported as absence — inspect the confidence distribution and the markers of every cluster, especially large ones with a suspiciously uniform label.</li>
+                        <li><strong>Tissue-mismatched references are a silent failure.</strong> <code>Immune_All_Low</code> on brain tissue will call microglia something in its immune vocabulary; a gut atlas will not describe kidney. Match the reference to the tissue and the assay (10x vs Smart-seq2 differ in gene detection), and prefer the coarse model when the fine one has no vocabulary for your sample.</li>
+                        <li><strong>Batch effects break reference mapping, not just integration.</strong> Query-vs-reference differences in chemistry, donor, or dissociation protocol shift the embedding and drag labels with them. Use a method that models the batch (scArches/scANVI, Azimuth's anchor transfer, Symphony) rather than nearest-neighbor transfer on unintegrated PCA, and never integrate query and reference so aggressively that the biological signal you are trying to read is also removed.</li>
+                        <li><strong>Always validate with orthogonal markers.</strong> Treat the classifier output as a hypothesis and the canonical marker dot plot as the independent witness. A "CD8 T cell" cluster with no <code>CD3D</code> and abundant <code>LYZ</code> is a misannotation regardless of how high the probability is. Disagreement between the two is the signal worth investigating, not a nuisance.</li>
+                        <li><strong>Mark low-confidence cells "Unknown" rather than force-assigning.</strong> The argmax always returns something. Thresholding on max probability (≈0.5, calibrated by looking at the score histogram) and labeling the rest <code>Unknown</code> is honest and downstream-safe; a forced label propagates into every DE test, composition comparison, and figure that follows.</li>
+                        <li><strong>Annotate on log-normalized data, test on counts.</strong> Keep the raw integers in <code>adata.layers["counts"]</code>. Annotation needs the normalized matrix, but differential expression, pseudobulk, and doublet re-checks need counts — losing them means re-running the pipeline from the start.</li>
+                    </ul>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
             </main> <!-- End content-area -->
         </div> <!-- End main-content-wrapper -->
 
         <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
     </div>
+    <script>
+        (function () {
+            var toc = document.getElementById('tocSidebar');
+            if (!toc) return;
+            var wide = window.matchMedia('(min-width:1100px)');
+            function sync() { toc.open = wide.matches; }
+            sync();
+            wide.addEventListener('change', sync);
+            toc.addEventListener('click', function (e) {
+                if (e.target.closest('a') && !wide.matches) toc.open = false;
+            });
+        })();
+    </script>
 </body>
 </html>

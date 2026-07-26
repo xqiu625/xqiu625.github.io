@@ -595,6 +595,11 @@
                         <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -1529,13 +1534,155 @@
                 <li><strong><a href="https://github.com/altoslabs/perturbench" target="_blank">PerturBench</a>:</strong> Standardized benchmarking framework (altoslabs, 2024)</li>
             </ul>
         </section>
+
+        <!-- Hands-On Practice -->
+        <section class="content-section" id="hands-on">
+            <h2>🛠️ Hands-On Practice</h2>
+            <p>The walkthrough below runs a complete, purely computational perturbation-prediction experiment end to end: load a Perturb-seq dataset (Norman 2019 CRISPRa or Adamson 2016 CRISPRi), split it so that entire <em>perturbations</em> — not cells — are held out, train GEARS on the seen perturbations, predict post-perturbation expression for the unseen ones, and score the predictions with MSE on the top differentially expressed genes plus Pearson delta against a control-mean baseline. Everything is retrospective: no new experiments, only re-analysis of published screens.</p>
+
+            <h3>Environment &amp; packages</h3>
+            <p>GEARS pins an older PyTorch Geometric stack, so give it its own environment rather than sharing one with scGPT or scvi-tools. Install PyTorch (matching your CUDA version) first, then the PyG companion wheels, then GEARS. scGen and CPA live in the scvi-tools ecosystem and can share a second environment; pertpy provides the dataset loaders and the differential-expression utilities used for scoring.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n pertpred python=3.10 -y
+conda activate pertpred
+
+# 1. PyTorch first — pick the build that matches your driver
+pip install torch --index-url https://download.pytorch.org/whl/cu121
+
+# 2. PyTorch Geometric + companion wheels (GEARS' graph backend)
+pip install torch_geometric
+pip install torch_scatter torch_sparse \
+    -f https://data.pyg.org/whl/torch-2.1.0+cu121.html
+
+# 3. Core stack
+pip install cell-gears scanpy anndata pertpy
+
+# Separate env for the VAE/latent-arithmetic family (scvi-tools pins conflict)
+# conda create -n pertvae python=3.10 -y &amp;&amp; conda activate pertvae
+# pip install scgen cpa-tools scvi-tools scanpy</code></pre>
+            <p><strong>Hardware.</strong> Norman 2019 (~110k cells, 287 perturbations) trains on a single 16 GB GPU in roughly 1–2 hours for 20 epochs; CPU-only training is possible but an order of magnitude slower. Peak host RAM is dominated by the dense gene &times; perturbation tensors GEARS builds — budget 32–64 GB. Genome-scale Replogle K562 (&gt;2.5M cells) needs a compute node with 128 GB+ RAM and is usually subsampled before any exploratory run.</p>
+
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><strong><code>AnnData</code></strong> — <code>adata.X</code> holds normalized, log1p-transformed expression (GEARS expects log-space, not raw counts); <code>adata.obs</code> carries the perturbation label; <code>adata.var</code> must contain a <code>gene_name</code> column so perturbation identifiers can be matched to measured genes.</li>
+                <li><strong>Perturbation label convention</strong> — GEARS parses <code>adata.obs["condition"]</code> as <code>"GENE+ctrl"</code> for singles, <code>"GENEA+GENEB"</code> for doubles, and the literal string <code>"ctrl"</code> for unperturbed cells. Malformed labels are the single most common load failure.</li>
+                <li><strong>Gene co-expression / GO knowledge graph</strong> — two graphs are auto-built by <code>PertData</code>: a gene–gene co-expression graph over the measured transcriptome, and a perturbation–perturbation similarity graph derived from Gene Ontology term overlap. The GO graph is what lets GEARS place a <em>never-seen</em> perturbed gene near functionally related seen genes and thus emit a non-trivial prediction for it.</li>
+                <li><strong>Split dictionary</strong> — <code>pert_data.set2conditions</code> maps <code>train</code>/<code>val</code>/<code>test</code> to lists of condition strings. This is the object to inspect (and to save alongside results) when you want the split to be reproducible.</li>
+                <li><strong>DE gene index</strong> — <code>adata.uns["rank_genes_groups_cov_all"]</code> stores, per condition, the ranked list of differentially expressed genes versus control. All headline metrics are computed on the top 20 of these, not on the full transcriptome.</li>
+                <li><strong>Model outputs</strong> — <code>model.predict([["GENE"], ["GENEA", "GENEB"]])</code> returns a dict keyed by condition, each value a length-<em>n_genes</em> vector of predicted mean post-perturbation expression in log space.</li>
+            </ul>
+
+            <h3>Minimal code walkthrough</h3>
+            <p>Load Norman 2019 through the GEARS dataloader, create a split that holds out entire unseen perturbations, train, predict, and evaluate. The evaluation block is the part worth reading closely: it computes MSE on the top-20 DE genes, Pearson delta, and the control-mean baseline in the same loop so the three numbers are always reported together.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import numpy as np
+from scipy.stats import pearsonr
+from gears import PertData, GEARS
+
+# 1. Load a published Perturb-seq screen. "norman" = Norman et al. 2019
+#    (K562, CRISPRa, 100 singles + 131 doubles); "adamson" = Adamson et al.
+#    2016 (K562, CRISPRi, single-gene only). PertData downloads the h5ad,
+#    normalizes/log1p's it, and builds the gene co-expression graph.
+pert_data = PertData("./data")
+pert_data.load(data_name="norman")
+
+# 2. Hold out entire PERTURBATIONS, not cells. Held-out cells from a
+#    perturbation the model already trained on measure nothing but denoising.
+#    split="simulation" mimics the realistic case: some test perturbations
+#    involve genes never perturbed during training (unseen singles), and some
+#    doubles combine a seen gene with an unseen one (0/1/2-seen subgroups).
+pert_data.prepare_split(split="simulation", seed=1, train_gene_set_size=0.75)
+pert_data.get_dataloader(batch_size=32, test_batch_size=128)
+
+print({k: len(v) for k, v in pert_data.set2conditions.items()})
+
+# 3. Train. GEARS embeds each perturbed gene via the GO-derived perturbation
+#    graph, so an unseen gene inherits signal from its functional neighbours
+#    instead of falling back to the training mean.
+model = GEARS(pert_data, device="cuda")
+model.model_initialize(hidden_size=64)
+model.train(epochs=20, lr=1e-3)
+model.save_model("gears_norman")
+
+# 4. Predict post-perturbation expression for held-out conditions.
+#    Singles are single-element lists; doubles are two-element lists.
+test_conds = pert_data.set2conditions["test"]
+preds = model.predict([c.replace("+ctrl", "").split("+")
+                       for c in test_conds if c != "ctrl"])
+
+# 5. Reference quantities from the raw AnnData
+adata = pert_data.adata
+ctrl_mean = np.asarray(
+    adata[adata.obs["condition"] == "ctrl"].X.mean(axis=0)
+).ravel()
+gene_names = adata.var["gene_name"].values
+de_map = adata.uns["rank_genes_groups_cov_all"]   # condition -&gt; ranked DE genes
+
+# 6. Evaluate. Three numbers, always together:
+#      (a) MSE on the top-20 DE genes  — all genes dilutes the signal to noise
+#      (b) Pearson delta               — cor(pred - ctrl, true - ctrl)
+#      (c) the control-mean baseline   — "predict no change at all"
+rows = []
+for cond in test_conds:
+    if cond == "ctrl" or cond not in preds:
+        continue
+    true_mean = np.asarray(
+        adata[adata.obs["condition"] == cond].X.mean(axis=0)
+    ).ravel()
+    pred_mean = preds[cond]
+
+    de20 = de_map[cond][:20]
+    idx = np.where(np.isin(gene_names, de20))[0]
+
+    mse_de   = np.mean((pred_mean[idx] - true_mean[idx]) ** 2)
+    mse_base = np.mean((ctrl_mean[idx]  - true_mean[idx]) ** 2)
+
+    # Pearson DELTA, not raw Pearson. Raw cor(pred, true) over all genes runs
+    # ~0.98 for essentially any model, because most genes do not respond to
+    # the perturbation and both vectors are dominated by the shared baseline
+    # expression profile. Subtracting the control mean removes that shared
+    # component and scores only what the model actually had to get right:
+    # the direction and magnitude of the CHANGE.
+    r_delta = pearsonr(pred_mean[idx] - ctrl_mean[idx],
+                       true_mean[idx] - ctrl_mean[idx])[0]
+    r_raw   = pearsonr(pred_mean[idx], true_mean[idx])[0]
+
+    rows.append((cond, mse_de, mse_base, r_delta, r_raw))
+
+mse_de, mse_base, r_delta, r_raw = (np.nanmean([r[i] for r in rows])
+                                    for i in (1, 2, 3, 4))
+print(f"MSE (top-20 DE)          : {mse_de:.4f}")
+print(f"MSE control-mean baseline: {mse_base:.4f}   &lt;- must beat this")
+print(f"Pearson delta            : {r_delta:.3f}")
+print(f"Pearson raw (inflated)   : {r_raw:.3f}")
+
+# 7. Break the score out by generalization difficulty. A model can look strong
+#    overall while being useless on the only split that matters.
+subgroups = pert_data.subgroup["test_subgroup"]   # e.g. unseen_single, combo_seen0/1/2
+for grp, conds in subgroups.items():
+    sub = [r for r in rows if r[0] in set(conds)]
+    if sub:
+        print(f"{grp:15s} n={len(sub):3d}  "
+              f"Pearson delta={np.nanmean([r[3] for r in sub]):.3f}")</code></pre>
+
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>Score DE genes, not all genes.</strong> Averaging MSE over ~19,000 measured genes buries the few dozen that actually respond; the metric then mostly rewards reproducing the baseline transcriptome. Restrict headline MSE and correlation to the top 20–100 DE genes per condition, and state the gene set explicitly — results are not comparable across papers that use different ones.</li>
+                <li><strong>Report the control-mean baseline or the number means nothing.</strong> "Predict the unperturbed mean for every condition" is a deceptively strong baseline: on Replogle only about 41% of perturbations produce a measurable effect, so no-change is exactly right most of the time. Several published models fail to beat it on unseen perturbations. Always print baseline MSE next to model MSE.</li>
+                <li><strong>Pearson delta, never raw Pearson.</strong> Raw cor(predicted, observed) sits near 0.98 for almost any model because both vectors are dominated by shared baseline expression. Only cor(pred &minus; ctrl, true &minus; ctrl) scores the change itself, and it typically drops to 0.3–0.6 — that gap is the honest measure of what the model learned.</li>
+                <li><strong>Unseen-single and unseen-double splits are different problems.</strong> Predicting a double knockout where both genes were seen individually is largely an additivity test that a simple &Delta;<sub>A</sub>&nbsp;+&nbsp;&Delta;<sub>B</sub> model handles well. Predicting a perturbation of a gene never seen in training requires genuine transfer through the GO/co-expression graph and is far harder. Report the subgroups separately (combo_seen0/1/2, unseen_single); a pooled average hides the failure mode.</li>
+                <li><strong>Weak knockdown looks identical to model failure.</strong> CRISPRi efficiency varies substantially per guide, and a target that was only partially repressed produces a near-null expression profile. The model is then penalized for predicting a real effect that the experiment never induced. Filter test perturbations to those with a verified on-target knockdown (or a significant Energy-distance/E-test effect versus control) before scoring, and report how many conditions were dropped.</li>
+                <li><strong>Batch and cell-line confounding travels with the screen.</strong> Norman/Adamson/Replogle are K562-dominated and each has its own 10x chemistry, depth, and gRNA library. A model trained on one and evaluated on another is measuring batch transfer as much as perturbation biology; check that predicted deltas are not simply reproducing the donor/lane axis, and integrate or regress out batch before cross-dataset claims.</li>
+                <li><strong>MOI determines how noisy your labels are.</strong> Low-MOI screens give near-clean one-guide-per-cell assignment; high-MOI designs boost combinatorial coverage but leave ambiguous or multiply-assigned cells. Run Mixscape (pertpy) to drop cells with no detectable perturbation signature, and treat guide-assignment confidence as a filter, not as ground truth.</li>
+                <li><strong>Keep the split file, not just the seed.</strong> <code>prepare_split</code> behavior can change across GEARS versions; save <code>pert_data.set2conditions</code> to disk with the results so the same held-out perturbations can be re-scored later by a different method.</li>
+            </ul>
+        </section>
     </main>
 
     <!-- Footer -->
     <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
 </body>
 </html>

@@ -532,6 +532,11 @@
                         <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -1533,13 +1538,218 @@
                 <li><strong><a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE122662" target="_blank">iPSC Reprogramming (GSE122662)</a>:</strong> ~65K cells, 10 timepoints over 16 days - Waddington-OT landmark dataset</li>
             </ul>
         </section>
+
+        <!-- Hands-On Practice -->
+        <section class="content-section" id="hands-on">
+            <h2>🛠️ Hands-On Practice</h2>
+            <p>
+                The walkthrough below runs a complete optimal transport analysis on a single-cell time course — from a
+                preprocessed <code>AnnData</code> object with a <code>day</code> annotation, through a PCA-space cost matrix,
+                an entropic-regularized Sinkhorn solve, and finally to ancestor/descendant probabilities for a chosen cell
+                population. It uses POT directly for the low-level mechanics (so the coupling is visible as a plain matrix)
+                and moscot for the scalable, biology-aware version of the same computation. Everything is retrospective and
+                purely computational: the inputs are existing count matrices, the outputs are transport plans and probabilities.
+            </p>
+
+            <h3>Environment &amp; packages</h3>
+            <p>
+                POT provides the core solvers (Sinkhorn, unbalanced, Gromov-Wasserstein); moscot wraps them in an OTT-JAX
+                backend with single-cell problem classes (<code>TemporalProblem</code>, <code>SpatialAlignmentProblem</code>,
+                <code>TranslationProblem</code>). Scanpy handles the preprocessing that produces the latent space the cost is
+                computed in. Install into a clean environment — moscot pins JAX/OTT versions and will fight an existing
+                deep-learning stack.
+            </p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n otsc python=3.10 -y
+conda activate otsc
+
+pip install scanpy anndata
+pip install pot                 # POT: ot.sinkhorn, ot.gromov, ot.unbalanced
+pip install moscot              # pulls in ott-jax + jax (CPU build by default)
+
+# optional GPU backend for large problems (CUDA 12)
+# pip install --upgrade "jax[cuda12]"
+
+# optional: the original Waddington-OT implementation
+# pip install wot</code></pre>
+            <p>
+                <strong>Hardware.</strong> The dense coupling is <em>n × m</em> in float64, so two timepoints of 5,000 cells each
+                is ~200 MB and fits comfortably on a laptop; 30,000 × 30,000 is ~7 GB and needs a compute node. moscot's
+                low-rank solvers (<code>rank=</code>) and the OTT-JAX GPU backend are what make 10<sup>5</sup>-cell problems
+                tractable — a GPU is optional for the toy case below but effectively required for a full atlas-scale time course.
+            </p>
+
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><strong><code>AnnData</code></strong> — the input: <code>adata.X</code> (normalized, log1p expression),
+                    <code>adata.obs["day"]</code> (numeric timepoint — must be numeric, not categorical, for
+                    <code>TemporalProblem</code>), and <code>adata.obsm["X_pca"]</code> (the space the cost is computed in).</li>
+                <li><strong>Marginals <em>a</em> and <em>b</em></strong> — probability vectors over source and target cells,
+                    each summing to 1. Uniform by default; weighted by an estimated proliferation/apoptosis rate when modelling growth.</li>
+                <li><strong>Cost matrix <em>M</em></strong> — an <em>n × m</em> array of pairwise distances (usually squared
+                    Euclidean in PCA or latent space). Normalize it (e.g. divide by <code>M.max()</code>) so that
+                    <code>reg</code> has a comparable meaning across datasets.</li>
+                <li><strong>Transport plan / coupling <em>π</em></strong> — the <em>n × m</em> output. Row <em>i</em> sums to
+                    <em>a<sub>i</sub></em>, column <em>j</em> to <em>b<sub>j</sub></em>. Row-normalizing gives descendant
+                    probabilities; column-normalizing gives ancestor probabilities.</li>
+                <li><strong>moscot solution object</strong> — <code>tp.solutions[(t0, t1)]</code> holds the coupling for each
+                    consecutive pair; <code>tp.pull()</code> / <code>tp.push()</code> propagate a cell mask backward/forward
+                    through the chain of couplings and write the result into <code>adata.obs</code>.</li>
+                <li><strong>Gromov-Wasserstein inputs</strong> — for unpaired modalities you supply two <em>intra</em>-domain
+                    cost matrices (<em>C<sub>1</sub></em>: <em>n × n</em>, <em>C<sub>2</sub></em>: <em>m × m</em>) instead of a
+                    single cross-domain <em>M</em>, because no shared feature space exists.</li>
+            </ul>
+
+            <h3>Minimal code walkthrough</h3>
+            <p>
+                Load the time-course object, reduce to a shared PCA space, build and normalize the cost matrix between two
+                adjacent days, solve the entropic problem with Sinkhorn, read ancestor/descendant probabilities off the
+                coupling, then repeat the whole thing at scale with moscot's <code>TemporalProblem</code> including growth-aware
+                unbalanced marginals.
+            </p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import numpy as np
+import scanpy as sc
+import ot                      # POT
+
+# 1. Load a preprocessed time course. adata.obs["day"] must be NUMERIC:
+#    OT needs an ordering, and moscot uses the gap between timepoints to
+#    scale the growth term.
+adata = sc.read_h5ad("timecourse.h5ad")
+adata.obs["day"] = adata.obs["day"].astype(float)
+
+# 2. Build ONE shared latent space across all timepoints. Never compute a
+#    cost on raw counts: Euclidean distance on counts is dominated by library
+#    size and by a handful of high-expression genes.
+sc.pp.normalize_total(adata, target_sum=1e4)
+sc.pp.log1p(adata)
+sc.pp.highly_variable_genes(adata, n_top_genes=2000)
+sc.pp.pca(adata, n_comps=30, use_highly_variable=True)
+
+# 3. Take two adjacent timepoints as source (t0) and target (t1)
+t0, t1 = 2.0, 4.0
+src = adata[adata.obs["day"] == t0]
+tgt = adata[adata.obs["day"] == t1]
+X0 = src.obsm["X_pca"]
+X1 = tgt.obsm["X_pca"]
+n, m = X0.shape[0], X1.shape[0]
+print(f"day {t0}: {n} cells  ->  day {t1}: {m} cells")
+
+# 4. Cost matrix: squared Euclidean in PCA space, then rescale to [0, 1].
+#    Rescaling matters because the meaning of `reg` below is relative to the
+#    magnitude of M -- an unnormalised M makes epsilon dataset-dependent.
+M = ot.dist(X0, X1, metric="sqeuclidean")
+M /= M.max()
+
+# 5. Marginals. Uniform is the assumption "no cell is more likely than any
+#    other to have a descendant" -- revisited in step 8.
+a = np.ones(n) / n
+b = np.ones(m) / m
+
+# 6. Entropic-regularised OT (Sinkhorn). reg is epsilon: small = sharp,
+#    near-deterministic plan but slow / numerically unstable; large = blurred
+#    plan where every cell maps a little onto every other cell.
+#    Use the log-domain solver -- it is the one that survives small reg.
+pi = ot.sinkhorn(a, b, M, reg=0.05, method="sinkhorn_log", numItermax=2000)
+print("coupling shape:", pi.shape, " mass:", pi.sum())   # ~1.0
+
+# 7. Read biology off the coupling.
+#    Row-normalise -> descendant distribution of each day-2 cell.
+#    Column-normalise -> ancestor distribution of each day-4 cell.
+descendants = pi / pi.sum(axis=1, keepdims=True)
+ancestors   = pi / pi.sum(axis=0, keepdims=True)
+
+# Ancestor profile of one terminal cluster at t1: how much of its mass
+# came from each source cell type?
+mask_t1 = (tgt.obs["cell_type"] == "Neuron").to_numpy()
+anc_mass = ancestors[:, mask_t1].sum(axis=1)
+anc_mass /= anc_mass.sum()
+src_ct = src.obs["cell_type"].to_numpy()
+for ct in np.unique(src_ct):
+    print(f"  {ct:&lt;20s} {anc_mass[src_ct == ct].sum():.3f}")
+
+# 8. Growth and death break the "equal mass in, equal mass out" assumption:
+#    proliferating cells contribute MORE than 1/n of the day-4 mass, apoptotic
+#    cells less. Unbalanced OT relaxes the marginal constraints; reg_m controls
+#    how strongly (small reg_m = marginals free to change, large = back to balanced).
+g = src.obs["proliferation_score"].to_numpy()   # e.g. sc.tl.score_genes on a cycle signature
+a_growth = g / g.sum()
+pi_unb = ot.unbalanced.sinkhorn_unbalanced(
+    a_growth, b, M, reg=0.05, reg_m=1.0, numItermax=2000
+)
+print("unbalanced transported mass:", pi_unb.sum())     # != 1.0 by design
+
+# ---------------------------------------------------------------------------
+# 9. The same analysis at scale, with moscot: solves ALL consecutive day pairs,
+#    estimates growth rates from proliferation/apoptosis signatures, and keeps
+#    couplings on GPU via the OTT-JAX backend.
+# ---------------------------------------------------------------------------
+from moscot.problems.time import TemporalProblem
+
+tp = TemporalProblem(adata)
+tp = tp.score_genes_for_marginals(
+    gene_set_proliferation="human", gene_set_apoptosis="human"
+)
+tp = tp.prepare(time_key="day", joint_attr="X_pca")
+tp = tp.solve(epsilon=1e-2, tau_a=0.95, tau_b=0.999)   # tau &lt; 1 => unbalanced
+
+# Pull a terminal population backwards through the whole chain of couplings
+tp.pull(source=t0, target=t1, data="cell_type", subset="Neuron")
+sc.pl.embedding(adata, basis="umap", color="pull")
+
+# 10. Wasserstein distance as a summary statistic: how far apart are two
+#     conditions in expression space? Use the un-regularised (exact) cost of
+#     the Sinkhorn plan, or ot.emd2 for small problems.
+w2 = np.sum(pi * M)
+print(f"Entropic W2 (squared, normalised cost) between {t0} and {t1}: {w2:.4f}")</code></pre>
+
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>Epsilon controls sharpness, and there is no default that works everywhere.</strong> Entropic
+                    regularization blurs the plan: as <code>reg</code> grows, <em>π</em> converges toward the independent
+                    coupling <em>ab</em><sup>T</sup>, where every cell is a partial ancestor of every other cell and the
+                    ancestor probabilities become uninformative. As <code>reg</code> shrinks, the scaling vectors underflow and
+                    the solver returns NaNs. Normalize <em>M</em> to [0, 1], start around 0.01–0.1, and sanity-check by plotting
+                    the row entropy of <em>π</em> — if the effective number of descendants per cell is on the order of the whole
+                    target population, epsilon is too large.</li>
+                <li><strong>Always compute the cost in a denoised latent space, never on raw counts.</strong> Euclidean distance
+                    on raw or even log-normalized full-gene expression is dominated by library-size differences and by sparsity;
+                    30–50 PCs (or an scVI latent space) gives distances that track biological similarity. Critically, the PCA must
+                    be fit on <em>all</em> timepoints jointly — a per-timepoint PCA produces two incomparable coordinate systems
+                    and the cost matrix becomes meaningless.</li>
+                <li><strong>Balanced OT silently assumes no proliferation and no death.</strong> If a progenitor population
+                    expands tenfold between timepoints, balanced OT must still move exactly 1/<em>n</em> of mass out of each
+                    source cell, so it fabricates ancestors for the expanded population from unrelated cells. Use unbalanced OT
+                    (<code>ot.unbalanced.sinkhorn_unbalanced</code>, or moscot's <code>tau_a</code>/<code>tau_b</code> &lt; 1)
+                    with growth rates estimated from proliferation and apoptosis gene signatures — this is exactly what
+                    Waddington-OT's growth-rate iteration does.</li>
+                <li><strong>Memory is O(n·m) and it bites earlier than you expect.</strong> The dense coupling for 50,000 × 50,000
+                    cells is ~20 GB in float64 before the solver's intermediate buffers. Subsample per timepoint, use
+                    moscot/OTT low-rank solvers (<code>rank=200</code>), or work on metacells. Do not build the cost matrix with
+                    <code>ot.dist</code> on the full atlas and hope.</li>
+                <li><strong>Timepoints must be close enough that the transport assumption holds.</strong> OT assumes cells move
+                    a short distance in expression space between snapshots; if the interval is long enough that populations fully
+                    reorganize, the minimal-cost matching is not the biologically correct one. Couple adjacent timepoints and
+                    compose the couplings, rather than solving day 0 → day 16 directly.</li>
+                <li><strong>Use Gromov-Wasserstein only when the two spaces are genuinely incomparable.</strong> For unpaired
+                    modalities (scRNA vs. scATAC with no shared feature space), GW matches intra-domain distance structure instead
+                    of cross-domain distances — this is the SCOT/Pamona setting. But GW is non-convex, solved by alternating
+                    minimization, and sensitive to initialization; run several seeds and check for consistency. If a shared
+                    feature space <em>does</em> exist (e.g. gene activity scores), fused GW or plain Wasserstein is more stable
+                    and far cheaper.</li>
+                <li><strong>The Sinkhorn cost is not the Wasserstein distance.</strong> The value returned by
+                    <code>ot.sinkhorn2</code> includes the entropic penalty and is biased — it does not vanish when the two
+                    distributions are identical. For a distance you can compare across pairs, use the Sinkhorn <em>divergence</em>
+                    (<code>ot.bregman.empirical_sinkhorn_divergence</code>), which debiases by subtracting the self-transport
+                    terms, or <code>ot.emd2</code> for exact W<sub>2</sub> on small problems.</li>
+            </ul>
+        </section>
     </main>
 
     <!-- Footer -->
     <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
 </body>
 </html>

@@ -561,6 +561,8 @@
         .library-card .echo a:hover { text-decoration: underline; }
         .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #0D6938); font-size: .95em; }
         .content-figure { margin: 24px 0; clear: both; }
+        /* square comic panels: cap the width so they do not fill the viewport */
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
         .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#dceee3); }
         .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#dceee3); box-shadow: 0 10px 28px rgba(7,68,34,.22); }
         .story-hero img { width: 100%; height: auto; display: block; }
@@ -601,6 +603,11 @@
                 <li>
                     <a href="https://xqiu625.github.io/">
                         <i class="fas fa-home"></i> Homepage
+                    </a>
+                </li>
+                <li>
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
                     </a>
                 </li>
             </ul>
@@ -678,6 +685,10 @@
                     <p class="echo"><strong>Spatially-informed downstream analysis.</strong> Spatially variable genes and region-specific functions only make sense with location kept. <a href="#methods">See the workflows ↓</a></p>
                 </div>
             </div>
+            <figure class="content-figure comic-figure">
+                <img src="figures/goalkeepers-guide-spatial-comic.webp" width="1254" height="1254" loading="lazy" decoding="async" alt="Four-panel football comic of spatial transcriptomics: a goalkeeper reads the geography of the box before reacting, judges a call by millimetres, sweeps outside the area, and chooses between man-marking and holding the zone">
+                <figcaption>Four scenes, one penalty box: position beats reflex — spatial context is what turns an expression profile into geography.</figcaption>
+            </figure>
             <p class="library-footnote">好门将一半靠反应，一半靠站位 —— spatial context turns expression into geography.</p>
             <div class="football-diagram-grid" aria-label="Goalkeeper spatial transcriptomics diagrams">
                 <figure>
@@ -1306,12 +1317,145 @@
             </table>
         </section>
 
+        <!-- Hands-On Practice -->
+        <section class="content-section" id="hands-on">
+            <h2>🛠️ Hands-On Practice</h2>
+            <p>The walkthrough below takes a Visium slide from raw spot counts to spatial statistics using Python/Scanpy/Squidpy — QC, normalization, clustering, plotting clusters back onto the tissue image, building a spatial neighbor graph, ranking spatially variable genes with Moran's I, and testing which cluster pairs sit next to each other. The same Squidpy calls apply to imaging-based data (Xenium, MERFISH, CosMx) once transcripts have been segmented into cells; the differences are noted at each step.</p>
+
+            <h3>Environment &amp; packages</h3>
+            <p>Squidpy sits on top of Scanpy/AnnData and adds the spatial graph, spatial statistics, and image-aware plotting. For Xenium, MERFISH, or any multi-modal experiment (image + transcripts + polygons), <code>spatialdata</code> and its readers (<code>spatialdata-io</code>) are the better container because they keep coordinate transforms, segmentation shapes, and image pyramids aligned rather than flattening everything into <code>adata.obsm["spatial"]</code>.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
+conda create -n spatial python=3.10 -y
+conda activate spatial
+
+pip install scanpy squidpy leidenalg
+# multi-modal / imaging platforms (Xenium, MERFISH, CosMx)
+pip install spatialdata spatialdata-io spatialdata-plot
+# spot deconvolution (GPU strongly recommended)
+# pip install cell2location            # or run RCTD / spacexr in R
+# transcript-aware segmentation
+# pip install cellpose                 # Baysor is a separate Julia binary</code></pre>
+            <p><strong>Hardware.</strong> A single Visium section (~3–5k spots) runs comfortably on a laptop with 8 GB RAM. Visium HD (2 µm bins), Stereo-seq, and Xenium runs reach 10<sup>5</sup>–10<sup>6</sup> cells or bins and need 32–128 GB RAM plus backed/Zarr-chunked I/O. Deconvolution with cell2location is a variational-inference fit and effectively needs a GPU; RCTD is CPU-only but slower.</p>
+
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><strong>Spot-based (Visium, Visium HD, Slide-seq, Stereo-seq)</strong> — the observation is a <em>barcoded area</em>, not a cell. A Visium spot is ~55 µm across (100 µm center-to-center) and typically contains 1–10 cells, so <code>adata.X</code> rows are cell-type <em>mixtures</em>; recovering per-cell-type abundance requires deconvolution (cell2location, RCTD, SPOTlight) against a matched scRNA-seq reference. Slide-seq (10 µm beads), Stereo-seq (0.5 µm DNB, usually binned), and Visium HD (2 µm bins) are finer but still not cell objects until binned or segmented.</li>
+                <li><strong>Imaging-based (Xenium, MERFISH, CosMx)</strong> — the primary output is a transcript table (<code>transcript_id, x, y, z, gene, qv</code>), and cells only exist after segmentation. Resolution is genuinely single-cell, so <em>segmentation quality is the limiting factor</em>, not spot size. The trade-off is a <strong>targeted panel</strong> (~300–1,000 genes for Xenium/CosMx, ~150–500 for MERFISH) rather than the whole transcriptome.</li>
+                <li><strong><code>AnnData</code></strong> — the convergence point for both families: <code>adata.X</code> (counts), <code>adata.obs</code> (spot/cell metadata), <code>adata.var</code> (genes), <code>adata.obsm["spatial"]</code> (an <em>n</em> × 2 array of x/y coordinates in the full-resolution image frame), and <code>adata.uns["spatial"]</code> (H&amp;E images, scale factors, spot diameter).</li>
+                <li><strong>Scale factors matter.</strong> <code>scalefactors_json.json</code> maps full-resolution pixel coordinates to the hires/lowres thumbnails; plotting with the wrong <code>img_key</code>/scale factor silently offsets every spot from the tissue.</li>
+                <li><strong><code>SpatialData</code> / OME-Zarr</strong> — for Xenium and multi-sample studies: labels (segmentation masks), shapes (cell/nucleus polygons), points (transcripts), images, and tables held in one store with explicit coordinate transformations, so a re-segmentation does not desynchronize the table from the image.</li>
+                <li><strong>Spatial graph</strong> — <code>sq.gr.spatial_neighbors()</code> writes <code>adata.obsp["spatial_connectivities"]</code> and <code>adata.obsp["spatial_distances"]</code>. Every downstream spatial statistic (Moran's I, neighborhood enrichment, Ripley) reads from this graph, so its construction is a modeling choice, not boilerplate.</li>
+            </ul>
+
+            <h3>Minimal code walkthrough</h3>
+            <p>Load a Visium H&amp;E dataset, run standard QC and normalization, cluster with Leiden, project clusters back onto the tissue, build a hexagonal-grid neighbor graph, score spatially variable genes with Moran's I, and test which clusters are spatial neighbors more often than chance.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import squidpy as sq
+import numpy as np
+
+# 1. Load data. The bundled demo (mouse brain, Visium H&amp;E) ships coordinates,
+#    the H&amp;E image, and scale factors already wired into AnnData.
+adata = sq.datasets.visium_hne_adata()
+#    For your own SpaceRanger output instead:
+#    adata = sc.read_visium("outs/")          # expects filtered_feature_bc_matrix.h5
+#    adata.var_names_make_unique()
+#    For Xenium / MERFISH, read via spatialdata_io and pull out the cell table:
+#    import spatialdata_io as sdio
+#    sdata = sdio.xenium("xenium_output/")    # keeps transcripts + polygons + image
+#    adata = sdata.tables["table"]            # cells x panel genes, post-segmentation
+
+print(adata)                                  # obsm["spatial"], uns["spatial"] present
+print(adata.obsm["spatial"][:3])              # full-res pixel coords, NOT microns
+
+# 2. QC. Same metrics as scRNA-seq, but interpret per SPOT, not per cell:
+#    a low-count spot is often edge/low-cellularity tissue, not a dead cell.
+adata.var["mt"] = adata.var_names.str.startswith(("MT-", "mt-"))
+sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], inplace=True, log1p=True)
+sc.pl.violin(adata, ["total_counts", "n_genes_by_counts", "pct_counts_mt"],
+             jitter=0.4, multi_panel=True)
+
+#    Filter gently. Aggressive thresholds carve holes in the tissue map and
+#    break the neighbor graph. Inspect counts IN SPACE before choosing cutoffs.
+sq.pl.spatial_scatter(adata, color="total_counts", img_alpha=0.5)
+adata = adata[adata.obs["total_counts"] &gt; 500].copy()
+sc.pp.filter_genes(adata, min_cells=10)
+
+# 3. Normalize + log1p. Keep raw counts around: deconvolution (cell2location,
+#    RCTD) and most spatially-variable-gene models require raw integers.
+adata.layers["counts"] = adata.X.copy()
+sc.pp.normalize_total(adata, inplace=True)
+sc.pp.log1p(adata)
+sc.pp.highly_variable_genes(adata, n_top_genes=2000)
+#    NOTE: skip HVG selection for targeted panels (Xenium/MERFISH) — every gene
+#    in a 300-plex panel was already chosen to be informative.
+
+# 4. Expression-space clustering (spatially agnostic on purpose — this is the
+#    baseline you compare spatial-domain methods like BayesSpace/SpaGCN against).
+sc.pp.pca(adata, n_comps=50)
+sc.pp.neighbors(adata)                        # EXPRESSION knn, not spatial
+sc.tl.umap(adata)
+sc.tl.leiden(adata, resolution=1.0, key_added="cluster")
+
+# 5. Put the clusters back on the tissue. This is the plot that tells you
+#    whether transcriptomic clusters correspond to real anatomy.
+sq.pl.spatial_scatter(adata, color="cluster", size=1.3, img_alpha=0.6)
+
+# 6. Spatial neighbor graph. Visium spots sit on a hex lattice -&gt; 6 neighbors.
+sq.gr.spatial_neighbors(adata, coord_type="grid", n_neighs=6)
+#    Imaging platforms (irregular cell centroids) use a generic graph instead:
+#    sq.gr.spatial_neighbors(adata, coord_type="generic", delaunay=True)
+#    or radius-based, which is more interpretable in microns:
+#    sq.gr.spatial_neighbors(adata, coord_type="generic", radius=30.0)
+print(adata.obsp["spatial_connectivities"].shape)
+
+# 7. Spatially variable genes via Moran's I. Positive I = neighboring spots
+#    have similar expression, i.e. the gene forms spatial structure.
+#    Run on the normalized layer; permutations give the empirical p-value.
+sq.gr.spatial_autocorr(adata, mode="moran", genes=adata.var_names[adata.var.highly_variable],
+                       n_perms=100, n_jobs=4)
+svg = adata.uns["moranI"].sort_values("I", ascending=False)
+print(svg.head(10)[["I", "pval_norm_fdr_bh"]])
+sq.pl.spatial_scatter(adata, color=list(svg.index[:4]), img_alpha=0.4)
+
+# 8. Neighborhood enrichment: which cluster pairs are adjacent more (or less)
+#    often than expected under label permutation on the SAME graph?
+sq.gr.nhood_enrichment(adata, cluster_key="cluster")
+sq.pl.nhood_enrichment(adata, cluster_key="cluster", method="ward")
+#    Complementary summaries on the same graph:
+#    sq.gr.co_occurrence(adata, cluster_key="cluster")   # vs. distance, graph-free
+#    sq.gr.ripley(adata, cluster_key="cluster", mode="L")
+
+# 9. Deconvolution — REQUIRED for spot-based platforms before any statement
+#    about cell types. A Leiden "cluster" on Visium is a spot NEIGHBORHOOD, not
+#    a cell type. Fit cell2location (or RCTD in R) against a matched scRNA-seq
+#    reference, then treat the per-spot abundances as the cell-type signal:
+#    import cell2location
+#    cell2location.models.RegressionModel.setup_anndata(ref_adata, labels_key="cell_type")
+#    ... fit reference signatures, then Cell2location(adata_vis, ...).train()
+#    -&gt; adata.obsm["q05_cell_abundance_w_sf"]  # spots x cell types
+#    Imaging platforms skip this: after segmentation, cells are annotated
+#    directly with standard label transfer.
+
+adata.write_h5ad("visium_spatial_processed.h5ad")</code></pre>
+
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>A Visium spot is not a cell.</strong> At ~55 µm each spot averages several cells, so a "cluster" is a tissue neighborhood and a co-expression pattern within a spot is not co-expression within a cell. Any cell-type claim on Visium/Slide-seq/Stereo-seq data needs deconvolution (cell2location, RCTD) or explicit binning/segmentation first — and the deconvolution is only as good as the scRNA-seq reference it is given, which must cover every cell type actually present in the section.</li>
+                <li><strong>Segmentation errors drive imaging-platform artifacts.</strong> On Xenium/MERFISH/CosMx, transcripts assigned to the wrong cell (bleed-over between touching cells, or nucleus-expansion masks swallowing neighboring cytoplasm) manufacture chimeric profiles — the classic symptom is "T cells expressing tumor markers." Typical assignment error rates are ~5–15%. Compare a nucleus-expansion baseline against a transcript-aware method (Baysor) or a membrane-stain-based Cellpose model before trusting rare hybrid populations.</li>
+                <li><strong>Absent ≠ not expressed on targeted panels.</strong> A gene missing from a Xenium/MERFISH/CosMx panel is undetected, not unexpressed. Never run whole-transcriptome tools (HVG selection, unfiltered GSEA, marker-based automated annotation trained on full transcriptomes) on panel data without accounting for the restricted gene universe, and never call a marker negative when it was simply never probed.</li>
+                <li><strong>Registration and autofluorescence artifacts masquerade as biology.</strong> Misaligned image-to-coordinate registration shifts spots off tissue and produces "expression" in empty regions; tissue folds, edges, and autofluorescent structures (elastin, lipofuscin, RBCs) generate hot spots that survive QC. Always overlay counts on the H&amp;E (<code>sq.pl.spatial_scatter</code> with <code>img_alpha</code>) and check that high-signal regions correspond to real tissue before interpreting them.</li>
+                <li><strong>Batch effects live across slides, sections, and capture areas.</strong> Section thickness, permeabilization time, and slide-to-slide chemistry shift total counts substantially; on multi-sample designs integrate (Harmony/scVI) or model the slide as a covariate, and never build one spatial graph across physically separate sections — <code>library_key</code> in <code>sq.gr.spatial_neighbors()</code> keeps graphs per-section.</li>
+                <li><strong>Moran's I is a property of the graph, not just the gene.</strong> The same gene can be "significantly spatially variable" or not depending on <code>n_neighs</code>, <code>radius</code>, or Delaunay vs. grid. Fix the graph choice on biological grounds (a radius in microns matching the interaction scale you care about), report it, and sanity-check that the top hits look structured when plotted rather than trusting the ranking alone. The same caveat applies to <code>nhood_enrichment</code>, whose z-scores are permutation-based and scale with cluster size.</li>
+                <li><strong>Do not compare absolute counts across platforms.</strong> Detection efficiency differs by an order of magnitude between Visium, Slide-seq, Stereo-seq, and imaging platforms, and imaging platforms count individual transcript molecules rather than sequencing reads. Cross-platform comparisons should be made on relative/normalized quantities, rank correlations, or spatial pattern agreement — never on raw counts per unit area.</li>
+            </ul>
+        </section>
+
 
     <!-- Footer -->
     <footer style="text-align: center;">
         <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
         <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
-        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
 </body>
 </html>
