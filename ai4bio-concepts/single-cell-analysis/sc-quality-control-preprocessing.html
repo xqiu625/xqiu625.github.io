@@ -463,6 +463,10 @@
                     <strong>Goal:</strong> "I need to identify and remove multiplets (droplets containing two or more cells) from my single-cell data to ensure analysis quality."
                 </div>
 
+                <figure class="story-figure">
+                    <img src="figures/and-then-there-were-some-scrublet-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel comic of doublet detection with Scrublet: two cells share one droplet and arrive as a single suspicious profile, fake doublets are manufactured by averaging random pairs of real cells, every cell is scored by how many simulated doublets crowd around it, and the cells in those crowded neighbourhoods are removed">
+                    <figcaption>Scrublet catches the impostor by building decoys: simulate doublets from the data itself, then flag the real cells that keep company with them.</figcaption>
+                </figure>
                 <div class="paper-grid">
                     <!-- DoubletFinder -->
                     <div class="paper-card" id="method-doubletfinder">
