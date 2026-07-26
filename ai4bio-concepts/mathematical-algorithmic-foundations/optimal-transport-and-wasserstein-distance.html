@@ -516,8 +516,7 @@
         }
 
         .lego-transport-hero img,
-        .readout-player-strip img,
-        .rally-comic img {
+        .readout-player-strip img {
             display: block;
             width: 100%;
             height: auto;
@@ -587,27 +586,8 @@
             font-size: 0.94em;
         }
 
-        .rally-comic {
-            margin: 30px 0;
-            padding: 22px;
-            border-radius: 18px;
-            background: #fbf7ff;
-            border: 1px solid rgba(122, 95, 184, 0.32);
-        }
 
-        .rally-comic img {
-            max-width: 960px;
-            margin: 0 auto;
-            border-radius: 18px;
-        }
 
-        .rally-comic figcaption {
-            max-width: 840px;
-            margin: 14px auto 0;
-            color: #5d6d6f;
-            text-align: center;
-            font-size: 0.95em;
-        }
 
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
@@ -620,8 +600,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .readout-player-strip,
-            .rally-comic {
+            .readout-player-strip {
                 padding: 16px;
             }
 
@@ -650,6 +629,13 @@
                 font-size: 1.1em;
             }
         }
+
+        /* square comic panels: cap the width so they do not fill the viewport */
+        .comic-figure { max-width: 560px; margin: 26px auto; }
+        .comic-figure img { width: 100%; height: auto; display: block; border-radius: 12px;
+            background: #fff; border: 1px solid rgba(66, 109, 180, 0.22); }
+        .comic-figure figcaption { margin-top: 10px; font-size: 0.9em; line-height: 1.55;
+            color: #5a6b7c; text-align: center; }
 
         /* mobile fit: keep layout inside small viewports */
         @media (max-width: 768px) {
@@ -1176,21 +1162,12 @@
                     of 1.7M+ cell datasets
                 </li>
             </ul>
+            <figure class="comic-figure">
+                <img src="figures/lego-sinkhorn-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel LEGO comic of Sinkhorn iteration: an exact brick-by-brick move is abandoned as too slow, a blurred approximate plan is drawn instead, rows and columns are alternately rebalanced until the plan settles, and the finished coupling is close enough to move the whole city">
+                <figcaption>Sinkhorn trades an exact answer for a reachable one: add a little entropy, then rebalance rows and columns in turn until the plan converges — the larger the epsilon, the faster the solve and the blurrier the coupling.</figcaption>
+            </figure>
         </section>
 
-        <figure class="rally-comic">
-            <img
-                src="figures/lego-transport-wasserstein-comic.webp"
-                width="1600"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-                alt="Four-panel LEGO comic: the builder faces a scattered row of bricks across a gap; a timer runs while a full tray is compared with a target arrangement; matched red, blue and green bricks are linked by dashed transport arcs to a finished wall; and two piles of unequal size are reconciled with added and removed bricks">
-            <figcaption>
-                The four panels are the whole method: survey both distributions, price the moves in a shared space,
-                solve for one globally cheapest coupling, and let the plan gain or lose mass when cells divide or die.
-            </figcaption>
-        </figure>
 
         <!-- Application Domains Section -->
         <section id="applications" class="content-section">
