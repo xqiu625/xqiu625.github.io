@@ -286,8 +286,7 @@
         }
 
         .lego-trajectory-hero img,
-        .readout-player-strip img,
-        .rally-comic img {
+        .readout-player-strip img {
             display: block;
             width: 100%;
             height: auto;
@@ -357,27 +356,8 @@
             font-size: 0.94em;
         }
 
-        .rally-comic {
-            margin: 30px 0;
-            padding: 22px;
-            border-radius: 18px;
-            background: #fbfdfc;
-            border: 1px solid rgba(72, 176, 158, 0.32);
-        }
 
-        .rally-comic img {
-            max-width: 960px;
-            margin: 0 auto;
-            border-radius: 18px;
-        }
 
-        .rally-comic figcaption {
-            max-width: 840px;
-            margin: 14px auto 0;
-            color: #5d6d6f;
-            text-align: center;
-            font-size: 0.95em;
-        }
 
         /* mobile fit: keep layout inside small viewports */
         @media (max-width: 768px) {
@@ -395,8 +375,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .readout-player-strip,
-            .rally-comic {
+            .readout-player-strip {
                 padding: 16px;
             }
         }
@@ -514,20 +493,6 @@
             </div>
         </div>
 
-        <figure class="rally-comic">
-            <img
-                src="figures/lego-trajectory-comic.webp"
-                width="1600"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-                alt="Four-panel comic: Healshu holds a two-brick stack beside a staircase of increasingly tall stacks; a scribbled zig-zag path is crossed out in red; a dotted path runs from a red brick through a blue brick and forks toward two outcomes; a finished brick wall is redrawn as a small branching graph">
-            <figcaption>
-                Rank the half-built models by how finished they are, refuse to draw a path where none is warranted,
-                mark the point where builds fork, and what you are left with is a branching pseudotime graph —
-                an ordering inferred from one snapshot, not a clock.
-            </figcaption>
-        </figure>
 
         <div class="content-section">
             <h2>🔬 Major Method Categories</h2>

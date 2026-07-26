@@ -561,8 +561,6 @@
         .library-card .echo a:hover { text-decoration: underline; }
         .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #0D6938); font-size: .95em; }
         .content-figure { margin: 24px 0; clear: both; }
-        /* square comic panels: cap the width so they do not fill the viewport */
-        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
         .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#dceee3); }
         .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#dceee3); box-shadow: 0 10px 28px rgba(7,68,34,.22); }
         .story-hero img { width: 100%; height: auto; display: block; }
@@ -685,10 +683,6 @@
                     <p class="echo"><strong>Spatially-informed downstream analysis.</strong> Spatially variable genes and region-specific functions only make sense with location kept. <a href="#methods">See the workflows ↓</a></p>
                 </div>
             </div>
-            <figure class="content-figure comic-figure">
-                <img src="figures/goalkeepers-guide-spatial-comic.webp" width="1254" height="1254" loading="lazy" decoding="async" alt="Four-panel football comic of spatial transcriptomics: a goalkeeper reads the geography of the box before reacting, judges a call by millimetres, sweeps outside the area, and chooses between man-marking and holding the zone">
-                <figcaption>Four scenes, one penalty box: position beats reflex — spatial context is what turns an expression profile into geography.</figcaption>
-            </figure>
             <p class="library-footnote">好门将一半靠反应，一半靠站位 —— spatial context turns expression into geography.</p>
             <div class="football-diagram-grid" aria-label="Goalkeeper spatial transcriptomics diagrams">
                 <figure>

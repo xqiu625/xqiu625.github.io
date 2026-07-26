@@ -214,8 +214,7 @@
         }
 
         .tennis-rally-hero img,
-        .readout-player-strip img,
-        .rally-comic img {
+        .readout-player-strip img {
             display: block;
             width: 100%;
             height: auto;
@@ -285,27 +284,8 @@
             font-size: 0.94em;
         }
 
-        .rally-comic {
-            margin: 30px 0;
-            padding: 22px;
-            border-radius: 18px;
-            background: #fcfdfb;
-            border: 1px solid rgba(173, 139, 145, 0.32);
-        }
 
-        .rally-comic img {
-            max-width: 960px;
-            margin: 0 auto;
-            border-radius: 18px;
-        }
 
-        .rally-comic figcaption {
-            max-width: 840px;
-            margin: 14px auto 0;
-            color: #5d6d6f;
-            text-align: center;
-            font-size: 0.95em;
-        }
 
         @keyframes analogyRally {
             0%, 100% { left: 23%; top: 30%; transform: scale(1); }
@@ -624,8 +604,7 @@
                 grid-template-columns: 1fr;
             }
 
-            .readout-player-strip,
-            .rally-comic {
+            .readout-player-strip {
                 padding: 16px;
             }
 
@@ -842,19 +821,6 @@
             </ul>
         </section>
 
-        <figure class="rally-comic">
-            <img
-                src="figures/tennis-rally-perturbation-comic.webp"
-                width="1600"
-                height="1600"
-                loading="lazy"
-                decoding="async"
-                alt="Four-panel tennis rally comic showing prediction, varied experimental returns, residual reading, and model update">
-            <figcaption>
-                Perturbation modeling turns every mismatch between prediction and response into a better next shot.
-            </figcaption>
-        </figure>
-
         <!-- Method Categories Section -->
         <section id="methods" class="content-section">
             <h2>📊 Method Categories</h2>
@@ -977,6 +943,7 @@
                     </div>
                 </article>
             </div>
+
 
             <h3>3. Optimal Transport Approaches</h3>
             <div class="paper-grid">
