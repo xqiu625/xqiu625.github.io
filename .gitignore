@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+._*
+
+# Editor / tooling noise
+.Rhistory
+.Rapp.history
+.vscode/
+.idea/
+*.swp
+
+# Source assets are kept out of the published site on purpose.
+# Only exported production files (webp/png/svg, compiled css/js, html) belong here.
+*.psd
+*.ai
+*.afdesign
+*.afphoto
+*.sketch
+*.fig
+*.riv
+*.xcf
+*.blend
+*.indd
+_source/
+_archive/
+drafts/

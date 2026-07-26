@@ -55,3 +55,23 @@ My vision is to advance translational medicine through computational innovation.
 - **Leadership**: Mentored 7+ undergraduate researchers
 - **Service**: Active reviewer for 15+ scientific journals
 - **Recognition**: Multiple awards for research excellence
+---
+
+## 📄 License and reuse
+
+This repository publishes the built website at <https://xqiu625.github.io> —
+exported images, compiled CSS, and production HTML.
+
+**Free to read. Selected code is open source. Original educational and visual
+content remains copyrighted.** It is an *open-access* project with *selected
+open-source components*, not a fully open-source one.
+
+- Linking and brief quotation with attribution: welcome.
+- Reproducing whole pages or tutorials, reusing the Healshu character and
+  illustrations, redeploying the site, or including the content in a commercial
+  dataset or AI training corpus: not permitted without written permission.
+
+Full terms: [LICENSE.md](LICENSE.md) · [licensing page](https://xqiu625.github.io/licensing.html) · [terms of use](https://xqiu625.github.io/terms.html)
+
+Permission requests: xinru.reina.qiu@gmail.com — non-commercial academic and
+classroom use is usually granted.
