@@ -210,33 +210,6 @@
     .lw-7 { right: 7%; bottom: 4%; font-size: .85rem; opacity: .3; animation-duration: 7s; animation-delay: -2.5s; }
     .lw-8 { left: 44%; top: 19%; font-size: .75rem; color: var(--teal); opacity: .35; animation-duration: 9.5s; animation-delay: -5s; }
 
-    .manifesto {
-      padding: clamp(5rem, 11vw, 10rem) clamp(1.25rem, 8vw, 9rem);
-      background: var(--ink); color: #f8f1e3;
-      display: grid; grid-template-columns: .65fr 1.35fr; gap: clamp(2rem, 8vw, 8rem);
-    }
-    .manifesto .mono { color: #a9cdc8; font-size: .75rem; }
-    .manifesto h2 { margin: 0; max-width: 16ch; font-size: clamp(2.4rem, 5vw, 5.5rem); line-height: 1.04; letter-spacing: -.055em; }
-    .manifesto p { max-width: 44rem; font-size: clamp(1.05rem, 1.8vw, 1.35rem); line-height: 1.7; color: #d9ddd5; }
-    .hobby-board {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: .75rem;
-      margin-top: clamp(1.5rem, 4vw, 3rem);
-    }
-    .hobby-card {
-      min-height: 10.5rem;
-      display: grid;
-      align-content: space-between;
-      padding: 1rem;
-      border: 1px solid rgba(248,241,227,.16);
-      border-radius: .8rem;
-      background: rgba(255,255,255,.055);
-    }
-    .hobby-card span:first-child { font-size: 1.8rem; }
-    .hobby-card strong { display: block; margin-top: 1.2rem; font-size: 1.05rem; }
-    .hobby-card small { color: #bfc9c5; line-height: 1.45; }
 
     .interest-atlas {
       padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 7vw, 8rem);
@@ -745,13 +718,11 @@
       .nav-links a { display: none; }
       .nav-links a.nav-home { display: inline-flex; border: 1px solid var(--line); }
       .progress { display: none; }
-      .hero, .sport-section, .manifesto { grid-template-columns: 1fr; }
+      .hero, .sport-section { grid-template-columns: 1fr; }
       .sport-section.detective { grid-template-columns: 1fr; }
       .hero { padding-top: 7rem; }
       .hero h1 { max-width: 9ch; }
       .loop-stage { min-height: 28rem; }
-      .manifesto { gap: 1.5rem; }
-      .hobby-board { grid-template-columns: 1fr 1fr; }
       .atlas-header, .atlas-grid { grid-template-columns: 1fr; }
       .phase-intro { grid-template-columns: 1fr; min-height: auto; }
       .phase-number { font-size: 7rem; }
@@ -770,7 +741,6 @@
       .brand span:last-child { display: none; }
       .hero { padding-inline: 1rem; }
       .hero h1 { font-size: 4rem; }
-      .hobby-board { grid-template-columns: 1fr; }
       .interest-atlas { padding-inline: 1rem; }
       .chip-data { left: -.4rem; }
       .chip-model { right: -.4rem; }
@@ -854,23 +824,6 @@
         <div class="loop-chip chip-model">02 / reason with models</div>
         <div class="loop-chip chip-lab">03 / refine the system</div>
         <div class="loop-chip chip-lore">耳鼠 Er Shu · mascot from 《山海经》 Shan Hai Jing</div>
-      </div>
-    </section>
-
-    <section class="manifesto">
-      <div class="mono reveal">WHY LEARN THROUGH ANALOGIES?</div>
-      <div class="reveal">
-        <h2>The same scientific loop, explained through things you already know.</h2>
-        <p>This guide breaks lab-in-the-loop into seven vivid roles: detective work for observation, strategy for modeling, golf for experiment choice, football for system coordination, F1 for execution monitoring, tennis for reading experimental feedback, and the K-pop training system for continuous iteration. Each analogy turns an abstract stage into something you can picture.</p>
-      </div>
-      <div class="hobby-board reveal" aria-label="The seven analogies at a glance">
-        <div class="hobby-card"><span>🔍</span><div><strong>Measure</strong><small>Agatha Christie: observe before concluding.</small></div></div>
-        <div class="hobby-card"><span>🧱</span><div><strong>Model</strong><small>LEGO: sort the bricks before the build.</small></div></div>
-        <div class="hobby-card"><span>⛳</span><div><strong>Design</strong><small>Golf: choose the next experiment.</small></div></div>
-        <div class="hobby-card"><span>⚽</span><div><strong>Coordinate</strong><small>Football: coordinate the experimental system.</small></div></div>
-        <div class="hobby-card"><span>🏎️</span><div><strong>Monitor</strong><small>F1: track execution and telemetry.</small></div></div>
-        <div class="hobby-card"><span>🎾</span><div><strong>Readout</strong><small>Tennis: read the experimental return.</small></div></div>
-        <div class="hobby-card"><span>🌟</span><div><strong>Update</strong><small>K-pop Training System: improve through feedback and iteration.</small></div></div>
       </div>
     </section>
 
