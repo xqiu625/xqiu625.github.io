@@ -171,6 +171,22 @@ a, p {
 [data-theme="dark"] .profile-links a:hover      { color: #79c0ff !important; }
 [data-theme="dark"] .profile-image              { border-color: #58a6ff !important; }
 
+/* Homepage concept figures keep a light paper surface in dark mode.
+   Several workflow diagrams use transparent/light backgrounds and disappear
+   when blended into the global dark surface. */
+[data-theme="dark"] .research-image {
+    background: #f7fbff !important;
+    border: 1px solid rgba(121, 192, 255, 0.28);
+    border-radius: 12px;
+}
+[data-theme="dark"] .research-image img {
+    filter: none !important;
+    mix-blend-mode: normal !important;
+}
+[data-theme="dark"] .research-image .caption {
+    color: #334155 !important;
+}
+
 /* CTA section */
 [data-theme="dark"] .cta-section {
     background: linear-gradient(135deg, #30363d 0%, #1c2128 100%) !important;
