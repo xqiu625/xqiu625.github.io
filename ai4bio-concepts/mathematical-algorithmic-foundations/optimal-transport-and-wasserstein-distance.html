@@ -476,8 +476,155 @@
             text-decoration: underline;
         }
 
+        /* ===== LEGO ANALOGY ===== */
+        .sport-analogy {
+            display: grid;
+            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
+            gap: 30px;
+            align-items: center;
+            margin: 25px 0;
+            padding: 30px;
+            overflow: hidden;
+            border: 2px solid var(--sport-primary, #426DB4);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f4ecfa 0%, #ffffff 60%, #eaf1fb 100%);
+            box-shadow: 0 4px 18px rgba(59, 39, 110, 0.14);
+        }
+
+        .sport-analogy-copy .analogy-label {
+            color: var(--sport-primary, #426DB4);
+            font-size: 0.76em;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .sport-analogy-copy h2 {
+            margin: 7px 0 12px;
+            color: var(--sport-dark, #1e3c72);
+            border: 0;
+            padding: 0;
+        }
+
+        .lego-transport-hero {
+            margin: 0;
+            overflow: hidden;
+            border: 8px solid white;
+            border-radius: 14px;
+            background: #f4ecfa;
+            box-shadow: 0 12px 30px rgba(59, 39, 110, 0.2);
+        }
+
+        .lego-transport-hero img,
+        .readout-player-strip img,
+        .rally-comic img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .analogy-steps {
+            display: grid;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .analogy-step {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .analogy-step span {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: var(--sport-primary, #426DB4);
+            color: white;
+            font-weight: bold;
+        }
+
+        .readout-player-strip {
+            margin: 30px 0;
+            padding: 24px;
+            border: 2px solid var(--sport-primary, #426DB4);
+            border-radius: 16px;
+            background: linear-gradient(135deg, #fff 0%, #f4ecfa 58%, #eaf1fb 100%);
+            box-shadow: 0 4px 18px rgba(59, 39, 110, 0.12);
+        }
+
+        .readout-player-strip img {
+            max-width: 980px;
+            margin: 0 auto;
+            filter: drop-shadow(0 16px 18px rgba(59, 39, 110, 0.16));
+        }
+
+        .player-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .player-step {
+            padding: 14px 16px;
+            border-left: 4px solid var(--sport-primary, #426DB4);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .player-step strong {
+            display: block;
+            color: var(--sport-dark, #1e3c72);
+            margin-bottom: 4px;
+        }
+
+        .player-step span {
+            color: #5d6d6f;
+            font-size: 0.94em;
+        }
+
+        .rally-comic {
+            margin: 30px 0;
+            padding: 22px;
+            border-radius: 18px;
+            background: #fbf7ff;
+            border: 1px solid rgba(122, 95, 184, 0.32);
+        }
+
+        .rally-comic img {
+            max-width: 960px;
+            margin: 0 auto;
+            border-radius: 18px;
+        }
+
+        .rally-comic figcaption {
+            max-width: 840px;
+            margin: 14px auto 0;
+            color: #5d6d6f;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
+            .sport-analogy {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .player-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .readout-player-strip,
+            .rally-comic {
+                padding: 16px;
+            }
+
             .paper-grid {
                 grid-template-columns: 1fr;
             }
@@ -556,6 +703,71 @@
                 methods (Waddington-OT, moscot, SCOT) and theoretical advances (2019-2025).
             </p>
         </header>
+
+        <section class="sport-analogy" aria-labelledby="lego-analogy-title">
+            <figure class="lego-transport-hero">
+                <img
+                    src="../animations/rive-assets/stage-themes-v5/lego-transport-hero.webp"
+                    width="1400"
+                    height="1400"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Cartoon fennec builder holding a blue brick beside a sorting tray, with a loose scatter of coloured bricks on the left and a neatly stacked target wall on the right, dashed lines linking the two piles">
+            </figure>
+            <div class="sport-analogy-copy">
+                <div class="analogy-label">🧱 LEGO analogy · 02.4 The Great Brick Move</div>
+                <h2 id="lego-analogy-title">Move the whole city, not one brick at a time.</h2>
+                <p>
+                    Optimal transport is the problem of relocating an entire LEGO city from one table to another
+                    for the least total effort. In single-cell terms, the two tables are two distributions of cells -
+                    two timepoints, two conditions, two modalities - and the cheapest move is a coupling that says
+                    how much mass from each source cell should land on each target cell. The total cost of that
+                    cheapest plan is the Wasserstein distance.
+                </p>
+                <div class="analogy-steps">
+                    <div class="analogy-step">
+                        <span>1</span>
+                        <div><strong>Survey both tables:</strong> you need the full pile on each side, not a handful of sample bricks. OT matches whole distributions, so the answer depends on the shape and weight of both populations rather than on any individual cell.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>2</span>
+                        <div><strong>Price every trip:</strong> build the cost matrix. Distances must be measured in a space where they mean something - PCA space, a latent embedding, or a graph metric - because Euclidean distance on raw counts is dominated by depth and noise.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>3</span>
+                        <div><strong>Plan the whole move, not each brick:</strong> the optimum is global, and greedy nearest-neighbour choices do not add up to the cheapest plan. Entropic regularisation (Sinkhorn) makes the global solve tractable, at the cost of a blurrier, more diffuse coupling as epsilon grows.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>4</span>
+                        <div><strong>Allow for bricks gained and lost:</strong> cells divide and die, so the two piles need not weigh the same. Unbalanced OT relaxes the exact mass-conservation constraint with KL penalties, letting the plan create and destroy mass where growth or death demands it.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="readout-player-strip" aria-label="Three LEGO transport poses: survey, price, move">
+            <img
+                src="../animations/rive-assets/stage-themes-v5/lego-transport-three-poses.webp"
+                width="1672"
+                height="941"
+                loading="lazy"
+                decoding="async"
+                alt="Three poses of the fennec builder: surveying a full sorting tray of red, blue, yellow and green bricks; inspecting a single brick in a magnified callout; and pointing at a finished multi-colour wall with arrows showing bricks arriving">
+            <div class="player-steps">
+                <div class="player-step">
+                    <strong>Survey</strong>
+                    <span>Take both distributions in full, with their marginal weights.</span>
+                </div>
+                <div class="player-step">
+                    <strong>Price</strong>
+                    <span>Compute pairwise cost in a shared, meaningful embedding.</span>
+                </div>
+                <div class="player-step">
+                    <strong>Move</strong>
+                    <span>Solve for the globally cheapest coupling, unbalanced if mass changes.</span>
+                </div>
+            </div>
+        </section>
 
         <!-- Statistics Bar -->
         
@@ -965,6 +1177,20 @@
                 </li>
             </ul>
         </section>
+
+        <figure class="rally-comic">
+            <img
+                src="figures/lego-transport-wasserstein-comic.webp"
+                width="1600"
+                height="1600"
+                loading="lazy"
+                decoding="async"
+                alt="Four-panel LEGO comic: the builder faces a scattered row of bricks across a gap; a timer runs while a full tray is compared with a target arrangement; matched red, blue and green bricks are linked by dashed transport arcs to a finished wall; and two piles of unequal size are reconciled with added and removed bricks">
+            <figcaption>
+                The four panels are the whole method: survey both distributions, price the moves in a shared space,
+                solve for one globally cheapest coupling, and let the plan gain or lose mass when cells divide or die.
+            </figcaption>
+        </figure>
 
         <!-- Application Domains Section -->
         <section id="applications" class="content-section">

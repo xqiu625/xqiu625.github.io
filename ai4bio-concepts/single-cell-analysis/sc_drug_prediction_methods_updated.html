@@ -102,6 +102,139 @@
             line-height: 1.8;
         }
 
+        /* ===== TENNIS ANALOGY ===== */
+        .sport-analogy {
+            display: grid;
+            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
+            gap: 30px;
+            align-items: center;
+            margin: 25px 0;
+            padding: 30px;
+            overflow: hidden;
+            border: 2px solid #AD8B91;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #f3e8eb 0%, #ffffff 60%, #e8eee5 100%);
+            box-shadow: 0 4px 18px rgba(24, 48, 29, 0.14);
+        }
+
+        .sport-analogy-copy .analogy-label {
+            color: #859C7C;
+            font-size: 0.76em;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .sport-analogy-copy h2 {
+            margin: 7px 0 12px;
+            color: #18301D;
+            border: 0;
+            padding: 0;
+        }
+
+        .tennis-scout-hero {
+            margin: 0;
+            overflow: hidden;
+            border: 8px solid white;
+            border-radius: 14px;
+            background: #55a99d;
+            box-shadow: 0 12px 30px rgba(42, 91, 84, 0.2);
+        }
+
+        .tennis-scout-hero img,
+        .readout-player-strip img,
+        .rally-comic img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .analogy-steps {
+            display: grid;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .analogy-step {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .analogy-step span {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #AD8B91;
+            color: white;
+            font-weight: bold;
+        }
+
+        .readout-player-strip {
+            margin: 30px 0;
+            padding: 24px;
+            border: 2px solid #AD8B91;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #fff 0%, #f7eef0 58%, #eef7f5 100%);
+            box-shadow: 0 4px 18px rgba(93, 74, 80, 0.12);
+        }
+
+        .readout-player-strip img {
+            max-width: 980px;
+            margin: 0 auto;
+            filter: drop-shadow(0 16px 18px rgba(93, 74, 80, 0.16));
+        }
+
+        .player-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .player-step {
+            padding: 14px 16px;
+            border-left: 4px solid #AD8B91;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .player-step strong {
+            display: block;
+            color: #5d4a50;
+            margin-bottom: 4px;
+        }
+
+        .player-step span {
+            color: #5d6d6f;
+            font-size: 0.94em;
+        }
+
+        .rally-comic {
+            margin: 30px 0;
+            padding: 22px;
+            border-radius: 18px;
+            background: #fcfdfb;
+            border: 1px solid rgba(173, 139, 145, 0.32);
+        }
+
+        .rally-comic img {
+            max-width: 960px;
+            margin: 0 auto;
+            border-radius: 18px;
+        }
+
+        .rally-comic figcaption {
+            max-width: 840px;
+            margin: 14px auto 0;
+            color: #5d6d6f;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
         /* ===== STATISTICS BAR ===== */
         .stats-bar {
             background: white;
@@ -412,6 +545,20 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
+            .sport-analogy {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .player-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .readout-player-strip,
+            .rally-comic {
+                padding: 16px;
+            }
+
             .paper-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 2em; }
             .concept-figure { padding: 15px; }
@@ -467,8 +614,73 @@
                 </p>
             </div>
 
+            <section class="sport-analogy" aria-labelledby="tennis-scout-title">
+                <figure class="tennis-scout-hero">
+                    <img
+                        src="../animations/rive-assets/stage-themes-v5/tennis-scout-hero.webp"
+                        width="1400"
+                        height="1400"
+                        loading="lazy"
+                        decoding="async"
+                        alt="Healshu in tennis whites on a teal court, reading match footage on a tablet while a wall chart shows four opponent profiles and a tray of tagged balls sits beside a pill marker">
+                </figure>
+                <div class="sport-analogy-copy">
+                    <div class="analogy-label">🎾 Tennis analogy · Scouting stage</div>
+                    <h2 id="tennis-scout-title">You scout the opponent before you play the point.</h2>
+                    <p>
+                        Predicting how a cell will respond to a drug is a scouting problem. Nobody has seen this
+                        particular tumour play, but thousands of hours of related footage already exist: bulk
+                        cell-line panels with measured IC50s. The job is to compress that footage into a report
+                        that still holds up against an opponent you have never faced — a single cell, profiled
+                        with far noisier equipment.
+                    </p>
+                    <div class="analogy-steps">
+                        <div class="analogy-step">
+                            <span>1</span>
+                            <div><strong>Watch the tapes:</strong> train on what has already been measured — GDSC and CCLE bulk cell-line panels with known IC50 or AUC values for each drug.</div>
+                        </div>
+                        <div class="analogy-step">
+                            <span>2</span>
+                            <div><strong>Write the report:</strong> distil those tapes into a transferable signature or model — beyondcell's drug-signature enrichment, scDEAL's shared latent space — rather than memorising per-line answers that never generalise.</div>
+                        </div>
+                        <div class="analogy-step">
+                            <span>3</span>
+                            <div><strong>Predict the match-up:</strong> apply the report to single cells. This needs explicit domain adaptation (SCAD's adversarial alignment, scDEAL's DaNN) because bulk and single-cell expression differ in dropout, sequencing depth and dynamic range.</div>
+                        </div>
+                        <div class="analogy-step">
+                            <span>4</span>
+                            <div><strong>Rewrite after the first set:</strong> check the prediction against observed response and update. A scouting report is provisional — a cell that scores "resistant" may simply be cycling, low-depth, or badly represented in the training panel.</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="readout-player-strip" aria-label="Healshu scouting poses: study, report, match-up">
+                <img
+                    src="../animations/rive-assets/stage-themes-v5/tennis-scout-three-poses.webp"
+                    width="1672"
+                    height="941"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Three poses of Healshu: studying a tablet next to a magnified profile card, hitting a ball toward a pill-and-target marker, and standing ready with a racquet facing a shadowy unseen opponent">
+                <div class="player-steps">
+                    <div class="player-step">
+                        <strong>Scout</strong>
+                        <span>Learn from labelled bulk cell lines.</span>
+                    </div>
+                    <div class="player-step">
+                        <strong>Report</strong>
+                        <span>Compress into a transferable signature.</span>
+                    </div>
+                    <div class="player-step">
+                        <strong>Match-up</strong>
+                        <span>Transfer to single cells, then check.</span>
+                    </div>
+                </div>
+            </section>
+
             <!-- Statistics -->
-            
+
 
             <!-- Method Landscape Overview Figure -->
 <div class="concept-figure full-width highlight">
@@ -530,6 +742,21 @@
                     </div>
                 </div>
             </section>
+
+            <figure class="rally-comic">
+                <img
+                    src="figures/tennis-scout-drug-response-comic.webp"
+                    width="1600"
+                    height="1600"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Four-panel comic: Healshu rallies against labelled bulk cell-line trajectories, faces mixed returns where one ball drops short in red, writes up a report on a tablet, then plays a single ball that splits into several diverging single-cell outcomes">
+                <figcaption>
+                    Bulk drug-response data is the scouting tape, not the match: the value of these methods lies in
+                    how well a signature learned from labelled cell lines survives the transfer to heterogeneous
+                    single cells.
+                </figcaption>
+            </figure>
 
             <!-- Core Problem Conceptual Figure -->
             <div class="concept-figure full-width">

@@ -246,12 +246,159 @@
             border-left: 4px solid #4caf50;
         }
 
+        /* ===== LEGO ANALOGY ===== */
+        .sport-analogy {
+            display: grid;
+            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
+            gap: 30px;
+            align-items: center;
+            margin: 25px 0;
+            padding: 30px;
+            overflow: hidden;
+            border: 2px solid #48B09E;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #e6f4f0 0%, #ffffff 60%, #f3f1fa 100%);
+            box-shadow: 0 4px 18px rgba(13, 138, 133, 0.14);
+        }
+
+        .sport-analogy-copy .analogy-label {
+            color: #0D8A85;
+            font-size: 0.76em;
+            font-weight: bold;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .sport-analogy-copy h2 {
+            margin: 7px 0 12px;
+            color: #189177;
+            border: 0;
+            padding: 0;
+        }
+
+        .lego-trajectory-hero {
+            margin: 0;
+            overflow: hidden;
+            border: 8px solid white;
+            border-radius: 14px;
+            background: #f3f1fa;
+            box-shadow: 0 12px 30px rgba(24, 145, 119, 0.2);
+        }
+
+        .lego-trajectory-hero img,
+        .readout-player-strip img,
+        .rally-comic img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .analogy-steps {
+            display: grid;
+            gap: 9px;
+            margin-top: 18px;
+        }
+
+        .analogy-step {
+            display: grid;
+            grid-template-columns: 32px 1fr;
+            gap: 10px;
+            align-items: start;
+        }
+
+        .analogy-step span {
+            width: 28px;
+            height: 28px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #189177;
+            color: white;
+            font-weight: bold;
+        }
+
+        .readout-player-strip {
+            margin: 30px 0;
+            padding: 24px;
+            border: 2px solid #48B09E;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #fff 0%, #eaf6f2 58%, #f3f1fa 100%);
+            box-shadow: 0 4px 18px rgba(13, 138, 133, 0.12);
+        }
+
+        .readout-player-strip img {
+            max-width: 980px;
+            margin: 0 auto;
+            filter: drop-shadow(0 16px 18px rgba(13, 138, 133, 0.16));
+        }
+
+        .player-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .player-step {
+            padding: 14px 16px;
+            border-left: 4px solid #48B09E;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .player-step strong {
+            display: block;
+            color: #0D8A85;
+            margin-bottom: 4px;
+        }
+
+        .player-step span {
+            color: #5d6d6f;
+            font-size: 0.94em;
+        }
+
+        .rally-comic {
+            margin: 30px 0;
+            padding: 22px;
+            border-radius: 18px;
+            background: #fbfdfc;
+            border: 1px solid rgba(72, 176, 158, 0.32);
+        }
+
+        .rally-comic img {
+            max-width: 960px;
+            margin: 0 auto;
+            border-radius: 18px;
+        }
+
+        .rally-comic figcaption {
+            max-width: 840px;
+            margin: 14px auto 0;
+            color: #5d6d6f;
+            text-align: center;
+            font-size: 0.95em;
+        }
+
         /* mobile fit: keep layout inside small viewports */
         @media (max-width: 768px) {
             .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
             .navbar-nav li { margin: 3px 7px; }
             .navbar-nav a { font-size: 12.5px; }
             .container { padding-left: 12px; padding-right: 12px; }
+
+            .sport-analogy {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .player-steps {
+                grid-template-columns: 1fr;
+            }
+
+            .readout-player-strip,
+            .rally-comic {
+                padding: 16px;
+            }
         }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
@@ -286,6 +433,70 @@
             <p class="subtitle">A comprehensive guide to computational tools for reconstructing cellular developmental trajectories</p>
         </div>
 
+        <section class="sport-analogy" aria-labelledby="lego-analogy-title">
+            <figure class="lego-trajectory-hero">
+                <img
+                    src="../animations/rive-assets/stage-themes-v5/lego-trajectory-hero.webp"
+                    width="1400"
+                    height="1400"
+                    loading="lazy"
+                    decoding="async"
+                    alt="Healshu the fox in a hard hat and headlamp beside a sorted brick tray, with two part-built brick stacks of different heights linked by a dashed path">
+            </figure>
+            <div class="sport-analogy-copy">
+                <div class="analogy-label">🧱 LEGO analogy · 02.3 The Unfinished Models</div>
+                <h2 id="lego-analogy-title">You never saw the build — only the room.</h2>
+                <p>
+                    Walk into a room full of half-built LEGO models, every one frozen at a different stage.
+                    Nobody filmed any single model going up, yet the build order is still recoverable from how
+                    finished each one looks. That room is a scRNA-seq snapshot: thousands of cells caught
+                    mid-differentiation, and trajectory inference is the argument you make from the still image.
+                </p>
+                <div class="analogy-steps">
+                    <div class="analogy-step">
+                        <span>1</span>
+                        <div><strong>A photo, not a timelapse:</strong> a cell is destroyed the moment it is sequenced, so you get one frame holding many builds at many stages — never one build followed through time.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>2</span>
+                        <div><strong>Order by how finished:</strong> rank the models from bare baseplate to nearly complete. That ranking is pseudotime — a position along a progression, not minutes or hours on a clock.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>3</span>
+                        <div><strong>Pick the starting pile:</strong> you have to declare which model is the beginning, and that call comes from biology (marker genes, known progenitors, RNA velocity), not from the algorithm. A wrong root silently runs the whole trajectory backwards.</div>
+                    </div>
+                    <div class="analogy-step">
+                        <span>4</span>
+                        <div><strong>Watch where builds diverge:</strong> some become a castle, some a spaceship. Branches are real biology — but these methods will happily fit a smooth path through populations that are actually discrete, so first ask whether a trajectory is warranted at all.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="readout-player-strip" aria-label="Healshu LEGO trajectory readout poses">
+            <img
+                src="../animations/rive-assets/stage-themes-v5/lego-trajectory-three-poses.webp"
+                width="1672"
+                height="941"
+                loading="lazy"
+                decoding="async"
+                alt="Three poses of Healshu the fox: inspecting a sorted brick tray with a magnifier, holding a two-brick stack next to a one-brick and two-brick comparison, and pointing at a tall finished brick wall with a branching dotted path">
+            <div class="player-steps">
+                <div class="player-step">
+                    <strong>Snapshot</strong>
+                    <span>One frame, many builds at different stages.</span>
+                </div>
+                <div class="player-step">
+                    <strong>Order</strong>
+                    <span>Rank by completeness — that ranking is pseudotime.</span>
+                </div>
+                <div class="player-step">
+                    <strong>Branch</strong>
+                    <span>Follow where builds split, and check the split is real.</span>
+                </div>
+            </div>
+        </section>
+
         <div class="content-section">
             <h2>📋 Overview</h2>
             <p>Trajectory inference (TI) methods reconstruct the dynamic processes of cellular differentiation, development, and state transitions from single-cell data. These computational approaches allow researchers to understand how cells progress through different states over time, identify key transition points, and discover the genes that drive these changes.</p>
@@ -302,6 +513,21 @@
                 </ul>
             </div>
         </div>
+
+        <figure class="rally-comic">
+            <img
+                src="figures/lego-trajectory-comic.webp"
+                width="1600"
+                height="1600"
+                loading="lazy"
+                decoding="async"
+                alt="Four-panel comic: Healshu holds a two-brick stack beside a staircase of increasingly tall stacks; a scribbled zig-zag path is crossed out in red; a dotted path runs from a red brick through a blue brick and forks toward two outcomes; a finished brick wall is redrawn as a small branching graph">
+            <figcaption>
+                Rank the half-built models by how finished they are, refuse to draw a path where none is warranted,
+                mark the point where builds fork, and what you are left with is a branching pseudotime graph —
+                an ordering inferred from one snapshot, not a clock.
+            </figcaption>
+        </figure>
 
         <div class="content-section">
             <h2>🔬 Major Method Categories</h2>
