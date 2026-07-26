@@ -555,6 +555,14 @@
         [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(13,105,56,.18); border-color: rgba(79,206,138,.3); }
         [data-theme="dark"] .library-card .book-meta { color: #4fce8a; }
         [data-theme="dark"] .library-footnote { color: #9fe3ba; }
+
+        /* mobile fit: keep layout inside small viewports */
+        @media (max-width: 768px) {
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }
     </style>
 <base target="_blank">
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
@@ -592,26 +600,6 @@
                 Based on systematic analysis of 40+ landmark papers spanning a decade of innovation.
             </div>
         </header>
-
-        <!-- Statistics Bar -->
-        <section class="stats-bar">
-            <div class="stat-item">
-                <span class="stat-number">40+</span>
-                <div class="stat-label">Papers Analyzed<br>(2015-2025)</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">6</span>
-                <div class="stat-label">Integration<br>Categories</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">10+</span>
-                <div class="stat-label">Omics<br>Modalities</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">100M+</span>
-                <div class="stat-label">Cells in Foundation<br>Model Training</div>
-            </div>
-        </section>
 
         <!-- CASEWORK BANNER (Coordinate · Football lens) -->
         <section class="casework-banner" aria-label="Football inspired multi-omics casework">

@@ -417,6 +417,14 @@
             .concept-figure { padding: 15px; }
             .concept-figure .figure-title { font-size: 1em; }
         }
+
+        /* mobile fit: keep layout inside small viewports */
+        @media (max-width: 768px) {
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
@@ -455,24 +463,7 @@
             </div>
 
             <!-- Statistics -->
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="stat-number">33</span>
-                    <span class="stat-label">Curated Methods</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">5</span>
-                    <span class="stat-label">Years (2021-2025)</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">100M+</span>
-                    <span class="stat-label">Largest Training Set</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">8</span>
-                    <span class="stat-label">Categories</span>
-                </div>
-            </div>
+            
 
             <!-- Method Landscape Overview Figure -->
 <div class="concept-figure full-width highlight">

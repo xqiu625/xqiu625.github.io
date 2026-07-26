@@ -574,6 +574,14 @@
         [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(13,105,56,.18); border-color: rgba(79,206,138,.3); }
         [data-theme="dark"] .library-card .book-meta { color: #4fce8a; }
         [data-theme="dark"] .library-footnote { color: #9fe3ba; }
+
+        /* mobile fit: keep layout inside small viewports */
+        @media (max-width: 768px) {
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }
     </style>
 <base target="_blank">
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
@@ -614,7 +622,7 @@
         <!-- CASEWORK BANNER (Coordinate · Football lens: the goalkeeper) -->
         <section class="casework-banner" aria-label="Goalkeeper inspired spatial transcriptomics casework">
             <div class="casework-art">
-                <!-- TODO: IP asset pending — football-gk-three-poses.webp -->
+                <img src="../animations/rive-assets/stage-themes-v5/football-gk-three-poses.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Healshu goalkeeper showing positioning, sweeper keeper, and distribution poses">
             </div>
             <div class="casework-copy">
                 <div class="kicker">Football lens · the goalkeeper</div>
@@ -626,7 +634,9 @@
 
         <!-- STORY LINE: The Goalkeeper -->
         <section class="content-section story-section" id="gk-story">
-            <!-- TODO: story hero pending — football-gk-hero.webp -->
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/football-gk-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu goalkeeper standing on the goal line with a spatial cell position map">
+            </figure>
             <h2><i class="fas fa-futbol"></i> The Goalkeeper's Guide.</h2>
             <p class="story-quote">「位置感，就是门线前的全部学问。」</p>
             <p class="story-intro">Watch a keeper for ninety minutes and you learn that goalkeeping is geography: where you stand decides what you can reach. Spatial transcriptomics is that geography for cells — six scenes from the six-yard box, re-read as spatial analysis.</p>
@@ -669,26 +679,15 @@
                 </div>
             </div>
             <p class="library-footnote">好门将一半靠反应，一半靠站位 —— spatial context turns expression into geography.</p>
-        </section>
-
-
-        <!-- Statistics Bar -->
-        <section class="stats-bar">
-            <div class="stat-item">
-                <span class="stat-number">17+</span>
-                <div class="stat-label">Papers Analyzed<br>(2016-2025)</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">3</span>
-                <div class="stat-label">Technology<br>Categories</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">200 um</span>
-                <div class="stat-label">Max Tissue<br>Depth (3D)</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">10,000+</span>
-                <div class="stat-label">Genes Profiled<br>Simultaneously</div>
+            <div class="football-diagram-grid" aria-label="Goalkeeper spatial transcriptomics diagrams">
+                <figure>
+                    <img src="figures/football-gk-positioning.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Goalkeeper positioning diagram showing cell dots, spatial density, and goal area context">
+                    <figcaption>Positioning view: spatial dot density turns tissue coordinates into readable field geometry.</figcaption>
+                </figure>
+                <figure>
+                    <img src="figures/football-gk-sweeper.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Comparison from spot resolution to spatial domain">
+                    <figcaption>Sweeper view: isolated spots become spatial domains when neighborhoods are modeled together.</figcaption>
+                </figure>
             </div>
         </section>
 

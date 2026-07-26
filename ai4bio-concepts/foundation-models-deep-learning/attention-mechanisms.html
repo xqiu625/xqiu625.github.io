@@ -565,6 +565,14 @@
                 min-height: 250px;
             }
         }
+
+        /* mobile fit: keep layout inside small viewports */
+        @media (max-width: 768px) {
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }
     </style>
     <style>
         /* casework banner + story section + figures (LEGO lens) */

@@ -566,6 +566,14 @@
                 font-size: 1.1em;
             }
         }
+
+        /* mobile fit: keep layout inside small viewports */
+        @media (max-width: 768px) {
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
@@ -644,24 +652,7 @@
         </section>
 
         <!-- Statistics Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <span class="stat-number">40+</span>
-                <div class="stat-label">Research Papers</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">9</span>
-                <div class="stat-label">Years of Innovation</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">100M+</span>
-                <div class="stat-label">Cells Analyzed</div>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">6</span>
-                <div class="stat-label">Model Categories</div>
-            </div>
-        </div>
+        
 
         <!-- Core Concepts Section -->
         <section id="foundations" class="content-section">
