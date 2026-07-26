@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pretraining for biological foundation models — scRNA, genomic, protein, and multimodal pretraining objectives, datasets, and scaling laws.">
+    <title>Pretraining & Foundation Models — AI4Bio Learning Hub</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --sans:'Manrope',sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace; --serif:'Manrope',sans-serif;
+            --bg:#f6f2f4; --paper:#ffffff; --paper-2:#fdf6f8;
+            --ink:#333333; --ink-2:#555555; --ink-3:#8a7d82; --ink-4:#b8a5ac;
+            --rule:#e6cdd6; --rule-soft:#f3e3e9;
+            --accent:#af677d; --accent-2:#8a4f63; --accent-tint:#f6e6ec;
+            --warn:#b8801c; --warn-tint:#fff5e6;
+        }
+        * { box-sizing:border-box; }
+        body { font-family:var(--sans); background:linear-gradient(135deg,#faf4f6 0%,#f3e3e9 50%,#ecd5dd 100%); line-height:1.7; color:#333; margin:0; padding:0; }
+        ::selection { background:#af677d; color:#fff; }
+        a { color:#af677d; }
+        .container { max-width:1180px; margin:0 auto; padding:20px; }
+        .navbar { background:#fff; border-bottom:1px solid #ecdde2; padding:10px 0; position:sticky; top:0; z-index:1000; box-shadow:0 2px 5px rgba(0,0,0,0.07); }
+        .navbar-nav { list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; }
+        .navbar-nav li { margin:5px 15px; }
+        .navbar-nav a { color:#666; text-decoration:none; font-weight:bold; font-size:14.5px; display:inline-flex; align-items:center; gap:7px; transition:color .25s; }
+        .navbar-nav a:hover { color:#8a4f63; }
+        .navbar-nav a i { font-size:13px; opacity:.75; }
+        .home-link { color:#8a4f63 !important; }
+        .header { background:linear-gradient(135deg,#5e2f3d 0%,#8a4f63 50%,#af677d 100%); color:#fff; padding:64px 48px; border-radius:20px; margin:24px 0; text-align:center; box-shadow:0 8px 30px rgba(150,70,95,0.4); position:relative; overflow:hidden; }
+        .header::before { content:"w·x + b    \2211    \2207\03B8    \03C3"; position:absolute; top:18px; left:0; right:0; text-align:center; font-size:3em; opacity:0.08; letter-spacing:20px; font-family:var(--mono); pointer-events:none; white-space:nowrap; }
+        .header h1 { margin:0 0 16px; font-size:2.7em; font-weight:300; letter-spacing:.5px; position:relative; line-height:1.12; }
+        .header .subtitle { font-size:1.25em; opacity:.95; margin:0 auto 18px; font-weight:300; font-style:italic; max-width:72ch; line-height:1.5; position:relative; }
+        .header .description { font-size:1.02em; max-width:880px; margin:0 auto; line-height:1.8; font-weight:300; opacity:.92; position:relative; text-align:left; }
+        .stats-bar { background:linear-gradient(135deg,#ffffff 0%,#fdf6f8 100%); padding:28px; border-radius:15px; margin:25px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:22px; box-shadow:0 4px 20px rgba(94,47,61,0.1); border:1px solid rgba(175,103,125,0.18); }
+        .stat-item { text-align:center; padding:18px; border-left:4px solid #af677d; background:#fff; border-radius:8px; transition:transform .3s ease,box-shadow .3s ease; }
+        .stat-item:hover { transform:translateY(-5px); box-shadow:0 6px 20px rgba(175,103,125,0.18); }
+        .stat-number { font-size:2.6em; font-weight:300; color:#5e2f3d; display:block; letter-spacing:-1px; }
+        .stat-label { color:#8a4f63; font-size:.92em; margin-top:8px; font-weight:500; }
+        .content-section { background:#fff; padding:44px 40px; border-radius:15px; margin:25px 0; box-shadow:0 4px 15px rgba(0,0,0,0.07); border-top:4px solid #af677d; }
+        .content-section h2 { color:#5e2f3d; border-bottom:2px solid #af677d; padding-bottom:15px; margin:0 0 28px; font-size:1.85em; font-weight:400; letter-spacing:.3px; }
+        .content-section h3 { color:#8a4f63; margin:35px 0 18px; font-size:1.4em; font-weight:600; border-left:4px solid #af677d; padding-left:15px; line-height:1.25; }
+        .content-section h4 { color:#5e2f3d; }
+        .content-section p { color:#555; line-height:1.75; margin:0 0 15px; }
+        .content-section ul, .content-section ol { line-height:1.9; color:#555; }
+        .content-section li { margin-bottom:6px; }
+        .content-section li::marker { color:#af677d; }
+        strong { color:#5e2f3d; }
+        em { color:#8a4f63; }
+        blockquote { border-left:4px solid #af677d; background:#fdf6f8; margin:22px 0; padding:16px 22px; border-radius:0 8px 8px 0; color:#555; font-style:italic; }
+        blockquote cite { display:block; margin-top:8px; font-size:.85em; color:#8a7d82; font-style:normal; }
+        pre { background:#2e1b24; color:#f3e3e9; padding:18px 20px; border-radius:10px; overflow-x:auto; font-family:var(--mono); font-size:13px; line-height:1.55; }
+        code { font-family:var(--mono); }
+        .paper-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:22px; margin:26px 0; }
+        .paper-card { border:1px solid #e6cdd6; border-top:4px solid #af677d; border-radius:12px; padding:24px; background:linear-gradient(135deg,#ffffff 0%,#fdf6f8 100%); transition:all .3s ease; display:flex; flex-direction:column; }
+        .paper-card:hover { border-color:#af677d; box-shadow:0 8px 25px rgba(175,103,125,0.2); transform:translateY(-4px); }
+        .paper-card h4 { color:#5e2f3d; margin:0 0 12px; font-size:1.12em; line-height:1.4; font-weight:700; }
+        .paper-meta { display:flex; flex-wrap:wrap; gap:7px; margin:0 0 14px; font-size:.72em; text-transform:uppercase; letter-spacing:.04em; }
+        .meta-badge { display:inline-block; padding:4px 10px; border-radius:12px; font-weight:700; }
+        .year-badge { background:#af677d; color:#fff; }
+        .journal-badge { background:#f0dde4; color:#7a5560; }
+        .type-badge { background:#7a5560; color:#fff; }
+        .modality-badge { background:#f6e6ec; color:#8a4f63; border:1px solid #e0b9c6; }
+        .paper-description { color:#5b4d52; line-height:1.6; margin:0 0 14px; font-size:.93em; }
+        .key-contributions, .paper-highlights { list-style:none; padding:0; margin:0 0 14px; border-top:1px dashed #e6cdd6; padding-top:12px; }
+        .key-contributions li, .paper-highlights li { padding-left:20px; position:relative; margin:7px 0; font-size:.86em; color:#6b5560; line-height:1.5; }
+        .key-contributions li::before, .paper-highlights li::before { content:"\2713"; position:absolute; left:0; color:#2e9e6b; font-weight:bold; }
+        .seen-in { font-size:.82em; color:#8a7d82; font-style:italic; margin:6px 0 14px; }
+        .paper-links { margin-top:auto; display:flex; gap:8px; flex-wrap:wrap; }
+        .paper-links a, .paper-link, .ref-link, .xref-link { padding:6px 13px; background:linear-gradient(135deg,#af677d,#7a5560); color:#fff; text-decoration:none; border-radius:6px; font-size:.8em; font-weight:600; display:inline-flex; align-items:center; gap:6px; transition:all .25s ease; }
+        .paper-links a:hover, .paper-link:hover, .ref-link:hover, .xref-link:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(175,103,125,0.3); }
+        .module-figure, .figure-block { margin:30px 0; background:#fff; border:1px solid #e6cdd6; border-radius:12px; padding:20px; box-shadow:0 3px 14px rgba(150,70,95,0.08); }
+        .module-figure img, .figure-block img { display:block; width:100%; height:auto; border:1px solid #e6cdd6; border-radius:8px; }
+        .module-figure figcaption, .figure-block figcaption { margin-top:14px; font-size:.9em; color:#666; line-height:1.6; }
+        .module-figure figcaption strong, .figure-block figcaption strong { color:#af677d; }
+        .module-figure .fig-title, .figure-block .fig-title { display:block; color:#5e2f3d; font-weight:700; margin:4px 0; font-size:1.0em; }
+        .fig-missing { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; min-height:150px; padding:28px; border:1px dashed #e0b9c6; border-radius:8px; background:#f9eef2; font-family:var(--mono); font-size:12px; color:#a98a96; text-align:center; line-height:1.5; }
+        .fig-missing svg { width:26px; height:26px; opacity:.6; }
+        .glossary-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; margin:22px 0; }
+        .concept-card { background:#fff; border:1px solid #e6cdd6; border-top:3px solid #af677d; border-radius:12px; padding:22px; box-shadow:0 4px 15px rgba(0,0,0,0.05); display:flex; flex-direction:column; transition:transform .25s ease,box-shadow .25s ease; }
+        .concept-card:hover { transform:translateY(-4px); box-shadow:0 10px 26px rgba(175,103,125,0.15); }
+        .concept-tag { display:inline-block; align-self:flex-start; background:#f0dde4; color:#7a5560; font-family:var(--mono); font-size:10px; letter-spacing:.07em; text-transform:uppercase; padding:4px 10px; border-radius:12px; margin-bottom:10px; font-weight:600; }
+        .concept-card h4 { color:#5e2f3d; font-size:1.08em; margin:4px 0 12px; line-height:1.3; }
+        .concept-svg { width:100%; height:auto; margin:4px 0 12px; }
+        .concept-card p { color:#555; font-size:13.5px; line-height:1.6; margin:0; }
+        .xref-card { background:linear-gradient(135deg,#fdf6f8 0%,#f6e6ec 100%); border:1px solid #e6cdd6; border-left:4px solid #af677d; border-radius:10px; padding:20px 24px; margin:18px 0; }
+        .xref-card h4 { color:#5e2f3d; margin:0 0 10px; }
+        .xref-card p { color:#555; }
+        .timeline { position:relative; margin:25px 0 0; padding:4px 0; }
+        .timeline::before { content:''; position:absolute; left:8px; top:6px; bottom:6px; width:2px; background:linear-gradient(#c98fa1,#af677d); border-radius:2px; }
+        .timeline-item { position:relative; padding-left:40px; padding-bottom:28px; }
+        .timeline-item::before { content:''; position:absolute; left:0; top:5px; width:18px; height:18px; border-radius:50%; background:#fff; border:3px solid #af677d; box-shadow:0 0 0 4px rgba(175,103,125,0.1); }
+        .timeline-item h3, .timeline-item h4 { color:#5e2f3d; margin:0 0 6px; font-weight:700; border:0; padding:0; }
+        .timeline-item p { color:#555; margin:0; }
+        .method-category { background:linear-gradient(135deg,#fdf6f8 0%,#f6e6ec 100%); border-left:4px solid #af677d; border-radius:8px; padding:20px 24px; margin:18px 0; }
+        .method-category h4 { color:#5e2f3d; margin:0 0 12px; font-size:1.15em; font-weight:600; }
+        .method-category p { color:#555; margin:8px 0; }
+        .method-category strong { color:#8a4f63; }
+        .highlight-box { background:linear-gradient(135deg,#fdf6f8 0%,#f6e6ec 100%); border:2px solid #af677d; border-left:6px solid #af677d; padding:28px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(175,103,125,0.1); }
+        .highlight-box h3, .highlight-box h4 { color:#5e2f3d; margin:0 0 16px; font-size:1.3em; font-weight:600; border-bottom:2px solid #af677d; padding-bottom:10px; }
+        .highlight-box p, .highlight-box li { color:#555; }
+        .checklist { background:linear-gradient(135deg,#fdf6f8 0%,#f6e6ec 100%); border:1px solid #e6cdd6; border-left:4px solid #af677d; border-radius:10px; padding:24px 28px; margin:22px 0; }
+        .checklist h4 { color:#5e2f3d; margin:0 0 14px; font-size:1.2em; font-weight:700; }
+        .checklist li { margin-bottom:9px; color:#555; }
+        .checklist li::marker { color:#af677d; font-weight:bold; }
+        .warning-box { background:linear-gradient(135deg,#fffaf0 0%,#fff5e6 100%); border:2px solid #ffa726; border-left:6px solid #f57c00; padding:25px; margin:25px 0; border-radius:10px; }
+        .warning-box h3, .warning-box h4 { color:#e65100; margin:0 0 12px; font-size:1.22em; font-weight:600; }
+        .warning-box p, .warning-box li { color:#6e5a3a; }
+        .comparison-table { width:100%; border-collapse:collapse; margin:22px 0; font-size:.93em; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 2px 10px rgba(175,103,125,0.08); }
+        .comparison-table th, .comparison-table td { padding:13px 15px; text-align:left; border-bottom:1px solid #f0e3e8; }
+        .comparison-table th { background:linear-gradient(135deg,#af677d,#7a5560); color:#fff; font-weight:bold; }
+        .comparison-table tr:hover { background:#fbf3f6; }
+        .comparison-table td:first-child { font-weight:bold; color:#af677d; }
+        footer { text-align:center; padding:36px 30px; color:#8a7d82; background:transparent; margin-top:30px; }
+        footer p { margin:8px 0; }
+        footer a { color:#af677d; text-decoration:none; font-weight:600; }
+        footer a:hover { text-decoration:underline; }
+        @media (max-width:768px) {
+            .header { padding:40px 24px; } .header h1 { font-size:2em; } .header::before { display:none; }
+            .content-section { padding:28px 22px; }
+            .paper-grid, .glossary-grid, .stats-bar { grid-template-columns:1fr; }
+        }
+    
+        /* story line: Romance of the Three Kingdoms */
+        .story-section { background: var(--sport-soft, #fbf7ff); border: 1.5px solid var(--sport-pale, #f4ecfa); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #3B276E); border-left: 4px solid var(--sport-primary, #7A5FB8); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #f4ecfa); border-left: 5px solid var(--sport-primary, #7A5FB8); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(59,39,110,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(59,39,110,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); }
+        .library-card h4 { color: var(--sport-dark, #3B276E); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #3B276E); background: var(--sport-pale, #f4ecfa); border: 1px dashed var(--sport-secondary, #C9B7EE); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #7A5FB8); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #7A5FB8); font-size: .95em; }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #b9a5f0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(122,95,184,.15); border-color: rgba(185,165,240,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #b9a5f0; }
+        /* casework banner + figures */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#2a1a52 0%,#3B276E 55%,#4a3488 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(59,39,110,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #C9B7EE; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #e6ddf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#f4ecfa); box-shadow: 0 10px 28px rgba(59,39,110,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+
+        /* granularity trade-off cards */
+        .tradeoff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 18px 0 22px; }
+        .tradeoff-card { background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); border-radius: 10px; padding: 18px; border-top: 4px solid var(--sport-primary,#7A5FB8); }
+        .tradeoff-card h4 { color: var(--sport-dark,#3B276E); margin: 0 0 12px; font-size: 1.02em; }
+        .tradeoff-card h4 small { color: var(--sport-primary,#7A5FB8); font-weight: 600; font-size: .78em; }
+        .tradeoff-card p { font-size: .9em; line-height: 1.6; margin: 0 0 8px; padding-left: 20px; position: relative; }
+        .tradeoff-card p:last-child { margin-bottom: 0; }
+        .tradeoff-card .gain { color: #1e7e34; }
+        .tradeoff-card .cost { color: #b03a2e; }
+        [data-theme="dark"] .tradeoff-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); }
+        [data-theme="dark"] .tradeoff-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .tradeoff-card .gain { color: #6fd695; }
+        [data-theme="dark"] .tradeoff-card .cost { color: #e8927f; }
+        .tradeoff-card.special { grid-column: 1 / -1; border-top-color: #e31c23; }
+        .tradeoff-card.special h4 { color: #7a1f16; }
+        [data-theme="dark"] .tradeoff-card.special h4 { color: #f0a79b; }
+        .tradeoff-card .special-intro { font-size: .92em; color: #4a463b; margin-bottom: 12px; }
+        [data-theme="dark"] .tradeoff-card .special-intro { color: #c9d1d9; }
+        .tradeoff-card .special-rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; }
+        .tradeoff-card .special-rows p { font-size: .88em; margin: 0; padding-left: 0; }
+        .tradeoff-card .special-rows code { background: var(--sport-pale,#f4ecfa); color: var(--sport-dark,#3B276E); padding: 2px 8px; border-radius: 6px; font-weight: 700; }
+        [data-theme="dark"] .tradeoff-card .special-rows code { background: rgba(122,95,184,.25); color: #e6ddf7; }
+
+        /* mobile fit: keep layout inside small viewports */
+        @media (max-width: 768px) {
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .navbar-nav .section-nav-item { display: none; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Manrope:wght@400;600;700;800&display=swap">
+    <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
+    <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
+</head>
+<body data-sport="model">
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a>
+                </li>
+                <li>
+                    <a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a>
+                </li>
+                <li><a href="#core-concepts"><i class="fas fa-bookmark"></i> Concepts</a></li>
+                <li><a href="#compare"><i class="fas fa-code-compare"></i> Compare</a></li>
+                <li><a href="#families"><i class="fas fa-layer-group"></i> Method families</a></li>
+                <li><a href="#table"><i class="fas fa-table"></i> Selection</a></li>
+                <li><a href="#reading-order"><i class="fas fa-list-ol"></i> Reading order</a></li>
+                <li><a href="#practical"><i class="fas fa-wrench"></i> Practical</a></li>
+                <li><a href="#hands-on"><i class="fas fa-laptop-code"></i> Hands-on</a></li>
+                </ul>
+        </div>
+    </nav>
+    <main class="container">
+        <header class="header">
+            <h1>Pretraining &amp;<br>Foundation Models</h1>
+            <div class="subtitle">From masked-gene encoders to billion-parameter cell-as-sentence LLMs — how foundation models are built for biology.</div>
+            <p class="description">
+                25 curated papers on the pretraining recipes behind biological foundation models. Spans rank-value masked LMs (Geneformer), contrastive teacher–student (Concerto), cell-as-sentence decoder LLMs (C2S-Scale), discrete diffusion for proteins (DPLM), masked-LM protein foundation models trained at metagenomic scale (ESM Cambrian, 2.806B sequences), genomic transformers (Nucleotide Transformer, CodonFM), cross-species/multimodal models (UCE, Nicheformer, scTranslator), and the data + benchmarking infrastructure (scBaseCount, the Nat Mach Intell SSL benchmark) that makes scale possible.
+            </p>
+        </header>
+
+        <!-- CASEWORK BANNER (Model · LEGO lens) -->
+        <section class="casework-banner" aria-label="LEGO inspired pretraining casework">
+            <div class="casework-art">
+                <!-- TODO: IP asset pending — lego-pretrain-three-poses.webp -->
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">LEGO lens · pretraining</div>
+                <h2>练手于散装，精修于图纸。</h2>
+                <p>Pretraining is drilling on the biggest bulk bin of bricks you can find — covering one piece,
+                guessing it from everything around it, millions of times. 练到最后，拿起任何图纸都能拼：
+                train on the pile, then build anything.</p>
+            </div>
+        </section>
+
+        <!-- STORY LINE: cover one, guess one -->
+        <section class="content-section story-section" id="pretrain-story">
+            <!-- TODO: story hero pending — lego-pretrain-hero.webp -->
+            <h2><i class="fas fa-cubes"></i> Cover One, Guess One.</h2>
+            <p class="story-quote">「遮住一块，才学会怎么拼。」</p>
+            <p class="story-intro">Pretraining is the covered-brick drill: hide one piece, guess it from everything around it, until the bin of loose bricks starts to feel like a kit you already know. Six scenes from the practice bench, re-read as pretraining objectives.</p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Scene 1 · 遮住的那一格</div>
+                    <h4>The covered slot</h4>
+                    <p class="plot">Cover one brick of the half-built castle with a cloth. Can you name it from the bricks around it — above, below, left, right?</p>
+                    <p class="echo"><strong>Masked language modeling (MLM).</strong> Hide a token, predict it from bidirectional context. <a href="#families">See masked encoders ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 2 · 下一块是什么</div>
+                    <h4>What snaps on next</h4>
+                    <p class="plot">Build step by step and keep asking: given everything placed so far, what is the next brick that makes sense?</p>
+                    <p class="echo"><strong>Causal / autoregressive LM.</strong> Left-to-right prediction — each token from everything before it, nothing after. <a href="#families">See autoregressive decoders ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 3 · 打乱的城堡复原</div>
+                    <h4>Restore the scrambled build</h4>
+                    <p class="plot">Shake the table, scramble the model — then put it back. The restoration only works if you understood the structure, not the colors.</p>
+                    <p class="echo"><strong>Denoising objectives.</strong> Corrupt the input, learn to reconstruct the clean version. <a href="#families">See denoising ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 4 · 散装零件库练手</div>
+                    <h4>Drilling on the bulk bin</h4>
+                    <p class="plot">The giant unsorted bin holds every kit mixed together — no instructions, no labels, just millions of pieces for the cover-and-guess drill.</p>
+                    <p class="echo"><strong>Pretraining corpus.</strong> Broad, unlabeled data at scale — the bin covers more situations than any single kit. <a href="#core-concepts">See the scale argument ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 5 · 同款练习换套装</div>
+                    <h4>Same drill, new kit</h4>
+                    <p class="plot">A builder who mastered the bulk bin opens a brand-new set — and the covered-brick guess works there too, after only a few pages of new instructions.</p>
+                    <p class="echo"><strong>Transfer &amp; fine-tuning.</strong> Pretrain once, adapt cheaply — the representation from the pile transfers to every downstream kit. <a href="#practice">See adaptation ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 6 · 零件标准化</div>
+                    <h4>Why the drill works at all</h4>
+                    <p class="plot">Every brick in the world shares the same stud system — that is the only reason practice on one kit helps with another.</p>
+                    <p class="echo"><strong>Shared representation space.</strong> Pretraining learns the universal "stud system" of biology: tokens and embeddings every task can reuse. <a href="#core-concepts">See why it transfers ↓</a></p>
+                </div>
+            </div>
+            <p class="library-footnote">遮一万次之后，闭眼也知道下一块 —— cover enough, and the model guesses right.</p>
+        </section>
+
+        <section class="content-section" id="core-concepts">
+            <h2>Core Concepts</h2>
+            <h3>What "pretraining" means in biology</h3>
+            <p>
+                Pretraining is the moment a model learns its <em>vocabulary</em> — the substrate it will reason over later. In language: masked next-word and next-token. In single-cell biology: masked counts, ranked gene tokens, or natural-language cell sentences. The objective and the tokenisation are the two design knobs that decide everything else.
+            </p>
+            <p>
+                Biological pretraining is constrained by two things NLP isn't: (1) the data is sparse, noisy, and platform-confounded — UMI counts vary by 10× across protocols; (2) the underlying "language" — gene regulation — is not generated by the same process for every cell or species. So a usable scFM has to be tokenisation-robust, batch-aware, and at least somewhat cross-species transferable. The best models bake these constraints into the loss.
+            </p>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig01_nlp_vs_bio.svg" alt="Side-by-side comparison of NLP and biological pretraining. Both rows feed a masked input through a transformer to predict the missing token, but the biology row pays for every assumption NLP gets for free: noisy/sparse counts, no canonical token order, batch effects across protocols, and no species-level shared vocabulary.">
+                <figcaption><strong>Figure 1</strong><span class="fig-title">Same architecture, different data realities.</span> NLP gets discrete words, canonical order, and a single shared vocabulary for free; biological pretraining gets none of those. Every design choice downstream — tokenisation, masking, batch-awareness, cross-species substrate — is a workaround for one of these missing assumptions.</figcaption>
+            </figure>
+
+                        <div style="background:linear-gradient(135deg,#fdf6f8 0%,#ffffff 100%); border:2px solid #af677d; border-radius:12px; padding:28px; margin:26px 0;">
+                <h4 style="text-align:center; color:#5e2f3d; margin:0 0 4px; font-size:1.2em;">Self-supervision: the data labels itself</h4>
+                <p style="text-align:center; color:#8a7d82; font-size:0.9em; margin:0 0 16px;">Pretraining hides part of each cell's gene profile and trains the model to fill it back in — no manual annotations required, so it scales to tens of millions of cells.</p>
+                <svg viewBox="0 0 900 280" style="width:100%; height:auto; font-family:'Manrope',sans-serif;">
+                    <defs><marker id="ptA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8a4f63"/></marker></defs>
+                    <text x="160" y="36" text-anchor="middle" font-size="12.5" fill="#5e2f3d" font-weight="bold">one cell's gene tokens</text>
+                    <g font-family="'IBM Plex Mono',monospace" font-size="11" text-anchor="middle">
+                        <rect x="40" y="50" width="64" height="34" rx="5" fill="#f0dde4" stroke="#af677d"/><text x="72" y="72" fill="#7a5560">GATA1</text>
+                        <rect x="110" y="50" width="44" height="34" rx="5" fill="#af677d"/><text x="132" y="72" fill="#fff" font-weight="bold">?</text>
+                        <rect x="160" y="50" width="60" height="34" rx="5" fill="#f0dde4" stroke="#af677d"/><text x="190" y="72" fill="#7a5560">CD3D</text>
+                        <rect x="226" y="50" width="44" height="34" rx="5" fill="#af677d"/><text x="248" y="72" fill="#fff" font-weight="bold">?</text>
+                        <rect x="276" y="50" width="60" height="34" rx="5" fill="#f0dde4" stroke="#af677d"/><text x="306" y="72" fill="#7a5560">MS4A1</text>
+                    </g>
+                    <text x="188" y="104" text-anchor="middle" font-size="10.5" fill="#a98a96" font-style="italic">~15% of tokens randomly masked</text>
+
+                    <line x1="188" y1="116" x2="188" y2="150" stroke="#8a4f63" stroke-width="2" marker-end="url(#ptA)"/>
+                    <rect x="60" y="152" width="256" height="48" rx="10" fill="#8a4f63"/>
+                    <text x="188" y="181" text-anchor="middle" font-size="14" fill="#fff" font-weight="600">Transformer encoder</text>
+
+                    <line x1="316" y1="176" x2="392" y2="176" stroke="#8a4f63" stroke-width="2" marker-end="url(#ptA)"/>
+
+                    <!-- predictions -->
+                    <text x="600" y="36" text-anchor="middle" font-size="12.5" fill="#5e2f3d" font-weight="bold">predict the hidden genes</text>
+                    <g font-family="'IBM Plex Mono',monospace" font-size="11" text-anchor="middle">
+                        <rect x="430" y="120" width="150" height="40" rx="6" fill="#fff" stroke="#af677d" stroke-width="1.5"/><text x="505" y="145" fill="#7a5560">slot 2 &rarr; <tspan fill="#2e9e6b" font-weight="bold">CD8A</tspan></text>
+                        <rect x="430" y="172" width="150" height="40" rx="6" fill="#fff" stroke="#af677d" stroke-width="1.5"/><text x="505" y="197" fill="#7a5560">slot 4 &rarr; <tspan fill="#2e9e6b" font-weight="bold">NKG7</tspan></text>
+                    </g>
+                    <text x="505" y="232" text-anchor="middle" font-size="10.5" fill="#a98a96" font-style="italic">loss = how wrong the guesses are</text>
+
+                    <!-- learned representation arrow -->
+                    <line x1="600" y1="120" x2="600" y2="96" stroke="#c98fa1" stroke-width="2"/>
+                    <rect x="610" y="120" width="250" height="92" rx="10" fill="#f6e6ec" stroke="#af677d"/>
+                    <text x="735" y="150" text-anchor="middle" font-size="12.5" fill="#5e2f3d" font-weight="600">what the model keeps</text>
+                    <text x="735" y="172" text-anchor="middle" font-size="11" fill="#8a4f63">a reusable cell embedding —</text>
+                    <text x="735" y="189" text-anchor="middle" font-size="11" fill="#8a4f63">the actual product of pretraining</text>
+                </svg>
+                <p style="text-align:center; color:#666; margin:14px 0 0; font-size:0.95em;"><strong style="color:#af677d;">Key insight:</strong> by repeatedly guessing masked genes across millions of cells, the model is forced to learn which genes co-vary — i.e. cell biology. The downstream value isn't the guesses; it's the <em>embedding</em> learned along the way, which transfers to annotation, perturbation, and integration tasks.</p>
+            </div>
+
+            <h3>Why it matters for biology</h3>
+            <ul>
+                <li><strong>Transfer to small datasets.</strong> Most biological questions live in datasets of 1K–100K cells, not millions. Pretraining converts the public atlases into reusable priors — the Geneformer ablation shows dosage-sensitivity AUC 0.91 with only fine-tuning data.</li>
+                <li><strong>Cross-species and cross-modality.</strong> UCE shows zero-shot cell-type classification across species without homolog mapping. Nicheformer learns spatial context that transfers back to dissociated scRNA-seq. These are not regular ML wins — they require the pretraining substrate to be species-agnostic.</li>
+                <li><strong>In-silico perturbation.</strong> Geneformer's attention weights and Geneformer-scaling's quantised embeddings make virtual KO screens economical (&lt;$5k for 4K genes × 30K cells). This is the bridge from foundation model to drug-target hypothesis.</li>
+                <li><strong>Honest baselines matter.</strong> The 2024 SSL benchmark and 2026 Dimitrov et al. review converge on the same message: linear baselines and masked autoencoders often match contrastive and decoder-only models on standard scRNA tasks. Pretraining helps — but only when transfer matters.</li>
+            </ul>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig09_pretraining_overlap.svg" alt="Two-panel comparison of pretraining benefit when downstream and pretraining distributions overlap vs not. Same encoder, same fine-tune; only the data distribution differs. Left panel (overlap): pretraining benefit collapses to zero — the model is just memorising. Right panel (distribution shift): pretraining provides genuine transfer.">
+                <figcaption><strong>Figure 2</strong><span class="fig-title">When pretraining helps, and when you're just memorising.</span> The 2024 SSL benchmark (Nat Mach Intell, on scTab data) made this explicit: pretraining benefit collapses to zero when the pretraining and downstream datasets overlap. Pretraining is a transfer-learning prior, not a free win — demand a benchmark that is independent of the model's training set before believing any improvement.</figcaption>
+            </figure>
+
+            <h3>The four design axes</h3>
+            <ul>
+                <li><strong>Tokenisation.</strong> Rank-value tokens (Geneformer), continuous counts (scHyena, AIDO), bag-of-RNA gene tokens (UCE), cell sentences (C2S-Scale), discrete VQ codes (ChrisCell). The choice is upstream of every downstream property.</li>
+                <li><strong>Objective.</strong> Masked LM (Geneformer, scBERT, NT, UCE), contrastive (Concerto), discrete diffusion (DPLM), autoregressive next-token (C2S-Scale, TranscriptFormer — with a paired gene-identity + zero-truncated-Poisson count head), denoising (scPRINT-2), in-context learning (STACK).</li>
+                <li><strong>Scale.</strong> 22M cells (scTab) → 50M (AIDO) → 110M (Nicheformer) → 150M (C2S-Scale) → 230M (scBaseCount) → 350M (scPRINT-2). Genomic LMs run 850 genomes (NT) to 9.3 trillion bp (Evo). Protein LMs reach 2.806B sequences (ESM Cambrian) — ~56× ESM-2's UniRef50 corpus once metagenomic databases (SPIRE, MGnify, JGI/IMG) are added; contact-precision then improves log-linearly with FLOPs up to 6B parameters (R²=0.99) without plateau.</li>
+                <li><strong>Downstream coverage.</strong> Single-task fine-tune (most scFMs), zero-shot (UCE, scCello), in-context learning (STACK), natural-language interface (C2S-Scale, MedMPT).</li>
+            </ul>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig02_design_axes.svg" alt="Taxonomy diagram showing the four design axes of biological pretraining: tokenisation (rank-value, continuous counts, bag-of-RNA, cell-sentence, VQ codes), objective (masked LM, contrastive, denoising, autoregressive, in-context, discrete diffusion), scale (cells from 1M to 350M), and downstream coverage (fine-tune, zero-shot, ICL, NL interface). Every scFM picks one option from each axis.">
+                <figcaption><strong>Figure 3</strong><span class="fig-title">The four design axes — a taxonomy at a glance.</span> Every single-cell foundation model picks one option from each axis. Most innovation lives here, not in the transformer itself. Use this as a checklist when reading a new scFM paper: what did they pick, and what did they implicitly rule out?</figcaption>
+            </figure>
+        </section>
+
+        <section class="content-section" id="timeline">
+            <h2>Evolution Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>2022 — Contrastive scRNA pretraining</h3>
+                    <p>Concerto (Nat Mach Intell) shows that self-supervised teacher–student contrastive learning can be the substrate for multimodal single-cell integration at 10M-cell scale. Exceiver introduces Perceiver IO + discrete noise masking for count data.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2023 — BERT for cells, the breakout year</h3>
+                    <p>Geneformer (Nature) demonstrates rank-value masked LM on 29.9M cells, with attention heads that recover transcription-factor hierarchy unsupervised. scHyena replaces attention with the Hyena operator for full 19K-gene context. UCE applies ESM2 embeddings as gene tokens for cross-species transfer.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2024 — Honest benchmarking + diffusion</h3>
+                    <p>The 2024 SSL benchmark (Nat Mach Intell; run on scTab's 22M cells) delivers the field's first sober comparison: masked autoencoders beat contrastive on scRNA. DPLM (ICML) imports discrete diffusion into protein LMs. AIDO scales dense transformers to 650M params on 50M cells.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2025 — Cell-as-sentence and spatial integration</h3>
+                    <p>C2S-Scale (bioRxiv) shows transcriptomic scaling laws mirror NLP from 157M to 27B parameters. Nicheformer (Nat Methods) co-pretrains on dissociated + spatial data, enabling spatial label transfer back to scRNA-seq. scPRINT-2 reaches 350M cells.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2026 — Resource efficiency, in-context learning, and generative cross-species</h3>
+                    <p>Geneformer-scaling (Nat Comput Sci) brings 4-bit QLoRA to scFMs while preserving perturbation fidelity at r=0.998. STACK introduces true in-context learning for single-cell biology. ChrisCell uses VQ discretisation for interpretable cell codes. TranscriptFormer (Science) makes the leap from masked encoders to <em>autoregressive generative</em> pretraining — predicting gene identity and count sequentially across 12 species and 1.53 billion years of evolution. On the protein side, ESM Cambrian (EvolutionaryScale) re-baselines masked-LM pretraining at metagenomic scale: 2.806B sequences (~56× ESM-2's corpus), 300M / 600M / 6B parameter trio, and the first clean log-linear contact-precision scaling law for proteins (R²=0.99) — the field's evidence that the "ESM-2 plateau" was a data ceiling, not a model ceiling.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="compare">
+    <h2>&#x2696;&#xFE0F; Side-by-Side: Masked Encoder vs Autoregressive Decoder</h2>
+    <p>Geneformer (2023, Nature) and TranscriptFormer (2026, Science) take the same starting material — a single-cell gene expression profile — and make opposite architectural bets: bidirectional masked-gene prediction that builds a reusable encoder, versus causal autoregressive generation that produces a full generative model of transcription.</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">Same input — a cell's ranked gene list — becomes very different model inputs and objectives:</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — Geneformer -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">Geneformer</div>
+                    <div style="color:#9fc7bb;font-size:12px;">Masked-gene BERT encoder &middot; 2023 Nature</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Rank-value tokenisation</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">genes sorted by count &divide; corpus-median; top 2,048 emitted as token IDs; magnitudes discarded</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Bidirectional masked LM</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">15% of gene tokens masked; full context on both sides used to predict each masked gene; BERT-style encoder</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">cell embedding</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">attn weights</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">bidirectional &middot; encoder-only &middot; rank tokens &middot; fine-tune / KO screen</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — TranscriptFormer -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">TranscriptFormer</div>
+                    <div style="color:#c7a877;font-size:12px;">Autoregressive causal decoder &middot; 2026 Science</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">(gene, count) pair tokenisation</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">gene identity via ESM2 protein embedding; count enters as additive attention bias; all expressed genes included</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Causal two-headed next-token LM</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">predict next gene (categorical CE) then its count (zero-truncated Poisson NLL); causal mask — left context only</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">generated cell</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">log-likelihood</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">causal &middot; generative decoder &middot; ESM2 gene tokens &middot; zero-shot / sampling</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision — <strong style="color:#5ec2a8;">bidirectional masking</strong> vs <strong style="color:#d6a44f;">causal next-token prediction</strong> — and everything follows: Geneformer gets rich bidirectional context for discriminative tasks (dosage sensitivity, KO screens, fine-tuning) but cannot generate; TranscriptFormer can sample new cells, score log-likelihoods, and transfer zero-shot across 12 species via ESM2 gene tokens, but pays for it in architecture complexity and a two-headed loss that couples gene identity to count.</p>
+    </div>
+</section>
+
+        <section class="content-section" id="families">
+            <h2>Method Families</h2>
+            <p>Grouped by what is being pretrained and how. Within each family, papers are ordered chronologically.</p>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig06_model_landscape.svg" alt="Scatter plot of single-cell foundation models with pretraining scale on the x-axis and downstream usage mode on the y-axis. Geneformer and scGPT in the fine-tune-only zone; UCE and scCello in zero-shot; STACK in in-context learning; C2S-Scale and MedMPT in natural-language-interface. Architecture and objective decide where a model lands vertically, not scale alone.">
+                <figcaption><strong>Figure 4</strong><span class="fig-title">Model landscape — scale vs downstream flexibility.</span> Pretraining scale on the x-axis, downstream usage mode on the y-axis. Bigger doesn't always mean more flexible — architecture and objective decide vertical position. A 27B C2S-Scale and a 149M STACK reach different downstream regimes than a 316M Geneformer of similar size.</figcaption>
+            </figure>
+
+            <h3>scRNA Foundation Models (11)</h3>
+            <p>BERT-style and decoder-only LMs pretrained on tens to hundreds of millions of single cells. Tokenisation is the key design axis — rank values, masked counts, or cell sentences.</p>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig07_tokenisation_zoo.svg" alt="Five-panel diagram showing one source cell tokenised five different ways: rank-value tokens (Geneformer), continuous counts (scHyena/AIDO), bag-of-RNA with ESM2 embeddings (UCE), cell-as-sentence with repeated gene names (C2S-Scale), and discrete VQ codes (ChrisCell). Each tokenisation keeps and discards different information.">
+                <figcaption><strong>Figure 5</strong><span class="fig-title">The tokenisation zoo — one cell, five representations.</span> Same source cell, five tokenisation choices, very different things kept and discarded. The transformer downstream is the same; what reaches it is decided here. Rank-value drops magnitude; bag-of-RNA drops order; VQ codes drop continuity; cell-sentence preserves both magnitude (via repetition) and order but pays in sequence length.</figcaption>
+            </figure>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig03_geneformer_rankvalue.svg" alt="Geneformer rank-value encoding pipeline. Per-cell gene expression counts are divided by corpus-wide median nonzero expression to produce a normalised score; genes are sorted by score, top 2048 kept, gene symbols emitted as tokens. The result is a sorted sentence of gene names; magnitudes are discarded, only relative rank is kept. A BERT encoder then masks 15% of tokens and predicts identity.">
+                <figcaption><strong>Figure 6</strong><span class="fig-title">How rank-value encoding works (Geneformer).</span> Each cell becomes a sorted sentence of gene names. Geneformer scales each gene by count ÷ corpus-median-nonzero — deprioritising housekeeping genes and surfacing cell-state-distinguishing TFs. Magnitudes are discarded; only relative rank is kept. The result is a token sequence a BERT-style encoder can mask and predict.</figcaption>
+            </figure>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Contrastive learning enables rapid mapping to multimodal single-cell atlas of multimillion scale</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">Nat Mach Intell</span> <span class="meta-badge type-badge">Contrastive SSL</span>
+                    </div>
+                    <p class="paper-description">Concerto is a self-supervised contrastive learning framework using an asymmetric teacher–student architecture for single-cell RNA and protein integration. It learns cell embeddings on a hypersphere from 31K–10M cells across multiple protocols, enabling rapid reference mapping and multimodal fusion without labelled data.</p>
+                    <ul class="key-contributions">
+                        <li>Contrastive learning outperforms VAE-based methods: classification F1=0.926, clustering ARI=0.646, integration ASW=0.533</li>
+                        <li>Maps a 10M-cell reference in 1.5h; 10K-cell query inference in 8s</li>
+                        <li>First framework to combine attention-based teacher with dense-student networks for RNA-protein fusion via element-wise summation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s42256-022-00518-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/melobio/Concerto-reproducibility" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>A single-cell gene expression language model</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Perceiver IO + masking</span>
+                    </div>
+                    <p class="paper-description">Exceiver applies Perceiver IO to full 19K-gene single-cell transcriptomes with linear-complexity cross-attention. Pretrained on Tabula Sapiens via Discrete Noise Masking, it learns regulatory relationships and transfers to disease and drug-response tasks.</p>
+                    <ul class="key-contributions">
+                        <li>Introduces Discrete Noise Masking objective for count data; 0.73 explained variance vs continuous baselines</li>
+                        <li>30× faster fine-tuning convergence (10 epochs vs 350) when transferring to new scRNA datasets</li>
+                        <li>Gene embeddings cluster functionally; 66% of clusters enriched for STRING-network interactions</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2210.14330" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/keiserlab/exceiver" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Transfer learning enables predictions in network biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nature</span> <span class="meta-badge type-badge">BERT encoder</span>
+                    </div>
+                    <p class="paper-description">Geneformer is a context-aware BERT-style transformer pretrained on 29.9M human single-cell transcriptomes using rank-value encoding and masked-gene prediction. It enables transfer learning for network biology, dosage sensitivity, and in-silico perturbation with limited downstream data.</p>
+                    <ul class="key-contributions">
+                        <li>AUC 0.91 for dosage sensitivity, 0.81 for network hierarchy — vs SVM 0.75, RF 0.72</li>
+                        <li>Predicts therapeutic targets validated in cardiac tissue: GSN and PLN knockouts improve contractile stress</li>
+                        <li>Attention heads learn hierarchy unsupervised: 20% of heads attend transcription factors significantly more than other genes</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41586-023-06139-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank"><i class="fas fa-cube"></i> Model</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>scHyena: Foundation Model for Full-Length Single-Cell RNA-Seq Analysis in Brain</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">arXiv</span> <span class="meta-badge type-badge">Hyena operator</span>
+                    </div>
+                    <p class="paper-description">scHyena replaces attention with the bidirectional Hyena operator to process full 19.3K-gene transcriptomes in O(L log L) time. Pretrained on brain scRNA-seq, it targets cell-type classification, doublet detection, and imputation without requiring HVG selection.</p>
+                    <ul class="key-contributions">
+                        <li>First continuous-valued Hyena application to scRNA-seq; 5× lower imputation MSE than MAGIC (0.133 vs 0.694–1.279)</li>
+                        <li>Cell-type F1 0.984–0.998 across four brain datasets; bidirectional context over the full transcriptome</li>
+                        <li>Doublet detection F1 0.916–0.982 (vs DoubletFinder 0.435–0.962); batch correction emerges from imputation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2310.02713" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/scHyena2023/scHyena" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Scaling Dense Representations for Single Cell with Transcriptome-Scale Context</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Dense transformer</span>
+                    </div>
+                    <p class="paper-description">AIDO.Cell scales dense transformers (3M–650M parameters) on 50M cells, processing entire 19.3K-gene transcriptomes via FlashAttention-2 and read-depth-aware pretraining. Targets zero-shot clustering, cell-type classification, and perturbation prediction without truncating transcriptomes.</p>
+                    <ul class="key-contributions">
+                        <li>First dense transformer using full transcriptome; zero-shot clustering NMI 0.80 vs scFoundation 0.79, scVI 0.70</li>
+                        <li>Cell-type classification F1 0.761 (100M) &gt; scFoundation 0.736 &gt; scBERT 0.67 &gt; CellTypist 0.725</li>
+                        <li>Systematic 3M–650M scaling study; perturbation modelling with GEARs reaches MSE 0.187 (1 unseen)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2024.11.28.625303" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/genbio-ai/AIDO" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Cell ontology guided transcriptome foundation model</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Ontology-guided transformer</span>
+                    </div>
+                    <p class="paper-description">scCello is a 10.7M-parameter transformer foundation model trained on 22M cells covering 398 cell types. It integrates the Cell Ontology via Personalized PageRank contrastive learning, yielding ontology-aware representations and strong zero-shot novel-cell-type recognition.</p>
+                    <ul class="key-contributions">
+                        <li>First TFM to fold cell-ontology structure into pretraining via PPR contrastive loss</li>
+                        <li>76.8% accuracy on novel cell-type classification; +16.1% AvgBio clustering (ID) and +12.1% (OOD)</li>
+                        <li>60× fewer parameters than UCE 650M while topping 6 downstream tasks</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2408.12373" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/DeepGraphLearning/scCello" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Scaling Large Language Models for Next-Generation Single-Cell Analysis (Oct update)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Cell-as-sentence LLM</span>
+                    </div>
+                    <p class="paper-description">October update of the C2S-Scale family — decoder-only LLMs (157M to 27B parameters) trained on 1B+ tokens from 5.7M single cells represented as natural-language cell sentences. Supports zero-shot clustering, perturbation prediction, and spatial reasoning over multi-cell context.</p>
+                    <ul class="key-contributions">
+                        <li>Clear scaling laws: 15.2% accuracy gain from 157M → 27B</li>
+                        <li>Zero-shot perturbation Pearson r=0.78 vs scGPT 0.74 on Replogle screens</li>
+                        <li>Experimentally validated silmitasertib: 2.1× MHC-II+ macrophage induction under IFN-γ (p&lt;0.0001)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.04.14.648850" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://c2s-scale.org" target="_blank"><i class="fas fa-external-link-alt"></i> Project</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>scPRINT-2: Towards the next-generation of cell foundation models and benchmarks</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Encoder + XPressor</span>
+                    </div>
+                    <p class="paper-description">scPRINT-2 is a 20M-parameter encoder-compressor-decoder pretrained on 350M cells across 16 organisms. Introduces the XPressor compression module, GNN-based multi-cell expression encoding, and hierarchical classification, with counterfactual reasoning via cell-embedding swaps.</p>
+                    <ul class="key-contributions">
+                        <li>Largest pretraining corpus to date: 350M cells, 16 organisms, ~400K genes</li>
+                        <li>75% zero-shot cell-type classification on the Open Problems benchmark</li>
+                        <li>Imputes a 5000-gene Xenium spatial panel at parity with denoised genes</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.64898/2025.12.11.693702" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/cantinilab/scPRINT-2" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>STACK: In-Context Learning of Single-Cell Biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Tabular ICL transformer</span>
+                    </div>
+                    <p class="paper-description">STACK is a tabular-attention foundation model trained on 149M cells that performs true in-context learning at the cell-set level. Intra- and inter-cellular multi-head attention over learned gene-module tokens enables zero-shot perturbation, donor, and condition transfer.</p>
+                    <ul class="key-contributions">
+                        <li>First in-context-learning scFM: ranks 1st in 28/31 ICL evaluations</li>
+                        <li>100 gene-module tokens per cell, 75% mapping to single GO pathways — more scalable than per-gene tokens</li>
+                        <li>Releases Perturb-Sapiens: 513,870 cells, 28 tissues, 40 cell classes, 201 perturbations with cross-tissue validation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.64898/2026.01.09.698608" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Illuminating cell states by a comprehensive and interpretable single-cell foundation model</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">Discrete VQ + GAT</span>
+                    </div>
+                    <p class="paper-description">ChrisCell is a 511M-parameter foundation model trained on 68M cells. Introduces Single-Cell Discretization (SCD) via SoftCVQ to convert continuous embeddings into a 65,536-code vocabulary, integrates Gene Ontology priors, and supports a plug-in graph attention layer (ChrisCell-Graph).</p>
+                    <ul class="key-contributions">
+                        <li>Pancreas clustering ARI 0.95 (vs scGPT &lt;0.77); drug response Pearson 0.923 (vs DeepCDR 0.780)</li>
+                        <li>Discrete cell codes enable quantitative state-distance metrics and interpretable marker discovery</li>
+                        <li>Recovers disease-relevant gene co-expression: PRSS1↔CTRB1, CTRC↔CFB</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-026-70071-5" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Scaling and quantization of large-scale foundation model enables resource-efficient predictions in network biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Comput Sci</span> <span class="meta-badge type-badge">QLoRA-quantised BERT</span>
+                    </div>
+                    <p class="paper-description">Scaled Geneformer reaches 316M parameters on Genecorpus-104M (103.9M cells, 55 tissues, ~150B tokens) and follows NLP-style power-law scaling. 4-bit QLoRA quantisation preserves contextual embeddings (cosine-shift Pearson r=0.998) while cutting fine-tune time to 15% and memory to 34%.</p>
+                    <ul class="key-contributions">
+                        <li>First explicit power-law scaling for transcriptomic masked learning (38M → 316M → 428M projected)</li>
+                        <li>4-bit quant preserves perturbation analysis: GATA4-deletion shifts match full-precision at r=0.998</li>
+                        <li>In silico KO screen of 30K iPSC-CMs × 4,096 genes: from $25k / 32.8 days → &lt;$5k / 5.9 days</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s43588-026-00972-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank"><i class="fas fa-cube"></i> Model</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Genomic Language Models (2)</h3>
+            <p>Pretrained models over DNA/codon sequence. Scale from millions to billions of parameters with multispecies and megabase context.</p>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig11_dna_tokenisation.svg" alt="Side-by-side DNA tokenisation comparison on the same nucleotide sequence. Left: 6-mer tokenisation slides a 6-bp window producing overlapping or non-overlapping k-mer tokens (Nucleotide Transformer). Right: codon tokenisation groups bases in 3-bp frame-aware windows producing 64 possible codon types (CodonFM/EnCodon). Synonymous codon variation (silent mutations) is preserved only by the codon view.">
+                <figcaption><strong>Figure 7</strong><span class="fig-title">The same DNA, two ways to slice it.</span> Window boundaries decide what the model can see — including whether synonymous variation survives. 6-mer tokenisation (Nucleotide Transformer) gives a fixed 4<sup>6</sup>=4096 vocabulary but blurs reading frames. Codon tokenisation (CodonFM/EnCodon) respects the 3-bp frame and preserves the silent-mutation signal that drives translation-efficiency and mRNA-stability biology.</figcaption>
+            </figure>
+
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Nucleotide Transformer: building and evaluating robust foundation models for human genomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">DNA transformer</span>
+                    </div>
+                    <p class="paper-description">Nucleotide Transformer is a family of DNA transformers (50M–2.5B params) trained with 6-mer tokenisation and masked LM. NT-v2 introduces rotary embeddings and SwiGLU activations and matches or exceeds supervised BPNet on 14 of 18 genomic tasks with 50× fewer parameters.</p>
+                    <ul class="key-contributions">
+                        <li>NT-v2 250M reaches best score (MCC 0.769) across 18 tasks: histone marks, enhancers, promoters, splice sites</li>
+                        <li>Multispecies 2.5B model (850 genomes) matches/exceeds BPNet on 14/18 tasks; zero-shot AUC 0.7–0.8 for functional variants</li>
+                        <li>NT-v2 50M matches NT-v1 500M via rotary + SwiGLU; 50× parameter reduction with context extended 6kb → 12kb</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-024-02523-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/instadeepai/nucleotide-transformer" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Learning the Language of Codon Translation with CodonFM</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Preprint</span> <span class="meta-badge type-badge">Codon-level BERT</span>
+                    </div>
+                    <p class="paper-description">CodonFM introduces EnCodon, a family of codon-level transformer encoders (80M–1B params) trained on 130M+ coding sequences from 22K species using codon-frequency-weighted masking. Targets synonymous-variant pathogenicity, missense effect prediction, and mRNA design.</p>
+                    <ul class="key-contributions">
+                        <li>ClinVar synonymous variant pathogenicity −log10 p=3.2 vs mRNA-FM 1.5</li>
+                        <li>Missense effect prediction −log10 p=35 (DDD) vs scGPT 25</li>
+                        <li>Zero-shot mRNA design: R²=0.50 for translation efficiency; ρ=0.70 for protein expression</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://github.com/NVIDIA-Digital-Bio/CodonFM" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Protein &amp; Sequence Pretraining (2)</h3>
+            <p>Sequence-level pretraining for proteins — masked LM, autoregressive, and diffusion-style generative models.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Language Modeling Materializes a World Model of Protein Biology (ESM Cambrian)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">EvolutionaryScale</span> <span class="meta-badge type-badge">Masked-LM, metagenomic scale</span>
+                    </div>
+                    <p class="paper-description">ESMC is a three-scale masked-LM family (300M / 600M / 6B parameters; 16 / 24 / 80 transformer layers) trained on 2.806 billion sequences — UniRef 2023_02 (156M) + JGI/IMG (2.029B) + MGnify 2023_02 (621M) — roughly 56× the 50M UniRef50 corpus used by ESM-2. Standard MLM objective ℒ = 𝔼[−Σ log p(xᵢ | x\M)] over randomly masked residues. Three development models trained slightly past compute-optimality fit the empirical scaling curve; the 6B is the predicted compute-optimal point.</p>
+                    <ul class="key-contributions">
+                        <li><strong>Clean log-linear scaling law for proteins.</strong> P@L-LR = 0.115 × log₁₀(FLOPs) − 1.98, R² = 0.99 — long-range contact precision improves predictably with compute through 6B parameters without plateauing. Extrapolation residual at 1.63×10²³ FLOPs is only −0.007 P@L-LR.</li>
+                        <li><strong>Data scale, not model scale, was the bottleneck.</strong> ESM-2 (UniRef50, 50M) hit diminishing returns at 650M–15B parameters; ESMC's metagenomic corpus restores log-linear gains at the same model sizes, isolating the cause to training-data ceiling.</li>
+                        <li><strong>Where information lives by depth.</strong> Layer-wise probes show enzyme-classification accuracy (k-NN over EC numbers, n=8,493 proteins across 57 classes) peaks at layers 50–60 of ESMC-6B; long-range tertiary contact precision peaks in the final layers — function and structure separate cleanly across depth.</li>
+                        <li><strong>The "world model" framing.</strong> Sparse autoencoders trained on layer-60 representations (2¹³–2¹⁷ feature widths, 8B token corpus) decompose the latent space into 16,384 monosemantic features spanning residue identity → secondary structure → tertiary motif → domain/fold → disorder → biochemical environment → localisation → functional site. Unsupervised pretraining alone recovers the reductionist hierarchy biologists built by hand.</li>
+                        <li><strong>Atlas downstream of pretraining.</strong> The 6B encoder is run over 6.8B proteins; clustering by SAE-feature Jaccard ≥ 0.6 yields 7.7M clusters with ≥50 members; ESMFold2 then predicts 1.1B structures (418.5M at pLDDT &gt; 0.7), of which 756M are not in AlphaFold DB.</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.evolutionaryscale.ai/blog/esm-cambrian" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/evolutionaryscale/esm" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Diffusion Language Models Are Versatile Protein Learners</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">ICML</span> <span class="meta-badge type-badge">Discrete diffusion LM</span>
+                    </div>
+                    <p class="paper-description">DPLM combines discrete diffusion with a transformer for protein sequences, unifying generative and predictive capabilities. Trained on 45M UniRef50 sequences (≈14B tokens), it supports unconditional generation, representation learning, and structure-conditioned design.</p>
+                    <ul class="key-contributions">
+                        <li>First discrete-diffusion protein LM; 650M and 3B variants generate proteins with pLDDT &gt; 80</li>
+                        <li>Outperforms ESM-2 on thermostability, EC classification, and subcellular localisation</li>
+                        <li>Supports motif-scaffolding tasks: 100 sequences sampled per 17 design problems</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.48550/arXiv.2402.07225" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/bytedance/dplm" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Multimodal &amp; Cross-Cell (5)</h3>
+            <p>Models pretrained across modalities (RNA + protein, RNA + spatial, image + text). Cross-species and cross-platform transfer.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>TranscriptFormer: A Generative Cell Atlas Across 1.5 Billion Years of Evolution</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Science</span> <span class="meta-badge type-badge">Autoregressive generative</span>
+                    </div>
+                    <p class="paper-description">TranscriptFormer is a family of generative <em>autoregressive</em> single-cell foundation models trained on up to 112M cells across 12 species spanning 1.53 billion years of evolution. Unlike masked-LM scFMs (Geneformer, scGPT) it treats each cell as a "cell sentence" of (gene, count) pairs and learns the joint distribution by predicting next gene + next count under causal masking. Three variants — TF-Metazoa (112M cells, 12 species), TF-Exemplar (110M cells, human + 4 model organisms), TF-Sapiens (57M human cells) — share identical 12-layer architecture (302M active params) and are trained on ~3.5 trillion tokens.</p>
+                    <ul class="key-contributions">
+                        <li><strong>Two-headed autoregressive objective.</strong> At each step the model samples a gene from a categorical distribution conditioned on previously selected genes (cross-entropy loss on gene identity), then samples its count from a zero-truncated Poisson distribution conditioned on that gene (NLL loss on count). Causal masking + log-likelihood maximisation = composite loss.</li>
+                        <li><strong>Expression-aware attention.</strong> Gene counts enter as additive bias terms inside attention logits, ensuring higher-count genes deterministically dominate the attention pattern without needing a separate expression-value token.</li>
+                        <li><strong>ESM2 protein-embedded gene tokens + explicit assay token</strong> — enables zero-shot transfer to species never seen in pretraining (mouse lemur, tropical clawed frog, sea lamprey, stony coral) with F1 &gt; 0.65 on stony coral (685M yrs divergence).</li>
+                        <li><strong>Multi-species sampling.</strong> Low-resource species upweighted to balance the dataset; adding phylogenetic diversity improves cross-species F1 without hurting in-distribution human performance (tables S3–S4).</li>
+                        <li><strong>State-of-the-art on Tabula Sapiens 2.0</strong> (post-training holdout): TF-Exemplar macro F1 = 0.910 ± 0.001, beating UCE (0.906), scGPT (0.798), Geneformer (0.797). SARS-CoV-2 infection classification F1 = 0.859 (TF-Sapiens) vs UCE 0.779, scGPT 0.774.</li>
+                        <li><strong>Generative "virtual instrument" capability.</strong> Prompting TF-Sapiens with marker genes reproduces 112-TF Tabula-Sapiens-2.0 cell-type/TF heatmap; identifies validated functional associations (E2F8&#x2192;CDT1, FOXM1&#x2192;TPX2/KIF18B, IKZF1&#x2192;T cells) confirmed against STRING v12.0 with significant enrichment (permutation tests).</li>
+                        <li><strong>Emergent phylogeny.</strong> Pairwise cell-embedding cosine similarity decreases with evolutionary distance (Spearman r = &#x2212;0.705, p = 0.004) even though TF-Metazoa is trained on a single species (chicken) from that test set — phylogenetic structure emerges unsupervised.</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://www.science.org/doi/10.1126/science.aec8514" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://doi.org/10.5281/zenodo.18381225" target="_blank"><i class="fas fa-cube"></i> Zenodo</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Universal Cell Embeddings: A Foundation Model for Cell Biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">ESM2-based encoder</span>
+                    </div>
+                    <p class="paper-description">UCE is a self-supervised foundation model that uses protein-language-model embeddings (ESM2) as gene representations and a transformer encoder to map 36M cells across species into a universal embedding. It enables zero-shot cross-species cell-type classification via a &#x27;bag-of-RNA&#x27; protocol.</p>
+                    <ul class="key-contributions">
+                        <li>Integrated Mega-scale Atlas of 36M cells across many species — zero-shot transfer across species without fine-tuning</li>
+                        <li>650M-parameter encoder produces 1280-d cell embeddings preserving biological organisation and cross-species comparability</li>
+                        <li>Removes batch effects across diverse datasets; works on species not seen during pretraining</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2023.11.28.568918" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/snap-stanford/uce" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig04_uce_crossspecies.svg" alt="UCE cross-species transfer diagram. Genes from human, mouse, and zebrafish are each replaced by their ESM2 protein-sequence embedding. Homologous proteins (e.g. human CD4, mouse Cd4, zebrafish cd4) land in nearby vectors in the protein embedding space, so the species alignment is automatic — no homolog mapping needed. The cell representation is a bag-of-RNA: each gene drawn with probability proportional to expression count.">
+                <figcaption><strong>Figure 8</strong><span class="fig-title">How UCE transfers across species — bag-of-RNA with ESM2 gene tokens.</span> Each gene is replaced by its ESM2 protein-sequence embedding. Homologous proteins land in nearby vectors, so the species alignment is automatic — no homolog mapping needed. Expression count is encoded by sampling frequency into the bag, not a separate value token.</figcaption>
+            </figure>
+
+            <div class="paper-grid" style="margin-top: 0;">
+                <article class="paper-card">
+                    <h4>Nicheformer: a foundation model for single-cell and spatial omics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Spatial-aware transformer</span>
+                    </div>
+                    <p class="paper-description">Nicheformer is the first transcriptomic foundation model to jointly pretrain on dissociated and spatial single-cell data (110M+ cells: 57M dissociated + 53M spatial). Technology-aware rank tokens and a transformer encoder yield spatially-aware cell embeddings transferable back to scRNA-seq.</p>
+                    <ul class="key-contributions">
+                        <li>Niche label F1 0.82 (vs Geneformer 0.67); region F1 0.78 vs 0.58</li>
+                        <li>Density prediction R² +0.25 (vs scVI −3.0); dissociated-only models can&#x27;t recover spatial signal</li>
+                        <li>Transfers spatial labels to scRNA-seq: 9/33 motor-cortex cell types and 95.3% of cells annotated to isocortex</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02814-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/theislab/nicheformer" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig05_nicheformer_spatial.svg" alt="Nicheformer's spatial-vs-dissociated comparison. Three models compared: a dissociated-only model (57M cells), a dissociated-only model with 3× more cells, and Nicheformer's joint dissociated+spatial pretraining (57M + 53M). On spatial label transfer tasks (niche F1, region F1, density prediction R²), the two dissociated-only models perform similarly poorly (region F1 ~0.58, density R² negative). Nicheformer reaches region F1 0.78 and density R² +0.25 — the only model with positive R². Adding more dissociated cells doesn't help; the spatial signal must be in the pretraining data.">
+                <figcaption><strong>Figure 12</strong><span class="fig-title">Why dissociated-only models cannot recover spatial signal.</span> It's not a scale problem. It's a data-type problem. No amount of dissociated cells substitutes for spatial cells — adding 3× more dissociated cells does nothing for niche or density prediction. The spatial signal must be in the pretraining data, not just any data. This is the clearest single counterexample to "just scale the model" in the pretraining literature, and the empirical case for joint multimodal pretraining over post-hoc adaptation.</figcaption>
+            </figure>
+
+            <div class="paper-grid" style="margin-top: 0;">
+                <article class="paper-card">
+                    <h4>A pre-trained large generative model for translating single-cell transcriptomes to proteomes</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Biomed Eng</span> <span class="meta-badge type-badge">RNA → protein seq2seq</span>
+                    </div>
+                    <p class="paper-description">scTranslator is a 117M-parameter encoder–decoder transformer pretrained in two stages (bulk → single-cell) on 82 datasets (18K bulk samples, 2M+ cells). Gene Positional Encoding and FAVOR+ attention enable few-shot prediction of 1000-protein panels from scRNA-seq across tissues and species.</p>
+                    <ul class="key-contributions">
+                        <li>Beats cTP-net / sciPENN / Seurat by 6.6–80.7% in few-shot protein prediction</li>
+                        <li>Cross-species/modality generalisation: cosine &gt; 0.7 on CITE-seq, mouse spatial, NEAT-seq</li>
+                        <li>Predicts cytokine-perturbation proteomes (STAT1, JAK1/JAK2, IFNGR1/IFNGR2) with cosine &gt; 0.8</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41551-025-01528-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/TencentAILabHealthcare/scTranslator" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>A vision-language pretrained transformer for versatile clinical respiratory disease applications</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Biomed Eng</span> <span class="meta-badge type-badge">Vision-language pretraining</span>
+                    </div>
+                    <p class="paper-description">MedMPT integrates multiscale vision encoding with multimodal self-supervised learning over 154,274 chest-CT–report pairs. Combines slice + scan contrastive learning, masked image reconstruction, and cross-modal report generation, targeting disease diagnosis, report drafting, and prescription recommendation.</p>
+                    <ul class="key-contributions">
+                        <li>Lung cancer AUROC 0.9269 (full fine-tune) and 0.8238 (linear probe with 1,500 params)</li>
+                        <li>Human-AI study: reporting time 334.47s → 228.28s; critical-error rate 6% → 2% for juniors</li>
+                        <li>Demonstrates that 154K curated clinical pairs can beat 15M+ publication pairs (BiomedCLIP)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41551-025-01544-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/maliangdi/MedMPT" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Data &amp; Infrastructure (1)</h3>
+            <p>Datasets, pipelines, and curation systems that make foundation-scale pretraining possible.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>scBaseCount: an AI agent-curated, uniformly processed, and continually expanding single-cell data repository</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Data resource</span>
+                    </div>
+                    <p class="paper-description">scBaseCount is the largest standardised public scRNA-seq repository (230M+ cells, 21 organisms, 72 tissues), built with an AI-agent curation pipeline (SRAgent) and a STARsolo-based Nextflow processing engine (scRecounter). Produces Gene / GeneFull / Velocyto matrices and reduces technical variance for downstream foundation-model training.</p>
+                    <ul class="key-contributions">
+                        <li>230M cells across 21 organisms / 72 tissues, uniformly processed</li>
+                        <li>SRAgent identified 43,587 10X datasets out of 63,892 SRA experiments — autonomous curation at 3–5 datasets per 5 minutes</li>
+                        <li>4% lower technical variance in PC1 vs raw aggregation — better substrate for FM pretraining</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.02.27.640494" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Reviews &amp; Benchmarks (5)</h3>
+            <p>Field syntheses and systematic comparisons of pretraining strategies.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Delineating the effective use of self-supervised learning in single-cell genomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Mach Intell</span> <span class="meta-badge type-badge">SSL benchmark</span>
+                    </div>
+                    <p class="paper-description">Systematic benchmark of self-supervised pretraining on 22.2M cells (scTab) comparing masked autoencoders vs contrastive learning across transfer, zero-shot, and cross-modality tasks. Finds that masked autoencoders dominate in single-cell genomics — opposite to vision-domain trends.</p>
+                    <ul class="key-contributions">
+                        <li>Transfer learning gain is real (PBMC F1 0.701 → 0.747) but vanishes when pretraining on the same dataset</li>
+                        <li>Masked autoencoders &gt; contrastive methods; zero-shot F1 0.673 on scTab test set</li>
+                        <li>RNA→protein prediction improves Pearson 0.881 → 0.894; scIB integration score 0.535 → 0.564</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s42256-024-00934-3" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/theislab/ssl_in_scg" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Genomic language models: opportunities and challenges</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Trends Genet</span> <span class="meta-badge type-badge">Review</span>
+                    </div>
+                    <p class="paper-description">Field review of 40+ genomic language models (DNABERT, NT, HyenaDNA, EVO) spanning transformer, state-space, and CNN-hybrid architectures. Analyses variant-effect prediction, sequence generation, and cross-species generalisation, with trade-offs in context length, compute, and constraint prediction.</p>
+                    <ul class="key-contributions">
+                        <li>Taxonomy of 40+ gLMs with architecture, scaling, and pretraining objectives</li>
+                        <li>Variant-effect AUROC 0.6–0.8 across models; state-space models reach megabase context</li>
+                        <li>Identifies the 3.3%-of-genome constraint problem — careful data curation needed</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1016/j.tig.2024.11.013" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Large language models in bioinformatics: applications and perspectives</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Brief Bioinform</span> <span class="meta-badge type-badge">Review</span>
+                    </div>
+                    <p class="paper-description">Comprehensive review of how transformer-based language models (BERT, GPT, ESM, scBERT, scGPT, RNA-FM, ChemBERTa) have been adapted across genomics, transcriptomics, proteomics, drug discovery, and single-cell analysis. Synthesises the pretrain → fine-tune paradigm for biological sequences.</p>
+                    <ul class="key-contributions">
+                        <li>Taxonomy of 100+ biological LLMs across five domains with performance summaries</li>
+                        <li>Documents DNABERT-2 vs DNABERT on 23/28 GUE datasets; scFoundation on 50M cells</li>
+                        <li>Identifies bottlenecks: context length, 3D-structure gaps, interpretability</li>
+                    </ul>
+                    <div class="paper-links">
+                        
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Decoding the Genome — AI tools for non-coding DNA</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nature</span> <span class="meta-badge type-badge">Review</span>
+                    </div>
+                    <p class="paper-description">News-style Nature review of genomic AI tools for decoding non-coding DNA. Covers supervised seq-to-function models (DeepSEA, Enformer, ChromBPNet, Borzoi) alongside unsupervised gLMs (Evo on 9.3 trillion bp, regLM, AlphaGenome) — variant impact, regulatory element discovery, synthetic sequence design.</p>
+                    <ul class="key-contributions">
+                        <li>Surveys 20+ genomic LMs across CNN, transformer, and SSM architectures</li>
+                        <li>Frames the 95%-of-GWAS-variants-non-coding gap as the motivator for regulatory AI</li>
+                        <li>Highlights megabase-scale genomic context and cross-species validation as field directions</li>
+                    </ul>
+                    <div class="paper-links">
+                        
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Multimodal foundation transformer models for multiscale genomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Perspective</span>
+                    </div>
+                    <p class="paper-description">Perspective taxonomising 91 transformer models into three tiers: unimodal (scBERT, Geneformer, DNABERT), augmented unimodal (Enformer), and multimodal (scGPT, scCLIP, Nicheformer). Proposes a &#x27;Super Transformer&#x27; to unify DNA, RNA, ATAC, spatial, protein, image, and text modalities.</p>
+                    <ul class="key-contributions">
+                        <li>First systematic three-tier taxonomy of 91 transformer models in multiscale genomics</li>
+                        <li>Documents the rise of LLM-integrated models for biological data interpretation</li>
+                        <li>Ships four Colab primers: genomic sequence analysis, single-cell annotation, spatial transcriptomics, multi-omics integration</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02918-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/TranslationalBioinformaticsUnit/Transformers-for-Multiscale-Genomics" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="content-section" id="table">
+            <h2>Selection at a Glance</h2>
+            <p>Quick reference: which pretraining recipe to reach for given your scale, modality, and downstream task.</p>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig10_three_paradigms.svg" alt="Three downstream adaptation paradigms for the same pretrained scFM, left to right with increasing flexibility: (1) Fine-tune — add a task head and update encoder weights on labelled data; (2) Zero-shot — freeze the encoder, use embeddings directly via nearest-neighbor or linear probe; (3) In-context learning — provide a labelled prompt cell-set at inference time, no weight updates. Flexibility increases left to right; so does architectural sophistication required.">
+                <figcaption><strong>Figure 9</strong><span class="fig-title">Three paradigms of downstream adaptation — same pretrained scFM, three ways to use it.</span> Flexibility increases left → right; so does the architectural sophistication required to get there. Fine-tuning is universal but needs labelled data and per-task training. Zero-shot needs a substrate that already encodes the right structure (UCE, scCello). ICL (STACK) needs the model to have been trained on cell-set-level inputs in the first place — it's not a free downstream choice.</figcaption>
+            </figure>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Model</th><th>Family</th><th>Scale</th><th>Best for</th><th>Key detail</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Geneformer</td><td>scRNA FM</td><td>29.9M cells, BERT</td><td>Network biology, in-silico perturbation</td><td>Rank-value encoding</td></tr>
+                    <tr><td>scGPT-class (C2S-Scale)</td><td>scRNA LLM</td><td>150M+ cells, decoder-only</td><td>Natural-language reasoning, virtual screens</td><td>Cells as gene sentences</td></tr>
+                    <tr><td>scPRINT-2</td><td>scRNA FM</td><td>350M cells</td><td>Denoising, spatial imputation</td><td>Encoder + XPressor compression</td></tr>
+                    <tr><td>UCE</td><td>Cross-species</td><td>36M cells, ESM2 gene tokens</td><td>Zero-shot cross-species transfer</td><td>Bag-of-RNA, no homolog mapping</td></tr>
+                    <tr><td>Nicheformer</td><td>scRNA + spatial</td><td>110M cells</td><td>Spatial label transfer to scRNA-seq</td><td>Tech-aware rank tokens</td></tr>
+                    <tr><td>Nucleotide Transformer</td><td>Genomic LM</td><td>850 genomes, 2.5B params</td><td>Variant effect, regulatory function</td><td>6-mer tokenisation</td></tr>
+                    <tr><td>DPLM</td><td>Protein LM</td><td>45M UniRef50 sequences</td><td>Protein generation + design</td><td>Discrete diffusion</td></tr>
+                    <tr><td>AIDO.Cell</td><td>scRNA FM</td><td>50M cells, 3M–650M params</td><td>Full transcriptome, perturbation</td><td>FlashAttention-2 dense</td></tr>
+                    <tr><td>STACK</td><td>scRNA ICL</td><td>149M cells</td><td>Zero-shot perturbation transfer</td><td>True in-context learning</td></tr>
+                    <tr><td>Geneformer-scaling 2026</td><td>QLoRA scFM</td><td>316M params, 4-bit</td><td>Resource-efficient virtual screens</td><td>QLoRA preserves embeddings</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="content-section" id="reading-order">
+            <h2>Reading Order for Newcomers</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>1. Geneformer (2023, Nature)</h3>
+                    <p>The clearest demonstration of rank-value masked LM on real-world single-cell data. Required reading — the architecture and ablations show what a usable scFM looks like.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2. SSL Benchmark (2024, Nat Mach Intell)</h3>
+                    <p>The reality check: a head-to-head comparison of masked autoencoders vs contrastive learning across 22M cells. Read this before believing any new scFM's claims.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>3. UCE (2023, bioRxiv)</h3>
+                    <p>Cross-species cell embeddings via ESM2 gene tokens. The cleanest example of how pretraining substrate decides what transfers.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>4. Nicheformer (2025, Nat Methods)</h3>
+                    <p>Joint pretraining on dissociated + spatial data — and why dissociated-only models fundamentally cannot capture spatial signal even with 3× the cells.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>5. C2S-Scale (2025, bioRxiv)</h3>
+                    <p>The first credible NLP-style scaling law for transcriptomics. Read alongside the Geneformer-scaling 2026 paper for the QLoRA efficiency angle.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>6. STACK (2026, bioRxiv)</h3>
+                    <p>Where the field is heading: in-context learning at the cell-set level, with cross-tissue and cross-perturbation generalisation.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="practical">
+            <h2>Practical Implementation Guide</h2>
+            <div class="highlight-box">
+                <h4>If your goal is transfer learning to a small dataset</h4>
+                <p>Use a pretrained <strong>Geneformer</strong> or <strong>scFoundation</strong> checkpoint and fine-tune. With the new 4-bit <strong>Geneformer-scaling</strong> recipe, full fine-tuning of 316M parameters fits on a single consumer GPU. Don't pretrain from scratch unless you have &gt;10M cells and a real domain shift.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is cross-species or cross-platform</h4>
+                <p><strong>UCE</strong> (ESM2 gene tokens, no homolog map) or <strong>scCello</strong> (ontology-guided contrastive) are the strongest zero-shot transfer recipes. Avoid models that rely on tokenisation-by-gene-symbol if your target species isn't in the pretraining set.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is spatial transcriptomics</h4>
+                <p><strong>Nicheformer</strong> is the only model trained on spatial + dissociated jointly. The Nicheformer evaluation shows dissociated-only scFMs (Geneformer, scGPT, scFoundation) cannot recover niche signal — adding more cells does not fix this.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is virtual perturbation / target ID</h4>
+                <p>Pipeline: pretrained <strong>Geneformer</strong> → fine-tune on your disease atlas → in-silico KO via attention or embedding perturbation. <strong>STACK</strong>'s in-context recipe is the new alternative — no fine-tune, just provide a labeled prompt cell set. For protein-level outputs, chain <strong>scTranslator</strong> after the cell-state predictor.</p>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig08_insilico_perturbation.svg" alt="End-to-end in-silico perturbation pipeline. Stage 1: pretrained foundation model (Geneformer or STACK). Stage 2a (fine-tune route): fine-tune on disease atlas, perturb gene token, measure attention/embedding shift. Stage 2b (ICL route): provide labelled prompt cell-set with the perturbation, ask STACK to generate counterfactual cells, no weight updates. Stage 3: rank genes by perturbation impact, output a ranked drug-target shortlist.">
+                <figcaption><strong>Figure 10</strong><span class="fig-title">Virtual gene knockout, end to end.</span> From pretrained scFM to ranked drug-target shortlist — one shared pipeline, two ways to reach it. The Geneformer route fine-tunes then perturbs attention/embeddings (cosine-shift methodology, ~$5k for a 30K-cell × 4K-gene screen with QLoRA quantization). The STACK route uses ICL: provide a labelled prompt cell-set with the perturbation and ask the model to generate counterfactual cells, no weight updates required.</figcaption>
+            </figure>
+
+            <div class="warning-box">
+                <h4>Common Pitfalls</h4>
+                <ul>
+                    <li><strong>"Foundation model" is not a capability claim.</strong> Linear baselines match scGPT/Geneformer on standard perturbation benchmarks (see Dimitrov et al. 2026). Demand task-specific evidence, not generic scale arguments.</li>
+                    <li><strong>Pretrain on the same dataset you fine-tune on and you get nothing.</strong> The 2024 SSL benchmark shows pretraining benefit collapses to zero when the pretraining and downstream datasets overlap.</li>
+                    <li><strong>Tokenisation is destiny.</strong> Rank-value tokens lose magnitude information; continuous tokens are harder to mask. Bag-of-RNA loses gene order. Choose the pretraining recipe whose tokenisation matches your downstream task.</li>
+                    <li><strong>Quote-the-paper benchmarks vs production benchmarks differ.</strong> CausalBench (Perturb-seq) and scTab give very different rankings than the curated dataset each paper trained on. Always evaluate on a benchmark that is independent of the model's training set.</li>
+                    <li><strong>Multimodal does not mean multimodal-aware.</strong> Models that concatenate modalities at input are not the same as models that pretrain a joint objective. Nicheformer's spatial pretraining beats post-hoc spatial fine-tuning of Geneformer.</li>
+                    <li><strong>Scale before quality.</strong> 154K curated chest-CT pairs beat 15M+ web pairs (MedMPT). For biological data where curation is expensive, this is almost always the right trade.</li>
+                </ul>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/pretraining/bio_fig12_curated_vs_massive.svg" alt="MedMPT comparison: 154K expert-curated chest-CT image-text pairs vs 15M+ web-scraped pairs. On clinical benchmark tasks the small curated corpus consistently outperforms the massive noisy corpus across diagnosis accuracy, retrieval, and zero-shot transfer — curation quality dominates corpus size when labels are clinical and noise is structured.">
+                <figcaption><strong>Figure 11</strong><span class="fig-title">The MedMPT lesson — in biology, the small side wins.</span> Curation quality dominates corpus size on tasks where labels are clinical and noise is structured. The same pattern recurs across single-cell: ~10M well-annotated CELLxGENE cells often beat 100M+ heterogeneously-processed cells. Budget curation, not scraping, when your downstream task is clinical.</figcaption>
+            </figure>
+        </section>
+
+        <section class="content-section" id="hands-on">
+    <h2>🛠️ Hands-On Practice</h2>
+    <p>The exercises below walk through the core mechanics of self-supervised pretraining: streaming and tokenising a large corpus, packing sequences into fixed-length blocks, and running a masked-language-model or causal-LM pretraining loop with Hugging Face <code>Trainer</code>. The same pipeline applies to scRNA gene-token corpora (swap the tokenizer for a gene-vocabulary one) or DNA k-mer corpora (swap for a nucleotide tokenizer).</p>
+    <h3>Environment &amp; packages</h3>
+    <p>All packages below are available on PyPI. <code>flash-attn</code> requires a CUDA-capable GPU and the matching CUDA toolkit; install it last so the other packages can be resolved first.</p>
+    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># create a fresh env (Python 3.10+)
+conda create -n pretrain_env python=3.10 -y
+conda activate pretrain_env
+
+# core stack
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+pip install transformers datasets tokenizers accelerate deepspeed
+
+# efficient attention (requires CUDA 11.8+ and matching torch build)
+pip install flash-attn --no-build-isolation
+
+# data-curation utilities
+pip install datasketch xxhash zstandard   # MinHash dedup, hashing, compressed reads</code></pre>
+    <p><strong>Hardware.</strong> A single A100-40GB is enough for the minimal walkthrough (batch size 8, sequence length 512, BERT-base-scale model); multi-GPU or DeepSpeed ZeRO-3 is needed for anything above ~1B parameters or sequence lengths ≥2048. For interactive exploration on a laptop, reduce <code>max_steps</code> to 100 and use CPU.</p>
+    <h3>Data structures &amp; formats</h3>
+    <ul>
+        <li><strong>Streaming <code>datasets.Dataset</code> / <code>IterableDataset</code>.</strong> Arrow-backed on disk or streamed from Hugging Face Hub; avoids loading billions of tokens into RAM. Use <code>datasets.load_dataset(..., streaming=True)</code> for large corpora.</li>
+        <li><strong>Packed sequences (block size).</strong> Raw documents are concatenated with an EOS separator then sliced into fixed <code>block_size</code> windows (e.g., 512 or 1024 tokens). This eliminates padding waste and is essential for throughput at scale.</li>
+        <li><strong>Tokenizer (<code>tokenizers.Tokenizer</code>).</strong> A BPE or WordPiece vocabulary trained on your domain corpus. For biology, train on gene-symbol or k-mer vocabularies rather than reusing a text tokenizer — domain mismatch is a leading cause of silent performance loss.</li>
+        <li><strong><code>DataCollatorForLanguageModeling</code>.</strong> Handles random masking (MLM, <code>mlm=True</code>, default 15%) or causal shifting (<code>mlm=False</code>) at collation time — no need to pre-mask the dataset.</li>
+        <li><strong>Checkpoints &amp; sharding.</strong> Hugging Face <code>Trainer</code> saves <code>pytorch_model.bin</code> or sharded <code>model.safetensors</code> (for models &gt;2GB). Set <code>save_total_limit</code> to avoid filling disk with intermediate checkpoints.</li>
+        <li><strong>Scaling-law variables.</strong> Track <em>N</em> (parameters), <em>D</em> (training tokens), and <em>C ≈ 6ND</em> (FLOPs). The Chinchilla compute-optimal ratio is <em>D ≈ 20N</em> tokens per parameter — a 125M-parameter model should see ~2.5B tokens before you plateau.</li>
+    </ul>
+    <h3>Minimal code walkthrough</h3>
+    <p>Stream a public text corpus (swap <code>wikitext</code> for your biological corpus), tokenise and group into fixed-length blocks, then run a few MLM pretraining steps with <code>Trainer</code> — the same skeleton works for causal LM by setting <code>mlm=False</code> and swapping <code>BertForMaskedLM</code> for <code>GPT2LMHeadModel</code>.</p>
+    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>from datasets import load_dataset
+from transformers import (
+    AutoTokenizer, BertConfig, BertForMaskedLM,
+    DataCollatorForLanguageModeling, Trainer, TrainingArguments,
+)
+
+# 1. Stream corpus (replace with your biological data path or HF dataset id)
+raw = load_dataset("wikitext", "wikitext-103-raw-v1", split="train", streaming=True)
+
+# 2. Tokenise
+tok = AutoTokenizer.from_pretrained("bert-base-uncased")  # swap for domain tokenizer
+BLOCK = 512
+
+def tokenise(batch):
+    return tok(batch["text"], truncation=False, padding=False)
+
+def group_into_blocks(examples):
+    # concatenate all token ids, then slice into BLOCK-sized chunks
+    ids = sum(examples["input_ids"], [])
+    total = (len(ids) // BLOCK) * BLOCK
+    ids = ids[:total]
+    return {"input_ids": [ids[i:i+BLOCK] for i in range(0, total, BLOCK)]}
+
+tokenised = raw.map(tokenise, batched=True, remove_columns=["text"])
+blocked   = tokenised.map(group_into_blocks, batched=True)
+
+# 3. Model (BERT-base scale: 110M params)
+cfg   = BertConfig(vocab_size=tok.vocab_size, hidden_size=768,
+                   num_hidden_layers=12, num_attention_heads=12,
+                   intermediate_size=3072, max_position_embeddings=BLOCK)
+model = BertForMaskedLM(cfg)
+
+# 4. Collator — applies 15 % random masking at batch time
+collator = DataCollatorForLanguageModeling(tokenizer=tok, mlm=True, mlm_probability=0.15)
+
+# 5. Training — warmup + cosine LR schedule; resume from checkpoint if present
+args = TrainingArguments(
+    output_dir="./pretrain_ckpt",
+    max_steps=500,                      # increase to millions for real pretraining
+    per_device_train_batch_size=8,
+    gradient_accumulation_steps=4,      # effective batch 32
+    learning_rate=1e-4,
+    lr_scheduler_type="cosine",
+    warmup_steps=50,
+    fp16=True,
+    logging_steps=50,
+    save_steps=250,
+    save_total_limit=2,
+    dataloader_num_workers=2,
+)
+trainer = Trainer(model=model, args=args, train_dataset=blocked,
+                  data_collator=collator)
+trainer.train()   # add resume_from_checkpoint="./pretrain_ckpt/checkpoint-250" to resume</code></pre>
+    <h3>Common pitfalls &amp; tips</h3>
+    <ul>
+        <li><strong>Data quality and deduplication.</strong> Duplicate documents inflate apparent perplexity gains and contaminate downstream eval sets. Run MinHash LSH deduplication (e.g., <code>datasketch.MinHashLSH</code>) before pretraining — ESM Cambrian's data-scale lesson is partly a data-cleaning lesson.</li>
+        <li><strong>Tokenizer domain mismatch.</strong> Reusing a general-text BPE tokenizer on gene symbols or DNA k-mers fragments tokens arbitrarily. Train a fresh tokenizer on your corpus with <code>tokenizers</code> BPE trainer; expect 20–40% efficiency gain in tokens-per-document.</li>
+        <li><strong>Sequence packing and attention masking.</strong> When packing multiple documents into one block, use an attention mask that prevents cross-document attention (pass <code>attention_mask</code> with zeros at document boundaries), or accept a small amount of cross-contamination which is common in practice for large corpora.</li>
+        <li><strong>Learning-rate warmup and schedule.</strong> Skipping warmup with a large LR causes loss spikes early in training that compound. Use at least 1% of total steps for linear warmup followed by cosine or polynomial decay; the Geneformer recipe uses a linear warmup then linear decay.</li>
+        <li><strong>Compute-optimal token budget (Chinchilla).</strong> For a 110M-parameter model, Chinchilla optimal is ~2.2B tokens. Training on far fewer makes the model data-hungry at fine-tune time; training on far more past the optimal point yields diminishing perplexity returns for the same compute budget.</li>
+        <li><strong>Checkpoint, resume, and reproducibility.</strong> Always set <code>seed</code> in <code>TrainingArguments</code> and log the exact data order (or fix the streaming shuffle seed). A run that cannot be resumed from a checkpoint is not reproducible — use <code>resume_from_checkpoint</code> and version-control your config, not just your model weights.</li>
+    </ul>
+</section>
+    </main>
+
+    <footer style="text-align: center;">
+        <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+        <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>Content released under CC BY 4.0.</p>
+    </footer>
+<script>
+(function(){function P(img){if(!img||img.dataset.fb)return;img.dataset.fb='1';var b=document.createElement('div');b.className='fig-missing';var n=(img.getAttribute('src')||'').split('/').pop();b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="M21 15l-5-5L5 21"/></svg><div>figure asset not bundled<br><span style="opacity:.7">'+n+'</span></div>';img.replaceWith(b);}document.querySelectorAll('.module-figure img,.figure-block img').forEach(function(img){img.addEventListener('error',function(){P(img);});if(img.complete&&img.naturalWidth===0)P(img);});})();
+</script>
+</body>
+</html>
