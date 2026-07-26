@@ -317,14 +317,18 @@
         <div class="container">
             <ul class="navbar-nav">
                 <li>
-                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a>
+                    <a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link">
+                        <i class="fas fa-book"></i> Back to Learning Hub
+                    </a>
                 </li>
                 <li>
-                    <a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a>
+                    <a href="https://xqiu625.github.io/">
+                        <i class="fas fa-home"></i> Homepage
+                    </a>
                 </li>
                 <li>
-                    <a href="../../">
-                        <i class="fas fa-home"></i> Xinru's Homepage
+                    <a href="#hands-on">
+                        <i class="fas fa-wrench"></i> Hands-on
                     </a>
                 </li>
             </ul>
@@ -391,7 +395,7 @@
         <!-- CASEWORK BANNER (Model · LEGO lens) -->
         <section class="casework-banner" aria-label="LEGO inspired contrastive learning casework">
             <div class="casework-art">
-                <!-- TODO: IP asset pending — lego-contrast-three-poses.webp -->
+                <img src="../animations/rive-assets/stage-themes-v5/lego-contrast-three-poses.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Healshu LEGO master builder showing brick comparison, sorting, and difference-finding poses">
             </div>
             <div class="casework-copy">
                 <div class="kicker">LEGO lens · contrast &amp; compare</div>
@@ -404,7 +408,9 @@
 
         <!-- STORY LINE: contrast by the tray -->
         <section class="content-section story-section" id="contrast-story">
-            <!-- TODO: story hero pending — lego-contrast-hero.webp -->
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/lego-contrast-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu LEGO master builder at a workbench with sorted bricks and a blank plan">
+            </figure>
             <h2><i class="fas fa-cubes"></i> Sort by Resemblance.</h2>
             <p class="story-quote">「能拼上的归一类，拼不上的分开。」</p>
             <p class="story-intro">Contrastive learning is the tray-sorting game: hold two pieces side by side and ask whether they belong together. Do it a million times and the tray sorts itself — six scenes from the sorting bench, re-read as contrastive learning.</p>
@@ -459,6 +465,11 @@
                 losses operate directly on geometry of the embedding — defining what is similar by what the
                 practitioner pairs together.
             </p>
+
+            <figure class="module-figure">
+                <img src="figures/lego-contrast-pairs.webp" width="1600" height="760" loading="lazy" decoding="async" alt="LEGO contrastive click test showing matching bricks, mismatched bricks, and embedding space separation">
+                <figcaption><strong>LEGO view.</strong> A click test defines positive and negative pairs before the model ever sees a label.</figcaption>
+            </figure>
 
             <figure class="module-figure">
                 <img src="figures/contrastive/contrastive_fig01_core_mechanism.svg" alt="Core contrastive mechanism on the unit hypersphere. An anchor point and its positive pair (semantically related view) are pulled together; multiple negative points (unrelated views) are pushed apart by the InfoNCE / NT-Xent loss. The geometry of the final embedding space is determined entirely by what the practitioner defines as a positive pair — this is the upstream design decision that constrains everything downstream.">
@@ -604,6 +615,11 @@
                 EMA teacher–student, graph corruption, similarity matrices, the modality gap. Each diagram is
                 the <em>intuition</em>, not the math.
             </p>
+
+            <figure class="module-figure">
+                <img src="figures/lego-contrast-embedding.webp" width="1600" height="900" loading="lazy" decoding="async" alt="LEGO embedding space with brick clusters and a hard negative between clusters">
+                <figcaption><strong>Embedding view.</strong> Similar pieces cluster naturally, while hard negatives sit near the boundary between groups.</figcaption>
+            </figure>
 
             <div class="glossary-grid">
 
