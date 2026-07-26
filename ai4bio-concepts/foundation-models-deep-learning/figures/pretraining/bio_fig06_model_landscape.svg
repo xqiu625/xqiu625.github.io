@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ax" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2a2a33"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  MODEL LANDSCAPE  ·  SCALE vs DOWNSTREAM FLEXIBILITY</text>
+  <text x="60" y="96" class="h1">Bigger doesn&#39;t always mean more flexible.</text>
+  <text x="60" y="124" class="h-sub">Pretraining scale on the x-axis, downstream usage mode on the y-axis. Architecture and objective decide where a model lands vertically.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+
+  
+  <g stroke="#e5dfcf" stroke-width="0.8">
+    <line x1="180" y1="240" x2="1800" y2="240"></line>
+    <line x1="180" y1="400" x2="1800" y2="400"></line>
+    <line x1="180" y1="560" x2="1800" y2="560"></line>
+    <line x1="180" y1="720" x2="1800" y2="720"></line>
+    
+    <line x1="180" y1="200" x2="180" y2="820" stroke-dasharray="3 3"></line>
+    <line x1="466" y1="200" x2="466" y2="820" stroke-dasharray="3 3"></line>
+    <line x1="752" y1="200" x2="752" y2="820" stroke-dasharray="3 3"></line>
+    <line x1="1038" y1="200" x2="1038" y2="820" stroke-dasharray="3 3"></line>
+    <line x1="1324" y1="200" x2="1324" y2="820" stroke-dasharray="3 3"></line>
+    <line x1="1610" y1="200" x2="1610" y2="820" stroke-dasharray="3 3"></line>
+  </g>
+
+  
+  <text x="200" y="218" class="quad-tag">SMALL × HIGH-FLEX</text>
+  <text x="1780" y="218" text-anchor="end" class="quad-tag">LARGE × HIGH-FLEX</text>
+  <text x="200" y="812" class="quad-tag">SMALL × LOW-FLEX</text>
+  <text x="1780" y="812" text-anchor="end" class="quad-tag">LARGE × LOW-FLEX</text>
+
+  
+  <line x1="160" y1="820" x2="1820" y2="820" stroke="#2a2a33" stroke-width="2" marker-end="url(#ax)"></line>
+  <g text-anchor="middle">
+    <text x="180" y="848" class="axis-tick">10 M</text>
+    <text x="466" y="848" class="axis-tick">22 M</text>
+    <text x="752" y="848" class="axis-tick">50 M</text>
+    <text x="1038" y="848" class="axis-tick">100 M</text>
+    <text x="1324" y="848" class="axis-tick">200 M</text>
+    <text x="1610" y="848" class="axis-tick">350 M</text>
+    <text x="1800" y="848" class="axis-tick">500 M</text>
+  </g>
+  <text x="990" y="880" text-anchor="middle" class="axis-title">PRETRAINING SCALE  (cells, log)  →</text>
+
+  
+  <line x1="180" y1="840" x2="180" y2="180" stroke="#2a2a33" stroke-width="2" marker-end="url(#ax)"></line>
+
+  
+  <text x="160" y="246" text-anchor="end" class="y-cat">NL interface</text>
+  <text x="160" y="262" text-anchor="end" class="y-sub">&#34;ask in English&#34;</text>
+  <text x="160" y="406" text-anchor="end" class="y-cat">in-context learning</text>
+  <text x="160" y="422" text-anchor="end" class="y-sub">&#34;prompt set, no updates&#34;</text>
+  <text x="160" y="566" text-anchor="end" class="y-cat">zero-shot</text>
+  <text x="160" y="582" text-anchor="end" class="y-sub">&#34;embed and probe&#34;</text>
+  <text x="160" y="726" text-anchor="end" class="y-cat">fine-tune</text>
+  <text x="160" y="742" text-anchor="end" class="y-sub">&#34;head + gradients&#34;</text>
+
+  <text x="0" y="0" transform="translate(60,500) rotate(-90)" text-anchor="middle" class="axis-title">DOWNSTREAM FLEXIBILITY  →</text>
+
+  
+  <line x1="200" y1="700" x2="1780" y2="380" stroke="#8a8275" stroke-width="1.5" stroke-dasharray="6 5"></line>
+  <text x="1780" y="370" text-anchor="end" class="note">scale ↔ flexibility correlation is weak</text>
+
+  
+
+  
+  <g>
+    <circle cx="634" cy="720" r="14" fill="#4a6a8a" fill-opacity="0.28" stroke="#4a6a8a" stroke-width="2"></circle>
+    <circle cx="634" cy="720" r="4" fill="#4a6a8a"></circle>
+    <text x="654" y="704" class="model-name">Geneformer</text>
+    <text x="654" y="720" class="model-meta">29.9M cells · ~10M params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="466" cy="560" r="16" fill="#4a6a8a" fill-opacity="0.28" stroke="#4a6a8a" stroke-width="2"></circle>
+    <circle cx="466" cy="560" r="4" fill="#4a6a8a"></circle>
+    <text x="486" y="544" class="model-name">scCello</text>
+    <text x="486" y="560" class="model-meta">22M · ~16M params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="710" cy="560" r="20" fill="#2c8a4f" fill-opacity="0.28" stroke="#2c8a4f" stroke-width="2"></circle>
+    <circle cx="710" cy="560" r="4" fill="#2c8a4f"></circle>
+    <text x="734" y="544" class="model-name">UCE</text>
+    <text x="734" y="560" class="model-meta">36M · ~33M params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="846" cy="720" r="22" fill="#4a6a8a" fill-opacity="0.28" stroke="#4a6a8a" stroke-width="2"></circle>
+    <circle cx="846" cy="720" r="4" fill="#4a6a8a"></circle>
+    <text x="872" y="704" class="model-name">AIDO.Cell</text>
+    <text x="872" y="720" class="model-meta">50M · ~50M params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="974" cy="720" r="24" fill="#4a6a8a" fill-opacity="0.28" stroke="#4a6a8a" stroke-width="2"></circle>
+    <circle cx="974" cy="720" r="4" fill="#4a6a8a"></circle>
+    <text x="1002" y="704" class="model-name">ChrisCell</text>
+    <text x="1002" y="720" class="model-meta">68M · ~68M params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="1172" cy="720" r="26" fill="#2c8a4f" fill-opacity="0.28" stroke="#2c8a4f" stroke-width="2"></circle>
+    <circle cx="1172" cy="720" r="4" fill="#2c8a4f"></circle>
+    <text x="1202" y="704" class="model-name">Nicheformer</text>
+    <text x="1202" y="720" class="model-meta">110M · ~110M params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="1280" cy="400" r="30" fill="#4a6a8a" fill-opacity="0.30" stroke="#4a6a8a" stroke-width="2.5"></circle>
+    <circle cx="1280" cy="400" r="5" fill="#4a6a8a"></circle>
+    <text x="1312" y="384" class="model-name">STACK</text>
+    <text x="1312" y="400" class="model-meta">149M · ~150M params  ·  ★</text>
+  </g>
+
+  
+  <g>
+    <circle cx="1300" cy="240" r="42" fill="#2c8a4f" fill-opacity="0.28" stroke="#2c8a4f" stroke-width="2.5"></circle>
+    <circle cx="1300" cy="240" r="5" fill="#2c8a4f"></circle>
+    <text x="1344" y="224" class="model-name">C2S-Scale</text>
+    <text x="1344" y="240" class="model-meta">150M+ cells · ~1B params</text>
+  </g>
+
+  
+  <g>
+    <circle cx="1610" cy="720" r="38" fill="#4a6a8a" fill-opacity="0.28" stroke="#4a6a8a" stroke-width="2.5"></circle>
+    <circle cx="1610" cy="720" r="5" fill="#4a6a8a"></circle>
+    <text x="1652" y="704" class="model-name">scPRINT-2</text>
+    <text x="1652" y="720" class="model-meta">350M · ~650M params</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="920" width="1880" height="160" rx="12" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+
+    <text x="80" y="948" class="legend-title" fill="#1a1a22">FAMILY  (BUBBLE COLOR)</text>
+    <g transform="translate(80,962)">
+      <circle cx="14" cy="18" r="11" fill="#4a6a8a" fill-opacity="0.3" stroke="#4a6a8a" stroke-width="2"></circle>
+      <text x="34" y="23" class="legend-body">scRNA foundation model</text>
+
+      <circle cx="280" cy="18" r="11" fill="#2c8a4f" fill-opacity="0.3" stroke="#2c8a4f" stroke-width="2"></circle>
+      <text x="300" y="23" class="legend-body">cross-modal (spatial · NL · cross-species)</text>
+
+      <circle cx="660" cy="18" r="11" fill="#c95a2a" fill-opacity="0.3" stroke="#c95a2a" stroke-width="2"></circle>
+      <text x="680" y="23" class="legend-body">genomic LM</text>
+      <text x="780" y="23" class="note">(none plotted here)</text>
+    </g>
+
+    <line x1="80" y1="1004" x2="1920" y2="1004" stroke="#e5dfcf" stroke-width="1"></line>
+
+    <text x="80" y="1028" class="legend-title" fill="#1a1a22">BUBBLE SIZE  ·  PARAMETER COUNT</text>
+    <g transform="translate(80,1044)">
+      <circle cx="14" cy="18" r="8" fill="#8a8275" fill-opacity="0.25" stroke="#8a8275" stroke-width="1.6"></circle>
+      <text x="32" y="23" class="legend-body">~ 10 – 50 M</text>
+
+      <circle cx="180" cy="18" r="16" fill="#8a8275" fill-opacity="0.25" stroke="#8a8275" stroke-width="1.6"></circle>
+      <text x="206" y="23" class="legend-body">~ 100 – 200 M</text>
+
+      <circle cx="380" cy="18" r="26" fill="#8a8275" fill-opacity="0.25" stroke="#8a8275" stroke-width="1.6"></circle>
+      <text x="418" y="23" class="legend-body">~ 500 M – 1 B</text>
+    </g>
+
+    <text x="900" y="1058" class="note">★  STACK at 149M cells lifts the family into ICL territory without growing the corpus —</text>
+    <text x="900" y="1078" class="note">     architecture (mask-diffusion + EMA self-distillation) drives the y-axis jump, not scale.</text>
+  </g>
+</svg>

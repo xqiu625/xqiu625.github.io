@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE TEMPERATURE PARAMETER  τ</text>
+  <text x="60" y="96" class="h1">Too cold collapses. Too hot dissolves. Tune it on a downstream task.</text>
+  <text x="60" y="124" class="h-sub">τ controls the concentration of representations on the unit hypersphere. Three regimes: cold ❄  ·  warm 🟢  ·  hot 🔥.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="600" height="660" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.8"></rect>
+    <text x="80" y="210" class="panel-tag" fill="#a14854">τ TOO LOW  ❄  (e.g. 0.01)</text>
+    <text x="80" y="244" class="panel-title">collapsed clusters</text>
+    <text x="80" y="266" class="annot" fill="#5c5c66">over-confident; extreme similarity / dissimilarity scores</text>
+
+    
+    <g transform="translate(80,290)">
+      <circle cx="220" cy="200" r="180" fill="#fafaf3" stroke="#a14854" stroke-width="2"></circle>
+      
+      <g>
+        <circle cx="180" cy="160" r="6" fill="#a14854"></circle>
+        <circle cx="186" cy="162" r="6" fill="#a14854"></circle>
+        <circle cx="184" cy="168" r="6" fill="#a14854"></circle>
+        <circle cx="180" cy="166" r="6" fill="#a14854"></circle>
+        <circle cx="186" cy="158" r="6" fill="#a14854"></circle>
+      </g>
+      <g>
+        <circle cx="280" cy="240" r="6" fill="#a14854"></circle>
+        <circle cx="286" cy="242" r="6" fill="#a14854"></circle>
+        <circle cx="284" cy="248" r="6" fill="#a14854"></circle>
+        <circle cx="278" cy="246" r="6" fill="#a14854"></circle>
+        <circle cx="286" cy="238" r="6" fill="#a14854"></circle>
+      </g>
+      <text x="220" y="34" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">vast empty space  ·  no gradient</text>
+    </g>
+
+    <text x="80" y="720" class="key" fill="#a14854">representation collapse  ☠</text>
+    <text x="80" y="744" class="annot">all cells in a batch map to the same point</text>
+    <text x="80" y="780" class="annot" font-weight="700">downstream signal</text>
+    <text x="80" y="802" class="annot" fill="#5c5c66">nearest-neighbour retrieval becomes random</text>
+  </g>
+
+  
+  <g>
+    <rect x="700" y="180" width="600" height="660" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="720" y="210" class="panel-tag" fill="#2c8a4f">τ WELL-TUNED  🟢  (≈ 0.07 – 0.1)</text>
+    <text x="720" y="244" class="panel-title">structured + informative</text>
+    <text x="720" y="266" class="annot" fill="#5c5c66">meaningful clusters with gradual transitions; similarity scores are useful</text>
+
+    <g transform="translate(720,290)">
+      <circle cx="220" cy="200" r="180" fill="#fafaf3" stroke="#2c8a4f" stroke-width="2"></circle>
+      
+      <g>
+        <circle cx="160" cy="120" r="6" fill="#4a6a8a"></circle>
+        <circle cx="170" cy="140" r="6" fill="#4a6a8a"></circle>
+        <circle cx="150" cy="140" r="6" fill="#4a6a8a"></circle>
+        <circle cx="180" cy="120" r="6" fill="#4a6a8a"></circle>
+      </g>
+      <g>
+        <circle cx="280" cy="120" r="6" fill="#c95a2a"></circle>
+        <circle cx="290" cy="140" r="6" fill="#c95a2a"></circle>
+        <circle cx="270" cy="140" r="6" fill="#c95a2a"></circle>
+        <circle cx="300" cy="120" r="6" fill="#c95a2a"></circle>
+      </g>
+      <g>
+        <circle cx="220" cy="260" r="6" fill="#6b4e8a"></circle>
+        <circle cx="230" cy="280" r="6" fill="#6b4e8a"></circle>
+        <circle cx="210" cy="280" r="6" fill="#6b4e8a"></circle>
+        <circle cx="240" cy="260" r="6" fill="#6b4e8a"></circle>
+      </g>
+      <g>
+        <circle cx="100" cy="240" r="6" fill="#b8902c"></circle>
+        <circle cx="110" cy="260" r="6" fill="#b8902c"></circle>
+        <circle cx="120" cy="240" r="6" fill="#b8902c"></circle>
+      </g>
+      <g>
+        <circle cx="340" cy="240" r="6" fill="#2c8a4f"></circle>
+        <circle cx="350" cy="260" r="6" fill="#2c8a4f"></circle>
+        <circle cx="330" cy="260" r="6" fill="#2c8a4f"></circle>
+      </g>
+      <text x="220" y="34" text-anchor="middle" class="annot" font-style="italic" fill="#2c8a4f">space used; clusters separated</text>
+    </g>
+
+    <text x="720" y="720" class="key" fill="#2c8a4f">informative geometry  ✅</text>
+    <text x="720" y="744" class="annot">where Concerto (τ = 0.1) and MedMPT (τ = 0.07) operate</text>
+    <text x="720" y="780" class="annot" font-weight="700">downstream signal</text>
+    <text x="720" y="802" class="annot" fill="#5c5c66">strong retrieval, clean clustering, transferable embeddings</text>
+  </g>
+
+  
+  <g>
+    <rect x="1340" y="180" width="600" height="660" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.8"></rect>
+    <text x="1360" y="210" class="panel-tag" fill="#b8902c">τ TOO HIGH  🔥  (e.g. 1.0)</text>
+    <text x="1360" y="244" class="panel-title">uniform spread, no structure</text>
+    <text x="1360" y="266" class="annot" fill="#5c5c66">treats all pairs as equally (un)similar; no discrimination</text>
+
+    <g transform="translate(1360,290)">
+      <circle cx="220" cy="200" r="180" fill="#fafaf3" stroke="#b8902c" stroke-width="2"></circle>
+      
+      <g>
+        <circle cx="120" cy="120" r="5" fill="#4a6a8a"></circle>
+        <circle cx="160" cy="80" r="5" fill="#c95a2a"></circle>
+        <circle cx="200" cy="120" r="5" fill="#6b4e8a"></circle>
+        <circle cx="240" cy="80" r="5" fill="#b8902c"></circle>
+        <circle cx="280" cy="120" r="5" fill="#2c8a4f"></circle>
+        <circle cx="320" cy="160" r="5" fill="#4a6a8a"></circle>
+        <circle cx="100" cy="200" r="5" fill="#c95a2a"></circle>
+        <circle cx="140" cy="240" r="5" fill="#6b4e8a"></circle>
+        <circle cx="180" cy="200" r="5" fill="#b8902c"></circle>
+        <circle cx="220" cy="240" r="5" fill="#2c8a4f"></circle>
+        <circle cx="260" cy="200" r="5" fill="#4a6a8a"></circle>
+        <circle cx="300" cy="240" r="5" fill="#c95a2a"></circle>
+        <circle cx="160" cy="280" r="5" fill="#6b4e8a"></circle>
+        <circle cx="240" cy="300" r="5" fill="#b8902c"></circle>
+        <circle cx="280" cy="280" r="5" fill="#2c8a4f"></circle>
+        <circle cx="200" cy="320" r="5" fill="#4a6a8a"></circle>
+      </g>
+      <text x="220" y="34" text-anchor="middle" class="annot" font-style="italic" fill="#b8902c">embeddings tile the sphere uniformly</text>
+    </g>
+
+    <text x="1360" y="720" class="key" fill="#b8902c">uniform embedding  ⚪</text>
+    <text x="1360" y="744" class="annot">no discriminative signal — every pair is &#34;moderately similar&#34;</text>
+    <text x="1360" y="780" class="annot" font-weight="700">downstream signal</text>
+    <text x="1360" y="802" class="annot" fill="#5c5c66">classifier accuracy plateaus; retrieval is noise</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="860" width="1880" height="220" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="890" class="panel-tag" fill="#7a5b13">TUNING GUIDE</text>
+    <text x="80" y="924" class="key" fill="#7a5b13">τ controls the concentration of representations on the hypersphere.</text>
+    <text x="80" y="958" class="annot">always tune τ on a <tspan font-weight="700">downstream validation task</tspan> — not on the contrastive loss itself.</text>
+    <text x="80" y="982" class="annot">a lower contrastive loss can come from collapse; the loss alone is a misleading signal.</text>
+    <text x="80" y="1018" class="annot" font-style="italic" fill="#5c5c66">starting range  ·  τ ∈ [0.05, 0.2]  ·  search with log scale.</text>
+    <text x="80" y="1050" class="annot" font-style="italic" fill="#5c5c66">canonical values  ·  Concerto  τ = 0.1   ·   MedMPT  τ = 0.07   ·   SimCLR  τ = 0.5 (vision baseline).</text>
+  </g>
+</svg>

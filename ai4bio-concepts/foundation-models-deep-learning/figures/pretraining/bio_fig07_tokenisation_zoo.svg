@@ -1,0 +1,227 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="44" class="eyebrow">FIGURE  |  THE TOKENISATION ZOO  ·  ONE CELL, FIVE REPRESENTATIONS</text>
+  <text x="60" y="80" class="h1">Same source cell, five tokenisation choices, very different things kept and discarded.</text>
+  <text x="60" y="106" class="h-sub">The architecture is the same downstream — but what reaches the transformer is decided here.</text>
+  <line x1="60" y1="128" x2="1940" y2="128" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="60" y="156" class="row-tag" fill="#8a8275">SOURCE CELL  ·  TOKENISED FORM</text>
+  <text x="1340" y="156" class="row-tag" fill="#8a8275">WHAT IS KEPT  /  LOST</text>
+
+  
+  <g>
+    <rect x="40" y="170" width="1920" height="150" rx="10" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    
+    <g transform="translate(60,242)">
+      <circle cx="36" cy="0" r="32" fill="#ffe7d6" stroke="#c95a2a" stroke-width="1.8"></circle>
+      <circle cx="30" cy="-4" r="10" fill="#c95a2a" opacity="0.55"></circle>
+      <text x="84" y="-12" class="row-tag" fill="#c95a2a">ROW 1</text>
+      <text x="84" y="6" class="row-title">Raw counts</text>
+      <text x="84" y="22" class="row-sub">sparse vector, ~19 000 dims</text>
+    </g>
+    
+    <line x1="310" y1="244" x2="350" y2="244" stroke="#5c5c66" stroke-width="2" marker-end="url(#ar)"></line>
+    
+    <g transform="translate(360,210)">
+      <text x="0" y="0" class="mono" fill="#8a8275">cell.X  ∈  ℕ¹⁹⁰⁰⁰</text>
+      <g transform="translate(0,8)">
+        <rect x="0" y="0" width="940" height="36" fill="#eef3f9" stroke="#4a6a8a" stroke-width="0.8"></rect>
+        
+        <rect x="48" y="2" width="2" height="32" fill="#4a6a8a"></rect>
+        <rect x="180" y="6" width="2" height="28" fill="#4a6a8a"></rect>
+        <rect x="240" y="2" width="2" height="32" fill="#4a6a8a"></rect>
+        <rect x="380" y="4" width="2" height="30" fill="#4a6a8a"></rect>
+        <rect x="510" y="2" width="2" height="32" fill="#4a6a8a"></rect>
+        <rect x="640" y="6" width="2" height="28" fill="#4a6a8a"></rect>
+        <rect x="720" y="2" width="2" height="32" fill="#4a6a8a"></rect>
+        <rect x="830" y="4" width="2" height="30" fill="#4a6a8a"></rect>
+        <rect x="890" y="2" width="2" height="32" fill="#4a6a8a"></rect>
+      </g>
+      <text x="0" y="76" class="mono-sm">[ 0, 0, ..., 7, 0, 0, 42, 0, ..., 12, 0, 0 ]</text>
+      <text x="0" y="92" class="meta" font-style="italic" fill="#5c5c66">~ 95 % zeros</text>
+    </g>
+    
+    <g transform="translate(1340,196)">
+      <text x="0" y="14" class="kept-tag">KEPT</text>
+      <text x="60" y="14" class="meta">everything — exact UMI counts, gene identity</text>
+      <text x="0" y="38" class="lost-tag">LOST</text>
+      <text x="60" y="38" class="meta">nothing</text>
+      <line x1="0" y1="56" x2="580" y2="56" stroke="#e5dfcf" stroke-width="1"></line>
+      <text x="0" y="80" class="meta" font-style="italic" fill="#5c5c66">Not directly tokenised — most models start by transforming this.</text>
+      <text x="0" y="100" class="meta" font-style="italic" fill="#5c5c66">Used as a baseline (&#34;just feed the counts&#34;) in scaling-law tests.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="40" y="330" width="1920" height="150" rx="10" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <g transform="translate(60,402)">
+      <circle cx="36" cy="0" r="32" fill="#ffe7d6" stroke="#c95a2a" stroke-width="1.8"></circle>
+      <circle cx="30" cy="-4" r="10" fill="#c95a2a" opacity="0.55"></circle>
+      <text x="84" y="-12" class="row-tag" fill="#4a6a8a">ROW 2  ·  GENEFORMER</text>
+      <text x="84" y="6" class="row-title">Rank-value tokens</text>
+      <text x="84" y="22" class="row-sub">sorted gene IDs, magnitudes dropped</text>
+    </g>
+    <line x1="310" y1="404" x2="350" y2="404" stroke="#5c5c66" stroke-width="2" marker-end="url(#ar)"></line>
+    <g transform="translate(360,360)">
+      <text x="0" y="0" class="mono" fill="#8a8275">argsort( cell.X )  →  ranked gene tokens (zeros dropped)</text>
+      <g transform="translate(0,10)">
+        <rect x="0" y="0" width="80" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="40" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">GAPDH</text>
+        <rect x="86" y="0" width="64" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="118" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">CD3E</text>
+        <rect x="156" y="0" width="64" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="188" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">ACTB</text>
+        <rect x="226" y="0" width="64" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="258" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">IL2RA</text>
+        <rect x="296" y="0" width="72" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="332" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">FOXP3</text>
+        <rect x="374" y="0" width="64" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="406" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">TP53</text>
+        <rect x="444" y="0" width="56" height="30" rx="4" fill="#4a6a8a" opacity="0.8"></rect>
+        <text x="472" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">CD4</text>
+        <text x="510" y="20" class="mono">  …  ~2k tokens total</text>
+      </g>
+      <text x="0" y="78" class="meta" font-style="italic" fill="#5c5c66">a sentence-shaped sequence: position encodes relative expression</text>
+    </g>
+    <g transform="translate(1340,356)">
+      <text x="0" y="14" class="kept-tag">KEPT</text>
+      <text x="60" y="14" class="meta">relative rank, gene identity</text>
+      <text x="0" y="38" class="lost-tag">LOST</text>
+      <text x="60" y="38" class="meta">exact magnitudes, library size</text>
+      <line x1="0" y1="56" x2="580" y2="56" stroke="#e5dfcf" stroke-width="1"></line>
+      <text x="0" y="80" class="meta" font-style="italic" fill="#5c5c66">Robust to protocol differences (10× vs Smart-seq);</text>
+      <text x="0" y="100" class="meta" font-style="italic" fill="#5c5c66">blind to dose-response and quantitative gradients.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="40" y="490" width="1920" height="150" rx="10" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <g transform="translate(60,562)">
+      <circle cx="36" cy="0" r="32" fill="#ffe7d6" stroke="#c95a2a" stroke-width="1.8"></circle>
+      <circle cx="30" cy="-4" r="10" fill="#c95a2a" opacity="0.55"></circle>
+      <text x="84" y="-12" class="row-tag" fill="#6b4e8a">ROW 3  ·  AIDO.CELL</text>
+      <text x="84" y="6" class="row-title">Continuous counts</text>
+      <text x="84" y="22" class="row-sub">real-valued vector fed directly</text>
+    </g>
+    <line x1="310" y1="564" x2="350" y2="564" stroke="#5c5c66" stroke-width="2" marker-end="url(#ar)"></line>
+    <g transform="translate(360,520)">
+      <text x="0" y="0" class="mono" fill="#8a8275">log1p(cell.X)  →  real-valued sequence of 19 000 numbers</text>
+      <g transform="translate(0,10)">
+        <rect x="0" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="30" y="20" text-anchor="middle" class="mono">0.00</text>
+        <rect x="62" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="92" y="20" text-anchor="middle" class="mono">7.18</text>
+        <rect x="124" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="154" y="20" text-anchor="middle" class="mono">0.00</text>
+        <rect x="186" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="216" y="20" text-anchor="middle" class="mono">3.76</text>
+        <rect x="248" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="278" y="20" text-anchor="middle" class="mono">42.0</text>
+        <rect x="310" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="340" y="20" text-anchor="middle" class="mono">0.00</text>
+        <rect x="372" y="0" width="60" height="30" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="402" y="20" text-anchor="middle" class="mono">1.10</text>
+        <text x="442" y="20" class="mono">…  19 000 dims</text>
+      </g>
+      <text x="0" y="78" class="meta" font-style="italic" fill="#5c5c66">no discretisation; gene order fixed by the dictionary</text>
+    </g>
+    <g transform="translate(1340,516)">
+      <text x="0" y="14" class="kept-tag">KEPT</text>
+      <text x="60" y="14" class="meta">quantitative magnitude, full continuum</text>
+      <text x="0" y="38" class="lost-tag">LOST</text>
+      <text x="60" y="38" class="meta">very little (normalisation only)</text>
+      <line x1="0" y1="56" x2="580" y2="56" stroke="#e5dfcf" stroke-width="1"></line>
+      <text x="0" y="80" class="meta" font-style="italic" fill="#5c5c66">Highest information density per cell;</text>
+      <text x="0" y="100" class="meta" font-style="italic" fill="#5c5c66">most sensitive to platform-specific count distributions.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="40" y="650" width="1920" height="150" rx="10" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <g transform="translate(60,722)">
+      <circle cx="36" cy="0" r="32" fill="#ffe7d6" stroke="#c95a2a" stroke-width="1.8"></circle>
+      <circle cx="30" cy="-4" r="10" fill="#c95a2a" opacity="0.55"></circle>
+      <text x="84" y="-12" class="row-tag" fill="#2c8a4f">ROW 4  ·  C2S-SCALE</text>
+      <text x="84" y="6" class="row-title">Cell sentence</text>
+      <text x="84" y="22" class="row-sub">cell → natural-language description</text>
+    </g>
+    <line x1="310" y1="724" x2="350" y2="724" stroke="#5c5c66" stroke-width="2" marker-end="url(#ar)"></line>
+    <g transform="translate(360,680)">
+      <text x="0" y="0" class="mono" fill="#8a8275">templated NL: cell.X  →  English</text>
+      <rect x="0" y="10" width="940" height="50" rx="6" fill="#eef9ef" stroke="#2c8a4f" stroke-width="1"></rect>
+      <text x="14" y="33" class="mono" fill="#1a1a22">&#34;A regulatory T cell highly expressing GAPDH and CD3E,</text>
+      <text x="14" y="50" class="mono" fill="#1a1a22"> moderately expressing FOXP3 and IL2RA, with TP53 elevated …&#34;</text>
+      <text x="0" y="86" class="meta" font-style="italic" fill="#5c5c66">tokenised by a standard LM tokenizer (BPE / SentencePiece)</text>
+    </g>
+    <g transform="translate(1340,676)">
+      <text x="0" y="14" class="kept-tag">KEPT</text>
+      <text x="60" y="14" class="meta">cell identity, gene salience, broad relations</text>
+      <text x="0" y="38" class="lost-tag">LOST</text>
+      <text x="60" y="38" class="meta">exact counts, fine-grained ordering</text>
+      <line x1="0" y1="56" x2="580" y2="56" stroke="#e5dfcf" stroke-width="1"></line>
+      <text x="0" y="80" class="meta" font-style="italic" fill="#5c5c66">Trades numerical precision for an NL interface —</text>
+      <text x="0" y="100" class="meta" font-style="italic" fill="#5c5c66">users can ask about the cell in plain English.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="40" y="810" width="1920" height="150" rx="10" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <g transform="translate(60,882)">
+      <circle cx="36" cy="0" r="32" fill="#ffe7d6" stroke="#c95a2a" stroke-width="1.8"></circle>
+      <circle cx="30" cy="-4" r="10" fill="#c95a2a" opacity="0.55"></circle>
+      <text x="84" y="-12" class="row-tag" fill="#b8902c">ROW 5  ·  CHRISCELL</text>
+      <text x="84" y="6" class="row-title">VQ discrete codes</text>
+      <text x="84" y="22" class="row-sub">vector-quantised codebook indices</text>
+    </g>
+    <line x1="310" y1="884" x2="350" y2="884" stroke="#5c5c66" stroke-width="2" marker-end="url(#ar)"></line>
+    <g transform="translate(360,840)">
+      <text x="0" y="0" class="mono" fill="#8a8275">encoder + VQ  →  short sequence of codebook indices</text>
+      <g transform="translate(0,10)">
+        <rect x="0" y="0" width="70" height="30" rx="4" fill="#b8902c" opacity="0.85"></rect>
+        <text x="35" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">4821</text>
+        <rect x="76" y="0" width="70" height="30" rx="4" fill="#b8902c" opacity="0.85"></rect>
+        <text x="111" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">1092</text>
+        <rect x="152" y="0" width="70" height="30" rx="4" fill="#b8902c" opacity="0.85"></rect>
+        <text x="187" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">7733</text>
+        <rect x="228" y="0" width="70" height="30" rx="4" fill="#b8902c" opacity="0.85"></rect>
+        <text x="263" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">2104</text>
+        <rect x="304" y="0" width="70" height="30" rx="4" fill="#b8902c" opacity="0.85"></rect>
+        <text x="339" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">331</text>
+        <rect x="380" y="0" width="70" height="30" rx="4" fill="#b8902c" opacity="0.85"></rect>
+        <text x="415" y="20" text-anchor="middle" class="mono" fill="#ffffff" font-weight="700">9007</text>
+        <text x="460" y="20" class="mono">  …  &lt;= 256 codes</text>
+      </g>
+      <text x="0" y="78" class="meta" font-style="italic" fill="#5c5c66">codebook size 16 384  ·  fixed-length compressed representation</text>
+    </g>
+    <g transform="translate(1340,836)">
+      <text x="0" y="14" class="kept-tag">KEPT</text>
+      <text x="60" y="14" class="meta">cell-type-discriminative content, compactly</text>
+      <text x="0" y="38" class="lost-tag">LOST</text>
+      <text x="60" y="38" class="meta">individual gene identity, quantisation error</text>
+      <line x1="0" y1="56" x2="580" y2="56" stroke="#e5dfcf" stroke-width="1"></line>
+      <text x="0" y="80" class="meta" font-style="italic" fill="#5c5c66">Makes cells tokenizable like text;</text>
+      <text x="0" y="100" class="meta" font-style="italic" fill="#5c5c66">codes are not human-interpretable on their own.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="40" y="980" width="1920" height="100" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.5"></rect>
+    <text x="60" y="1006" class="row-tag" fill="#7a5b13">THE SAME CELL, FIVE DIFFERENT THINGS THE TRANSFORMER SEES</text>
+    <text x="60" y="1036" class="meta">Comparing scFM benchmarks across families is largely a comparison of these five rows — the architectures downstream are very similar.</text>
+    <text x="60" y="1058" class="meta" font-style="italic" fill="#5c5c66">A model can only learn what its tokenisation lets through. Pick a row to match the question you want to ask.</text>
+  </g>
+</svg>

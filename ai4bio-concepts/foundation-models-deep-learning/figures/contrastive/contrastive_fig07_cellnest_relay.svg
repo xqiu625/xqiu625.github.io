@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    <marker id="ar-coral" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c95a2a"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CELLNEST  ·  MULTI-HOP CELL-CELL COMMUNICATION RELAYS</text>
+  <text x="60" y="96" class="h1">A signal passes through more than two cells.</text>
+  <text x="60" y="124" class="h-sub">Different edge types = different ligand–receptor pairs. A graph attention network + DGI detects relay cascades — unsupervised, no comms labels.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="520" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="208" class="panel-tag" fill="#8a5a4a">SPATIAL TISSUE GRAPH  🕸️  ·  MULTI-EDGE</text>
+    <text x="80" y="234" class="panel-title">edges typed by ligand–receptor pair  ·  graph attention encodes communication context</text>
+
+    
+    <g transform="translate(260,420)">
+      <circle cx="0" cy="0" r="60" fill="#c95a2a" opacity="0.20" stroke="#c95a2a" stroke-width="2"></circle>
+      <text x="0" y="8" text-anchor="middle" class="emoji">🧱</text>
+      <text x="0" y="86" text-anchor="middle" class="cell-name" fill="#c95a2a">Cell A</text>
+      <text x="0" y="106" text-anchor="middle" class="annot" fill="#5c5c66">fibroblast</text>
+      <text x="0" y="126" text-anchor="middle" class="annot" font-weight="700">sends  WNT5A</text>
+    </g>
+
+    
+    <line x1="324" y1="416" x2="836" y2="416" stroke="#c95a2a" stroke-width="3" marker-end="url(#ar-coral)"></line>
+    <text x="580" y="394" text-anchor="middle" class="edge-label" fill="#c95a2a">edge type 1  ·  WNT5A → FZD1</text>
+
+    
+    <g transform="translate(900,420)">
+      <circle cx="0" cy="0" r="60" fill="#6b4e8a" opacity="0.20" stroke="#6b4e8a" stroke-width="2"></circle>
+      <text x="0" y="8" text-anchor="middle" class="emoji">🛡</text>
+      <text x="0" y="86" text-anchor="middle" class="cell-name" fill="#6b4e8a">Cell B</text>
+      <text x="0" y="106" text-anchor="middle" class="annot" fill="#5c5c66">macrophage</text>
+      <text x="0" y="126" text-anchor="middle" class="annot" font-weight="700">receives via FZD1  /  sends BMP4</text>
+    </g>
+
+    
+    <line x1="964" y1="416" x2="1476" y2="416" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar)"></line>
+    <text x="1220" y="394" text-anchor="middle" class="edge-label" fill="#2c8a4f">edge type 2  ·  BMP4 → BMPR2</text>
+
+    
+    <g transform="translate(1540,420)">
+      <circle cx="0" cy="0" r="60" fill="#2c8a4f" opacity="0.20" stroke="#2c8a4f" stroke-width="2"></circle>
+      <text x="0" y="8" text-anchor="middle" class="emoji">🌿</text>
+      <text x="0" y="86" text-anchor="middle" class="cell-name" fill="#2c8a4f">Cell C</text>
+      <text x="0" y="106" text-anchor="middle" class="annot" fill="#5c5c66">epithelial cell</text>
+      <text x="0" y="126" text-anchor="middle" class="annot" font-weight="700">receives via BMPR2</text>
+    </g>
+
+    
+    <text x="580" y="460" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">hop 1</text>
+    <text x="1220" y="460" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">hop 2</text>
+
+    
+    <circle cx="500" cy="220" r="22" fill="#8a8275" opacity="0.3"></circle>
+    <circle cx="700" cy="270" r="22" fill="#8a8275" opacity="0.3"></circle>
+    <circle cx="1100" cy="240" r="22" fill="#8a8275" opacity="0.3"></circle>
+    <circle cx="1300" cy="240" r="22" fill="#8a8275" opacity="0.3"></circle>
+    <circle cx="600" cy="600" r="22" fill="#8a8275" opacity="0.3"></circle>
+    <circle cx="1000" cy="620" r="22" fill="#8a8275" opacity="0.3"></circle>
+    <circle cx="1400" cy="600" r="22" fill="#8a8275" opacity="0.3"></circle>
+    
+    <g stroke="#8a8275" stroke-width="1" opacity="0.4">
+      <line x1="280" y1="380" x2="492" y2="234"></line>
+      <line x1="500" y1="244" x2="690" y2="262"></line>
+      <line x1="700" y1="290" x2="860" y2="396"></line>
+      <line x1="900" y1="358" x2="1100" y2="262"></line>
+      <line x1="1100" y1="262" x2="1296" y2="252"></line>
+      <line x1="1316" y1="262" x2="1500" y2="392"></line>
+      <line x1="600" y1="580" x2="320" y2="468"></line>
+      <line x1="600" y1="600" x2="876" y2="476"></line>
+      <line x1="990" y1="618" x2="1390" y2="606"></line>
+      <line x1="1410" y1="588" x2="1520" y2="476"></line>
+    </g>
+    <text x="1740" y="232" class="annot" fill="#5c5c66" font-style="italic">other context cells</text>
+    <text x="1740" y="252" class="annot" fill="#5c5c66" font-style="italic">attention weighs them too</text>
+
+    
+    <text x="1000" y="270" text-anchor="middle" class="key" fill="#1a1a22">2-hop relay cascade  ·  the signal passes through an intermediate cell</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="720" width="920" height="360" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="80" y="748" class="panel-tag" fill="#2c8a4f">TRAINING  ·  GAT  +  DGI</text>
+    <text x="80" y="776" class="panel-title">graph attention + real-vs-corrupted contrastive</text>
+
+    <text x="80" y="812" class="annot">①  edges typed by LR-pair  →  attention learns which pair to use per pair of cells</text>
+    <text x="80" y="838" class="annot">②  node features = gene expression  →  signal-emitting and signal-receiving genes</text>
+    <text x="80" y="866" class="annot">③  build a &#34;real&#34; graph and a &#34;corrupted&#34; graph (shuffled node features)</text>
+    <text x="80" y="892" class="annot">④  DGI loss  ·  max MI ( node , real summary )  ·  min MI ( node , fake summary )</text>
+
+    <line x1="80" y1="916" x2="940" y2="916" stroke="#bcd6bc" stroke-width="1"></line>
+
+    <text x="80" y="944" class="key" fill="#2c8a4f">no ground-truth communication labels needed  ·  fully unsupervised</text>
+    <text x="80" y="976" class="annot">downstream: read off attention weights to surface relay cascades like the one above.</text>
+    <text x="80" y="1014" class="annot" font-style="italic" fill="#5c5c66">cell B is identified as a <tspan font-weight="700">relay</tspan> when it both receives a signal and emits another.</text>
+    <text x="80" y="1046" class="annot" font-style="italic" fill="#5c5c66">a behaviour that pairwise CCC tools can&#39;t see by construction.</text>
+  </g>
+
+  <g>
+    <rect x="1000" y="720" width="940" height="360" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1020" y="748" class="panel-tag" fill="#7a5b13">WHAT MAKES CELLNEST DIFFERENT</text>
+    <text x="1020" y="780" class="panel-title">multi-hop CCC at single-cell resolution</text>
+
+    <text x="1020" y="816" class="annot" font-weight="700">first method to do this</text>
+    <text x="1020" y="836" class="annot">pairwise CCC tools see only A → B, never A → B → C</text>
+
+    <text x="1020" y="872" class="annot" font-weight="700">platforms supported</text>
+    <text x="1020" y="892" class="annot">Visium  ·  Visium HD  ·  MERFISH  ·  3D spatial data</text>
+
+    <text x="1020" y="934" class="annot" font-weight="700">no labels required</text>
+    <text x="1020" y="954" class="annot">the contrastive objective shapes the embedding without ground-truth comms</text>
+
+    <line x1="1020" y1="988" x2="1920" y2="988" stroke="#e1c66b" stroke-width="1"></line>
+    <text x="1020" y="1018" class="key" fill="#7a5b13">→  hypothesis-generating for tissue signalling cascades</text>
+    <text x="1020" y="1048" class="annot" font-style="italic" fill="#5c5c66">surfaces candidate relays you wouldn&#39;t see by enumerating ligand-receptor pairs alone.</text>
+  </g>
+</svg>

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar-attract" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2c8a4f"></path>
+    </marker>
+    <marker id="ar-repel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a14854"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CONTRASTIVE LEARNING  ·  THE CORE MECHANISM</text>
+  <text x="60" y="96" class="h1">Pull the same thing together. Push everything else apart.</text>
+  <text x="60" y="124" class="h-sub">A single objective on the unit hypersphere. The geometry of the embedding is defined entirely by what you call a positive pair.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="190" width="1240" height="600" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="218" class="panel-tag" fill="#8a5a4a">UNIT HYPERSPHERE  ·  EMBEDDINGS LIVE HERE</text>
+    <text x="80" y="244" class="panel-title">Anchor 🎯  +  Positive 💚  +  Negatives ✖</text>
+
+    
+    <circle cx="680" cy="510" r="240" fill="#fafaf3" stroke="#8a8275" stroke-width="2"></circle>
+    <text x="680" y="280" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">||z|| = 1  (unit norm)</text>
+
+    
+    <g>
+      <circle cx="680" cy="510" r="22" fill="#2c8a4f"></circle>
+      <text x="680" y="518" text-anchor="middle" class="emoji-sm" fill="#ffffff">🎯</text>
+      <text x="680" y="478" text-anchor="middle" class="dot-label">anchor</text>
+      <text x="680" y="494" text-anchor="middle" class="annot" fill="#5c5c66">&#34;this cell&#34;</text>
+    </g>
+
+    
+    <g>
+      <circle cx="770" cy="490" r="20" fill="#2c8a4f" opacity="0.7"></circle>
+      <text x="770" y="498" text-anchor="middle" class="emoji-sm" fill="#ffffff">🧬</text>
+      <text x="770" y="462" text-anchor="middle" class="dot-label">positive</text>
+      <text x="770" y="478" text-anchor="middle" class="annot" fill="#5c5c66">same cell, dropout view</text>
+    </g>
+
+    
+    <path d="M 700 502 C 720 498, 740 495, 750 495" fill="none" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar-attract)"></path>
+    <text x="724" y="528" class="arrow-label" fill="#2c8a4f">ATTRACT  💚</text>
+
+    
+    <g>
+      <circle cx="520" cy="380" r="16" fill="#8a8275" opacity="0.75"></circle>
+      <text x="520" y="386" text-anchor="middle" class="emoji-sm" fill="#ffffff">✖</text>
+      <line x1="660" y1="498" x2="540" y2="392" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+
+      <circle cx="500" cy="630" r="16" fill="#8a8275" opacity="0.75"></circle>
+      <text x="500" y="636" text-anchor="middle" class="emoji-sm" fill="#ffffff">✖</text>
+      <line x1="660" y1="520" x2="520" y2="620" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+
+      <circle cx="840" cy="640" r="16" fill="#8a8275" opacity="0.75"></circle>
+      <text x="840" y="646" text-anchor="middle" class="emoji-sm" fill="#ffffff">✖</text>
+      <line x1="700" y1="522" x2="824" y2="632" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+
+      <circle cx="880" cy="400" r="16" fill="#8a8275" opacity="0.75"></circle>
+      <text x="880" y="406" text-anchor="middle" class="emoji-sm" fill="#ffffff">✖</text>
+      <line x1="700" y1="500" x2="866" y2="412" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+
+      <circle cx="620" cy="730" r="16" fill="#8a8275" opacity="0.75"></circle>
+      <text x="620" y="736" text-anchor="middle" class="emoji-sm" fill="#ffffff">✖</text>
+      <line x1="675" y1="530" x2="625" y2="714" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+
+      <circle cx="430" cy="510" r="16" fill="#8a8275" opacity="0.75"></circle>
+      <text x="430" y="516" text-anchor="middle" class="emoji-sm" fill="#ffffff">✖</text>
+      <line x1="658" y1="510" x2="446" y2="510" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+    </g>
+    <text x="380" y="380" text-anchor="middle" class="arrow-label" fill="#a14854">REPEL  ❌</text>
+    <text x="380" y="402" text-anchor="middle" class="annot" fill="#a14854">other cells in the batch</text>
+
+    
+    <g>
+      <rect x="80" y="660" width="1200" height="110" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+      <text x="100" y="688" class="panel-tag" fill="#7a5b13">INFONCE LOSS  ·  THE SCORE WE OPTIMISE  📐</text>
+      <text x="100" y="722" class="formula">L  =  − log  [ exp( sim(anchor, positive) / τ )  /  Σ exp( sim(anchor, all) / τ ) ]</text>
+      <text x="100" y="754" class="annot" font-style="italic" fill="#5c5c66">maximise similarity to the positive  ·  divide by total similarity over the batch  ·  τ controls the sharpness</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="1320" y="190" width="620" height="280" rx="14" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+    <text x="1340" y="218" class="panel-tag" fill="#4a6a8a">COMPARE  ·  RECONSTRUCTION  🔄  (VAE)</text>
+    <text x="1340" y="248" class="panel-title">input → bottleneck → reconstruct input</text>
+    <g transform="translate(1340,266)">
+      <rect x="0" y="0" width="120" height="40" rx="6" fill="#e3edf6" stroke="#4a6a8a"></rect>
+      <text x="60" y="26" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">input  📥</text>
+      <text x="130" y="26" class="annot">→</text>
+      <rect x="150" y="6" width="80" height="28" rx="6" fill="#e3edf6" stroke="#4a6a8a"></rect>
+      <text x="190" y="26" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">z</text>
+      <text x="240" y="26" class="annot">→</text>
+      <rect x="260" y="0" width="120" height="40" rx="6" fill="#e3edf6" stroke="#4a6a8a"></rect>
+      <text x="320" y="26" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">output  📤</text>
+    </g>
+    <text x="1340" y="360" class="annot">objective  :  pixel-wise reconstruction loss</text>
+    <text x="1340" y="380" class="annot">representation  :  optimised to copy the input back</text>
+    <text x="1340" y="412" class="annot" font-style="italic" fill="#5c5c66">good for generation; not necessarily good for similarity.</text>
+    <text x="1340" y="446" class="key" fill="#4a6a8a">↪  contrastive skips reconstruction entirely</text>
+  </g>
+
+  <g>
+    <rect x="1320" y="490" width="620" height="300" rx="14" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+    <text x="1340" y="518" class="panel-tag" fill="#c95a2a">COMPARE  ·  MASKED PREDICTION  🎭  (MLM)</text>
+    <text x="1340" y="548" class="panel-title">predict the missing token from context</text>
+    <g transform="translate(1340,566)">
+      <rect x="0" y="0" width="80" height="34" rx="6" fill="#fbe6d8" stroke="#c95a2a"></rect>
+      <text x="40" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#c95a2a">CD3E</text>
+      <rect x="84" y="0" width="80" height="34" rx="6" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+      <text x="124" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#a14854">[MASK]</text>
+      <rect x="168" y="0" width="80" height="34" rx="6" fill="#fbe6d8" stroke="#c95a2a"></rect>
+      <text x="208" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#c95a2a">FOXP3</text>
+      <rect x="252" y="0" width="80" height="34" rx="6" fill="#fbe6d8" stroke="#c95a2a"></rect>
+      <text x="292" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#c95a2a">ACTB</text>
+    </g>
+    <text x="1340" y="660" class="annot">objective  :  predict the masked token&#39;s identity</text>
+    <text x="1340" y="680" class="annot">representation  :  optimised to fill gaps</text>
+    <text x="1340" y="712" class="annot" font-style="italic" fill="#5c5c66">good for token-level prediction; doesn&#39;t directly shape similarity.</text>
+    <text x="1340" y="748" class="key" fill="#c95a2a">↪  contrastive shapes the geometry directly</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="820" width="1880" height="260" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="850" class="panel-tag" fill="#7a5b13">THE KEY INSIGHT  💡</text>
+    <text x="80" y="884" class="key" fill="#7a5b13">The geometry of the embedding is defined entirely by what you call a positive pair.</text>
+    <text x="80" y="918" class="annot">pair cells by <tspan font-weight="700">two views of the same cell</tspan>  →  the model learns invariance to noise  🪛</text>
+    <text x="80" y="942" class="annot">pair cells by <tspan font-weight="700">spatial neighbours</tspan>  →  the model learns niche structure  🧱</text>
+    <text x="80" y="966" class="annot">pair cells by <tspan font-weight="700">caption</tspan>  →  the model learns semantic concepts  💬</text>
+    <text x="80" y="990" class="annot">pair cells by <tspan font-weight="700">ontology class</tspan>  →  the model learns label discrimination  🏷</text>
+    <text x="80" y="1024" class="annot" font-style="italic" fill="#5c5c66">there is no neutral contrastive objective — the positive-pair definition <tspan font-weight="700">is</tspan> the objective.</text>
+    <text x="80" y="1056" class="key" fill="#a14854">get this wrong and the space encodes the wrong invariance. ⚠</text>
+  </g>
+</svg>

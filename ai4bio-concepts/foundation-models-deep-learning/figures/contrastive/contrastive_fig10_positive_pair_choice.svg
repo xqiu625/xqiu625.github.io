@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  POSITIVE-PAIR CHOICE DEFINES THE EMBEDDING GEOMETRY</text>
+  <text x="60" y="96" class="h1">Five plots. Same data. Five very different latent spaces.</text>
+  <text x="60" y="124" class="h-sub">Pick the wrong positive pair and the model encodes the wrong invariance. There is no neutral contrastive objective.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  
+
+  
+  <g>
+    <rect x="60" y="190" width="360" height="660" rx="14" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+    <text x="80" y="218" class="plot-tag" fill="#4a6a8a">PLOT 1  ·  TWO VIEWS  🧬</text>
+    <text x="80" y="244" class="plot-title">positive = augmented views</text>
+    <text x="80" y="262" class="plot-sub">of the same cell</text>
+
+    
+    <g transform="translate(80,290)">
+      <rect x="0" y="0" width="320" height="280" rx="8" fill="#e3edf6" opacity="0.3"></rect>
+      <circle cx="60" cy="60" r="6" fill="#4a6a8a"></circle>
+      <circle cx="70" cy="80" r="6" fill="#4a6a8a"></circle>
+      <circle cx="80" cy="62" r="6" fill="#4a6a8a"></circle>
+      <circle cx="60" cy="80" r="6" fill="#4a6a8a"></circle>
+      <circle cx="200" cy="60" r="6" fill="#c95a2a"></circle>
+      <circle cx="210" cy="80" r="6" fill="#c95a2a"></circle>
+      <circle cx="220" cy="62" r="6" fill="#c95a2a"></circle>
+      <circle cx="200" cy="80" r="6" fill="#c95a2a"></circle>
+      <circle cx="130" cy="180" r="6" fill="#2c8a4f"></circle>
+      <circle cx="140" cy="200" r="6" fill="#2c8a4f"></circle>
+      <circle cx="150" cy="180" r="6" fill="#2c8a4f"></circle>
+      <circle cx="130" cy="200" r="6" fill="#2c8a4f"></circle>
+      <circle cx="260" cy="200" r="6" fill="#b8902c"></circle>
+      <circle cx="270" cy="220" r="6" fill="#b8902c"></circle>
+      <circle cx="260" cy="220" r="6" fill="#b8902c"></circle>
+    </g>
+
+    <text x="80" y="616" class="annot" font-weight="700">→  cells cluster by identity</text>
+    <text x="80" y="640" class="annot" fill="#5c5c66">invariance to technical noise (dropout)</text>
+    <line x1="80" y1="664" x2="400" y2="664" stroke="#bcd2e6" stroke-width="1"></line>
+    <text x="80" y="690" class="key" fill="#4a6a8a">good for batch correction</text>
+    <text x="80" y="714" class="annot" fill="#5c5c66" font-style="italic">but no semantic grouping</text>
+    <text x="80" y="750" class="annot" font-style="italic" fill="#5c5c66">example: Concerto</text>
+    <text x="80" y="808" class="annot" font-style="italic" fill="#5c5c66">&#34;same cell&#34; is the invariant</text>
+  </g>
+
+  
+  <g>
+    <rect x="440" y="190" width="360" height="660" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="460" y="218" class="plot-tag" fill="#2c8a4f">PLOT 2  ·  SPATIAL NEIGHBOUR  🧱</text>
+    <text x="460" y="244" class="plot-title">positive = neighbouring cell</text>
+    <text x="460" y="262" class="plot-sub">in the same tissue region</text>
+
+    <g transform="translate(460,290)">
+      <rect x="0" y="0" width="320" height="280" rx="8" fill="#dfeede" opacity="0.3"></rect>
+      
+      <circle cx="60" cy="60" r="6" fill="#4a6a8a"></circle>
+      <circle cx="80" cy="70" r="6" fill="#c95a2a"></circle>
+      <circle cx="100" cy="60" r="6" fill="#2c8a4f"></circle>
+      <circle cx="70" cy="90" r="6" fill="#b8902c"></circle>
+      <circle cx="90" cy="90" r="6" fill="#4a6a8a"></circle>
+      
+      <circle cx="240" cy="100" r="6" fill="#4a6a8a"></circle>
+      <circle cx="220" cy="110" r="6" fill="#c95a2a"></circle>
+      <circle cx="260" cy="110" r="6" fill="#2c8a4f"></circle>
+      <circle cx="240" cy="130" r="6" fill="#b8902c"></circle>
+      
+      <circle cx="140" cy="220" r="6" fill="#4a6a8a"></circle>
+      <circle cx="160" cy="230" r="6" fill="#c95a2a"></circle>
+      <circle cx="180" cy="220" r="6" fill="#2c8a4f"></circle>
+      <circle cx="160" cy="240" r="6" fill="#b8902c"></circle>
+    </g>
+
+    <text x="460" y="616" class="annot" font-weight="700">→  cells cluster by tissue region</text>
+    <text x="460" y="640" class="annot" fill="#5c5c66">encodes spatial architecture / niche</text>
+    <line x1="460" y1="664" x2="780" y2="664" stroke="#bcd6bc" stroke-width="1"></line>
+    <text x="460" y="690" class="key" fill="#2c8a4f">good for niche identification</text>
+    <text x="460" y="714" class="annot" fill="#5c5c66" font-style="italic">cell-type info is mixed across clusters</text>
+    <text x="460" y="750" class="annot" font-style="italic" fill="#5c5c66">example: GraphST</text>
+    <text x="460" y="808" class="annot" font-style="italic" fill="#5c5c66">&#34;same place&#34; is the invariant</text>
+  </g>
+
+  
+  <g>
+    <rect x="820" y="190" width="360" height="660" rx="14" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+    <text x="840" y="218" class="plot-tag" fill="#6b4e8a">PLOT 3  ·  CELL + TEXT  💬</text>
+    <text x="840" y="244" class="plot-title">positive = matched caption</text>
+    <text x="840" y="262" class="plot-sub">CLIP-style cross-modal</text>
+
+    <g transform="translate(840,290)">
+      <rect x="0" y="0" width="320" height="280" rx="8" fill="#ebe5f0" opacity="0.3"></rect>
+      
+      <circle cx="80" cy="80" r="6" fill="#4a6a8a"></circle>
+      <circle cx="90" cy="100" r="6" fill="#4a6a8a"></circle>
+      <circle cx="100" cy="80" r="6" fill="#4a6a8a"></circle>
+      <text x="90" y="60" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">T cell</text>
+
+      <circle cx="240" cy="80" r="6" fill="#c95a2a"></circle>
+      <circle cx="250" cy="100" r="6" fill="#c95a2a"></circle>
+      <circle cx="230" cy="100" r="6" fill="#c95a2a"></circle>
+      <text x="240" y="60" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">B cell</text>
+
+      <circle cx="120" cy="200" r="6" fill="#2c8a4f"></circle>
+      <circle cx="130" cy="220" r="6" fill="#2c8a4f"></circle>
+      <circle cx="110" cy="220" r="6" fill="#2c8a4f"></circle>
+      <text x="120" y="180" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">macrophage</text>
+
+      <circle cx="240" cy="220" r="6" fill="#b8902c"></circle>
+      <circle cx="250" cy="240" r="6" fill="#b8902c"></circle>
+      <circle cx="230" cy="240" r="6" fill="#b8902c"></circle>
+      <text x="240" y="200" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">NK cell</text>
+    </g>
+
+    <text x="840" y="616" class="annot" font-weight="700">→  cells cluster by concept</text>
+    <text x="840" y="640" class="annot" fill="#5c5c66">aligns with human-readable semantics</text>
+    <line x1="840" y1="664" x2="1160" y2="664" stroke="#cfc5dd" stroke-width="1"></line>
+    <text x="840" y="690" class="key" fill="#6b4e8a">good for retrieval &amp; chat</text>
+    <text x="840" y="714" class="annot" fill="#5c5c66" font-style="italic">caption-leakage risk</text>
+    <text x="840" y="750" class="annot" font-style="italic" fill="#5c5c66">examples: OmiCLIP, CellWhisperer</text>
+    <text x="840" y="808" class="annot" font-style="italic" fill="#5c5c66">&#34;same description&#34; is the invariant</text>
+  </g>
+
+  
+  <g>
+    <rect x="1200" y="190" width="360" height="660" rx="14" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+    <text x="1220" y="218" class="plot-tag" fill="#c95a2a">PLOT 4  ·  ONTOLOGY CLASS  🏷</text>
+    <text x="1220" y="244" class="plot-title">positive = same labelled type</text>
+    <text x="1220" y="262" class="plot-sub">supervised contrastive</text>
+
+    <g transform="translate(1220,290)">
+      <rect x="0" y="0" width="320" height="280" rx="8" fill="#fbe6d8" opacity="0.3"></rect>
+      
+      <ellipse cx="80" cy="80" rx="38" ry="22" fill="#4a6a8a" opacity="0.20" stroke="#4a6a8a"></ellipse>
+      <circle cx="60" cy="76" r="5" fill="#4a6a8a"></circle>
+      <circle cx="80" cy="80" r="5" fill="#4a6a8a"></circle>
+      <circle cx="100" cy="76" r="5" fill="#4a6a8a"></circle>
+      <circle cx="80" cy="92" r="5" fill="#4a6a8a"></circle>
+
+      <ellipse cx="240" cy="80" rx="38" ry="22" fill="#c95a2a" opacity="0.20" stroke="#c95a2a"></ellipse>
+      <circle cx="220" cy="76" r="5" fill="#c95a2a"></circle>
+      <circle cx="240" cy="80" r="5" fill="#c95a2a"></circle>
+      <circle cx="260" cy="76" r="5" fill="#c95a2a"></circle>
+      <circle cx="240" cy="92" r="5" fill="#c95a2a"></circle>
+
+      <ellipse cx="130" cy="220" rx="38" ry="22" fill="#2c8a4f" opacity="0.20" stroke="#2c8a4f"></ellipse>
+      <circle cx="110" cy="216" r="5" fill="#2c8a4f"></circle>
+      <circle cx="130" cy="220" r="5" fill="#2c8a4f"></circle>
+      <circle cx="150" cy="216" r="5" fill="#2c8a4f"></circle>
+      <circle cx="130" cy="232" r="5" fill="#2c8a4f"></circle>
+
+      <ellipse cx="240" cy="220" rx="38" ry="22" fill="#6b4e8a" opacity="0.20" stroke="#6b4e8a"></ellipse>
+      <circle cx="220" cy="216" r="5" fill="#6b4e8a"></circle>
+      <circle cx="240" cy="220" r="5" fill="#6b4e8a"></circle>
+      <circle cx="260" cy="216" r="5" fill="#6b4e8a"></circle>
+      <circle cx="240" cy="232" r="5" fill="#6b4e8a"></circle>
+    </g>
+
+    <text x="1220" y="616" class="annot" font-weight="700">→  tight, well-separated</text>
+    <text x="1220" y="640" class="annot" fill="#5c5c66">clusters by annotated type</text>
+    <line x1="1220" y1="664" x2="1540" y2="664" stroke="#e7c5a8" stroke-width="1"></line>
+    <text x="1220" y="690" class="key" fill="#c95a2a">good for classification</text>
+    <text x="1220" y="714" class="annot" fill="#5c5c66" font-style="italic">depends on label quality</text>
+    <text x="1220" y="750" class="annot" font-style="italic" fill="#5c5c66">example: ImmunoStruct</text>
+    <text x="1220" y="808" class="annot" font-style="italic" fill="#5c5c66">&#34;same label&#34; is the invariant</text>
+  </g>
+
+  
+  <g>
+    <rect x="1580" y="190" width="360" height="660" rx="14" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+    <text x="1600" y="218" class="plot-tag" fill="#b8902c">PLOT 5  ·  GRAPH STRUCTURE  🕸</text>
+    <text x="1600" y="244" class="plot-title">positive = node + real summary</text>
+    <text x="1600" y="262" class="plot-sub">DGI-style contrastive</text>
+
+    <g transform="translate(1600,290)">
+      <rect x="0" y="0" width="320" height="280" rx="8" fill="#fff7d9" opacity="0.4"></rect>
+      
+      <g>
+        <circle cx="80" cy="80" r="5" fill="#4a6a8a"></circle>
+        <circle cx="100" cy="100" r="5" fill="#4a6a8a"></circle>
+        <circle cx="60" cy="100" r="5" fill="#4a6a8a"></circle>
+        <circle cx="80" cy="120" r="5" fill="#4a6a8a"></circle>
+        <line x1="80" y1="80" x2="100" y2="100" stroke="#4a6a8a"></line>
+        <line x1="80" y1="80" x2="60" y2="100" stroke="#4a6a8a"></line>
+        <line x1="60" y1="100" x2="80" y2="120" stroke="#4a6a8a"></line>
+        <line x1="100" y1="100" x2="80" y2="120" stroke="#4a6a8a"></line>
+
+        <circle cx="240" cy="180" r="5" fill="#c95a2a"></circle>
+        <circle cx="260" cy="200" r="5" fill="#c95a2a"></circle>
+        <circle cx="220" cy="200" r="5" fill="#c95a2a"></circle>
+        <circle cx="240" cy="220" r="5" fill="#c95a2a"></circle>
+        <line x1="240" y1="180" x2="260" y2="200" stroke="#c95a2a"></line>
+        <line x1="240" y1="180" x2="220" y2="200" stroke="#c95a2a"></line>
+        <line x1="220" y1="200" x2="240" y2="220" stroke="#c95a2a"></line>
+        <line x1="260" y1="200" x2="240" y2="220" stroke="#c95a2a"></line>
+
+        <circle cx="180" cy="130" r="5" fill="#2c8a4f"></circle>
+        <circle cx="160" cy="150" r="5" fill="#2c8a4f"></circle>
+        <circle cx="200" cy="150" r="5" fill="#2c8a4f"></circle>
+        <line x1="180" y1="130" x2="160" y2="150" stroke="#2c8a4f"></line>
+        <line x1="180" y1="130" x2="200" y2="150" stroke="#2c8a4f"></line>
+      </g>
+    </g>
+
+    <text x="1600" y="616" class="annot" font-weight="700">→  cells cluster by local topology</text>
+    <text x="1600" y="640" class="annot" fill="#5c5c66">encodes neighbourhood structure</text>
+    <line x1="1600" y1="664" x2="1920" y2="664" stroke="#e1c66b" stroke-width="1"></line>
+    <text x="1600" y="690" class="key" fill="#b8902c">good for CCC &amp; tissue layers</text>
+    <text x="1600" y="714" class="annot" fill="#5c5c66" font-style="italic">no global semantic anchor</text>
+    <text x="1600" y="750" class="annot" font-style="italic" fill="#5c5c66">examples: GraphST, CellNEST</text>
+    <text x="1600" y="808" class="annot" font-style="italic" fill="#5c5c66">&#34;same neighbourhood&#34; is the invariant</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="880" width="1880" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="910" class="plot-tag" fill="#7a5b13">THE RULE</text>
+    <text x="80" y="944" class="key" fill="#7a5b13">The pair definition <tspan font-style="italic">is</tspan> the objective.</text>
+    <text x="80" y="976" class="annot">if you pair cells by batch, you learn batch invariance.</text>
+    <text x="80" y="998" class="annot">if you pair cells by type, you learn type discrimination.</text>
+    <text x="80" y="1020" class="annot">if you pair cells by neighbour, you learn niche topology.</text>
+    <text x="80" y="1052" class="annot" font-style="italic" fill="#5c5c66">there is no neutral contrastive objective — name the invariant before you choose the pair.</text>
+  </g>
+</svg>

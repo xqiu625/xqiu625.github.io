@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CELLWHISPERER  ·  CONTRASTIVE ALIGNMENT → CHAT INTERFACE</text>
+  <text x="60" y="96" class="h1">Three stages from cells to natural-language atlas exploration.</text>
+  <text x="60" y="124" class="h-sub">Pair cells with captions  →  contrastive align  →  bolt a chat model on top. The atlas is suddenly conversational.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="190" width="1880" height="240" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <circle cx="100" cy="232" r="22" fill="#2c8a4f"></circle>
+    <text x="100" y="240" text-anchor="middle" class="stage-num">1</text>
+    <text x="132" y="222" class="stage-tag" fill="#2c8a4f">STAGE 1  ·  CONTRASTIVE PRE-ALIGNMENT  🧬 ↔ 💬</text>
+    <text x="132" y="250" class="stage-title">pair 1 M single-cell transcriptomes with LLM-generated captions</text>
+
+    <g transform="translate(132,272)">
+      <rect x="0" y="0" width="280" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="14" y="22" class="stage-tag" fill="#2c8a4f">CELL  🧬</text>
+      <text x="14" y="48" class="annot">gene-expression vector</text>
+      <text x="14" y="72" class="annot">→ Geneformer encoder</text>
+      <text x="14" y="98" class="mono">z_cell  ∈  ℝ⁵¹²</text>
+
+      <text x="310" y="64" class="annot" font-weight="700" fill="#2c8a4f">InfoNCE  💚</text>
+      <text x="310" y="84" class="annot" font-weight="700" fill="#a14854">repel  ❌  unmatched</text>
+
+      <rect x="440" y="0" width="380" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="454" y="22" class="stage-tag" fill="#2c8a4f">CAPTION  💬</text>
+      <text x="454" y="48" class="annot">&#34;a regulatory T cell with high FOXP3 …&#34;</text>
+      <text x="454" y="72" class="annot">→ BioBERT encoder</text>
+      <text x="454" y="98" class="mono">z_text  ∈  ℝ⁵¹²</text>
+
+      <rect x="860" y="0" width="900" height="120" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="876" y="22" class="stage-tag" fill="#b8902c">CAPTIONS COME FROM</text>
+      <text x="876" y="48" class="annot">GPT-3.5 / 4 generates a one-line description per cell</text>
+      <text x="876" y="68" class="annot">from its marker genes + metadata</text>
+      <text x="876" y="94" class="annot" font-style="italic" fill="#5c5c66">a cheap way to get 1 M training pairs without manual curation.</text>
+    </g>
+  </g>
+
+  
+  <line x1="1000" y1="436" x2="1000" y2="466" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="470" width="1880" height="200" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="512" r="22" fill="#4a6a8a"></circle>
+    <text x="100" y="520" text-anchor="middle" class="stage-num">2</text>
+    <text x="132" y="502" class="stage-tag" fill="#4a6a8a">STAGE 2  ·  CHAT MODEL TRAINING  🤖</text>
+    <text x="132" y="530" class="stage-title">connect the aligned cell encoder to a Mistral-7B language model</text>
+
+    <g transform="translate(132,552)">
+      <rect x="0" y="0" width="260" height="80" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.2"></rect>
+      <text x="14" y="22" class="stage-tag" fill="#4a6a8a">FROZEN CELL ENCODER  ❄</text>
+      <text x="14" y="48" class="annot">from Stage 1</text>
+      <text x="14" y="68" class="annot">emits z_cell per cell</text>
+
+      <text x="270" y="44" class="annot">→ projection layer</text>
+
+      <rect x="430" y="0" width="320" height="80" rx="10" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="444" y="22" class="stage-tag" fill="#c95a2a">MISTRAL-7B  🦙</text>
+      <text x="444" y="48" class="annot">conversational LM</text>
+      <text x="444" y="68" class="annot">trained on Q&amp;A about cells</text>
+
+      <text x="780" y="34" class="annot">→ conversational responses</text>
+      <text x="780" y="58" class="annot" fill="#5c5c66">grounded in atlas embeddings</text>
+    </g>
+  </g>
+
+  
+  <line x1="1000" y1="676" x2="1000" y2="706" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="710" width="1880" height="240" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="752" r="22" fill="#6b4e8a"></circle>
+    <text x="100" y="760" text-anchor="middle" class="stage-num">3</text>
+    <text x="132" y="742" class="stage-tag" fill="#6b4e8a">STAGE 3  ·  INFERENCE  ·  THE CHAT  💬</text>
+    <text x="132" y="770" class="stage-title">user types a query, system retrieves + responds</text>
+
+    <g transform="translate(132,790)">
+      <rect x="0" y="0" width="600" height="60" rx="10" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.2"></rect>
+      <text x="14" y="22" class="stage-tag" fill="#6b4e8a">USER  🧑‍🔬</text>
+      <text x="14" y="46" class="mono">&#34;show me cells that express high CD8A and are exhausted&#34;</text>
+
+      <text x="620" y="36" class="annot">→</text>
+
+      <rect x="660" y="0" width="400" height="60" rx="10" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.2"></rect>
+      <text x="674" y="22" class="stage-tag" fill="#6b4e8a">RETRIEVE  🔍</text>
+      <text x="674" y="46" class="annot">nearest cells in the joint space</text>
+
+      <text x="1080" y="36" class="annot">→</text>
+
+      <rect x="1120" y="0" width="660" height="60" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="1134" y="22" class="stage-tag" fill="#2c8a4f">CHAT RESPONSE  ✅</text>
+      <text x="1134" y="46" class="mono">&#34;found 1 247 cells in dataset X; markers: CD8A, PDCD1, LAG3 …&#34;</text>
+    </g>
+
+    <text x="132" y="912" class="annot" font-style="italic" fill="#5c5c66">the atlas becomes searchable in natural language; supporting evidence is the retrieved cell set.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="970" width="1880" height="110" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="998" class="stage-tag" fill="#a14854">⚠  CAPTION-LEAKAGE WARNING</text>
+    <text x="80" y="1030" class="key" fill="#a14854">LLM-generated captions can encode the cell-type name directly.</text>
+    <text x="80" y="1058" class="annot">if &#34;regulatory T cell&#34; appears in the caption text, the retrieval task degenerates into a string-match  —  audit captions before celebrating zero-shot.</text>
+    <text x="80" y="1078" class="annot" font-style="italic" fill="#5c5c66">strip overt class names from training captions, evaluate on held-out semantic queries.</text>
+  </g>
+</svg>

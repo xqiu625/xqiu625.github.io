@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE PRETRAINING-OVERLAP TRAP</text>
+  <text x="60" y="96" class="h1">When pretraining helps, and when you&#39;re just memorising.</text>
+  <text x="60" y="124" class="h-sub">The same encoder, the same fine-tune — the only difference between the two panels is whether downstream cells share distribution with pretraining.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  <rect x="40" y="170" width="940" height="730" rx="14" fill="#2c8a4f" fill-opacity="0.04"></rect>
+  <rect x="1020" y="170" width="940" height="730" rx="14" fill="#a14854" fill-opacity="0.04"></rect>
+
+  
+  <text x="80" y="208" class="panel-tag" fill="#2c8a4f">LEFT  ·  TRANSFER LEARNING WORKS</text>
+  <text x="80" y="244" class="panel-title">Different pretraining and downstream data</text>
+  <text x="80" y="270" class="panel-sub">e.g. pretrain on a pan-tissue atlas; fine-tune on a new tumor cohort</text>
+
+  <g>
+    <rect x="80" y="310" width="860" height="500" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="100" y="340" class="panel-tag" fill="#2c8a4f">DOWNSTREAM F1</text>
+
+    
+    <line x1="180" y1="380" x2="180" y2="760" stroke="#2a2a33" stroke-width="1.4"></line>
+    <line x1="180" y1="760" x2="900" y2="760" stroke="#2a2a33" stroke-width="1.4"></line>
+
+    
+    <text x="172" y="384" text-anchor="end" class="axis-tick">0.85</text>
+    <line x1="174" y1="380" x2="180" y2="380" stroke="#2a2a33" stroke-width="1"></line>
+    <text x="172" y="492" text-anchor="end" class="axis-tick">0.75</text>
+    <line x1="174" y1="488" x2="180" y2="488" stroke="#2a2a33" stroke-width="1"></line>
+    <text x="172" y="600" text-anchor="middle" class="axis-tick"></text>
+    <text x="172" y="600" text-anchor="end" class="axis-tick">0.65</text>
+    <line x1="174" y1="596" x2="180" y2="596" stroke="#2a2a33" stroke-width="1"></line>
+    <text x="172" y="708" text-anchor="end" class="axis-tick">0.55</text>
+    <line x1="174" y1="704" x2="180" y2="704" stroke="#2a2a33" stroke-width="1"></line>
+
+    
+
+    
+    <rect x="280" y="543" width="160" height="217" fill="#8a8275" opacity="0.55"></rect>
+    <text x="360" y="525" text-anchor="middle" class="bar-value" fill="#1a1a22">0.70</text>
+    <text x="360" y="784" text-anchor="middle" class="bar-label">No pretraining</text>
+
+    
+    <rect x="540" y="489" width="160" height="271" fill="#2c8a4f" opacity="0.65"></rect>
+    <text x="620" y="471" text-anchor="middle" class="bar-value" fill="#2c8a4f">0.75</text>
+    <text x="620" y="784" text-anchor="middle" class="bar-label">With pretraining</text>
+
+    
+    <line x1="440" y1="543" x2="540" y2="543" stroke="#2c8a4f" stroke-width="1.5" stroke-dasharray="4 3"></line>
+    <line x1="440" y1="489" x2="540" y2="489" stroke="#2c8a4f" stroke-width="1.5" stroke-dasharray="4 3"></line>
+    <line x1="490" y1="489" x2="490" y2="543" stroke="#2c8a4f" stroke-width="2"></line>
+    <text x="500" y="520" class="gap-tag" fill="#2c8a4f">+0.05</text>
+    <text x="500" y="536" class="annot" fill="#2c8a4f">F1 gain</text>
+
+    <text x="100" y="824" class="annot" font-weight="700" fill="#2c8a4f">Transfer learning gain:  real.</text>
+  </g>
+
+  
+  <text x="1040" y="208" class="panel-tag" fill="#a14854">RIGHT  ·  THE TRAP</text>
+  <text x="1040" y="244" class="panel-title">Same pretraining and downstream data</text>
+  <text x="1040" y="270" class="panel-sub">benchmark uses splits of the same atlas the model was pretrained on</text>
+
+  <g>
+    <rect x="1020" y="310" width="940" height="500" rx="12" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+    <text x="1040" y="340" class="panel-tag" fill="#a14854">DOWNSTREAM F1</text>
+
+    <line x1="1160" y1="380" x2="1160" y2="760" stroke="#2a2a33" stroke-width="1.4"></line>
+    <line x1="1160" y1="760" x2="1920" y2="760" stroke="#2a2a33" stroke-width="1.4"></line>
+
+    <text x="1152" y="384" text-anchor="end" class="axis-tick">0.85</text>
+    <line x1="1154" y1="380" x2="1160" y2="380" stroke="#2a2a33" stroke-width="1"></line>
+    <text x="1152" y="492" text-anchor="end" class="axis-tick">0.75</text>
+    <line x1="1154" y1="488" x2="1160" y2="488" stroke="#2a2a33" stroke-width="1"></line>
+    <text x="1152" y="600" text-anchor="end" class="axis-tick">0.65</text>
+    <line x1="1154" y1="596" x2="1160" y2="596" stroke="#2a2a33" stroke-width="1"></line>
+    <text x="1152" y="708" text-anchor="end" class="axis-tick">0.55</text>
+    <line x1="1154" y1="704" x2="1160" y2="704" stroke="#2a2a33" stroke-width="1"></line>
+
+    
+    <rect x="1260" y="499" width="160" height="261" fill="#8a8275" opacity="0.55"></rect>
+    <text x="1340" y="481" text-anchor="middle" class="bar-value" fill="#1a1a22">0.74</text>
+    <text x="1340" y="784" text-anchor="middle" class="bar-label">No pretraining</text>
+
+    <rect x="1520" y="499" width="160" height="261" fill="#a14854" opacity="0.55"></rect>
+    <text x="1600" y="481" text-anchor="middle" class="bar-value" fill="#a14854">0.74</text>
+    <text x="1600" y="784" text-anchor="middle" class="bar-label">With pretraining</text>
+
+    <line x1="1420" y1="499" x2="1520" y2="499" stroke="#a14854" stroke-width="1.5" stroke-dasharray="4 3"></line>
+    <text x="1470" y="487" text-anchor="middle" class="gap-tag" fill="#a14854">+0.00</text>
+
+    <text x="1040" y="824" class="annot" font-weight="700" fill="#a14854">Gain collapses to zero — you&#39;re just memorising the atlas.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="930" width="1880" height="150" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="960" class="panel-tag" fill="#7a5b13">TAKEAWAY</text>
+    <text x="80" y="994" class="key" fill="#7a5b13">Pretraining only helps when it exposes the model to data it won&#39;t see during fine-tuning.</text>
+    <text x="80" y="1024" class="annot">If the pretraining corpus and the benchmark are slices of the same atlas, the encoder has already &#34;seen&#34; the test cells. The reported lift is leakage, not transfer.</text>
+    <text x="80" y="1052" class="annot" font-style="italic" fill="#5c5c66">Many published scFM gains shrink to zero on strict out-of-distribution splits. Check your benchmark before celebrating the bar.</text>
+  </g>
+</svg>

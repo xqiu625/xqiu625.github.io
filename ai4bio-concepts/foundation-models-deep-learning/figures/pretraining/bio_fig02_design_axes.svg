@@ -1,0 +1,415 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE FOUR DESIGN AXES OF BIOLOGICAL PRETRAINING</text>
+  <text x="60" y="96" class="h1">A taxonomy at a glance</text>
+  <text x="60" y="124" class="h-sub">Every single-cell foundation model picks one option from each axis. Most innovation lives here, not in the transformer.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <line x1="528" y1="170" x2="528" y2="1080" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+  <line x1="1003" y1="170" x2="1003" y2="1080" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+  <line x1="1478" y1="170" x2="1478" y2="1080" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+
+  
+  <g>
+    <circle cx="92" cy="200" r="22" fill="#4a6a8a"></circle>
+    <text x="92" y="208" text-anchor="middle" class="col-num" fill="#ffffff">1</text>
+    <text x="124" y="190" class="col-axis" fill="#4a6a8a">AXIS 1</text>
+    <text x="124" y="216" class="col-title">Tokenisation</text>
+    <text x="124" y="232" class="col-sub">how is a cell turned into a sequence?</text>
+
+    
+    <g transform="translate(60,270)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#4a6a8a">RANK-VALUE TOKENS</text>
+      <text x="16" y="52" class="opt-title">Sorted gene list</text>
+      <text x="16" y="72" class="opt-sub">order by expression, drop magnitudes</text>
+      <text x="16" y="88" class="opt-sub">used by Geneformer</text>
+      
+      <g transform="translate(290,38)">
+        <rect x="0" y="0" width="20" height="60" fill="#4a6a8a" opacity="0.85"></rect>
+        <rect x="24" y="14" width="20" height="46" fill="#4a6a8a" opacity="0.7"></rect>
+        <rect x="48" y="26" width="20" height="34" fill="#4a6a8a" opacity="0.6"></rect>
+        <rect x="72" y="38" width="20" height="22" fill="#4a6a8a" opacity="0.5"></rect>
+        <rect x="96" y="46" width="20" height="14" fill="#4a6a8a" opacity="0.4"></rect>
+        <rect x="120" y="52" width="20" height="8" fill="#4a6a8a" opacity="0.3"></rect>
+        <line x1="0" y1="60" x2="142" y2="60" stroke="#2a2a33" stroke-width="1"></line>
+      </g>
+      <text x="16" y="115" class="mono">[ GAPDH, CD3E, FOXP3, TP53, ... ]</text>
+    </g>
+
+    
+    <g transform="translate(60,420)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#4a6a8a">CONTINUOUS COUNTS</text>
+      <text x="16" y="52" class="opt-title">Raw expression vector</text>
+      <text x="16" y="72" class="opt-sub">feed real numbers directly</text>
+      <text x="16" y="88" class="opt-sub">used by AIDO.Cell, scPRINT</text>
+      <g transform="translate(290,52)">
+        <rect x="0" y="0" width="32" height="28" fill="#ffffff" stroke="#4a6a8a" stroke-width="1"></rect>
+        <text x="16" y="20" text-anchor="middle" class="mono-sm">0.0</text>
+        <rect x="34" y="0" width="32" height="28" fill="#ffffff" stroke="#4a6a8a" stroke-width="1"></rect>
+        <text x="50" y="20" text-anchor="middle" class="mono-sm">7.2</text>
+        <rect x="68" y="0" width="32" height="28" fill="#ffffff" stroke="#4a6a8a" stroke-width="1"></rect>
+        <text x="84" y="20" text-anchor="middle" class="mono-sm">0.0</text>
+        <rect x="102" y="0" width="32" height="28" fill="#ffffff" stroke="#4a6a8a" stroke-width="1"></rect>
+        <text x="118" y="20" text-anchor="middle" class="mono-sm">42</text>
+      </g>
+      <text x="16" y="115" class="mono">[ 0.0, 7.2, 0.0, 42, 0.0, 1.0, ... ]</text>
+    </g>
+
+    
+    <g transform="translate(60,570)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#4a6a8a">BAG-OF-RNA  ·  GENE TOKENS</text>
+      <text x="16" y="52" class="opt-title">Unordered set of expressed genes</text>
+      <text x="16" y="72" class="opt-sub">no position, no rank</text>
+      <text x="16" y="88" class="opt-sub">used by UCE</text>
+      <g transform="translate(290,42)">
+        <text x="22" y="14" class="mono-sm" font-weight="700" fill="#4a6a8a">CD3E</text>
+        <text x="80" y="22" class="mono-sm" font-weight="700" fill="#4a6a8a">TP53</text>
+        <text x="32" y="40" class="mono-sm" font-weight="700" fill="#4a6a8a">FOXP3</text>
+        <text x="100" y="48" class="mono-sm" font-weight="700" fill="#4a6a8a">GAPDH</text>
+        <text x="14" y="64" class="mono-sm" font-weight="700" fill="#4a6a8a">IL2RA</text>
+        <text x="88" y="72" class="mono-sm" font-weight="700" fill="#4a6a8a">CD4</text>
+      </g>
+      <text x="16" y="115" class="mono">{ CD3E, TP53, FOXP3, GAPDH, ... }</text>
+    </g>
+
+    
+    <g transform="translate(60,720)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#4a6a8a">CELL SENTENCE</text>
+      <text x="16" y="52" class="opt-title">Natural-language description</text>
+      <text x="16" y="72" class="opt-sub">cell → sentence, train an LLM</text>
+      <text x="16" y="88" class="opt-sub">used by C2S-Scale</text>
+      <rect x="16" y="100" width="430" height="32" rx="6" fill="#eef3f9" stroke="#4a6a8a" stroke-width="0.8"></rect>
+      <text x="26" y="120" class="mono">&#34;CD4 high, CD8 low, FOXP3 elevated …&#34;</text>
+    </g>
+
+    
+    <g transform="translate(60,870)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#4a6a8a">VQ DISCRETE CODES</text>
+      <text x="16" y="52" class="opt-title">Compressed codebook indices</text>
+      <text x="16" y="72" class="opt-sub">cell → short token sequence</text>
+      <text x="16" y="88" class="opt-sub">used by ChrisCell</text>
+      
+      <g transform="translate(290,42)">
+        <rect x="0" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.7"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.3"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.9"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.5"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.7"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.4"></rect>
+        <rect x="0" y="16" width="14" height="14" fill="#4a6a8a" opacity="0.5"></rect>
+        <rect x="16" y="16" width="14" height="14" fill="#4a6a8a" opacity="0.8"></rect>
+        <rect x="32" y="16" width="14" height="14" fill="#4a6a8a" opacity="0.3"></rect>
+        <rect x="48" y="16" width="14" height="14" fill="#4a6a8a" opacity="0.6"></rect>
+        <rect x="64" y="16" width="14" height="14" fill="#4a6a8a" opacity="0.4"></rect>
+        <rect x="80" y="16" width="14" height="14" fill="#4a6a8a" opacity="0.9"></rect>
+        <rect x="0" y="32" width="14" height="14" fill="#4a6a8a" opacity="0.7"></rect>
+        <rect x="16" y="32" width="14" height="14" fill="#4a6a8a" opacity="0.5"></rect>
+        <rect x="32" y="32" width="14" height="14" fill="#4a6a8a" opacity="0.4"></rect>
+        <rect x="48" y="32" width="14" height="14" fill="#4a6a8a" opacity="0.8"></rect>
+        <rect x="64" y="32" width="14" height="14" fill="#4a6a8a" opacity="0.6"></rect>
+        <rect x="80" y="32" width="14" height="14" fill="#4a6a8a" opacity="0.3"></rect>
+      </g>
+      <text x="16" y="115" class="mono">[ 4821, 1092, 7733, 2104, ... ]</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <circle cx="572" cy="200" r="22" fill="#c95a2a"></circle>
+    <text x="572" y="208" text-anchor="middle" class="col-num" fill="#ffffff">2</text>
+    <text x="604" y="190" class="col-axis" fill="#c95a2a">AXIS 2</text>
+    <text x="604" y="216" class="col-title">Objective</text>
+    <text x="604" y="232" class="col-sub">what loss is the model trained on?</text>
+
+    
+    <g transform="translate(540,270)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#c95a2a">MASKED LM</text>
+      <text x="16" y="52" class="opt-title">Predict the masked token</text>
+      <text x="16" y="72" class="opt-sub">BERT-style, bidirectional context</text>
+      <text x="16" y="88" class="opt-sub">used by Geneformer, scGPT</text>
+      <g transform="translate(180,100)">
+        <rect x="0" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="36" y="0" width="34" height="22" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+        <text x="53" y="16" text-anchor="middle" class="mono-sm" font-weight="700" fill="#a14854">?</text>
+        <rect x="72" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="108" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="144" y="0" width="34" height="22" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+        <text x="161" y="16" text-anchor="middle" class="mono-sm" font-weight="700" fill="#a14854">?</text>
+        <rect x="180" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="216" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+      </g>
+    </g>
+
+    
+    <g transform="translate(540,420)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#c95a2a">CONTRASTIVE</text>
+      <text x="16" y="52" class="opt-title">Pull similar cells together</text>
+      <text x="16" y="72" class="opt-sub">push different cells apart</text>
+      <text x="16" y="88" class="opt-sub">used by scCello, UCE</text>
+      <g transform="translate(190,100)">
+        <circle cx="20" cy="14" r="10" fill="#c95a2a" opacity="0.7"></circle>
+        <circle cx="60" cy="14" r="10" fill="#c95a2a" opacity="0.7"></circle>
+        <line x1="32" y1="14" x2="48" y2="14" stroke="#2c8a4f" stroke-width="2" marker-end="url(#arrow-attract)"></line>
+        <line x1="48" y1="14" x2="32" y2="14" stroke="#2c8a4f" stroke-width="2" marker-end="url(#arrow-attract)"></line>
+        <circle cx="170" cy="14" r="10" fill="#4a6a8a" opacity="0.7"></circle>
+        <line x1="80" y1="14" x2="158" y2="14" stroke="#a14854" stroke-width="2" stroke-dasharray="3 3"></line>
+        <text x="120" y="38" text-anchor="middle" class="mono-sm" fill="#a14854">push</text>
+      </g>
+    </g>
+
+    
+    <g transform="translate(540,570)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#c95a2a">DISCRETE DIFFUSION</text>
+      <text x="16" y="52" class="opt-title">Noise → clean, step by step</text>
+      <text x="16" y="72" class="opt-sub">iterative denoising of masked tokens</text>
+      <text x="16" y="88" class="opt-sub">used by STACK</text>
+      <g transform="translate(180,98)">
+        <rect x="0" y="0" width="20" height="22" fill="#8a8275" opacity="0.7"></rect>
+        <rect x="22" y="0" width="20" height="22" fill="#8a8275" opacity="0.7"></rect>
+        <rect x="44" y="0" width="20" height="22" fill="#8a8275" opacity="0.7"></rect>
+        <rect x="66" y="0" width="20" height="22" fill="#8a8275" opacity="0.7"></rect>
+        <text x="92" y="18" class="mono-sm">→</text>
+        <rect x="108" y="0" width="20" height="22" fill="#8a8275" opacity="0.7"></rect>
+        <rect x="130" y="0" width="20" height="22" fill="#c95a2a" opacity="0.5"></rect>
+        <rect x="152" y="0" width="20" height="22" fill="#8a8275" opacity="0.7"></rect>
+        <rect x="174" y="0" width="20" height="22" fill="#c95a2a" opacity="0.5"></rect>
+        <text x="202" y="18" class="mono-sm">→</text>
+        <rect x="218" y="0" width="20" height="22" fill="#c95a2a" opacity="0.7"></rect>
+        <rect x="240" y="0" width="20" height="22" fill="#c95a2a" opacity="0.7"></rect>
+      </g>
+    </g>
+
+    
+    <g transform="translate(540,720)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#c95a2a">AUTOREGRESSIVE</text>
+      <text x="16" y="52" class="opt-title">Predict next token left to right</text>
+      <text x="16" y="72" class="opt-sub">GPT-style causal language modeling</text>
+      <text x="16" y="88" class="opt-sub">used by C2S-Scale, ChrisCell</text>
+      <g transform="translate(180,100)">
+        <rect x="0" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="36" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="72" y="0" width="34" height="22" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1"></rect>
+        <rect x="108" y="0" width="34" height="22" fill="#ffffff" stroke="#c95a2a" stroke-width="1" stroke-dasharray="2 2"></rect>
+        <rect x="144" y="0" width="34" height="22" fill="#ffffff" stroke="#c95a2a" stroke-width="1" stroke-dasharray="2 2"></rect>
+        <text x="190" y="16" class="mono-sm">→</text>
+      </g>
+    </g>
+
+    
+    <g transform="translate(540,870)">
+      <rect x="0" y="0" width="460" height="140" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#c95a2a">IN-CONTEXT LEARNING</text>
+      <text x="16" y="52" class="opt-title">Prompt set + query, no updates</text>
+      <text x="16" y="72" class="opt-sub">learn from examples at inference</text>
+      <text x="16" y="88" class="opt-sub">used by STACK</text>
+      <g transform="translate(180,102)">
+        <rect x="0" y="0" width="24" height="18" fill="#dfeede" stroke="#2c8a4f" stroke-width="1"></rect>
+        <rect x="26" y="0" width="24" height="18" fill="#dfeede" stroke="#2c8a4f" stroke-width="1"></rect>
+        <rect x="52" y="0" width="24" height="18" fill="#dfeede" stroke="#2c8a4f" stroke-width="1"></rect>
+        <text x="86" y="14" class="mono-sm">|</text>
+        <rect x="98" y="0" width="24" height="18" fill="#fbe6d8" stroke="#c95a2a" stroke-width="2"></rect>
+        <text x="130" y="14" class="mono-sm">→ ?</text>
+      </g>
+    </g>
+  </g>
+
+  
+  <g>
+    <circle cx="1047" cy="200" r="22" fill="#6b4e8a"></circle>
+    <text x="1047" y="208" text-anchor="middle" class="col-num" fill="#ffffff">3</text>
+    <text x="1079" y="190" class="col-axis" fill="#6b4e8a">AXIS 3</text>
+    <text x="1079" y="216" class="col-title">Scale</text>
+    <text x="1079" y="232" class="col-sub">how big is the pretraining corpus?</text>
+
+    
+    <g transform="translate(1020,270)">
+      <rect x="0" y="0" width="460" height="740" rx="10" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#6b4e8a">PRETRAINING CELLS  (log scale)</text>
+
+      
+      <line x1="120" y1="80" x2="120" y2="640" stroke="#2a2a33" stroke-width="1.4"></line>
+
+      
+      
+
+      
+      <g transform="translate(130,80)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">scTab</text>
+        <rect x="0" y="2" width="54" height="18" fill="#6b4e8a" opacity="0.55"></rect>
+        <text x="60" y="16" class="mono-sm">22 M</text>
+      </g>
+
+      
+      <g transform="translate(130,140)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">Geneformer</text>
+        <rect x="0" y="2" width="76" height="18" fill="#6b4e8a" opacity="0.55"></rect>
+        <text x="82" y="16" class="mono-sm">29.9 M</text>
+      </g>
+
+      
+      <g transform="translate(130,200)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">UCE</text>
+        <rect x="0" y="2" width="89" height="18" fill="#2c8a4f" opacity="0.55"></rect>
+        <text x="95" y="16" class="mono-sm">36 M</text>
+      </g>
+
+      
+      <g transform="translate(130,260)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">AIDO.Cell</text>
+        <rect x="0" y="2" width="112" height="18" fill="#6b4e8a" opacity="0.55"></rect>
+        <text x="118" y="16" class="mono-sm">50 M</text>
+      </g>
+
+      
+      <g transform="translate(130,320)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">ChrisCell</text>
+        <rect x="0" y="2" width="133" height="18" fill="#c95a2a" opacity="0.55"></rect>
+        <text x="139" y="16" class="mono-sm">68 M</text>
+      </g>
+
+      
+      <g transform="translate(130,380)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">Nicheformer</text>
+        <rect x="0" y="2" width="167" height="18" fill="#2c8a4f" opacity="0.55"></rect>
+        <text x="173" y="16" class="mono-sm">110 M</text>
+      </g>
+
+      
+      <g transform="translate(130,440)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">STACK</text>
+        <rect x="0" y="2" width="188" height="18" fill="#6b4e8a" opacity="0.55"></rect>
+        <text x="194" y="16" class="mono-sm">149 M</text>
+      </g>
+
+      
+      <g transform="translate(130,500)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">C2S-Scale</text>
+        <rect x="0" y="2" width="188" height="18" fill="#2c8a4f" opacity="0.55"></rect>
+        <text x="194" y="16" class="mono-sm">150 M</text>
+      </g>
+
+      
+      <g transform="translate(130,560)">
+        <text x="-10" y="14" text-anchor="end" class="model-name">scPRINT-2</text>
+        <rect x="0" y="2" width="247" height="18" fill="#6b4e8a" opacity="0.55"></rect>
+        <text x="253" y="16" class="mono-sm">350 M</text>
+      </g>
+
+      
+      <g transform="translate(130,640)">
+        <line x1="0" y1="0" x2="0" y2="6" stroke="#2a2a33" stroke-width="1"></line>
+        <line x1="80" y1="0" x2="80" y2="6" stroke="#2a2a33" stroke-width="1"></line>
+        <line x1="160" y1="0" x2="160" y2="6" stroke="#2a2a33" stroke-width="1"></line>
+        <line x1="240" y1="0" x2="240" y2="6" stroke="#2a2a33" stroke-width="1"></line>
+        <line x1="320" y1="0" x2="320" y2="6" stroke="#2a2a33" stroke-width="1"></line>
+        <text x="0" y="20" text-anchor="middle" class="axis-tick">10M</text>
+        <text x="80" y="20" text-anchor="middle" class="axis-tick">50M</text>
+        <text x="160" y="20" text-anchor="middle" class="axis-tick">100M</text>
+        <text x="240" y="20" text-anchor="middle" class="axis-tick">250M</text>
+        <text x="320" y="20" text-anchor="middle" class="axis-tick">1B</text>
+      </g>
+
+      
+      <line x1="16" y1="680" x2="444" y2="680" stroke="#e5dfcf" stroke-width="1"></line>
+      <text x="16" y="700" class="opt-tag" fill="#8a5a4a">PARAMETER COUNT  (parallel range)</text>
+      <g transform="translate(16,710)">
+        <rect x="0" y="0" width="428" height="14" rx="3" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1"></rect>
+        <text x="0" y="30" class="axis-tick">10 M</text>
+        <text x="100" y="30" class="axis-tick">50 M</text>
+        <text x="200" y="30" class="axis-tick">200 M</text>
+        <text x="300" y="30" class="axis-tick">450 M</text>
+        <text x="420" y="30" text-anchor="end" class="axis-tick">650 M</text>
+      </g>
+    </g>
+  </g>
+
+  
+  <g>
+    <circle cx="1522" cy="200" r="22" fill="#2c8a4f"></circle>
+    <text x="1522" y="208" text-anchor="middle" class="col-num" fill="#ffffff">4</text>
+    <text x="1554" y="190" class="col-axis" fill="#2c8a4f">AXIS 4</text>
+    <text x="1554" y="216" class="col-title">Downstream</text>
+    <text x="1554" y="232" class="col-sub">how do you actually use the pretrained model?</text>
+
+    
+    <g transform="translate(1490,270)">
+      <rect x="0" y="0" width="450" height="170" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#2c8a4f">FINE-TUNE</text>
+      <text x="16" y="52" class="opt-title">Update weights on labeled data</text>
+      <text x="16" y="72" class="opt-sub">add a task head, run gradient steps</text>
+      <text x="16" y="88" class="opt-sub">used by Geneformer, AIDO.Cell, Nicheformer</text>
+      
+      <g transform="translate(360,40)">
+        <circle cx="14" cy="14" r="12" fill="none" stroke="#2c8a4f" stroke-width="2.5"></circle>
+        <rect x="22" y="22" width="36" height="6" fill="#2c8a4f" transform="rotate(40 22 22)"></rect>
+      </g>
+      <line x1="16" y1="110" x2="434" y2="110" stroke="#bcd6bc" stroke-width="1"></line>
+      <text x="16" y="132" class="opt-sub" fill="#2a2a33">requires:  labeled dataset  ·  training compute</text>
+      <text x="16" y="152" class="opt-sub" fill="#2a2a33">flexibility:  low  ·  one model per task</text>
+    </g>
+
+    
+    <g transform="translate(1490,450)">
+      <rect x="0" y="0" width="450" height="170" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#2c8a4f">ZERO-SHOT</text>
+      <text x="16" y="52" class="opt-title">Use embeddings directly</text>
+      <text x="16" y="72" class="opt-sub">nearest neighbor or linear probe</text>
+      <text x="16" y="88" class="opt-sub">used by UCE, scCello</text>
+      
+      <g transform="translate(380,38)">
+        <path d="M 10 0 L 0 16 L 8 16 L 4 30 L 16 12 L 8 12 L 14 0 Z" fill="#2c8a4f"></path>
+      </g>
+      <line x1="16" y1="110" x2="434" y2="110" stroke="#bcd6bc" stroke-width="1"></line>
+      <text x="16" y="132" class="opt-sub" fill="#2a2a33">requires:  nothing beyond the pretrained model</text>
+      <text x="16" y="152" class="opt-sub" fill="#2a2a33">flexibility:  medium  ·  applies to any task w/ embeddings</text>
+    </g>
+
+    
+    <g transform="translate(1490,630)">
+      <rect x="0" y="0" width="450" height="170" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#2c8a4f">IN-CONTEXT LEARNING  (ICL)</text>
+      <text x="16" y="52" class="opt-title">Provide prompt examples, no updates</text>
+      <text x="16" y="72" class="opt-sub">learn from labels at inference time</text>
+      <text x="16" y="88" class="opt-sub">used by STACK</text>
+      
+      <g transform="translate(360,30)">
+        <path d="M 0 0 L 60 0 Q 70 0 70 10 L 70 30 Q 70 40 60 40 L 18 40 L 8 50 L 12 40 L 10 40 Q 0 40 0 30 Z" fill="none" stroke="#2c8a4f" stroke-width="2"></path>
+        <circle cx="20" cy="20" r="3" fill="#2c8a4f"></circle>
+        <circle cx="35" cy="20" r="3" fill="#2c8a4f"></circle>
+        <circle cx="50" cy="20" r="3" fill="#2c8a4f"></circle>
+      </g>
+      <line x1="16" y1="110" x2="434" y2="110" stroke="#bcd6bc" stroke-width="1"></line>
+      <text x="16" y="132" class="opt-sub" fill="#2a2a33">requires:  small labeled reference set</text>
+      <text x="16" y="152" class="opt-sub" fill="#2a2a33">flexibility:  high  ·  new task by swapping the prompt</text>
+    </g>
+
+    
+    <g transform="translate(1490,810)">
+      <rect x="0" y="0" width="450" height="200" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="16" y="24" class="opt-tag" fill="#2c8a4f">NL INTERFACE</text>
+      <text x="16" y="52" class="opt-title">Ask in plain English</text>
+      <text x="16" y="72" class="opt-sub">cell + prompt → answer</text>
+      <text x="16" y="88" class="opt-sub">used by C2S-Scale</text>
+      <rect x="16" y="100" width="418" height="34" rx="6" fill="#eef9ef" stroke="#2c8a4f" stroke-width="0.8"></rect>
+      <text x="26" y="120" class="mono">&#34;Is this cell a regulatory T cell?&#34;</text>
+      <line x1="16" y1="148" x2="434" y2="148" stroke="#bcd6bc" stroke-width="1"></line>
+      <text x="16" y="170" class="opt-sub" fill="#2a2a33">requires:  LM-style training, prompt engineering</text>
+      <text x="16" y="190" class="opt-sub" fill="#2a2a33">flexibility:  highest  ·  zero-friction for non-ML users</text>
+    </g>
+  </g>
+</svg>

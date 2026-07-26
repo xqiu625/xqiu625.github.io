@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  SPATIALEX  ·  HYPERGRAPH CONTRASTIVE  ·  HISTOLOGY AS THE ANCHOR</text>
+  <text x="60" y="96" class="h1">Three serial sections, three different measurements. H&amp;E binds them all.</text>
+  <text x="60" y="124" class="h-sub">Diagonal integration  —  no paired co-profiling required. H&amp;E is the Rosetta Stone every section already has.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="80" y="200" class="sec-tag" fill="#8a5a4a">SERIAL SECTIONS FROM THE SAME TISSUE BLOCK</text>
+
+  
+  <g>
+    <rect x="60" y="220" width="600" height="280" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="80" y="248" class="sec-tag" fill="#2c8a4f">SECTION 1  ·  SPATIAL TRANSCRIPTOMICS  🧬</text>
+    <text x="80" y="276" class="sec-title">RNA only</text>
+    
+    <g transform="translate(80,300)">
+      <rect x="0" y="0" width="540" height="160" rx="10" fill="#ffe7d6" opacity="0.6" stroke="#c95a2a"></rect>
+      
+      <g>
+        <circle cx="60" cy="40" r="10" fill="#2c8a4f"></circle>
+        <circle cx="120" cy="40" r="10" fill="#2c8a4f"></circle>
+        <circle cx="180" cy="60" r="10" fill="#2c8a4f"></circle>
+        <circle cx="240" cy="40" r="10" fill="#2c8a4f"></circle>
+        <circle cx="300" cy="60" r="10" fill="#2c8a4f"></circle>
+        <circle cx="360" cy="40" r="10" fill="#2c8a4f"></circle>
+        <circle cx="420" cy="60" r="10" fill="#2c8a4f"></circle>
+        <circle cx="480" cy="40" r="10" fill="#2c8a4f"></circle>
+        <circle cx="80" cy="120" r="10" fill="#2c8a4f"></circle>
+        <circle cx="140" cy="100" r="10" fill="#2c8a4f"></circle>
+        <circle cx="200" cy="120" r="10" fill="#2c8a4f"></circle>
+        <circle cx="260" cy="100" r="10" fill="#2c8a4f"></circle>
+        <circle cx="320" cy="120" r="10" fill="#2c8a4f"></circle>
+        <circle cx="380" cy="100" r="10" fill="#2c8a4f"></circle>
+        <circle cx="440" cy="120" r="10" fill="#2c8a4f"></circle>
+        <circle cx="500" cy="100" r="10" fill="#2c8a4f"></circle>
+      </g>
+    </g>
+    <text x="80" y="488" class="annot" font-style="italic" fill="#5c5c66">spatial gene expression  ·  no protein, no histology of its own</text>
+  </g>
+
+  
+  <g>
+    <rect x="680" y="220" width="600" height="280" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <text x="700" y="248" class="sec-tag" fill="#6b4e8a">SECTION 2  ·  H&amp;E STAIN  🖼️</text>
+    <text x="700" y="276" class="sec-title">histology only</text>
+    <g transform="translate(700,300)">
+      <rect x="0" y="0" width="540" height="160" rx="10" fill="#fbe6e6" opacity="0.7" stroke="#a14854"></rect>
+      
+      <g>
+        <circle cx="60" cy="40" r="10" fill="#a14854" opacity="0.7"></circle>
+        <circle cx="120" cy="40" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="180" cy="60" r="10" fill="#a14854" opacity="0.6"></circle>
+        <circle cx="240" cy="40" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="300" cy="60" r="10" fill="#a14854" opacity="0.7"></circle>
+        <circle cx="360" cy="40" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="420" cy="60" r="10" fill="#a14854" opacity="0.7"></circle>
+        <circle cx="480" cy="40" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="80" cy="120" r="10" fill="#a14854" opacity="0.7"></circle>
+        <circle cx="140" cy="100" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="200" cy="120" r="10" fill="#a14854" opacity="0.6"></circle>
+        <circle cx="260" cy="100" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="320" cy="120" r="10" fill="#a14854" opacity="0.7"></circle>
+        <circle cx="380" cy="100" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+        <circle cx="440" cy="120" r="10" fill="#a14854" opacity="0.7"></circle>
+        <circle cx="500" cy="100" r="10" fill="#6b4e8a" opacity="0.7"></circle>
+      </g>
+    </g>
+    <text x="700" y="488" class="annot" font-style="italic" fill="#5c5c66">cheap, universal  ·  no molecular measurement on this slide</text>
+  </g>
+
+  
+  <g>
+    <rect x="1300" y="220" width="640" height="280" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="1320" y="248" class="sec-tag" fill="#c95a2a">SECTION 3  ·  SPATIAL PROTEOMICS  🧪</text>
+    <text x="1320" y="276" class="sec-title">protein only</text>
+    <g transform="translate(1320,300)">
+      <rect x="0" y="0" width="580" height="160" rx="10" fill="#fbe6d8" opacity="0.7" stroke="#c95a2a"></rect>
+      <g>
+        <circle cx="60" cy="40" r="10" fill="#c95a2a"></circle>
+        <circle cx="120" cy="40" r="10" fill="#c95a2a"></circle>
+        <circle cx="180" cy="60" r="10" fill="#c95a2a"></circle>
+        <circle cx="240" cy="40" r="10" fill="#c95a2a"></circle>
+        <circle cx="300" cy="60" r="10" fill="#c95a2a"></circle>
+        <circle cx="360" cy="40" r="10" fill="#c95a2a"></circle>
+        <circle cx="420" cy="60" r="10" fill="#c95a2a"></circle>
+        <circle cx="480" cy="40" r="10" fill="#c95a2a"></circle>
+        <circle cx="80" cy="120" r="10" fill="#c95a2a"></circle>
+        <circle cx="140" cy="100" r="10" fill="#c95a2a"></circle>
+        <circle cx="200" cy="120" r="10" fill="#c95a2a"></circle>
+        <circle cx="260" cy="100" r="10" fill="#c95a2a"></circle>
+        <circle cx="320" cy="120" r="10" fill="#c95a2a"></circle>
+        <circle cx="380" cy="100" r="10" fill="#c95a2a"></circle>
+        <circle cx="440" cy="120" r="10" fill="#c95a2a"></circle>
+        <circle cx="500" cy="100" r="10" fill="#c95a2a"></circle>
+        <circle cx="540" cy="60" r="10" fill="#c95a2a"></circle>
+      </g>
+    </g>
+    <text x="1320" y="488" class="annot" font-style="italic" fill="#5c5c66">spatial protein abundance  ·  no shared genes with Section 1</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="520" width="1880" height="200" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="2"></rect>
+    <text x="80" y="548" class="sec-tag" fill="#6b4e8a">EVERY SECTION ALSO HAS H&amp;E  🖼️  (CHEAP, ALWAYS AVAILABLE)</text>
+    <text x="80" y="580" class="sec-title">embed all three H&amp;E images via UNI pathology FM</text>
+
+    <g transform="translate(80,604)">
+      <text x="0" y="22" class="annot" font-weight="700">section 1  H&amp;E  🖼️</text>
+      <text x="180" y="22" class="annot">→</text>
+      <text x="220" y="22" class="annot" font-weight="700" fill="#6b4e8a">UNI</text>
+      <text x="270" y="22" class="annot">→  z_image¹</text>
+
+      <text x="500" y="22" class="annot" font-weight="700">section 2  H&amp;E  🖼️</text>
+      <text x="680" y="22" class="annot">→</text>
+      <text x="720" y="22" class="annot" font-weight="700" fill="#6b4e8a">UNI</text>
+      <text x="770" y="22" class="annot">→  z_image²</text>
+
+      <text x="1000" y="22" class="annot" font-weight="700">section 3  H&amp;E  🖼️</text>
+      <text x="1180" y="22" class="annot">→</text>
+      <text x="1220" y="22" class="annot" font-weight="700" fill="#6b4e8a">UNI</text>
+      <text x="1270" y="22" class="annot">→  z_image³</text>
+
+      <text x="0" y="80" class="annot" font-style="italic" fill="#5c5c66">image embeddings live in the same space across sections — they become the anchor for alignment.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="740" width="1140" height="220" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="80" y="768" class="sec-tag" fill="#2c8a4f">HYPERGRAPH CONTRASTIVE  🕸</text>
+    <text x="80" y="796" class="sec-title">group cells into hyperedges  (group-level interactions, not pairwise)</text>
+
+    <text x="80" y="826" class="annot">•  nodes  =  cells from every section</text>
+    <text x="80" y="846" class="annot">•  hyperedges  =  cells co-located in the same tissue region</text>
+    <text x="80" y="866" class="annot">•  contrastive loss between real and shuffled hypergraphs</text>
+    <text x="80" y="906" class="annot" font-style="italic" fill="#5c5c66">binds cellular context to tissue structure — beyond pairwise interactions.</text>
+    <text x="80" y="934" class="annot" font-style="italic" fill="#5c5c66">the H&amp;E embeddings serve as the cross-section bridge inside the hypergraph.</text>
+  </g>
+
+  <g>
+    <rect x="1220" y="740" width="720" height="220" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1240" y="768" class="sec-tag" fill="#2c8a4f">RESULT  ·  SHARED CELL EMBEDDING SPACE  🌐</text>
+    <text x="1240" y="800" class="sec-title">all three sections&#39; cells in one latent space</text>
+    <text x="1240" y="826" class="annot">aligned via the histology anchor</text>
+    <text x="1240" y="848" class="annot">even though the molecular measurements never overlap</text>
+    <text x="1240" y="884" class="annot" font-weight="700" fill="#2c8a4f">cell-type clusters mix across all three modalities</text>
+    <text x="1240" y="924" class="annot" font-style="italic" fill="#5c5c66">RNA cells, protein cells, and H&amp;E cells live in the same cluster</text>
+    <text x="1240" y="946" class="annot" font-style="italic" fill="#5c5c66">when their tissue context matches.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="980" width="1880" height="100" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1008" class="sec-tag" fill="#7a5b13">THE TRICK</text>
+    <text x="80" y="1040" class="key" fill="#7a5b13">diagonal integration  —  no paired measurements required.  H&amp;E is the Rosetta Stone.</text>
+    <text x="80" y="1068" class="annot" font-style="italic" fill="#5c5c66">if a modality is cheap and universal, use it as the anchor across all the other modalities.</text>
+  </g>
+</svg>

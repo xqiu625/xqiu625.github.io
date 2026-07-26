@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CURATED SMALL DATA vs MASSIVE NOISY DATA</text>
+  <text x="60" y="96" class="h1">The MedMPT lesson — in biology, the small side wins.</text>
+  <text x="60" y="124" class="h-sub">Curation quality dominates corpus size on tasks where labels are clinical and noise is structured.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    
+    <polygon points="1000,720 920,820 1080,820" fill="#8a8275"></polygon>
+    <line x1="900" y1="820" x2="1100" y2="820" stroke="#8a8275" stroke-width="3"></line>
+
+    
+    
+    <g transform="translate(1000,720) rotate(-3)">
+      <line x1="-700" y1="0" x2="700" y2="0" stroke="#2a2a33" stroke-width="5"></line>
+      
+      <circle cx="0" cy="0" r="8" fill="#2a2a33"></circle>
+      
+      <line x1="-690" y1="0" x2="-690" y2="-30" stroke="#2a2a33" stroke-width="2"></line>
+      <line x1="690" y1="0" x2="690" y2="-30" stroke="#2a2a33" stroke-width="2"></line>
+      <line x1="-770" y1="-30" x2="-610" y2="-30" stroke="#2a2a33" stroke-width="3"></line>
+      <line x1="610" y1="-30" x2="770" y2="-30" stroke="#2a2a33" stroke-width="3"></line>
+    </g>
+  </g>
+
+  
+  <g>
+    <text x="270" y="220" class="side-tag" fill="#2c8a4f">LEFT  ·  WINS</text>
+    <text x="270" y="260" class="side-title">154 K curated CT-report pairs</text>
+    <text x="270" y="288" class="side-sub">clinically verified, structured radiology reports, careful patient deduplication</text>
+
+    
+    <g transform="translate(220,540)">
+      
+      <ellipse cx="100" cy="100" rx="100" ry="8" fill="#8a8275" opacity="0.4"></ellipse>
+
+      
+      <rect x="50" y="40" width="100" height="20" rx="3" fill="#2c8a4f" opacity="0.85"></rect>
+      <rect x="46" y="60" width="108" height="20" rx="3" fill="#2c8a4f" opacity="0.80"></rect>
+      <rect x="44" y="80" width="112" height="20" rx="3" fill="#2c8a4f" opacity="0.75"></rect>
+    </g>
+
+    
+    <g>
+      <rect x="100" y="700" width="700" height="220" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.8"></rect>
+      <text x="120" y="730" class="stat-label" fill="#2c8a4f">LUNG CANCER  ·  AUROC</text>
+      <text x="120" y="788" class="stat-num" fill="#2c8a4f">0.927</text>
+      <text x="120" y="816" class="stat-mid">on held-out external cohort</text>
+      <line x1="120" y1="836" x2="780" y2="836" stroke="#bcd6bc" stroke-width="1"></line>
+      <text x="120" y="864" class="annot">•  every pair clinician-reviewed</text>
+      <text x="120" y="884" class="annot">•  text reports follow a single radiology template</text>
+      <text x="120" y="904" class="annot">•  no patient appears in both train and eval</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <text x="1090" y="220" class="side-tag" fill="#a14854">RIGHT  ·  LOSES</text>
+    <text x="1090" y="260" class="side-title">15 M+ web-scraped image-text pairs</text>
+    <text x="1090" y="288" class="side-sub">BiomedCLIP-style corpus from PubMed Central — uncurated alt-text + figure pairs</text>
+
+    
+    <g transform="translate(1580,420)">
+      <ellipse cx="100" cy="220" rx="100" ry="8" fill="#8a8275" opacity="0.4"></ellipse>
+
+      
+      <rect x="40" y="20" width="120" height="14" rx="2" fill="#a14854" opacity="0.6"></rect>
+      <rect x="42" y="36" width="116" height="14" rx="2" fill="#a14854" opacity="0.6"></rect>
+      <rect x="38" y="52" width="124" height="14" rx="2" fill="#a14854" opacity="0.6"></rect>
+      <rect x="40" y="68" width="120" height="14" rx="2" fill="#a14854" opacity="0.6"></rect>
+      <rect x="36" y="84" width="128" height="14" rx="2" fill="#a14854" opacity="0.55"></rect>
+      <rect x="42" y="100" width="116" height="14" rx="2" fill="#a14854" opacity="0.55"></rect>
+      <rect x="38" y="116" width="124" height="14" rx="2" fill="#a14854" opacity="0.55"></rect>
+      <rect x="40" y="132" width="120" height="14" rx="2" fill="#a14854" opacity="0.55"></rect>
+      <rect x="40" y="148" width="120" height="14" rx="2" fill="#a14854" opacity="0.5"></rect>
+      <rect x="38" y="164" width="124" height="14" rx="2" fill="#a14854" opacity="0.5"></rect>
+      <rect x="42" y="180" width="116" height="14" rx="2" fill="#a14854" opacity="0.45"></rect>
+      <rect x="40" y="196" width="120" height="14" rx="2" fill="#a14854" opacity="0.45"></rect>
+    </g>
+
+    
+    <g>
+      <rect x="1200" y="700" width="700" height="220" rx="12" fill="#ffffff" stroke="#a14854" stroke-width="1.8"></rect>
+      <text x="1220" y="730" class="stat-label" fill="#a14854">LUNG CANCER  ·  AUROC</text>
+      <text x="1220" y="788" class="stat-num" fill="#a14854">0.864</text>
+      <text x="1220" y="816" class="stat-mid">on the same held-out cohort  ·  100× more data</text>
+      <line x1="1220" y1="836" x2="1880" y2="836" stroke="#e7c5a8" stroke-width="1"></line>
+      <text x="1220" y="864" class="annot">•  alt-text quality varies by journal</text>
+      <text x="1220" y="884" class="annot">•  many pairs only weakly aligned to the image</text>
+      <text x="1220" y="904" class="annot">•  no clinical verification of any label</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="950" width="1880" height="130" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="980" class="stat-label" fill="#7a5b13">THE LESSON</text>
+    <text x="80" y="1014" class="key" fill="#7a5b13">100 × less data with 10 × better curation often wins.</text>
+    <text x="80" y="1042" class="annot">In biological domains where labels are clinical and noise is structured, signal-to-noise dominates corpus size. This is the opposite of the NLP scaling orthodoxy.</text>
+    <text x="80" y="1068" class="annot" font-style="italic" fill="#5c5c66">&#34;Throw more web data at it&#34; is a worse heuristic in medicine than in NLP — because the medicine is in the curation.</text>
+  </g>
+</svg>

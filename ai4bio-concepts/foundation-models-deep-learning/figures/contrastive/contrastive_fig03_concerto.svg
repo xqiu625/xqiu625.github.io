@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    <marker id="ar-attract" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2c8a4f"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CONCERTO  ·  ASYMMETRIC TEACHER – STUDENT</text>
+  <text x="60" y="96" class="h1">Two copies of the encoder. One trains. One drifts slowly.</text>
+  <text x="60" y="124" class="h-sub">Augment the same cell two different ways, then pull the student toward the teacher — without ever giving the teacher a gradient.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="190" width="1880" height="110" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="220" class="path-tag" fill="#8a5a4a">INPUT  ·  ONE CELL</text>
+    <text x="80" y="248" class="path-title">gene expression vector  🧬</text>
+    <text x="80" y="276" class="annot" fill="#5c5c66">~ 19 000 genes, sparse  ·  multimodal extension: + protein vector via element-wise sum  ➕</text>
+  </g>
+
+  
+  <line x1="500" y1="304" x2="500" y2="340" stroke="#4a6a8a" stroke-width="2.5" marker-end="url(#ar)"></line>
+  <line x1="1500" y1="304" x2="1500" y2="340" stroke="#c95a2a" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="350" width="880" height="500" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="80" y="380" class="path-tag" fill="#4a6a8a">PATH 1  ·  STUDENT  ▲</text>
+    <text x="80" y="408" class="path-title">trainable encoder  ·  receives the gradient</text>
+
+    <g transform="translate(80,430)">
+      <rect x="0" y="0" width="820" height="60" rx="8" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="20" y="38" class="annot" font-weight="700" fill="#4a6a8a">dropout augmentation  🪛  (mask 30 % of genes)</text>
+    </g>
+    <line x1="490" y1="494" x2="490" y2="520" stroke="#4a6a8a" stroke-width="2.5" marker-end="url(#ar)"></line>
+    <g transform="translate(80,530)">
+      <rect x="0" y="0" width="820" height="60" rx="8" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="20" y="38" class="annot" font-weight="700" fill="#4a6a8a">dense encoder  🧠  (trained)</text>
+    </g>
+    <line x1="490" y1="594" x2="490" y2="620" stroke="#4a6a8a" stroke-width="2.5" marker-end="url(#ar)"></line>
+    <g transform="translate(80,630)">
+      <rect x="0" y="0" width="820" height="60" rx="8" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="20" y="38" class="annot" font-weight="700" fill="#4a6a8a">projection head  →  embedding on the unit hypersphere  🌐</text>
+    </g>
+    <line x1="490" y1="694" x2="490" y2="720" stroke="#4a6a8a" stroke-width="2.5" marker-end="url(#ar)"></line>
+    <g>
+      <circle cx="490" cy="760" r="36" fill="#4a6a8a"></circle>
+      <text x="490" y="770" text-anchor="middle" class="emoji" fill="#ffffff">▲</text>
+      <text x="490" y="822" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">student embedding  z_s</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="1060" y="350" width="880" height="500" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="1080" y="380" class="path-tag" fill="#c95a2a">PATH 2  ·  TEACHER  ❄  (NO GRADIENT)</text>
+    <text x="1080" y="408" class="path-title">identical architecture, slow weight updates</text>
+
+    <g transform="translate(1080,430)">
+      <rect x="0" y="0" width="820" height="60" rx="8" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="20" y="38" class="annot" font-weight="700" fill="#c95a2a">different dropout mask  🎲  (independent draw)</text>
+    </g>
+    <line x1="1490" y1="494" x2="1490" y2="520" stroke="#c95a2a" stroke-width="2.5" marker-end="url(#ar)"></line>
+    <g transform="translate(1080,530)">
+      <rect x="0" y="0" width="820" height="60" rx="8" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="20" y="38" class="annot" font-weight="700" fill="#c95a2a">dense encoder  🧊  (frozen this step)</text>
+    </g>
+    <line x1="1490" y1="594" x2="1490" y2="620" stroke="#c95a2a" stroke-width="2.5" marker-end="url(#ar)"></line>
+    <g transform="translate(1080,630)">
+      <rect x="0" y="0" width="820" height="60" rx="8" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="20" y="38" class="annot" font-weight="700" fill="#c95a2a">projection head  →  same unit hypersphere  🌐</text>
+    </g>
+    <line x1="1490" y1="694" x2="1490" y2="720" stroke="#c95a2a" stroke-width="2.5" marker-end="url(#ar)"></line>
+    <g>
+      <circle cx="1490" cy="760" r="36" fill="#c95a2a"></circle>
+      <text x="1490" y="770" text-anchor="middle" class="emoji" fill="#ffffff">❄</text>
+      <text x="1490" y="822" text-anchor="middle" class="annot" font-weight="700" fill="#c95a2a">teacher embedding  z_t</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="950" y="600" width="120" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1010" y="630" text-anchor="middle" class="path-tag" fill="#7a5b13">NT-XENT</text>
+    <text x="1010" y="660" text-anchor="middle" class="path-title">L</text>
+    <text x="1010" y="700" text-anchor="middle" class="annot" fill="#7a5b13">attract z_s ↔ z_t</text>
+    <text x="1010" y="720" text-anchor="middle" class="annot" fill="#7a5b13">repel from batch 🌀</text>
+    <text x="1010" y="760" text-anchor="middle" class="emoji">💚</text>
+    <text x="1010" y="788" text-anchor="middle" class="annot" fill="#7a5b13">τ = 0.1</text>
+  </g>
+
+  
+  <path d="M 528 760 C 700 760, 800 760, 950 760" fill="none" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar-attract)"></path>
+  <path d="M 1452 760 C 1300 760, 1200 760, 1070 760" fill="none" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar-attract)"></path>
+
+  
+  <path d="M 490 720 C 490 650, 800 590, 1000 590" fill="none" stroke="#6b4e8a" stroke-width="2.5" stroke-dasharray="6 4"></path>
+  <path d="M 1000 590 C 1200 590, 1490 650, 1490 720" fill="none" stroke="#6b4e8a" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#ar)"></path>
+  <text x="1000" y="572" text-anchor="middle" class="path-tag" fill="#6b4e8a">EMA WEIGHT UPDATE  📈</text>
+  <text x="1000" y="595" text-anchor="middle" class="mono" fill="#6b4e8a">θ_t ← 0.999 · θ_t + 0.001 · θ_s</text>
+
+  
+  <g>
+    <rect x="60" y="880" width="1280" height="200" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="80" y="910" class="path-tag" fill="#2c8a4f">RESULT  ·  WHAT YOU GET</text>
+
+    <g transform="translate(80,930)">
+      <rect x="0" y="0" width="380" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="20" y="28" class="path-tag" fill="#2c8a4f">REFERENCE BUILD  ⚡</text>
+      <text x="20" y="58" class="stat-num" fill="#2c8a4f">10 M cells</text>
+      <text x="20" y="84" class="annot">trained in  ~ 1.5 h</text>
+      <text x="20" y="104" class="annot" fill="#5c5c66" font-style="italic">one-time cost</text>
+
+      <rect x="400" y="0" width="380" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="420" y="28" class="path-tag" fill="#2c8a4f">QUERY MAPPING  🎯</text>
+      <text x="420" y="58" class="stat-num" fill="#2c8a4f">10 K cells</text>
+      <text x="420" y="84" class="annot">mapped in  ~ 8 s</text>
+      <text x="420" y="104" class="annot" fill="#5c5c66" font-style="italic">per-query cost is tiny</text>
+
+      <rect x="800" y="0" width="380" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="820" y="28" class="path-tag" fill="#2c8a4f">MULTIMODAL  ➕</text>
+      <text x="820" y="58" class="annot" font-weight="700">RNA + protein</text>
+      <text x="820" y="82" class="annot">element-wise sum before the encoder</text>
+      <text x="820" y="104" class="annot" fill="#5c5c66" font-style="italic">CITE-seq supported</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="1360" y="880" width="580" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1380" y="910" class="path-tag" fill="#7a5b13">WHY ASYMMETRY HELPS  🧠</text>
+    <text x="1380" y="942" class="key" fill="#7a5b13">the teacher is a slow target;</text>
+    <text x="1380" y="966" class="key" fill="#7a5b13">the student chases without collapsing.</text>
+    <text x="1380" y="998" class="annot">without the EMA target, both encoders collapse</text>
+    <text x="1380" y="1018" class="annot">to the trivial solution  →  all embeddings equal.</text>
+    <text x="1380" y="1050" class="annot" font-style="italic" fill="#5c5c66">EMA is the simplest stop-gradient trick that works.</text>
+  </g>
+</svg>

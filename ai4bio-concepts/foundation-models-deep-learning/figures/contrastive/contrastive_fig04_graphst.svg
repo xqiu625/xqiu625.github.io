@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  GRAPHST  ·  GRAPH CONTRASTIVE LEARNING FOR SPATIAL TISSUE</text>
+  <text x="60" y="96" class="h1">Real graph vs shuffled graph. The contrast is the lesson.</text>
+  <text x="60" y="124" class="h-sub">Build a spatial graph, corrupt it by shuffling node features, train a GNN to tell them apart. Tissue architecture falls out for free.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="80" y="200" class="panel-tag" fill="#8a5a4a">STEP 1  ·  BUILD THE SPATIAL GRAPH  🕸️</text>
+  <text x="80" y="232" class="panel-title">tissue section  →  k-NN graph over spots / cells</text>
+
+  <g>
+    <rect x="60" y="260" width="1880" height="240" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+
+    
+    <g transform="translate(80,290)">
+      <rect x="0" y="0" width="1820" height="200" rx="8" fill="#ebe5f0" opacity="0.20" stroke="#6b4e8a" stroke-width="1"></rect>
+      <line x1="0" y1="42" x2="1820" y2="42" stroke="#6b4e8a" stroke-width="0.8" stroke-dasharray="3 3"></line>
+      <line x1="0" y1="82" x2="1820" y2="82" stroke="#6b4e8a" stroke-width="0.8" stroke-dasharray="3 3"></line>
+      <line x1="0" y1="122" x2="1820" y2="122" stroke="#6b4e8a" stroke-width="0.8" stroke-dasharray="3 3"></line>
+      <line x1="0" y1="162" x2="1820" y2="162" stroke="#6b4e8a" stroke-width="0.8" stroke-dasharray="3 3"></line>
+      <text x="20" y="26" class="annot" fill="#5c5c66">Layer 1</text>
+      <text x="20" y="66" class="annot" fill="#5c5c66">Layer 2/3</text>
+      <text x="20" y="106" class="annot" fill="#5c5c66">Layer 4</text>
+      <text x="20" y="146" class="annot" fill="#5c5c66">Layer 5/6</text>
+      <text x="20" y="186" class="annot" fill="#5c5c66">white matter  ·  WM</text>
+
+      
+      <g>
+        <circle cx="240" cy="22" r="8" fill="#4a6a8a"></circle>
+        <circle cx="300" cy="22" r="8" fill="#4a6a8a"></circle>
+        <circle cx="360" cy="22" r="8" fill="#4a6a8a"></circle>
+        <circle cx="420" cy="22" r="8" fill="#4a6a8a"></circle>
+        <line x1="248" y1="22" x2="292" y2="22" stroke="#4a6a8a" stroke-width="1.2"></line>
+        <line x1="308" y1="22" x2="352" y2="22" stroke="#4a6a8a" stroke-width="1.2"></line>
+        <line x1="368" y1="22" x2="412" y2="22" stroke="#4a6a8a" stroke-width="1.2"></line>
+      </g>
+      <g>
+        <circle cx="260" cy="62" r="8" fill="#c95a2a"></circle>
+        <circle cx="320" cy="62" r="8" fill="#c95a2a"></circle>
+        <circle cx="380" cy="62" r="8" fill="#c95a2a"></circle>
+        <circle cx="440" cy="62" r="8" fill="#c95a2a"></circle>
+        <line x1="268" y1="62" x2="312" y2="62" stroke="#c95a2a" stroke-width="1.2"></line>
+        <line x1="328" y1="62" x2="372" y2="62" stroke="#c95a2a" stroke-width="1.2"></line>
+        <line x1="388" y1="62" x2="432" y2="62" stroke="#c95a2a" stroke-width="1.2"></line>
+        
+        <line x1="260" y1="54" x2="240" y2="30" stroke="#8a8275" stroke-width="0.8"></line>
+        <line x1="320" y1="54" x2="300" y2="30" stroke="#8a8275" stroke-width="0.8"></line>
+      </g>
+      <g>
+        <circle cx="280" cy="102" r="8" fill="#6b4e8a"></circle>
+        <circle cx="340" cy="102" r="8" fill="#6b4e8a"></circle>
+        <circle cx="400" cy="102" r="8" fill="#6b4e8a"></circle>
+        <circle cx="460" cy="102" r="8" fill="#6b4e8a"></circle>
+        <line x1="288" y1="102" x2="332" y2="102" stroke="#6b4e8a" stroke-width="1.2"></line>
+        <line x1="348" y1="102" x2="392" y2="102" stroke="#6b4e8a" stroke-width="1.2"></line>
+        <line x1="408" y1="102" x2="452" y2="102" stroke="#6b4e8a" stroke-width="1.2"></line>
+        <line x1="280" y1="94" x2="260" y2="70" stroke="#8a8275" stroke-width="0.8"></line>
+      </g>
+      <g>
+        <circle cx="300" cy="142" r="8" fill="#b8902c"></circle>
+        <circle cx="360" cy="142" r="8" fill="#b8902c"></circle>
+        <circle cx="420" cy="142" r="8" fill="#b8902c"></circle>
+        <circle cx="480" cy="142" r="8" fill="#b8902c"></circle>
+        <line x1="308" y1="142" x2="352" y2="142" stroke="#b8902c" stroke-width="1.2"></line>
+        <line x1="368" y1="142" x2="412" y2="142" stroke="#b8902c" stroke-width="1.2"></line>
+        <line x1="428" y1="142" x2="472" y2="142" stroke="#b8902c" stroke-width="1.2"></line>
+        <line x1="300" y1="134" x2="280" y2="110" stroke="#8a8275" stroke-width="0.8"></line>
+      </g>
+      <g>
+        <circle cx="320" cy="182" r="8" fill="#2c8a4f"></circle>
+        <circle cx="380" cy="182" r="8" fill="#2c8a4f"></circle>
+        <circle cx="440" cy="182" r="8" fill="#2c8a4f"></circle>
+        <circle cx="500" cy="182" r="8" fill="#2c8a4f"></circle>
+        <line x1="328" y1="182" x2="372" y2="182" stroke="#2c8a4f" stroke-width="1.2"></line>
+        <line x1="388" y1="182" x2="432" y2="182" stroke="#2c8a4f" stroke-width="1.2"></line>
+        <line x1="448" y1="182" x2="492" y2="182" stroke="#2c8a4f" stroke-width="1.2"></line>
+        <line x1="320" y1="174" x2="300" y2="150" stroke="#8a8275" stroke-width="0.8"></line>
+      </g>
+
+      <text x="620" y="50" class="annot" font-weight="700">nodes</text>
+      <text x="700" y="50" class="annot" fill="#5c5c66">= cells / spots, with gene-expression features</text>
+      <text x="620" y="80" class="annot" font-weight="700">edges</text>
+      <text x="700" y="80" class="annot" fill="#5c5c66">= k-NN within a radius</text>
+      <text x="620" y="110" class="annot" font-weight="700">colours</text>
+      <text x="700" y="110" class="annot" fill="#5c5c66">= cortical layers</text>
+      <text x="620" y="140" class="annot" font-style="italic" fill="#5c5c66">the graph encodes tissue architecture before any model sees it.</text>
+    </g>
+  </g>
+
+  
+  <text x="80" y="546" class="panel-tag" fill="#2c8a4f">STEP 2  ·  THE DGI CONTRASTIVE TASK  🎲</text>
+  <text x="80" y="578" class="panel-title">real graph vs corrupted graph  ·  same topology, shuffled features</text>
+
+  
+  <g>
+    <rect x="60" y="600" width="800" height="380" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="80" y="630" class="panel-tag" fill="#2c8a4f">REAL  ✅</text>
+    <text x="80" y="658" class="annot">original node features, real graph topology</text>
+
+    <g transform="translate(80,684)">
+      <circle cx="60" cy="40" r="14" fill="#4a6a8a"></circle>
+      <circle cx="160" cy="40" r="14" fill="#4a6a8a"></circle>
+      <circle cx="260" cy="40" r="14" fill="#4a6a8a"></circle>
+      <circle cx="60" cy="120" r="14" fill="#c95a2a"></circle>
+      <circle cx="160" cy="120" r="14" fill="#c95a2a"></circle>
+      <circle cx="260" cy="120" r="14" fill="#c95a2a"></circle>
+      <circle cx="60" cy="200" r="14" fill="#6b4e8a"></circle>
+      <circle cx="160" cy="200" r="14" fill="#6b4e8a"></circle>
+      <circle cx="260" cy="200" r="14" fill="#6b4e8a"></circle>
+      <line x1="74" y1="40" x2="146" y2="40" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="174" y1="40" x2="246" y2="40" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="60" y1="54" x2="60" y2="106" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="160" y1="54" x2="160" y2="106" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="260" y1="54" x2="260" y2="106" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="60" y1="134" x2="60" y2="186" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="160" y1="134" x2="160" y2="186" stroke="#2c8a4f" stroke-width="1.4"></line>
+      <line x1="260" y1="134" x2="260" y2="186" stroke="#2c8a4f" stroke-width="1.4"></line>
+
+      <text x="380" y="44" class="annot" font-weight="700">→  GNN  🧠</text>
+      <text x="380" y="78" class="annot">node embeddings  z_i</text>
+      <text x="380" y="118" class="annot" font-weight="700">→  pool  Σ</text>
+      <text x="380" y="148" class="annot">graph summary  s_real</text>
+
+      <text x="380" y="208" class="key" fill="#2c8a4f">maximise mutual information  💚</text>
+      <text x="380" y="232" class="annot">MI ( z_i  ,  s_real )</text>
+    </g>
+  </g>
+
+  <text x="920" y="800" class="annot" font-weight="700" fill="#5c5c66">vs</text>
+
+  
+  <g>
+    <rect x="970" y="600" width="800" height="380" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <text x="990" y="630" class="panel-tag" fill="#a14854">CORRUPTED  🔀</text>
+    <text x="990" y="658" class="annot">same topology, but node features are shuffled</text>
+
+    <g transform="translate(990,684)">
+      <circle cx="60" cy="40" r="14" fill="#6b4e8a"></circle>
+      <circle cx="160" cy="40" r="14" fill="#c95a2a"></circle>
+      <circle cx="260" cy="40" r="14" fill="#4a6a8a"></circle>
+      <circle cx="60" cy="120" r="14" fill="#4a6a8a"></circle>
+      <circle cx="160" cy="120" r="14" fill="#6b4e8a"></circle>
+      <circle cx="260" cy="120" r="14" fill="#c95a2a"></circle>
+      <circle cx="60" cy="200" r="14" fill="#c95a2a"></circle>
+      <circle cx="160" cy="200" r="14" fill="#4a6a8a"></circle>
+      <circle cx="260" cy="200" r="14" fill="#6b4e8a"></circle>
+      <line x1="74" y1="40" x2="146" y2="40" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="174" y1="40" x2="246" y2="40" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="60" y1="54" x2="60" y2="106" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="160" y1="54" x2="160" y2="106" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="260" y1="54" x2="260" y2="106" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="60" y1="134" x2="60" y2="186" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="160" y1="134" x2="160" y2="186" stroke="#a14854" stroke-width="1.4"></line>
+      <line x1="260" y1="134" x2="260" y2="186" stroke="#a14854" stroke-width="1.4"></line>
+
+      <text x="380" y="44" class="annot" font-weight="700" fill="#a14854">→  same GNN  🧠</text>
+      <text x="380" y="78" class="annot" fill="#a14854">node embeddings  z&#39;_i</text>
+      <text x="380" y="118" class="annot" font-weight="700" fill="#a14854">→  pool  Σ</text>
+      <text x="380" y="148" class="annot" fill="#a14854">corrupted summary  s_fake</text>
+
+      <text x="380" y="208" class="key" fill="#a14854">minimise mutual information  ❌</text>
+      <text x="380" y="232" class="annot" fill="#a14854">MI ( z_i  ,  s_fake )</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="1000" width="1880" height="80" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1028" class="panel-tag" fill="#7a5b13">RESULT  ·  ON DLPFC</text>
+    <text x="80" y="1060" class="key" fill="#7a5b13">nodes in the same cortical layer cluster together  ·  GraphST recovers the Layer 6 / white-matter boundary other methods miss.</text>
+  </g>
+</svg>

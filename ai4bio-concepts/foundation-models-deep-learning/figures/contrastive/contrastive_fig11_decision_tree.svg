@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CONTRASTIVE LEARNING vs ALTERNATIVES  ·  DECISION TREE</text>
+  <text x="60" y="96" class="h1">Don&#39;t reach for contrastive when something else fits better.</text>
+  <text x="60" y="124" class="h-sub">Top-down by what you actually need. Contrastive is a good default for one thing — not for everything.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="780" y="180" width="440" height="80" rx="14" fill="#ffffff" stroke="#1a1a22" stroke-width="2"></rect>
+    <text x="1000" y="208" text-anchor="middle" class="root-tag">START HERE</text>
+    <text x="1000" y="240" text-anchor="middle" class="root-q">What do you need from your rep?</text>
+  </g>
+
+  
+  <g fill="none" stroke="#5c5c66" stroke-width="2">
+    <path d="M 1000 260 C 1000 290, 220 290, 220 322" marker-end="url(#ar)"></path>
+    <path d="M 1000 260 C 1000 290, 580 290, 580 322" marker-end="url(#ar)"></path>
+    <path d="M 1000 260 C 1000 290, 940 290, 940 322" marker-end="url(#ar)"></path>
+    <path d="M 1000 260 C 1000 290, 1300 290, 1300 322" marker-end="url(#ar)"></path>
+    <path d="M 1000 260 C 1000 290, 1660 290, 1660 322" marker-end="url(#ar)"></path>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="324" width="320" height="80" rx="12" fill="#a14854" fill-opacity="0.18" stroke="#a14854" stroke-width="1.8"></rect>
+    <text x="80" y="350" class="node-tag" fill="#a14854">BRANCH 1</text>
+    <text x="80" y="372" class="node-q">Calibrated probabilities</text>
+    <text x="80" y="390" class="node-q">or generative samples?</text>
+  </g>
+  <line x1="220" y1="404" x2="220" y2="430" stroke="#a14854" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="60" y="436" width="320" height="120" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+    <text x="80" y="462" class="node-tag" fill="#a14854">YES → STOP</text>
+    <text x="80" y="488" class="leaf-title" fill="#1a1a22">Use VAE  /  diffusion</text>
+    <text x="80" y="514" class="leaf-body">contrastive doesn&#39;t model p(x)</text>
+    <text x="80" y="534" class="leaf-body" font-style="italic" fill="#5c5c66">no log-likelihood, no sampling</text>
+  </g>
+
+  
+  <g>
+    <rect x="420" y="324" width="320" height="80" rx="12" fill="#b8902c" fill-opacity="0.18" stroke="#b8902c" stroke-width="1.8"></rect>
+    <text x="440" y="350" class="node-tag" fill="#b8902c">BRANCH 2</text>
+    <text x="440" y="372" class="node-q">Interpretable latent factors</text>
+    <text x="440" y="390" class="node-q">(axis = gene program)?</text>
+  </g>
+  <line x1="580" y1="404" x2="580" y2="430" stroke="#b8902c" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="420" y="436" width="320" height="120" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+    <text x="440" y="462" class="node-tag" fill="#b8902c">YES → STOP</text>
+    <text x="440" y="488" class="leaf-title" fill="#1a1a22">NMF  /  MOFA+  /  ICA</text>
+    <text x="440" y="514" class="leaf-body">contrastive embeddings aren&#39;t axis-aligned</text>
+    <text x="440" y="534" class="leaf-body" font-style="italic" fill="#5c5c66">each axis encodes a mix</text>
+  </g>
+
+  
+  <g>
+    <rect x="780" y="324" width="320" height="80" rx="12" fill="#c95a2a" fill-opacity="0.18" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="800" y="350" class="node-tag" fill="#c95a2a">BRANCH 3</text>
+    <text x="800" y="372" class="node-q">Small dataset?</text>
+    <text x="800" y="390" class="node-q">&lt; 10 K samples</text>
+  </g>
+  <line x1="940" y1="404" x2="940" y2="430" stroke="#c95a2a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="780" y="436" width="320" height="120" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+    <text x="800" y="462" class="node-tag" fill="#c95a2a">YES → SKIP CONTRASTIVE</text>
+    <text x="800" y="488" class="leaf-title" fill="#1a1a22">Supervised CE  ·  scVI</text>
+    <text x="800" y="514" class="leaf-body">contrastive needs large-batch negatives</text>
+    <text x="800" y="534" class="leaf-body" font-style="italic" fill="#5c5c66">a few thousand cells won&#39;t make a clean negative set</text>
+  </g>
+
+  
+  <g>
+    <rect x="1140" y="324" width="320" height="80" rx="12" fill="#a14854" fill-opacity="0.18" stroke="#a14854" stroke-width="1.8"></rect>
+    <text x="1160" y="350" class="node-tag" fill="#a14854">BRANCH 4  ·  CRITICAL</text>
+    <text x="1160" y="372" class="node-q">Can you clearly define</text>
+    <text x="1160" y="390" class="node-q">what &#34;similar&#34; means?</text>
+  </g>
+  <line x1="1300" y1="404" x2="1300" y2="430" stroke="#a14854" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="1140" y="436" width="320" height="120" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="1160" y="462" class="node-tag" fill="#a14854">NO → STOP  ⚠</text>
+    <text x="1160" y="488" class="leaf-title" fill="#a14854">don&#39;t use contrastive</text>
+    <text x="1160" y="514" class="leaf-body">an ambiguous positive-pair definition</text>
+    <text x="1160" y="534" class="leaf-body">will encode the <tspan font-weight="700">wrong invariance</tspan></text>
+  </g>
+
+  
+  <g>
+    <rect x="1500" y="324" width="320" height="80" rx="12" fill="#2c8a4f" fill-opacity="0.18" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="1520" y="350" class="node-tag" fill="#2c8a4f">BRANCH 5  ·  YES PATH</text>
+    <text x="1520" y="372" class="node-q">You have a clear pair definition</text>
+    <text x="1520" y="390" class="node-q">and enough data  ·  CONTINUE  ✅</text>
+  </g>
+  <line x1="1660" y1="404" x2="1660" y2="430" stroke="#2c8a4f" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="1500" y="436" width="320" height="80" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1520" y="462" class="node-tag" fill="#2c8a4f">DECISION</text>
+    <text x="1520" y="486" class="node-q">one modality or two?</text>
+  </g>
+  <g fill="none" stroke="#2c8a4f" stroke-width="1.6">
+    <path d="M 1660 518 C 1660 540, 1580 552, 1580 572" marker-end="url(#ar)"></path>
+    <path d="M 1660 518 C 1660 540, 1740 552, 1740 572" marker-end="url(#ar)"></path>
+  </g>
+  <g>
+    <rect x="1500" y="578" width="150" height="160" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1508" y="598" class="edge" fill="#2c8a4f">ONE</text>
+    <text x="1508" y="620" class="leaf-title" fill="#1a1a22">Concerto</text>
+    <text x="1508" y="640" class="leaf-body">instance discrimination</text>
+    <text x="1508" y="664" class="leaf-body">SimCLR / NT-Xent</text>
+    <text x="1508" y="692" class="leaf-body" font-style="italic" fill="#5c5c66">two views of the same cell</text>
+  </g>
+  <g>
+    <rect x="1670" y="578" width="150" height="160" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1678" y="598" class="edge" fill="#2c8a4f">TWO</text>
+    <text x="1678" y="620" class="leaf-title" fill="#1a1a22">OmiCLIP</text>
+    <text x="1678" y="640" class="leaf-body">CLIP-style</text>
+    <text x="1678" y="664" class="leaf-body">dual encoder</text>
+    <text x="1678" y="692" class="leaf-body" font-style="italic" fill="#5c5c66">paired (image, omic)</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="800" width="900" height="270" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="80" y="828" class="root-tag" fill="#2c8a4f">IF CONTRASTIVE IS THE ANSWER  ·  FURTHER CHOICES</text>
+
+    <g transform="translate(80,852)">
+      <rect x="0" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="14" y="22" class="node-tag" fill="#2c8a4f">GRAPH-STRUCTURED DATA  🕸</text>
+      <text x="14" y="48" class="leaf-title">GraphST  ·  CellNEST  ·  SpatialEx</text>
+      <text x="14" y="68" class="leaf-body" fill="#5c5c66">DGI / hypergraph contrastive on spatial</text>
+
+      <rect x="400" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="414" y="22" class="node-tag" fill="#2c8a4f">LABELS + NEAR-IDENTICAL INPUTS</text>
+      <text x="414" y="48" class="leaf-title">ImmunoStruct  (supervised contrastive)</text>
+      <text x="414" y="68" class="leaf-body" fill="#5c5c66">create geometric room before classification</text>
+    </g>
+
+    <g transform="translate(80,952)">
+      <rect x="0" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="14" y="22" class="node-tag" fill="#2c8a4f">CELL + TEXT INTERFACE  💬</text>
+      <text x="14" y="48" class="leaf-title">CellWhisperer  ·  caption-aligned</text>
+      <text x="14" y="68" class="leaf-body" fill="#5c5c66">retrieval + chat over the atlas</text>
+
+      <rect x="400" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="414" y="22" class="node-tag" fill="#2c8a4f">SPATIAL NEIGHBOUR PAIRS  🧱</text>
+      <text x="414" y="48" class="leaf-title">graph contrastive (Family 3)</text>
+      <text x="414" y="68" class="leaf-body" fill="#5c5c66">encode tissue niches by topology</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="1000" y="800" width="940" height="270" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="1020" y="828" class="root-tag" fill="#8a5a4a">QUICK MAP  ·  EMOJI ↔ FAMILY</text>
+
+    <g transform="translate(1020,856)">
+      <text x="0" y="22" class="leaf-title">🧬  two views of one cell</text>
+      <text x="320" y="22" class="leaf-body" fill="#5c5c66">→  Family 1  ·  Concerto</text>
+
+      <text x="0" y="54" class="leaf-title">🖼️ ↔ 🧬  paired modalities</text>
+      <text x="320" y="54" class="leaf-body" fill="#5c5c66">→  Family 2  ·  OmiCLIP, CellWhisperer</text>
+
+      <text x="0" y="86" class="leaf-title">🕸  graph + corrupted graph</text>
+      <text x="320" y="86" class="leaf-body" fill="#5c5c66">→  Family 3  ·  GraphST, CellNEST, SpatialEx</text>
+
+      <text x="0" y="118" class="leaf-title">🏷  same-label pairs</text>
+      <text x="320" y="118" class="leaf-body" fill="#5c5c66">→  Family 4  ·  ImmunoStruct</text>
+    </g>
+
+    <line x1="1020" y1="1000" x2="1920" y2="1000" stroke="#e5dfcf" stroke-width="1"></line>
+    <text x="1020" y="1024" class="leaf-body" font-style="italic" fill="#5c5c66">if your problem doesn&#39;t match one of these emojis, contrastive isn&#39;t your tool.</text>
+    <text x="1020" y="1048" class="leaf-body" font-style="italic" fill="#5c5c66">if it does, the choice of model follows from the emoji.</text>
+  </g>
+</svg>

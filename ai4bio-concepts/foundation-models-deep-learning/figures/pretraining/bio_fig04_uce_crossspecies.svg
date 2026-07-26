@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  HOW UCE TRANSFERS ACROSS SPECIES</text>
+  <text x="60" y="96" class="h1">Bag-of-RNA with ESM2 gene tokens</text>
+  <text x="60" y="124" class="h-sub">Each gene is replaced by its protein-sequence embedding. Homologous proteins land in nearby vectors — so the species alignment is automatic.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <line x1="660" y1="170" x2="660" y2="940" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+  <line x1="1320" y1="170" x2="1320" y2="940" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+
+  
+  <text x="80" y="200" class="col-eyebrow" fill="#4a6a8a">LEFT  ·  INPUT</text>
+  <text x="80" y="226" class="col-title">Two cells, two species</text>
+  <text x="80" y="246" class="col-sub">expressed gene sets differ by name but encode similar proteins</text>
+
+  
+  <g>
+    <rect x="80" y="280" width="540" height="280" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="100" y="306" class="species-tag" fill="#4a6a8a">HUMAN  ·  T CELL</text>
+
+    
+    <g transform="translate(150,420)">
+      <circle cx="0" cy="0" r="56" fill="#ffffff" stroke="#4a6a8a" stroke-width="2"></circle>
+      <circle cx="-12" cy="-8" r="20" fill="#4a6a8a" opacity="0.4"></circle>
+      <text x="0" y="84" text-anchor="middle" class="col-sub">cell.X (Hs)</text>
+    </g>
+
+    
+    <text x="240" y="346" class="col-eyebrow" fill="#4a6a8a">EXPRESSED GENES</text>
+    <g transform="translate(240,366)">
+      <rect x="0" y="0" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="42" y="19" text-anchor="middle" class="gene" fill="#ffffff">TP53</text>
+      <rect x="92" y="0" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="134" y="19" text-anchor="middle" class="gene" fill="#ffffff">CD3E</text>
+      <rect x="184" y="0" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="226" y="19" text-anchor="middle" class="gene" fill="#ffffff">GAPDH</text>
+      <rect x="276" y="0" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="318" y="19" text-anchor="middle" class="gene" fill="#ffffff">FOXP3</text>
+
+      <rect x="0" y="38" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="42" y="57" text-anchor="middle" class="gene" fill="#ffffff">IL2RA</text>
+      <rect x="92" y="38" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="134" y="57" text-anchor="middle" class="gene" fill="#ffffff">ACTB</text>
+      <rect x="184" y="38" width="84" height="28" rx="6" fill="#4a6a8a" opacity="0.8"></rect>
+      <text x="226" y="57" text-anchor="middle" class="gene" fill="#ffffff">CD4</text>
+      <text x="282" y="55" class="mono">…</text>
+    </g>
+    <text x="240" y="466" class="annot" font-style="italic" fill="#5c5c66">unordered (bag) — no rank or magnitude</text>
+    <text x="240" y="500" class="mono" fill="#4a6a8a">genome: hg38  ·  symbols: HGNC</text>
+    <text x="240" y="518" class="mono" fill="#4a6a8a">~ 20 000 protein-coding genes</text>
+  </g>
+
+  
+  <g>
+    <rect x="80" y="580" width="540" height="280" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="100" y="606" class="species-tag" fill="#c95a2a">MOUSE  ·  T CELL</text>
+
+    <g transform="translate(150,720)">
+      <circle cx="0" cy="0" r="56" fill="#ffffff" stroke="#c95a2a" stroke-width="2"></circle>
+      <circle cx="-12" cy="-8" r="20" fill="#c95a2a" opacity="0.4"></circle>
+      <text x="0" y="84" text-anchor="middle" class="col-sub">cell.X (Mm)</text>
+    </g>
+
+    <text x="240" y="646" class="col-eyebrow" fill="#c95a2a">EXPRESSED GENES</text>
+    <g transform="translate(240,666)">
+      <rect x="0" y="0" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="42" y="19" text-anchor="middle" class="gene" fill="#ffffff">Trp53</text>
+      <rect x="92" y="0" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="134" y="19" text-anchor="middle" class="gene" fill="#ffffff">Cd3e</text>
+      <rect x="184" y="0" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="226" y="19" text-anchor="middle" class="gene" fill="#ffffff">Gapdh</text>
+      <rect x="276" y="0" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="318" y="19" text-anchor="middle" class="gene" fill="#ffffff">Foxp3</text>
+
+      <rect x="0" y="38" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="42" y="57" text-anchor="middle" class="gene" fill="#ffffff">Il2ra</text>
+      <rect x="92" y="38" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="134" y="57" text-anchor="middle" class="gene" fill="#ffffff">Actb</text>
+      <rect x="184" y="38" width="84" height="28" rx="6" fill="#c95a2a" opacity="0.8"></rect>
+      <text x="226" y="57" text-anchor="middle" class="gene" fill="#ffffff">Cd4</text>
+      <text x="282" y="55" class="mono">…</text>
+    </g>
+    <text x="240" y="766" class="annot" font-style="italic" fill="#5c5c66">different symbols, mostly the same proteins</text>
+    <text x="240" y="800" class="mono" fill="#c95a2a">genome: mm10  ·  symbols: MGI</text>
+    <text x="240" y="818" class="mono" fill="#c95a2a">~ 22 000 protein-coding genes</text>
+  </g>
+
+  
+  <line x1="630" y1="540" x2="675" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <text x="700" y="200" class="col-eyebrow" fill="#6b4e8a">CENTER  ·  THE TRICK</text>
+  <text x="700" y="226" class="col-title">Each gene → its protein sequence → an ESM2 embedding</text>
+  <text x="700" y="246" class="col-sub">homologous proteins land in nearby vectors</text>
+
+  
+  <g>
+    <rect x="700" y="290" width="600" height="120" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="2"></rect>
+    <text x="1000" y="318" text-anchor="middle" class="col-eyebrow" fill="#6b4e8a">FROZEN PROTEIN LANGUAGE MODEL</text>
+    <text x="1000" y="352" text-anchor="middle" class="col-title" fill="#1a1a22">ESM2</text>
+    <text x="1000" y="378" text-anchor="middle" class="col-sub">trained on millions of protein sequences</text>
+    <text x="1000" y="396" text-anchor="middle" class="col-sub">outputs a fixed embedding per gene — no fine-tuning</text>
+  </g>
+
+  
+  <g transform="translate(700,460)">
+    <rect x="0" y="0" width="600" height="380" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+    <text x="16" y="26" class="col-eyebrow" fill="#6b4e8a">PER-GENE EMBEDDING PAIRS (ILLUSTRATIVE)</text>
+
+    
+    <g transform="translate(16,46)">
+      <rect x="0" y="0" width="100" height="28" rx="6" fill="#4a6a8a"></rect>
+      <text x="50" y="19" text-anchor="middle" class="gene" fill="#ffffff">TP53</text>
+      <text x="108" y="20" class="mono">→</text>
+      <g transform="translate(132,8)">
+        <rect x="0" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.85"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.40"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.65"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.30"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.75"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.45"></rect>
+        <rect x="96" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.55"></rect>
+        <rect x="112" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.70"></rect>
+      </g>
+      <text x="270" y="20" class="mono-sm" fill="#5c5c66">∈ ℝ¹²⁸⁰</text>
+
+      <rect x="0" y="32" width="100" height="28" rx="6" fill="#c95a2a"></rect>
+      <text x="50" y="51" text-anchor="middle" class="gene" fill="#ffffff">Trp53</text>
+      <text x="108" y="52" class="mono">→</text>
+      <g transform="translate(132,40)">
+        <rect x="0" y="0" width="14" height="14" fill="#c95a2a" opacity="0.85"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#c95a2a" opacity="0.42"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#c95a2a" opacity="0.65"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#c95a2a" opacity="0.32"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#c95a2a" opacity="0.73"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#c95a2a" opacity="0.45"></rect>
+        <rect x="96" y="0" width="14" height="14" fill="#c95a2a" opacity="0.55"></rect>
+        <rect x="112" y="0" width="14" height="14" fill="#c95a2a" opacity="0.70"></rect>
+      </g>
+      <rect x="129" y="-2" width="132" height="60" fill="none" stroke="#2c8a4f" stroke-width="2" stroke-dasharray="3 3"></rect>
+      <text x="475" y="32" class="annot" font-weight="700" fill="#2c8a4f">cos sim  ≈  0.97</text>
+    </g>
+
+    
+    <g transform="translate(16,124)">
+      <rect x="0" y="0" width="100" height="28" rx="6" fill="#4a6a8a"></rect>
+      <text x="50" y="19" text-anchor="middle" class="gene" fill="#ffffff">CD3E</text>
+      <text x="108" y="20" class="mono">→</text>
+      <g transform="translate(132,8)">
+        <rect x="0" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.40"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.85"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.30"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.70"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.55"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.80"></rect>
+        <rect x="96" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.35"></rect>
+        <rect x="112" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.60"></rect>
+      </g>
+
+      <rect x="0" y="32" width="100" height="28" rx="6" fill="#c95a2a"></rect>
+      <text x="50" y="51" text-anchor="middle" class="gene" fill="#ffffff">Cd3e</text>
+      <text x="108" y="52" class="mono">→</text>
+      <g transform="translate(132,40)">
+        <rect x="0" y="0" width="14" height="14" fill="#c95a2a" opacity="0.42"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#c95a2a" opacity="0.85"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#c95a2a" opacity="0.30"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#c95a2a" opacity="0.72"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#c95a2a" opacity="0.53"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#c95a2a" opacity="0.78"></rect>
+        <rect x="96" y="0" width="14" height="14" fill="#c95a2a" opacity="0.38"></rect>
+        <rect x="112" y="0" width="14" height="14" fill="#c95a2a" opacity="0.60"></rect>
+      </g>
+      <rect x="129" y="-2" width="132" height="60" fill="none" stroke="#2c8a4f" stroke-width="2" stroke-dasharray="3 3"></rect>
+      <text x="475" y="32" class="annot" font-weight="700" fill="#2c8a4f">cos sim  ≈  0.99</text>
+    </g>
+
+    
+    <g transform="translate(16,202)">
+      <rect x="0" y="0" width="100" height="28" rx="6" fill="#4a6a8a"></rect>
+      <text x="50" y="19" text-anchor="middle" class="gene" fill="#ffffff">FOXP3</text>
+      <text x="108" y="20" class="mono">→</text>
+      <g transform="translate(132,8)">
+        <rect x="0" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.60"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.30"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.85"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.40"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.65"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.55"></rect>
+        <rect x="96" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.75"></rect>
+        <rect x="112" y="0" width="14" height="14" fill="#4a6a8a" opacity="0.45"></rect>
+      </g>
+
+      <rect x="0" y="32" width="100" height="28" rx="6" fill="#c95a2a"></rect>
+      <text x="50" y="51" text-anchor="middle" class="gene" fill="#ffffff">Foxp3</text>
+      <text x="108" y="52" class="mono">→</text>
+      <g transform="translate(132,40)">
+        <rect x="0" y="0" width="14" height="14" fill="#c95a2a" opacity="0.60"></rect>
+        <rect x="16" y="0" width="14" height="14" fill="#c95a2a" opacity="0.32"></rect>
+        <rect x="32" y="0" width="14" height="14" fill="#c95a2a" opacity="0.85"></rect>
+        <rect x="48" y="0" width="14" height="14" fill="#c95a2a" opacity="0.42"></rect>
+        <rect x="64" y="0" width="14" height="14" fill="#c95a2a" opacity="0.65"></rect>
+        <rect x="80" y="0" width="14" height="14" fill="#c95a2a" opacity="0.55"></rect>
+        <rect x="96" y="0" width="14" height="14" fill="#c95a2a" opacity="0.73"></rect>
+        <rect x="112" y="0" width="14" height="14" fill="#c95a2a" opacity="0.45"></rect>
+      </g>
+      <rect x="129" y="-2" width="132" height="60" fill="none" stroke="#2c8a4f" stroke-width="2" stroke-dasharray="3 3"></rect>
+      <text x="475" y="32" class="annot" font-weight="700" fill="#2c8a4f">cos sim  ≈  0.98</text>
+    </g>
+
+    <line x1="16" y1="282" x2="584" y2="282" stroke="#e5dfcf" stroke-width="1"></line>
+    <text x="16" y="306" class="annot" font-weight="700">Homologous genes get near-identical vectors automatically.</text>
+    <text x="16" y="326" class="annot" font-style="italic" fill="#5c5c66">No homolog table is consulted — the alignment lives in the</text>
+    <text x="16" y="344" class="annot" font-style="italic" fill="#5c5c66">protein-sequence model.</text>
+  </g>
+
+  
+  <line x1="1290" y1="540" x2="1335" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <text x="1360" y="200" class="col-eyebrow" fill="#2c8a4f">RIGHT  ·  OUTPUT</text>
+  <text x="1360" y="226" class="col-title">A shared cell embedding space</text>
+  <text x="1360" y="246" class="col-sub">unordered set in, one vector out — species-agnostic</text>
+
+  
+  <g>
+    <rect x="1360" y="290" width="560" height="160" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="1640" y="318" text-anchor="middle" class="col-eyebrow" fill="#2c8a4f">CELL TRANSFORMER ENCODER</text>
+    <text x="1640" y="350" text-anchor="middle" class="col-title">attention over the bag of gene-embedding tokens</text>
+    <text x="1640" y="378" text-anchor="middle" class="col-sub">no positional encoding  ·  permutation-invariant</text>
+    <text x="1640" y="402" text-anchor="middle" class="col-sub">outputs one fixed-dim embedding per cell</text>
+    <text x="1640" y="430" text-anchor="middle" class="mono">z_cell  ∈  ℝ¹²⁸⁰</text>
+  </g>
+
+  
+  <g>
+    <rect x="1360" y="470" width="560" height="380" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1378" y="496" class="col-eyebrow" fill="#2c8a4f">CELL EMBEDDING SPACE  (2-D PROJECTION)</text>
+
+    
+    <line x1="1390" y1="820" x2="1900" y2="820" stroke="#2a2a33" stroke-width="1.2"></line>
+    <line x1="1390" y1="820" x2="1390" y2="510" stroke="#2a2a33" stroke-width="1.2"></line>
+    <text x="1900" y="838" text-anchor="end" class="mono-sm">UMAP-1</text>
+    <text x="0" y="0" transform="translate(1380,510) rotate(-90)" text-anchor="end" class="mono-sm">UMAP-2</text>
+
+    
+    <g>
+      <ellipse cx="1620" cy="660" rx="115" ry="80" fill="#2c8a4f" opacity="0.10" stroke="#2c8a4f" stroke-width="1.2" stroke-dasharray="3 3"></ellipse>
+      <text x="1620" y="572" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">T cells  ·  shared cluster</text>
+
+      
+      <circle cx="1600" cy="640" r="6" fill="#4a6a8a"></circle>
+      <circle cx="1612" cy="660" r="6" fill="#4a6a8a"></circle>
+      <circle cx="1588" cy="670" r="6" fill="#4a6a8a"></circle>
+      <circle cx="1624" cy="650" r="6" fill="#4a6a8a"></circle>
+      <circle cx="1606" cy="678" r="6" fill="#4a6a8a"></circle>
+      <circle cx="1632" cy="672" r="6" fill="#4a6a8a"></circle>
+      
+      <circle cx="1638" cy="640" r="6" fill="#c95a2a"></circle>
+      <circle cx="1648" cy="664" r="6" fill="#c95a2a"></circle>
+      <circle cx="1620" cy="688" r="6" fill="#c95a2a"></circle>
+      <circle cx="1656" cy="680" r="6" fill="#c95a2a"></circle>
+      <circle cx="1592" cy="652" r="6" fill="#c95a2a"></circle>
+      <circle cx="1668" cy="654" r="6" fill="#c95a2a"></circle>
+
+      
+      <circle cx="1500" cy="750" r="6" fill="#4a6a8a" opacity="0.8"></circle>
+      <text x="1510" y="754" class="mono-sm" fill="#4a6a8a">human T cell</text>
+      <circle cx="1500" cy="780" r="6" fill="#c95a2a" opacity="0.8"></circle>
+      <text x="1510" y="784" class="mono-sm" fill="#c95a2a">mouse T cell</text>
+    </g>
+
+    
+    <g>
+      <ellipse cx="1820" cy="600" rx="60" ry="40" fill="#6b4e8a" opacity="0.10" stroke="#6b4e8a" stroke-width="1" stroke-dasharray="3 3"></ellipse>
+      <circle cx="1810" cy="600" r="5" fill="#4a6a8a"></circle>
+      <circle cx="1822" cy="590" r="5" fill="#4a6a8a"></circle>
+      <circle cx="1830" cy="608" r="5" fill="#c95a2a"></circle>
+      <circle cx="1815" cy="612" r="5" fill="#c95a2a"></circle>
+      <text x="1820" y="568" text-anchor="middle" class="mono-sm" fill="#6b4e8a">B cells</text>
+    </g>
+    
+    <g>
+      <ellipse cx="1450" cy="600" rx="50" ry="36" fill="#b8902c" opacity="0.10" stroke="#b8902c" stroke-width="1" stroke-dasharray="3 3"></ellipse>
+      <circle cx="1442" cy="598" r="5" fill="#4a6a8a"></circle>
+      <circle cx="1460" cy="608" r="5" fill="#c95a2a"></circle>
+      <circle cx="1456" cy="592" r="5" fill="#4a6a8a"></circle>
+      <circle cx="1448" cy="614" r="5" fill="#c95a2a"></circle>
+      <text x="1450" y="568" text-anchor="middle" class="mono-sm" fill="#b8902c">macrophages</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="960" width="1880" height="110" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="990" class="col-eyebrow" fill="#7a5b13">THE TRICK</text>
+    <text x="80" y="1024" class="key" fill="#7a5b13">No homolog mapping needed — protein-sequence similarity does the alignment automatically.</text>
+    <text x="80" y="1054" class="annot">Pre-compute the ESM2 embedding once per gene per species. Any cell from any species enters as a bag of those vectors. Train one transformer on the union; both species live in the same latent space without curated ortholog tables.</text>
+  </g>
+</svg>

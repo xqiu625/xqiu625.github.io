@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    <marker id="ar-repel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a14854"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  IMMUNOSTRUCT  ·  WHY SUPERVISED CONTRASTIVE BEATS CROSS-ENTROPY ALONE</text>
+  <text x="60" y="96" class="h1">When two inputs differ by one amino acid, geometry matters.</text>
+  <text x="60" y="124" class="h-sub">A thin hyperplane can&#39;t separate near-identical inputs. Contrastive loss makes the room first.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  <rect x="40" y="170" width="940" height="800" rx="14" fill="#a14854" fill-opacity="0.04"></rect>
+  <rect x="1020" y="170" width="940" height="800" rx="14" fill="#2c8a4f" fill-opacity="0.04"></rect>
+
+  
+  <text x="80" y="208" class="panel-tag" fill="#a14854">LEFT  ·  CROSS-ENTROPY ALONE  ✗</text>
+  <text x="80" y="244" class="panel-title">classify directly  ·  no contrastive shaping</text>
+
+  
+  <g transform="translate(80,290)">
+    <rect x="0" y="0" width="380" height="60" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <text x="20" y="22" class="panel-tag" fill="#a14854">CANCER PEPTIDE  🧪</text>
+    <text x="20" y="46" class="mono" fill="#a14854">YLQPRT[F]L</text>
+    <rect x="420" y="0" width="380" height="60" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="440" y="22" class="panel-tag" fill="#2c8a4f">WILD-TYPE  🧬</text>
+    <text x="440" y="46" class="mono" fill="#2c8a4f">YLQPRT[L]L</text>
+    <text x="400" y="42" class="annot" font-style="italic" fill="#5c5c66">differ by 1 aa</text>
+  </g>
+
+  <g transform="translate(80,400)">
+    <text x="0" y="0" class="annot" font-weight="700">→ classifier</text>
+    <text x="120" y="0" class="annot" fill="#5c5c66">a thin hyperplane between two near-identical points</text>
+  </g>
+
+  
+  <g transform="translate(80,440)">
+    <rect x="0" y="0" width="820" height="320" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+    <text x="20" y="28" class="panel-tag" fill="#a14854">EMBEDDING SPACE</text>
+
+    
+    <ellipse cx="380" cy="180" rx="160" ry="60" fill="#a14854" opacity="0.20"></ellipse>
+    <ellipse cx="500" cy="180" rx="160" ry="60" fill="#2c8a4f" opacity="0.20"></ellipse>
+
+    
+    <line x1="440" y1="100" x2="440" y2="260" stroke="#a14854" stroke-width="3" stroke-dasharray="6 4"></line>
+    <text x="440" y="92" text-anchor="middle" class="annot" font-weight="700" fill="#a14854">decision boundary</text>
+    <text x="440" y="288" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">tiny margin</text>
+
+    
+    <g>
+      <circle cx="340" cy="170" r="6" fill="#a14854"></circle>
+      <circle cx="360" cy="190" r="6" fill="#a14854"></circle>
+      <circle cx="380" cy="170" r="6" fill="#a14854"></circle>
+      <circle cx="400" cy="190" r="6" fill="#a14854"></circle>
+      <circle cx="420" cy="170" r="6" fill="#a14854"></circle>
+
+      <circle cx="460" cy="170" r="6" fill="#2c8a4f"></circle>
+      <circle cx="480" cy="190" r="6" fill="#2c8a4f"></circle>
+      <circle cx="500" cy="170" r="6" fill="#2c8a4f"></circle>
+      <circle cx="520" cy="190" r="6" fill="#2c8a4f"></circle>
+      <circle cx="540" cy="170" r="6" fill="#2c8a4f"></circle>
+    </g>
+  </g>
+
+  <g>
+    <rect x="60" y="790" width="900" height="180" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="820" class="panel-tag" fill="#a14854">WHAT GOES WRONG</text>
+    <text x="80" y="854" class="key" fill="#a14854">small perturbations flip the prediction.</text>
+    <text x="80" y="886" class="annot">the classifier never created geometric space between the two classes  —</text>
+    <text x="80" y="908" class="annot">it only drew a line between two basically-identical points.</text>
+    <text x="80" y="942" class="annot" font-style="italic" fill="#5c5c66">accuracy plateaus; calibration is poor.</text>
+  </g>
+
+  
+  <text x="1040" y="208" class="panel-tag" fill="#2c8a4f">RIGHT  ·  SUPERVISED CONTRASTIVE  +  CROSS-ENTROPY  ✓</text>
+  <text x="1040" y="244" class="panel-title">three-tower encoder  +  contrastive separation  ·  ImmunoStruct</text>
+
+  
+  <g transform="translate(1040,290)">
+    <rect x="0" y="0" width="180" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="90" y="24" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">sequence VAE  🧬</text>
+    <text x="90" y="50" text-anchor="middle" class="annot" fill="#5c5c66">amino-acid encoder</text>
+
+    <rect x="200" y="0" width="180" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="290" y="24" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">EGNN  🏗</text>
+    <text x="290" y="50" text-anchor="middle" class="annot" fill="#5c5c66">on AlphaFold2 structure</text>
+
+    <rect x="400" y="0" width="180" height="80" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="490" y="24" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">biochem MLP  ⚛</text>
+    <text x="490" y="50" text-anchor="middle" class="annot" fill="#5c5c66">chemistry features</text>
+
+    <text x="600" y="44" class="annot">→ concat  →  contrastive head</text>
+  </g>
+
+  
+  <g transform="translate(1040,400)">
+    <rect x="0" y="0" width="860" height="360" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+    <text x="20" y="28" class="panel-tag" fill="#2c8a4f">EMBEDDING SPACE  ·  AFTER CONTRASTIVE PUSH</text>
+
+    <ellipse cx="250" cy="200" rx="120" ry="60" fill="#a14854" opacity="0.20" stroke="#a14854" stroke-width="1.4"></ellipse>
+    <ellipse cx="620" cy="200" rx="120" ry="60" fill="#2c8a4f" opacity="0.20" stroke="#2c8a4f" stroke-width="1.4"></ellipse>
+
+    <g>
+      <circle cx="220" cy="200" r="6" fill="#a14854"></circle>
+      <circle cx="240" cy="180" r="6" fill="#a14854"></circle>
+      <circle cx="260" cy="220" r="6" fill="#a14854"></circle>
+      <circle cx="280" cy="180" r="6" fill="#a14854"></circle>
+      <circle cx="300" cy="220" r="6" fill="#a14854"></circle>
+
+      <circle cx="600" cy="200" r="6" fill="#2c8a4f"></circle>
+      <circle cx="620" cy="180" r="6" fill="#2c8a4f"></circle>
+      <circle cx="640" cy="220" r="6" fill="#2c8a4f"></circle>
+      <circle cx="660" cy="180" r="6" fill="#2c8a4f"></circle>
+      <circle cx="680" cy="220" r="6" fill="#2c8a4f"></circle>
+    </g>
+
+    
+    <line x1="380" y1="200" x2="500" y2="200" stroke="#a14854" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+    <line x1="500" y1="200" x2="380" y2="200" stroke="#a14854" stroke-width="3" stroke-dasharray="6 4" marker-end="url(#ar-repel)"></line>
+    <text x="440" y="178" text-anchor="middle" class="annot" font-weight="700" fill="#a14854">contrastive  ❌  repel</text>
+
+    
+    <line x1="440" y1="90" x2="440" y2="320" stroke="#2c8a4f" stroke-width="3" stroke-dasharray="6 4"></line>
+    <text x="440" y="82" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">classifier line</text>
+    <text x="440" y="340" text-anchor="middle" class="annot" font-style="italic" fill="#2c8a4f">wide margin — robust</text>
+  </g>
+
+  <g>
+    <rect x="1020" y="790" width="920" height="180" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="1040" y="820" class="panel-tag" fill="#2c8a4f">WHAT CHANGED</text>
+    <text x="1040" y="854" class="key" fill="#2c8a4f">contrastive loss made the geometric room that classification loss cannot.</text>
+    <text x="1040" y="886" class="annot">embeddings are first pushed apart by label;</text>
+    <text x="1040" y="908" class="annot">only <tspan font-style="italic">then</tspan> does cross-entropy draw the line.</text>
+    <text x="1040" y="942" class="annot" font-style="italic" fill="#5c5c66">good calibration, robust to perturbations, transferable embeddings.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="990" width="1880" height="90" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1018" class="panel-tag" fill="#7a5b13">THE PATTERN</text>
+    <text x="80" y="1050" class="key" fill="#7a5b13">when inputs look nearly identical and labels are different, contrastive separation is the prerequisite to classification.</text>
+    <text x="80" y="1072" class="annot">use cross-entropy alone only when the embeddings are already well-separated  —  for neoepitopes, single-aa drug variants, or rare disease subtypes, they almost never are.</text>
+  </g>
+</svg>

@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THREE PARADIGMS OF DOWNSTREAM ADAPTATION</text>
+  <text x="60" y="96" class="h1">Same pretrained scFM, three ways to use it.</text>
+  <text x="60" y="124" class="h-sub">Flexibility increases left → right; so does the architectural sophistication required to get there.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <line x1="687" y1="170" x2="687" y2="900" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+  <line x1="1313" y1="170" x2="1313" y2="900" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+
+  
+  <g transform="translate(60,920)">
+    <rect x="0" y="0" width="1880" height="32" rx="16" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1"></rect>
+    <rect x="0" y="0" width="627" height="32" rx="16" fill="#6b4e8a" opacity="0.30"></rect>
+    <rect x="627" y="0" width="626" height="32" fill="#6b4e8a" opacity="0.55"></rect>
+    <rect x="1253" y="0" width="627" height="32" rx="16" fill="#6b4e8a" opacity="0.85"></rect>
+    <text x="320" y="22" text-anchor="middle" class="flex-tag" fill="#ffffff">LOW FLEXIBILITY</text>
+    <text x="940" y="22" text-anchor="middle" class="flex-tag" fill="#ffffff">MEDIUM</text>
+    <text x="1565" y="22" text-anchor="middle" class="flex-tag" fill="#ffffff">HIGH FLEXIBILITY</text>
+  </g>
+  <text x="1000" y="990" text-anchor="middle" class="col-meta" font-style="italic">downstream adaptation flexibility increases left to right →</text>
+
+  
+
+  
+  <g>
+    <circle cx="92" cy="200" r="22" fill="#4a6a8a"></circle>
+    <text x="92" y="208" text-anchor="middle" class="col-num">1</text>
+    <text x="124" y="190" class="col-tag" fill="#4a6a8a">PARADIGM 01</text>
+    <text x="124" y="218" class="col-title">Fine-tune</text>
+    <text x="124" y="236" class="col-meta">Geneformer  ·  AIDO.Cell  ·  Nicheformer</text>
+
+    
+    <g>
+      <rect x="60" y="270" width="580" height="100" rx="12" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+      <text x="80" y="296" class="req-tag" fill="#4a6a8a">STEP A</text>
+      <text x="80" y="322" class="step-title">Pretrained scFM (any tokenisation)</text>
+      <text x="80" y="344" class="step-sub">12-layer transformer, learned on a general single-cell corpus</text>
+    </g>
+    <line x1="350" y1="376" x2="350" y2="408" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    
+    <g>
+      <rect x="60" y="412" width="580" height="100" rx="12" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="80" y="438" class="req-tag" fill="#4a6a8a">STEP B</text>
+      <text x="80" y="464" class="step-title">Add a task head (MLP / linear)</text>
+      <text x="80" y="486" class="step-sub">CLS embedding  →  classes / regression</text>
+    </g>
+    <line x1="350" y1="518" x2="350" y2="550" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    
+    <g>
+      <rect x="60" y="554" width="580" height="120" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+      <text x="80" y="580" class="req-tag" fill="#c95a2a">STEP C  ·  GRADIENT UPDATES</text>
+      <text x="80" y="606" class="step-title">Train on a labeled dataset</text>
+      <text x="80" y="628" class="step-sub">backprop through head (and often the backbone)</text>
+      <text x="80" y="648" class="step-sub">3-5 epochs  ·  hours on a single GPU (QLoRA)</text>
+    </g>
+    <line x1="350" y1="680" x2="350" y2="712" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    
+    <g>
+      <rect x="60" y="716" width="580" height="100" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="80" y="742" class="req-tag" fill="#2c8a4f">OUTPUT</text>
+      <text x="80" y="768" class="step-title">Task-specific checkpoint</text>
+      <text x="80" y="790" class="step-sub">one model per task — change task = re-train</text>
+    </g>
+
+    
+    <g>
+      <rect x="60" y="836" width="580" height="56" rx="8" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+      <text x="80" y="858" class="req-tag" fill="#1a1a22">REQUIRES</text>
+      <text x="80" y="880" class="req-body">labeled dataset  ·  training compute  ·  one model per task</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <circle cx="718" cy="200" r="22" fill="#2c8a4f"></circle>
+    <text x="718" y="208" text-anchor="middle" class="col-num">2</text>
+    <text x="750" y="190" class="col-tag" fill="#2c8a4f">PARADIGM 02</text>
+    <text x="750" y="218" class="col-title">Zero-shot</text>
+    <text x="750" y="236" class="col-meta">UCE  ·  scCello</text>
+
+    <g>
+      <rect x="686" y="270" width="580" height="100" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="706" y="296" class="req-tag" fill="#2c8a4f">STEP A</text>
+      <text x="706" y="322" class="step-title">Pretrained scFM</text>
+      <text x="706" y="344" class="step-sub">no gradient updates ever</text>
+    </g>
+    <line x1="976" y1="376" x2="976" y2="408" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="686" y="412" width="580" height="100" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="706" y="438" class="req-tag" fill="#2c8a4f">STEP B</text>
+      <text x="706" y="464" class="step-title">Feed new cells, take embeddings</text>
+      <text x="706" y="486" class="step-sub">a forward pass per cell — that&#39;s it</text>
+    </g>
+    <line x1="976" y1="518" x2="976" y2="550" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="686" y="554" width="580" height="120" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+      <text x="706" y="580" class="req-tag" fill="#b8902c">STEP C  ·  NO UPDATES</text>
+      <text x="706" y="606" class="step-title">Cluster, k-NN, or linear probe</text>
+      <text x="706" y="628" class="step-sub">cosine in the latent space groups cell types</text>
+      <text x="706" y="648" class="step-sub">optional cheap probe on labels (no scFM gradients)</text>
+    </g>
+    <line x1="976" y1="680" x2="976" y2="712" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="686" y="716" width="580" height="100" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="706" y="742" class="req-tag" fill="#2c8a4f">OUTPUT</text>
+      <text x="706" y="768" class="step-title">Generic cell embeddings</text>
+      <text x="706" y="790" class="step-sub">reusable across tasks — same vectors, new question</text>
+    </g>
+
+    <g>
+      <rect x="686" y="836" width="580" height="56" rx="8" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+      <text x="706" y="858" class="req-tag" fill="#1a1a22">REQUIRES</text>
+      <text x="706" y="880" class="req-body">nothing beyond the pretrained model  ·  no labels at training</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <circle cx="1344" cy="200" r="22" fill="#6b4e8a"></circle>
+    <text x="1344" y="208" text-anchor="middle" class="col-num">3</text>
+    <text x="1376" y="190" class="col-tag" fill="#6b4e8a">PARADIGM 03</text>
+    <text x="1376" y="218" class="col-title">In-context learning</text>
+    <text x="1376" y="236" class="col-meta">STACK</text>
+
+    <g>
+      <rect x="1312" y="270" width="600" height="100" rx="12" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+      <text x="1332" y="296" class="req-tag" fill="#6b4e8a">STEP A</text>
+      <text x="1332" y="322" class="step-title">Pretrained scFM with ICL capacity</text>
+      <text x="1332" y="344" class="step-sub">self-distillation + mask-diffusion at pretraining</text>
+    </g>
+    <line x1="1612" y1="376" x2="1612" y2="408" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="1312" y="412" width="600" height="100" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+      <text x="1332" y="438" class="req-tag" fill="#6b4e8a">STEP B</text>
+      <text x="1332" y="464" class="step-title">Build a prompt set</text>
+      <text x="1332" y="486" class="step-sub">~ 100 labeled reference cells from your task</text>
+    </g>
+    <line x1="1612" y1="518" x2="1612" y2="550" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="1312" y="554" width="600" height="120" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+      <text x="1332" y="580" class="req-tag" fill="#b8902c">STEP C  ·  NO UPDATES</text>
+      <text x="1332" y="606" class="step-title">Feed prompt + query in one pass</text>
+      <text x="1332" y="628" class="step-sub">model predicts the query&#39;s label from context cells</text>
+      <text x="1332" y="648" class="step-sub">swap prompts to swap tasks — no retraining</text>
+    </g>
+    <line x1="1612" y1="680" x2="1612" y2="712" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="1312" y="716" width="600" height="100" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="1332" y="742" class="req-tag" fill="#2c8a4f">OUTPUT</text>
+      <text x="1332" y="768" class="step-title">Query-specific prediction</text>
+      <text x="1332" y="790" class="step-sub">one model, every task — change the prompt, get a different answer</text>
+    </g>
+
+    <g>
+      <rect x="1312" y="836" width="600" height="56" rx="8" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+      <text x="1332" y="858" class="req-tag" fill="#1a1a22">REQUIRES</text>
+      <text x="1332" y="880" class="req-body">small set of labeled reference cells  ·  no gradients, no head</text>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  OMICLIP  ·  DUAL-ENCODER ALIGNMENT  +  LOKI PLATFORM</text>
+  <text x="60" y="96" class="h1">2.2 M paired image–transcriptome pairs in one shared 768-d space.</text>
+  <text x="60" y="124" class="h-sub">Symmetric InfoNCE on H&amp;E and spatial omics. Five downstream tasks fall out of the joint embedding.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="380" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+    <text x="80" y="208" class="panel-tag" fill="#7a5b13">TOP LEVEL  ·  TRAINING  📚</text>
+    <text x="80" y="240" class="panel-title">2.2 M  matched  (H&amp;E patch, spatial expression)  pairs</text>
+
+    
+    <g transform="translate(80,270)">
+      
+      <rect x="0" y="0" width="220" height="100" rx="10" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+      <text x="110" y="28" text-anchor="middle" class="panel-tag" fill="#6b4e8a">IMAGE ENCODER  🖼️</text>
+      <text x="110" y="56" text-anchor="middle" class="annot" font-weight="700">Vision Transformer</text>
+      <text x="110" y="82" text-anchor="middle" class="annot" fill="#5c5c66">→ 768-d image embedding</text>
+
+      
+      <rect x="260" y="0" width="220" height="100" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="370" y="28" text-anchor="middle" class="panel-tag" fill="#2c8a4f">OMIC ENCODER  🧬</text>
+      <text x="370" y="56" text-anchor="middle" class="annot" font-weight="700">expression MLP</text>
+      <text x="370" y="82" text-anchor="middle" class="annot" fill="#5c5c66">→ 768-d omic embedding</text>
+
+      
+      <g transform="translate(550,0)">
+        <rect x="0" y="0" width="220" height="200" rx="6" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+        <text x="110" y="-8" text-anchor="middle" class="panel-tag" fill="#7a5b13">N × N SIMILARITY</text>
+        
+        <g>
+          <rect x="20" y="20" width="36" height="36" fill="#2c8a4f" opacity="0.85"></rect>
+          <rect x="60" y="20" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="100" y="20" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="140" y="20" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="180" y="20" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+
+          <rect x="20" y="60" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="60" y="60" width="36" height="36" fill="#2c8a4f" opacity="0.85"></rect>
+          <rect x="100" y="60" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="140" y="60" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="180" y="60" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+
+          <rect x="20" y="100" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="60" y="100" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="100" y="100" width="36" height="36" fill="#2c8a4f" opacity="0.85"></rect>
+          <rect x="140" y="100" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="180" y="100" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+
+          <rect x="20" y="140" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="60" y="140" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="100" y="140" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+          <rect x="140" y="140" width="36" height="36" fill="#2c8a4f" opacity="0.85"></rect>
+          <rect x="180" y="140" width="36" height="36" fill="#a14854" opacity="0.45"></rect>
+        </g>
+      </g>
+
+      <text x="800" y="40" class="annot" font-weight="700" fill="#2c8a4f">diagonal  ✅  matched pairs pulled together  💚</text>
+      <text x="800" y="78" class="annot" font-weight="700" fill="#a14854">off-diagonal  ❌  unmatched pairs pushed apart</text>
+      <text x="800" y="118" class="annot">symmetric InfoNCE loss in both directions</text>
+      <text x="800" y="146" class="annot" font-style="italic" fill="#5c5c66">a row-wise loss + a column-wise loss; both ground the alignment.</text>
+    </g>
+
+    
+    <g transform="translate(80,490)">
+      <rect x="0" y="0" width="1820" height="60" rx="8" fill="#fbe6e6" stroke="#a14854" stroke-width="1.4"></rect>
+      <text x="20" y="26" class="app-tag" fill="#a14854">⚠  MODALITY-GAP RISK</text>
+      <text x="20" y="48" class="annot" fill="#a14854">without careful curation, representations cluster by modality before clustering by semantics  —  OmiCLIP&#39;s curation prevents this.</text>
+    </g>
+  </g>
+
+  
+  <text x="80" y="608" class="panel-tag" fill="#8a5a4a">BOTTOM LEVEL  ·  LOKI PLATFORM  🪐  ·  5 TASKS ENABLED BY THE JOINT EMBEDDING</text>
+
+  <g transform="translate(60,630)">
+    <rect x="0" y="0" width="360" height="220" rx="12" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+    <text x="20" y="32" class="app-tag" fill="#4a6a8a">①  ALIGN  🧭</text>
+    <text x="20" y="60" class="panel-title">H&amp;E ↔ spatial registration</text>
+    <text x="20" y="90" class="annot">no landmarks needed; cosine similarity</text>
+    <text x="20" y="110" class="annot">finds the matching omic spot for an image patch</text>
+    <text x="20" y="148" class="annot" font-style="italic" fill="#5c5c66">retro-fit H&amp;E onto unannotated spatial atlases.</text>
+  </g>
+
+  <g transform="translate(440,630)">
+    <rect x="0" y="0" width="360" height="220" rx="12" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+    <text x="20" y="32" class="app-tag" fill="#c95a2a">②  ANNOTATE  🏷</text>
+    <text x="20" y="60" class="panel-title">cross-modality label transfer</text>
+    <text x="20" y="90" class="annot">cell-type labels from one modality</text>
+    <text x="20" y="110" class="annot">transfer to the other via the shared space</text>
+    <text x="20" y="148" class="annot" font-style="italic" fill="#5c5c66">tag a histology image with cell-type calls from omics.</text>
+  </g>
+
+  <g transform="translate(820,630)">
+    <rect x="0" y="0" width="360" height="220" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="20" y="32" class="app-tag" fill="#2c8a4f">③  DECOMPOSE  🧮</text>
+    <text x="20" y="60" class="panel-title">separate cell types in histology</text>
+    <text x="20" y="90" class="annot">use the omic signal to deconvolve</text>
+    <text x="20" y="110" class="annot">mixed populations within a single H&amp;E spot</text>
+    <text x="20" y="148" class="annot" font-style="italic" fill="#5c5c66">pixel-level labels without per-pixel omics.</text>
+  </g>
+
+  <g transform="translate(1200,630)">
+    <rect x="0" y="0" width="360" height="220" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+    <text x="20" y="32" class="app-tag" fill="#6b4e8a">④  RETRIEVE  🔍</text>
+    <text x="20" y="60" class="panel-title">find similar tissue regions</text>
+    <text x="20" y="90" class="annot">query with an H&amp;E image,</text>
+    <text x="20" y="110" class="annot">get back tissue spots with similar molecular profiles</text>
+    <text x="20" y="148" class="annot" font-style="italic" fill="#5c5c66">phenotype search across an atlas.</text>
+  </g>
+
+  <g transform="translate(1580,630)">
+    <rect x="0" y="0" width="360" height="220" rx="12" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+    <text x="20" y="32" class="app-tag" fill="#b8902c">⑤  PREDEX  🔮</text>
+    <text x="20" y="60" class="panel-title">expression from H&amp;E alone</text>
+    <text x="20" y="90" class="annot">no spatial-omics needed at inference</text>
+    <text x="20" y="110" class="annot">image → predicted gene-expression vector</text>
+    <text x="20" y="148" class="annot" font-style="italic" fill="#5c5c66">spatial omics at the cost of histology.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="880" width="1880" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="910" class="panel-tag" fill="#7a5b13">WHY ONE EMBEDDING UNLOCKS FIVE TASKS</text>
+    <text x="80" y="944" class="key" fill="#7a5b13">A joint space is the contract.</text>
+    <text x="80" y="976" class="annot">once H&amp;E and omics live at the same point, every downstream task is a re-use of that point  —  no new model per task.</text>
+    <text x="80" y="1004" class="annot">align is &#34;nearest neighbour in the joint space&#34;  ·  annotate is &#34;label propagation&#34;  ·  decompose is &#34;weighted mixing&#34;  ·  retrieve is &#34;image query&#34;  ·  predex is &#34;decoder from image embedding&#34;.</text>
+    <text x="80" y="1036" class="annot" font-style="italic" fill="#5c5c66">the platform is the contribution. The model is just the latent space that makes the platform possible.</text>
+    <text x="80" y="1066" class="key" fill="#7a5b13">→  invest in one shared embedding, harvest five tasks.</text>
+  </g>
+</svg>

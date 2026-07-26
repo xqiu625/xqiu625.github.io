@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  DNA TOKENISATION  ·  6-MER vs CODON</text>
+  <text x="60" y="96" class="h1">The same DNA, two ways to slice it</text>
+  <text x="60" y="124" class="h-sub">Window boundaries decide what the model can see — including whether synonymous variation survives the tokenisation.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="80" y="200" class="row-tag" fill="#4a6a8a">TOP  ·  NUCLEOTIDE TRANSFORMER</text>
+  <text x="80" y="236" class="row-title">6-mer tokenisation</text>
+  <text x="80" y="262" class="row-sub">overlapping or non-overlapping 6-character chunks  ·  vocabulary 4⁶ = 4 096 tokens</text>
+
+  
+  <g transform="translate(80,300)">
+    <text x="0" y="0" class="label-tag" fill="#4a6a8a">RAW DNA</text>
+    <text x="0" y="36" class="mono" fill="#1a1a22">A  T  G  C  G  A  T  C  G  A  G  C  T  G  C  A  T  C  G  T  A  …</text>
+  </g>
+
+  
+  <g transform="translate(80,360)">
+    <text x="0" y="0" class="label-tag" fill="#4a6a8a">SLIDE 6-WIDE WINDOW (non-overlapping)</text>
+
+    
+    <rect x="-4" y="14" width="180" height="40" rx="6" fill="none" stroke="#4a6a8a" stroke-width="2"></rect>
+    <text x="86" y="44" text-anchor="middle" class="mono-md" fill="#4a6a8a">ATGCGA</text>
+    <text x="86" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">token 1024</text>
+
+    
+    <rect x="184" y="14" width="180" height="40" rx="6" fill="none" stroke="#4a6a8a" stroke-width="2"></rect>
+    <text x="274" y="44" text-anchor="middle" class="mono-md" fill="#4a6a8a">TCGAGC</text>
+    <text x="274" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">token 3187</text>
+
+    
+    <rect x="372" y="14" width="180" height="40" rx="6" fill="none" stroke="#4a6a8a" stroke-width="2"></rect>
+    <text x="462" y="44" text-anchor="middle" class="mono-md" fill="#4a6a8a">TGCATC</text>
+    <text x="462" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">token 3640</text>
+
+    
+    <rect x="560" y="14" width="180" height="40" rx="6" fill="none" stroke="#4a6a8a" stroke-width="2" stroke-dasharray="4 3"></rect>
+    <text x="650" y="44" text-anchor="middle" class="mono-md" fill="#4a6a8a">GTA…</text>
+    <text x="650" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">token …</text>
+  </g>
+
+  
+  <g transform="translate(900,300)">
+    <rect x="0" y="0" width="1040" height="170" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+    <text x="20" y="26" class="label-tag" fill="#4a6a8a">PROPERTIES</text>
+    <text x="20" y="56" class="annot">•  pure-DNA representation  ·  works for coding <tspan font-style="italic">and</tspan> non-coding regions</text>
+    <text x="20" y="78" class="annot">•  fixed window width is agnostic to gene structure</text>
+    <text x="20" y="100" class="annot">•  same vocabulary for promoters, enhancers, UTRs, introns, exons</text>
+    <line x1="20" y1="116" x2="1020" y2="116" stroke="#bcd2e6" stroke-width="1"></line>
+    <text x="20" y="138" class="annot"><tspan font-weight="700" fill="#a14854">downside</tspan>  ·  window boundaries don&#39;t align with codons or motifs</text>
+    <text x="20" y="158" class="annot">a 3-bp shift can scramble every token — model has to learn this invariance.</text>
+  </g>
+
+  
+  <line x1="60" y1="510" x2="1940" y2="510" stroke="#e5dfcf" stroke-width="1.5" stroke-dasharray="6 5"></line>
+
+  
+  <text x="80" y="552" class="row-tag" fill="#2c8a4f">BOTTOM  ·  CODONFM</text>
+  <text x="80" y="588" class="row-title">Codon-level tokenisation</text>
+  <text x="80" y="614" class="row-sub">3-nucleotide triplets aligned to the reading frame  ·  vocabulary 64 codons → 20 amino acids</text>
+
+  
+  <g transform="translate(80,650)">
+    <text x="0" y="0" class="label-tag" fill="#2c8a4f">SAME CODING DNA</text>
+    <text x="0" y="36" class="mono" fill="#1a1a22">A  T  G  C  G  A  T  C  G  A  G  C  T  G  C  A  T  C  G  T  A  …</text>
+  </g>
+
+  
+  <g transform="translate(80,710)">
+    <text x="0" y="0" class="label-tag" fill="#2c8a4f">READ IN TRIPLETS (codon frame)</text>
+
+    <rect x="-4" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="41" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">ATG</text>
+    <text x="41" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">Met (start)</text>
+
+    <rect x="94" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="139" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">CGA</text>
+    <text x="139" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">Arg</text>
+
+    <rect x="188" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="233" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">TCG</text>
+    <text x="233" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">Ser</text>
+
+    <rect x="282" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="327" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">AGC</text>
+    <text x="327" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">Ser</text>
+
+    <rect x="376" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="421" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">TGC</text>
+    <text x="421" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">Cys</text>
+
+    <rect x="470" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="515" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">ATC</text>
+    <text x="515" y="78" text-anchor="middle" class="mono-sm" fill="#5c5c66">Ile</text>
+
+    <rect x="564" y="14" width="90" height="40" rx="6" fill="none" stroke="#2c8a4f" stroke-width="2" stroke-dasharray="4 3"></rect>
+    <text x="609" y="44" text-anchor="middle" class="mono-md" fill="#2c8a4f">GTA…</text>
+  </g>
+
+  
+  <g transform="translate(900,650)">
+    <rect x="0" y="0" width="1040" height="170" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="20" y="26" class="label-tag" fill="#2c8a4f">PROPERTIES</text>
+    <text x="20" y="56" class="annot">•  aligned to the <tspan font-weight="700">reading frame</tspan>  ·  every token is a codon</text>
+    <text x="20" y="78" class="annot">•  small vocabulary (64) maps cleanly to amino-acid space</text>
+    <text x="20" y="100" class="annot">•  preserves <tspan font-weight="700">synonymous</tspan> variation that a protein-output model would lose</text>
+    <line x1="20" y1="116" x2="1020" y2="116" stroke="#bcd6bc" stroke-width="1"></line>
+    <text x="20" y="138" class="annot"><tspan font-weight="700" fill="#a14854">downside</tspan>  ·  only meaningful inside CDS regions; non-coding DNA out of scope</text>
+    <text x="20" y="158" class="annot">requires reading-frame annotation, which not every region of the genome has.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="850" width="1880" height="220" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="880" class="row-tag" fill="#7a5b13">WORKED EXAMPLE  ·  A SYNONYMOUS SNP</text>
+    <text x="80" y="912" class="key" fill="#7a5b13">GCT  →  GCC   (both encode  alanine,  but the codon differs)</text>
+
+    
+    
+    <g transform="translate(80,932)">
+      <rect x="0" y="0" width="900" height="120" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+      <text x="20" y="26" class="label-tag" fill="#a14854">MODEL THAT ONLY SEES PROTEIN</text>
+      <text x="20" y="54" class="mono-md" fill="#1a1a22">GCT  →  Ala     ·     GCC  →  Ala</text>
+      <text x="20" y="80" class="annot" font-weight="700" fill="#a14854">the two sequences look identical</text>
+      <text x="20" y="100" class="annot" font-style="italic" fill="#5c5c66">synonymous variation invisible to this representation</text>
+    </g>
+
+    
+    <g transform="translate(1000,932)">
+      <rect x="0" y="0" width="920" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="26" class="label-tag" fill="#2c8a4f">CODONFM</text>
+      <text x="20" y="54" class="mono-md" fill="#1a1a22">GCT  ≠  GCC     (token 51  vs  token 49)</text>
+      <text x="20" y="80" class="annot" font-weight="700" fill="#2c8a4f">distinct tokens — codon-usage bias is preserved</text>
+      <text x="20" y="100" class="annot" font-style="italic" fill="#5c5c66">captures expression effects driven by codon choice, not amino acid identity</text>
+    </g>
+  </g>
+</svg>
