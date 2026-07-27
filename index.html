@@ -65,8 +65,6 @@
         .tag.next { background: #e67e22; }
         .core-box { background: #fff8f0; border-left: 4px solid #e67e22; padding: 15px 20px; margin: 20px 0; border-radius: 4px; }
         .core-box strong { color: #e67e22; }
-        .next-step-box { background: white; border: 2px solid #1a5f7a; border-radius: 8px; padding: 20px 25px; margin: 25px 0; }
-        .next-step-box h4 { margin-top: 0; margin-bottom: 10px; }
         .capability-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
         .capability-card { background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .capability-card h4 { margin-top: 0; color: #1a5f7a; border-bottom: 2px solid #6c8cc0; padding-bottom: 10px; }
@@ -81,8 +79,11 @@
         .tools-line strong { color: #1a5f7a; }
         a { color: #1a5f7a; }
         a:hover { color: #6c8cc0; }
-        .other-competencies { background: #f8f9fa; border-radius: 8px; padding: 20px; margin-top: 20px; }
-        .other-competencies h3 { margin-top: 0; font-size: 1.1rem; color: #666; }
+        .collapsible > summary { cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .collapsible > summary::-webkit-details-marker { display: none; }
+        .collapsible > summary h2 { margin: 0; }
+        .collapsible > summary::after { content: '\25BE'; color: #6c8cc0; font-size: 1.1rem; transition: transform 0.2s ease; }
+        .collapsible[open] > summary::after { transform: rotate(180deg); }
         @media (max-width: 768px) {
             .profile-container { flex-direction: column; }
             .profile-image-container { margin-right: 0; margin-bottom: 20px; text-align: center; }
@@ -148,8 +149,8 @@
                         <p class="caption">From complex multi-modal data to actionable therapeutic targets</p>
                     </div>
 
-                    <div class="content">
-                        <h2>What I Do</h2>
+                    <details class="content collapsible" open>
+                        <summary><h2>What I Do</h2></summary>
 
                         <div class="experience-item">
                             <strong>Foundation Model Mechanistic Interpretation</strong> <span class="tag">Primary</span>
@@ -180,10 +181,10 @@
                             <strong>Therapeutic Discovery Workflows</strong><br>
                             I build interpretable computational frameworks that connect AI outputs to therapeutic decision-making—from mechanism-of-disease modeling to target nomination and verification-aware validation—supporting experimental validation and translational research.
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="content">
-                        <h2>Featured Projects</h2>
+                    <details class="content collapsible">
+                        <summary><h2>Featured Projects</h2></summary>
                         <p style="color:#555;">Open-source, documented, and reproducible. Each links to code and methods on GitHub.</p>
                         <div class="capability-grid">
                             <div class="project-card">
@@ -212,10 +213,10 @@
                                 <a class="gh" href="https://github.com/xqiu625/sepsis-scrna-dynamics">GitHub → sepsis-scrna-dynamics</a>
                             </div>
                         </div>
-                    </div>
+                    </details>
 
-                    <div class="content">
-                        <h2>Technical Capabilities</h2>
+                    <details class="content collapsible">
+                        <summary><h2>Technical Capabilities</h2></summary>
 
                         <div class="capability-grid">
                             <div class="capability-card">
@@ -264,24 +265,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="content">
-                        <h2>Looking Ahead</h2>
-                        <div class="next-step-box">
-                            <p>I aim to advance AI-enabled target discovery by building mechanistic reasoning frameworks that connect foundation model insights to therapeutic hypotheses. My goal is to work at the intersection of computational biology and drug discovery—collaborating with experimentalists to validate targets and translate computational predictions into actionable therapeutic strategies.</p>
-                            <p><strong>What I bring:</strong> The ability to extract disease mechanisms from complex multi-omic data, interpret AI model outputs through a biological lens, and bridge computational predictions with experimental validation for target discovery.</p>
-                        </div>
-                    </div>
-
-                    <div class="content">
-                        <div class="other-competencies">
-                            <h3>📋 Additional Competencies</h3>
-                            <p><strong>Clinical Genomics:</strong> Three years of experience in ACMG variant classification, NGS pipeline development, and genomic data interpretation.</p>
-                            <p><strong>Structural Biology:</strong> Molecular dynamics (GROMACS), molecular docking (DiffDock, AutoDock Vina), structure-based analysis.</p>
-                            <p><strong>Regulatory Knowledge:</strong> IND-enabling studies, GLP standards, ADMET prediction, PK/PD modeling fundamentals.</p>
-                        </div>
-                    </div>
+                    </details>
 
                     <div class="content">
                         <h2>🚀 My Interdisciplinary Journey</h2>
