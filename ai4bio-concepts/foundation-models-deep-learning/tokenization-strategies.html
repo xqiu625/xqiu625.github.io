@@ -199,6 +199,36 @@
             box-shadow: 0 4px 15px rgba(247, 162, 84, 0.1);
         }
 
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            box-shadow: 0 8px 32px rgba(247, 162, 84, 0.12), 0 0 0 2px rgba(247, 162, 84, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-left: 3px solid #F7A254;
+        }
+
+        .stat-number {
+            font-size: 2.3em;
+            font-weight: 700;
+            color: #C05540;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.92em;
+            margin-top: 5px;
+        }
+
         .content-section {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -596,6 +626,26 @@
                         <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
+                <li class="section-nav-item">
+                    <a href="#visual-guide">
+                        <i class="fas fa-shapes"></i> Visual Guide
+                    </a>
+                </li>
+                <li class="section-nav-item">
+                    <a href="#papers">
+                        <i class="fas fa-file-alt"></i> Key Papers
+                    </a>
+                </li>
+                <li class="section-nav-item">
+                    <a href="#comparisons">
+                        <i class="fas fa-table"></i> Comparisons
+                    </a>
+                </li>
+                <li class="section-nav-item">
+                    <a href="#compare">
+                        <i class="fas fa-code-compare"></i> Side-by-Side
+                    </a>
+                </li>
                 <li>
                     <a href="#hands-on">
                         <i class="fas fa-wrench"></i> Hands-on
@@ -615,6 +665,25 @@
                     This guide explores the major tokenization strategies used in single-cell multi-omics, protein modeling, and DNA sequence analysis,
                     using intuitive LEGO analogies to make these concepts accessible.
                 </p>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">11</span>
+                    <div class="stat-label">Tokenization Strategies</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">14</span>
+                    <div class="stat-label">Curated Papers</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2021&ndash;2025</span>
+                    <div class="stat-label">Publication Years</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <div class="stat-label">Modalities: scRNA, DNA, Protein</div>
+                </div>
             </div>
 
             <!-- CASEWORK BANNER (Model · LEGO lens) -->
@@ -1702,6 +1771,71 @@
                         </div>
                     </div>
 
+                    <!-- Concept 11: Single-Nucleotide + SSM Tokenization -->
+                    <div class="concept-pair" id="concept-ssm">
+                        <div class="concept-visual">
+                            <!-- SVG 11: Single-Nucleotide + SSM Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg11-title svg11-desc">
+                                <title id="svg11-title">Single-Nucleotide + State-Space-Model Tokenization Analogy</title>
+                                <desc id="svg11-desc">A long unbroken line of single-nucleotide bricks scanned one at a time by a moving state-space model, which carries a fixed-size summary forward instead of attending back over every prior brick.</desc>
+                                <defs>
+                                    <filter id="shadow11" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="stateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="rgba(16, 185, 129, 0.35)"/>
+                                        <stop offset="100%" stop-color="rgba(16, 185, 129, 0.12)"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#1e293b">Single Nucleotide: One Brick, One Token (No Merging)</text>
+                                <rect x="20" y="42" width="480" height="70" rx="12" fill="white" filter="url(#shadow11)"/>
+                                <text x="260" y="60" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#64748b" font-weight="600">1M+ bp genome, scanned one base at a time — vocabulary = {A, T, G, C} only</text>
+                                <g transform="translate(30, 72)">
+                                    <rect width="20" height="20" rx="3" fill="url(#nucA)"/><text x="10" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
+                                    <rect x="24" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="34" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">T</text>
+                                    <rect x="48" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="58" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">G</text>
+                                    <rect x="72" width="20" height="20" rx="3" fill="url(#nucC)"/><text x="82" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">C</text>
+                                    <rect x="96" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="106" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
+                                    <rect x="120" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="130" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
+                                    <rect x="144" width="20" height="20" rx="3" fill="url(#nucC)"/><text x="154" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">C</text>
+                                    <rect x="168" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="178" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">T</text>
+                                    <rect x="192" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="202" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">G</text>
+                                    <text x="230" y="14" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">...</text>
+                                    <text x="330" y="14" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">... 1,000,000 more bricks ...</text>
+                                </g>
+                                <path d="M 260 122 L 260 150" stroke="#059669" stroke-width="3"/>
+                                <polygon points="260,155 255,147 265,147" fill="#059669"/>
+                                <text x="330" y="140" font-family="system-ui, sans-serif" font-size="10" fill="#059669" font-weight="600">Scan left to right, no lookback</text>
+                                <rect x="40" y="165" width="440" height="105" rx="12" fill="white" filter="url(#shadow11)"/>
+                                <text x="260" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">State-Space Model (Hyena / Mamba): a moving tape-measure, not a rear-view mirror</text>
+                                <rect x="70" y="200" width="120" height="45" rx="8" fill="url(#stateGrad)" stroke="#059669" stroke-width="2"/>
+                                <text x="130" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">fixed-size</text>
+                                <text x="130" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">state vector</text>
+                                <path d="M 195 222 L 235 222" stroke="#059669" stroke-width="2.5"/>
+                                <polygon points="240,222 232,217 232,227" fill="#059669"/>
+                                <rect x="245" y="200" width="120" height="45" rx="8" fill="url(#stateGrad)" stroke="#059669" stroke-width="2"/>
+                                <text x="305" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">updated</text>
+                                <text x="305" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">state vector</text>
+                                <path d="M 370 222 L 400 222" stroke="#059669" stroke-width="2.5" stroke-dasharray="4,3"/>
+                                <text x="435" y="226" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">...</text>
+                                <text x="260" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">O(1) memory per step vs. attention's O(n) lookback over every prior brick</text>
+                                <rect x="60" y="285" width="400" height="95" rx="12" fill="white" stroke="#10b981" stroke-width="2" filter="url(#shadow11)"/>
+                                <text x="260" y="308" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#059669">Why This Beats K-mer at Genome Scale</text>
+                                <text x="260" y="328" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">4 tokens total (A/T/G/C), zero OOV — vs. 4^6 = 4,096 for 6-mers</text>
+                                <text x="260" y="346" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">Linear-time scan handles 1M+ bp context; attention cannot afford that lookback</text>
+                                <text x="260" y="364" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">Trade-off: needs an SSM backend (Hyena/Mamba), not a plain Transformer</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Single-Nucleotide + State-Space-Model Tokenization</h4>
+                            <p><strong>The Idea:</strong> Stop compressing bases into k-mers or codons at all — tokenize every single nucleotide (vocabulary = 4). What used to make this impractical was the transformer: single-base tokens over a megabase context means millions of positions, and full attention over that is quadratically unaffordable. Swap the attention operator for a state-space model (Hyena/Mamba), and the sequence is scanned once, left to right, carrying a fixed-size "state" forward instead of looking back at everything.</p>
+                            <p><strong>Why It Works:</strong> No k-mer vocabulary to size (no 4^6 = 4,096 explosion), no out-of-vocabulary sequences, and near-linear compute in sequence length — the combination that finally makes million-base-pair genomic context tractable in a single forward pass.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: HyenaDNA, Evo, Evo 2</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -1710,6 +1844,30 @@
                 <h2>Key Papers Implementing These Strategies</h2>
 
                 <div class="paper-grid">
+                    <!-- Geneformer -->
+                    <div class="paper-card">
+                        <h4>Geneformer: Transfer Learning Enables Predictions in Network Biology</h4>
+                        <div class="meta">Theodoris et al. | Nature 2023</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">BERT Encoder</span>
+                            <span class="tag strategy">Rank-Based</span>
+                        </div>
+                        <div class="summary">
+                            The field-defining rank-value tokenization model. Pretrained on 29.9M single-cell transcriptomes (Genecorpus-30M), it enables zero- and few-shot network biology predictions — including in-silico perturbation and dosage-sensitivity prediction — with attention heads that recover transcription-factor hierarchy unsupervised.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Each gene's count is divided by its corpus-wide non-zero median (down-weighting ubiquitous housekeeping genes), then genes are ranked high&rarr;low and truncated to the top 2,048 — magnitude lives entirely in token position, not in a value token.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 29.9M cells | <strong>Context:</strong> 2,048 | <strong>Params:</strong> 10.3M (original, 6-layer/256-dim; later checkpoints scale to 316M)</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41586-023-06139-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/ctheodoris/Geneformer" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank">🤗 Hugging Face</a>
+                        </div>
+                    </div>
+
                     <!-- iSEEEK -->
                     <div class="paper-card">
                         <h4>iSEEEK: Integration via Gene Rankings</h4>
@@ -1724,7 +1882,7 @@
                         </div>
                         <div class="innovation-box">
                             <h5>Tokenization Strategy</h5>
-                            <p>Top 126 expressing genes per cell, ranked by expression level. Uses [CLS] and [SEP] tokens with MLM objective. Vocabulary: 20,706 protein-coding genes.</p>
+                            <p>Top 126 expressing genes per cell, ranked by expression level (128 total tokens = 1 [CLS] + 126 genes + 1 [SEP] — a full BERT-base-style 128-token context, not "all genes"). Uses [CLS] and [SEP] tokens with MLM objective. Vocabulary: 20,706 protein-coding genes.</p>
                         </div>
                         <p><strong>Scale:</strong> 11.9M cells | <strong>Context:</strong> 128 tokens | <strong>Params:</strong> ~10M</p>
                         <div class="links">
@@ -1754,6 +1912,29 @@
                             <a href="https://www.nature.com/articles/s41592-024-02201-0" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                             <a href="https://github.com/bowang-lab/scGPT" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                             <a href="https://huggingface.co/tdc/scGPT" target="_blank">🤗 Hugging Face</a>
+                        </div>
+                    </div>
+
+                    <!-- scBERT -->
+                    <div class="paper-card">
+                        <h4>scBERT: Large-Scale Pretrained Deep Language Model for Cell Type Annotation</h4>
+                        <div class="meta">Yang et al. | Nature Machine Intelligence 2022</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Performer (BERT-style)</span>
+                            <span class="tag strategy">Binning + Special Tokens</span>
+                        </div>
+                        <div class="summary">
+                            Predates scGPT as the first BERT-style scRNA-seq foundation model to combine a fixed gene identity embedding (gene2vec) with discretized, binned expression — enabling long-context (full-transcriptome) cell-type annotation via a Performer backbone.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Gene embeddings from gene2vec (fixed gene identity, not learned jointly); continuous expression values discretized into bins and embedded via term-frequency-style binning. Full-length gene input handled by a Performer (linear-attention) backbone instead of truncating to a subset.</p>
+                        </div>
+                        <p><strong>Scale:</strong> ~1.1M cells (PanglaoDB) | <strong>Context:</strong> ~16,906 genes (full) | <strong>Architecture:</strong> 200-dim embedding, 6 Performer layers, 10 heads</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s42256-022-00534-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/TencentAILabHealthcare/scBERT" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
 
@@ -1797,10 +1978,81 @@
                             <h5>Tokenization Strategy</h5>
                             <p>Chromosome embedding + sinusoidal positional encoding of genomic coordinates (start/end). Linear accessibility embedding. Vocabulary-free approach for dynamic OCR landscapes.</p>
                         </div>
-                        <p><strong>Scale:</strong> 1.97M cells | <strong>Context:</strong> 440K OCRs | <strong>Params:</strong> 450K</p>
+                        <p><strong>Scale:</strong> 1.97M cells | <strong>Context:</strong> 440K OCRs | <strong>Params:</strong> ~450K (confirmed against the paper's own ablation table — a genuinely compact 4-layer, 128-dim hybrid, not a typo)</p>
                         <div class="links">
                             <a href="https://arxiv.org/abs/2505.12638" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                             <a href="https://github.com/JohnsonKlose/ChromFound" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- DNABERT -->
+                    <div class="paper-card">
+                        <h4>DNABERT: Pre-trained Bidirectional Encoder Representations for DNA-Language in Genome</h4>
+                        <div class="meta">Ji et al. | Bioinformatics 2021</div>
+                        <div class="tags">
+                            <span class="tag data-type">DNA (human genome)</span>
+                            <span class="tag architecture">BERT (12-layer)</span>
+                            <span class="tag strategy">K-mer</span>
+                        </div>
+                        <div class="summary">
+                            The first BERT-style DNA language model, establishing k-mer tokenization as the default for genomic sequence pretraining. Captures local sequence context (promoters, splice sites, transcription-factor binding motifs) that single-nucleotide tokenization misses.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Overlapping sliding-window k-mers (3- to 6-mer variants tested, 4^k possible tokens), masking contiguous k-mers rather than single tokens during pretraining to prevent trivial inference from immediately adjacent, overlapping windows.</p>
+                        </div>
+                        <p><strong>Scale:</strong> Human reference genome | <strong>Context:</strong> 512 tokens | <strong>Params:</strong> ~86-90M (12-layer BERT-base, varies by k)</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1093/bioinformatics/btab083" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/jerryji1993/DNABERT" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- DNABERT-2 -->
+                    <div class="paper-card">
+                        <h4>DNABERT-2: Efficient Foundation Model and Benchmark for Multi-Species Genome</h4>
+                        <div class="meta">Zhou et al. | ICLR 2024</div>
+                        <div class="tags">
+                            <span class="tag data-type">DNA (135 species)</span>
+                            <span class="tag architecture">BERT + ALiBi</span>
+                            <span class="tag strategy">BPE</span>
+                        </div>
+                        <div class="summary">
+                            Replaces DNABERT's fixed k-mer windows with a learned Byte-Pair Encoding vocabulary, eliminating the overlapping-window redundancy that inflates k-mer sequence length. Swaps learned positional embeddings for ALiBi to remove the fixed input-length ceiling, and adds FlashAttention for efficiency.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Byte-Pair Encoding merges the most frequent co-occurring subsequences into variable-length tokens (rather than fixed-width overlapping k-mer windows), so each base is covered exactly once — no k-mer overlap redundancy — while common motifs still collapse into single tokens.</p>
+                        </div>
+                        <p><strong>Scale:</strong> Genomes from 135 species | <strong>Context:</strong> ALiBi — no fixed ceiling | <strong>Params:</strong> 117M</p>
+                        <div class="links">
+                            <a href="https://arxiv.org/abs/2306.15006" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/MAGICS-LAB/DNABERT_2" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://huggingface.co/zhihan1996/DNABERT-2-117M" target="_blank">🤗 Hugging Face</a>
+                        </div>
+                    </div>
+
+                    <!-- Evo 2 -->
+                    <div class="paper-card">
+                        <h4>Evo 2: Genome Modeling and Design Across All Domains of Life</h4>
+                        <div class="meta">Brixi et al. (Arc Institute) | bioRxiv 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">DNA (128,000+ species)</span>
+                            <span class="tag architecture">StripedHyena 2 (SSM)</span>
+                            <span class="tag strategy">Single-Nucleotide + SSM</span>
+                        </div>
+                        <div class="summary">
+                            Replaces attention with a state-space (Hyena-family) operator, making single-nucleotide-resolution tokenization tractable at genome scale — near-linear compute/memory scaling lets the model read up to 1 million bases at once with a 4-symbol vocabulary and zero OOV.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Every base (A/T/G/C) is its own token — no k-mer merging, no BPE vocabulary to learn or run out of. The StripedHyena 2 operator maintains a fixed-size running state instead of attending back over the full context, which is what makes single-base-per-token viable at 1Mb+ length.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 9.3T nucleotides, 128,000+ species | <strong>Context:</strong> up to 1M tokens | <strong>Params:</strong> 7B &amp; 40B</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1101/2025.02.18.638918" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/ArcInstitute/evo2" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="https://arcinstitute.org/tools/evo" target="_blank"><i class="fas fa-globe"></i> Arc Institute</a>
                         </div>
                     </div>
 
@@ -1871,7 +2123,7 @@
                         <p><strong>Scale:</strong> UniRef90+BFD | <strong>Context:</strong> 2,048 AAs | <strong>Params:</strong> 151M-6.4B</p>
                         <div class="links">
                             <a href="https://doi.org/10.1016/j.cels.2023.10.002" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
-                            <a href="https://doi.org/10.5281/zenodo.8078725" target="_blank"></i> Code</a>
+                            <a href="https://doi.org/10.5281/zenodo.8078725" target="_blank"><i class="fas fa-code"></i> Code</a>
                             <a href="https://doi.org/10.5281/zenodo.7877981" target="_blank"><i class="fas fa-database"></i> Data</a>
                         </div>
                     </div>
@@ -1890,7 +2142,7 @@
                         </div>
                         <div class="innovation-box">
                             <h5>Tokenization Strategy</h5>
-                            <p>IUPAC ambiguity codes for heterozygous sites (R=A/G, Y=C/T, etc.) embedded into reference genome. BPE tokenizer (500 vocab) trained on cCREs. Hierarchical cross-attention between CRE (±1Mb) and gene body windows.</p>
+                            <p>IUPAC ambiguity codes for heterozygous sites (R=A/G, Y=C/T, etc.) embedded into reference genome. BPE tokenizer with a deliberately small 500-token vocabulary trained on cCREs (near-character-level — minimal merging — versus the 30K&ndash;50K vocabularies typical of NLP BPE, since regulatory DNA doesn't have "words" that benefit from heavy merging). Hierarchical cross-attention between CRE (±1Mb) and gene body windows.</p>
                         </div>
                         <p><strong>Scale:</strong> 2,330 donors, 50K genes | <strong>Context:</strong> >2Mb | <strong>Params:</strong> 1.2B</p>
                         <div class="links">
@@ -1922,6 +2174,14 @@
                             <a href="https://github.com/snap-stanford/saturn/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
+                </div>
+
+                <div class="intro-box" style="margin-top: 25px;">
+                    <p><strong>2025&ndash;2026 developments:</strong></p>
+                    <p>&middot; <strong>Evo 2</strong> (2025) &mdash; single-nucleotide + StripedHyena 2 (SSM), 128,000+ species, 9.3T nucleotides, up to 1M-token context, zero k-mer OOV.</p>
+                    <p>&middot; <strong>DNABERT-2</strong> (ICLR 2024) &mdash; BPE replaces fixed k-mer windows, eliminating overlapping-window redundancy and the fixed input-length ceiling (via ALiBi).</p>
+                    <p>&middot; <strong>Cell-level tokenization paradigm</strong> (STACK + STATE, see the Side-by-Side comparison below) &mdash; the token graduates from "gene within a cell" to "cell within a set," attending across whole cell populations rather than genes within one cell.</p>
+                    <p>&middot; <strong>VariantFormer</strong> (2025) &mdash; the first foundation model to predict tissue-specific gene expression directly from personalized diploid genomes.</p>
                 </div>
             </div>
 
@@ -2033,6 +2293,13 @@
                             <td>Requires reference proteomes; loses gene-level resolution</td>
                             <td>SATURN</td>
                         </tr>
+                        <tr>
+                            <td><strong>Single-Nucleotide + SSM</strong></td>
+                            <td>DNA (genomic, long-context)</td>
+                            <td>Zero OOV (4-symbol vocabulary); no k-mer overlap redundancy; linear-time scan to 1M+ bp</td>
+                            <td>Requires a state-space architecture (Hyena/Mamba), not a plain Transformer</td>
+                            <td>Evo 2, HyenaDNA</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -2102,6 +2369,12 @@
                             <td>~2,000 macrogenes</td>
                             <td>~10M</td>
                         </tr>
+                        <tr>
+                            <td>Evo 2</td>
+                            <td>Single-Nucleotide (StripedHyena 2 SSM)</td>
+                            <td>up to 1M tokens</td>
+                            <td>7B / 40B</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -2144,6 +2417,16 @@
                             <td>Interacting with cell data using natural language</td>
                             <td><strong>Cell2Sentence</strong></td>
                             <td>Converts biological data into a format understood by standard Large Language Models.</td>
+                        </tr>
+                        <tr>
+                            <td>Whole-genome or chromosome-scale long-sequence analysis</td>
+                            <td><strong>Single-Nucleotide + SSM</strong></td>
+                            <td>K-mer vocabularies explode at 1M+ context; a state-space model's linear scaling is the only tractable path at that length.</td>
+                        </tr>
+                        <tr>
+                            <td>Cross-species comparative genomics without 1:1 orthologs</td>
+                            <td><strong>Macrogene</strong></td>
+                            <td>Clustering by protein-embedding similarity bridges species separated by hundreds of millions of years of divergence.</td>
                         </tr>
                     </tbody>
                 </table>
@@ -2329,13 +2612,17 @@ def value_bin(cell):
     vals  = np.log1p(cell[idx])
     ranks = vals.argsort().argsort()                 # per-cell quantile rank
     bins  = np.floor(ranks / len(idx) * N_BINS).astype(int)
+    bins  = np.clip(bins, 0, N_BINS - 1)              # guard the top-rank edge case
     return list(zip(genes[idx].tolist(), bins.tolist()))
 
 for i in range(counts.shape[0]):
     print(f"cell {i} (gene, bin):", value_bin(counts[i]))
 # -&gt; aligned (gene token, value-bin token) pairs; magnitude is explicit.</code></pre>
                 <p>In production you would not hand-roll this — the model ships a tokenizer that also handles the gene vocabulary, special tokens, and truncation:</p>
-                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>from geneformer import TranscriptomeTokenizer
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># tested against geneformer&gt;=1.0 — the TranscriptomeTokenizer constructor
+# signature has changed across major versions; pin your version and check
+# the CHANGELOG before upgrading an existing tokenization pipeline.
+from geneformer import TranscriptomeTokenizer
 
 # adata must carry raw counts, adata.var["ensembl_id"], adata.obs["n_counts"].
 tk = TranscriptomeTokenizer({"cell_type": "cell_type"}, nproc=4)
@@ -2347,6 +2634,18 @@ tk.tokenize_data(
 )
 # -&gt; output_dir/tokenized.dataset : rank-ordered token IDs per cell,
 #    median-normalized internally and truncated to 2,048 genes.</code></pre>
+                <p><strong>Strategy C: single-nucleotide tokenization (Evo/HyenaDNA-style).</strong> For DNA rather than expression data, the same "hand-roll it first" approach looks like this — no gene vocabulary, no binning, just one token per base:</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># Vocab = 5 (4 bases + N for ambiguous/unknown); no merge operations at all.
+nuc_vocab = {"A": 0, "T": 1, "G": 2, "C": 3, "N": 4}
+
+def nucleotide_tokenize(seq: str) -&gt; list[int]:
+    return [nuc_vocab.get(c.upper(), 4) for c in seq]
+
+seq = "ATGCATGCN..."   # in practice: a 1Mb+ window read from a reference/FASTA
+tokens = nucleotide_tokenize(seq)
+# -&gt; every character becomes a token; zero OOV by construction, but the
+#    context length equals len(seq) exactly — at genome scale this is only
+#    tractable with a linear-time backend (Hyena/Mamba), not full attention.</code></pre>
                 <h3>Common pitfalls &amp; tips</h3>
                 <ul>
                     <li><strong>Gene ID system mismatch.</strong> Geneformer's vocabulary is keyed on <em>Ensembl IDs</em>, not gene symbols — map symbols &rarr; Ensembl before tokenizing, or most genes become OOV and vanish.</li>
