@@ -229,7 +229,7 @@
             <h1>Pretraining &amp;<br>Foundation Models</h1>
             <div class="subtitle">From masked-gene encoders to billion-parameter cell-as-sentence LLMs — how foundation models are built for biology.</div>
             <p class="description">
-                25 curated papers on the pretraining recipes behind biological foundation models. Spans rank-value masked LMs (Geneformer), contrastive teacher–student (Concerto), cell-as-sentence decoder LLMs (C2S-Scale), discrete diffusion for proteins (DPLM), masked-LM protein foundation models trained at metagenomic scale (ESM Cambrian, 2.806B sequences), genomic transformers (Nucleotide Transformer, CodonFM), cross-species/multimodal models (UCE, Nicheformer, scTranslator), and the data + benchmarking infrastructure (scBaseCount, the Nat Mach Intell SSL benchmark) that makes scale possible.
+                26 curated papers on the pretraining recipes behind biological foundation models. Spans rank-value masked LMs (Geneformer), contrastive teacher–student (Concerto), cell-as-sentence decoder LLMs (C2S-Scale), discrete diffusion for proteins (DPLM), masked-LM protein foundation models trained at metagenomic scale (ESM Cambrian, 2.806B sequences), genomic transformers (Nucleotide Transformer, CodonFM), cross-species/multimodal models (UCE, Nicheformer, scTranslator), and the data + benchmarking infrastructure (scBaseCount, the Nat Mach Intell SSL benchmark) that makes scale possible.
             </p>
         </header>
 
@@ -376,7 +376,7 @@
             <ul>
                 <li><strong>Tokenisation.</strong> Rank-value tokens (Geneformer), continuous counts (scHyena, AIDO), bag-of-RNA gene tokens (UCE), cell sentences (C2S-Scale), discrete VQ codes (ChrisCell). The choice is upstream of every downstream property.</li>
                 <li><strong>Objective.</strong> Masked LM (Geneformer, scBERT, NT, UCE), contrastive (Concerto), discrete diffusion (DPLM), autoregressive next-token (C2S-Scale, TranscriptFormer — with a paired gene-identity + zero-truncated-Poisson count head), denoising (scPRINT-2), in-context learning (STACK).</li>
-                <li><strong>Scale.</strong> 22M cells (scTab) → 50M (AIDO) → 110M (Nicheformer) → 150M (C2S-Scale) → 230M (scBaseCount) → 350M (scPRINT-2). Genomic LMs run 850 genomes (NT) to 9.3 trillion bp (Evo). Protein LMs reach 2.806B sequences (ESM Cambrian) — ~56× ESM-2's UniRef50 corpus once metagenomic databases (SPIRE, MGnify, JGI/IMG) are added; contact-precision then improves log-linearly with FLOPs up to 6B parameters (R²=0.99) without plateau.</li>
+                <li><strong>Scale.</strong> 5.7M cells (C2S-Scale) → 22M (scTab) → 50M (AIDO) → 110M (Nicheformer) → 230M (scBaseCount) → 350M (scPRINT-2). Genomic LMs run 850 genomes (NT) to 9.3 trillion bp (Evo). Protein LMs reach 2.806B sequences (ESM Cambrian) — ~56× ESM-2's UniRef50 corpus once metagenomic databases (SPIRE, MGnify, JGI/IMG) are added; contact-precision then improves log-linearly with FLOPs up to 6B parameters (R²=0.99) without plateau.</li>
                 <li><strong>Downstream coverage.</strong> Single-task fine-tune (most scFMs), zero-shot (UCE, scCello), in-context learning (STACK), natural-language interface (C2S-Scale, MedMPT).</li>
             </ul>
 
@@ -520,7 +520,7 @@
                 <article class="paper-card">
                     <h4>A single-cell gene expression language model</h4>
                     <div class="paper-meta">
-                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Perceiver IO + masking</span>
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">NeurIPS Workshop</span> <span class="meta-badge type-badge">Perceiver IO + masking</span>
                     </div>
                     <p class="paper-description">Exceiver applies Perceiver IO to full 19K-gene single-cell transcriptomes with linear-complexity cross-attention. Pretrained on Tabula Sapiens via Discrete Noise Masking, it learns regulatory relationships and transfers to disease and drug-response tasks.</p>
                     <ul class="key-contributions">
@@ -568,7 +568,7 @@
                 <article class="paper-card">
                     <h4>Scaling Dense Representations for Single Cell with Transcriptome-Scale Context</h4>
                     <div class="paper-meta">
-                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Dense transformer</span>
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">NeurIPS Workshop</span> <span class="meta-badge type-badge">Dense transformer</span>
                     </div>
                     <p class="paper-description">AIDO.Cell scales dense transformers (3M–650M parameters) on 50M cells, processing entire 19.3K-gene transcriptomes via FlashAttention-2 and read-depth-aware pretraining. Targets zero-shot clustering, cell-type classification, and perturbation prediction without truncating transcriptomes.</p>
                     <ul class="key-contributions">
@@ -728,7 +728,7 @@
                     <div class="paper-meta">
                         <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">EvolutionaryScale</span> <span class="meta-badge type-badge">Masked-LM, metagenomic scale</span>
                     </div>
-                    <p class="paper-description">ESMC is a three-scale masked-LM family (300M / 600M / 6B parameters; 16 / 24 / 80 transformer layers) trained on 2.806 billion sequences — UniRef 2023_02 (156M) + JGI/IMG (2.029B) + MGnify 2023_02 (621M) — roughly 56× the 50M UniRef50 corpus used by ESM-2. Standard MLM objective ℒ = 𝔼[−Σ log p(xᵢ | x\M)] over randomly masked residues. Three development models trained slightly past compute-optimality fit the empirical scaling curve; the 6B is the predicted compute-optimal point.</p>
+                    <p class="paper-description">ESMC is a three-scale masked-LM family (300M / 600M / 6B parameters; 30 / 36 / 80 transformer layers) trained on 2.806 billion sequences — UniRef 2023_02 (156M) + JGI/IMG (2.029B) + MGnify 2023_02 (621M) — roughly 56× the 50M UniRef50 corpus used by ESM-2. Standard MLM objective ℒ = 𝔼[−Σ log p(xᵢ | x\M)] over randomly masked residues. Three development models trained slightly past compute-optimality fit the empirical scaling curve; the 6B is the predicted compute-optimal point.</p>
                     <ul class="key-contributions">
                         <li><strong>Clean log-linear scaling law for proteins.</strong> P@L-LR = 0.115 × log₁₀(FLOPs) − 1.98, R² = 0.99 — long-range contact precision improves predictably with compute through 6B parameters without plateauing. Extrapolation residual at 1.63×10²³ FLOPs is only −0.007 P@L-LR.</li>
                         <li><strong>Data scale, not model scale, was the bottleneck.</strong> ESM-2 (UniRef50, 50M) hit diminishing returns at 650M–15B parameters; ESMC's metagenomic corpus restores log-linear gains at the same model sizes, isolating the cause to training-data ceiling.</li>
@@ -823,7 +823,7 @@
 
             <figure class="module-figure">
                 <img src="figures/pretraining/bio_fig05_nicheformer_spatial.svg" alt="Nicheformer's spatial-vs-dissociated comparison. Three models compared: a dissociated-only model (57M cells), a dissociated-only model with 3× more cells, and Nicheformer's joint dissociated+spatial pretraining (57M + 53M). On spatial label transfer tasks (niche F1, region F1, density prediction R²), the two dissociated-only models perform similarly poorly (region F1 ~0.58, density R² negative). Nicheformer reaches region F1 0.78 and density R² +0.25 — the only model with positive R². Adding more dissociated cells doesn't help; the spatial signal must be in the pretraining data.">
-                <figcaption><strong>Figure 12</strong><span class="fig-title">Why dissociated-only models cannot recover spatial signal.</span> It's not a scale problem. It's a data-type problem. No amount of dissociated cells substitutes for spatial cells — adding 3× more dissociated cells does nothing for niche or density prediction. The spatial signal must be in the pretraining data, not just any data. This is the clearest single counterexample to "just scale the model" in the pretraining literature, and the empirical case for joint multimodal pretraining over post-hoc adaptation.</figcaption>
+                <figcaption><strong>Figure 9</strong><span class="fig-title">Why dissociated-only models cannot recover spatial signal.</span> It's not a scale problem. It's a data-type problem. No amount of dissociated cells substitutes for spatial cells — adding 3× more dissociated cells does nothing for niche or density prediction. The spatial signal must be in the pretraining data, not just any data. This is the clearest single counterexample to "just scale the model" in the pretraining literature, and the empirical case for joint multimodal pretraining over post-hoc adaptation.</figcaption>
             </figure>
 
             <div class="paper-grid" style="margin-top: 0;">
@@ -927,7 +927,7 @@
                         <li>Identifies bottlenecks: context length, 3D-structure gaps, interpretability</li>
                     </ul>
                     <div class="paper-links">
-                        
+                        <a href="https://doi.org/10.48550/arXiv.2401.04155" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                     </div>
                 </article>
 
@@ -943,7 +943,7 @@
                         <li>Highlights megabase-scale genomic context and cross-species validation as field directions</li>
                     </ul>
                     <div class="paper-links">
-                        
+                        <a href="https://doi.org/10.1038/d41586-025-02621-8" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                     </div>
                 </article>
 
@@ -971,7 +971,7 @@
 
             <figure class="module-figure">
                 <img src="figures/pretraining/bio_fig10_three_paradigms.svg" alt="Three downstream adaptation paradigms for the same pretrained scFM, left to right with increasing flexibility: (1) Fine-tune — add a task head and update encoder weights on labelled data; (2) Zero-shot — freeze the encoder, use embeddings directly via nearest-neighbor or linear probe; (3) In-context learning — provide a labelled prompt cell-set at inference time, no weight updates. Flexibility increases left to right; so does architectural sophistication required.">
-                <figcaption><strong>Figure 9</strong><span class="fig-title">Three paradigms of downstream adaptation — same pretrained scFM, three ways to use it.</span> Flexibility increases left → right; so does the architectural sophistication required to get there. Fine-tuning is universal but needs labelled data and per-task training. Zero-shot needs a substrate that already encodes the right structure (UCE, scCello). ICL (STACK) needs the model to have been trained on cell-set-level inputs in the first place — it's not a free downstream choice.</figcaption>
+                <figcaption><strong>Figure 10</strong><span class="fig-title">Three paradigms of downstream adaptation — same pretrained scFM, three ways to use it.</span> Flexibility increases left → right; so does the architectural sophistication required to get there. Fine-tuning is universal but needs labelled data and per-task training. Zero-shot needs a substrate that already encodes the right structure (UCE, scCello). ICL (STACK) needs the model to have been trained on cell-set-level inputs in the first place — it's not a free downstream choice.</figcaption>
             </figure>
 
             <table class="comparison-table">
@@ -980,7 +980,7 @@
                 </thead>
                 <tbody>
                     <tr><td>Geneformer</td><td>scRNA FM</td><td>29.9M cells, BERT</td><td>Network biology, in-silico perturbation</td><td>Rank-value encoding</td></tr>
-                    <tr><td>scGPT-class (C2S-Scale)</td><td>scRNA LLM</td><td>150M+ cells, decoder-only</td><td>Natural-language reasoning, virtual screens</td><td>Cells as gene sentences</td></tr>
+                    <tr><td>C2S-Scale</td><td>scRNA LLM</td><td>5.7M cells, decoder-only</td><td>Natural-language reasoning, virtual screens</td><td>Cells as gene sentences</td></tr>
                     <tr><td>scPRINT-2</td><td>scRNA FM</td><td>350M cells</td><td>Denoising, spatial imputation</td><td>Encoder + XPressor compression</td></tr>
                     <tr><td>UCE</td><td>Cross-species</td><td>36M cells, ESM2 gene tokens</td><td>Zero-shot cross-species transfer</td><td>Bag-of-RNA, no homolog mapping</td></tr>
                     <tr><td>Nicheformer</td><td>scRNA + spatial</td><td>110M cells</td><td>Spatial label transfer to scRNA-seq</td><td>Tech-aware rank tokens</td></tr>
@@ -1044,7 +1044,7 @@
 
             <figure class="module-figure">
                 <img src="figures/pretraining/bio_fig08_insilico_perturbation.svg" alt="End-to-end in-silico perturbation pipeline. Stage 1: pretrained foundation model (Geneformer or STACK). Stage 2a (fine-tune route): fine-tune on disease atlas, perturb gene token, measure attention/embedding shift. Stage 2b (ICL route): provide labelled prompt cell-set with the perturbation, ask STACK to generate counterfactual cells, no weight updates. Stage 3: rank genes by perturbation impact, output a ranked drug-target shortlist.">
-                <figcaption><strong>Figure 10</strong><span class="fig-title">Virtual gene knockout, end to end.</span> From pretrained scFM to ranked drug-target shortlist — one shared pipeline, two ways to reach it. The Geneformer route fine-tunes then perturbs attention/embeddings (cosine-shift methodology, ~$5k for a 30K-cell × 4K-gene screen with QLoRA quantization). The STACK route uses ICL: provide a labelled prompt cell-set with the perturbation and ask the model to generate counterfactual cells, no weight updates required.</figcaption>
+                <figcaption><strong>Figure 11</strong><span class="fig-title">Virtual gene knockout, end to end.</span> From pretrained scFM to ranked drug-target shortlist — one shared pipeline, two ways to reach it. The Geneformer route fine-tunes then perturbs attention/embeddings (cosine-shift methodology, ~$5k for a 30K-cell × 4K-gene screen with QLoRA quantization). The STACK route uses ICL: provide a labelled prompt cell-set with the perturbation and ask the model to generate counterfactual cells, no weight updates required.</figcaption>
             </figure>
 
             <div class="warning-box">
@@ -1061,7 +1061,7 @@
 
             <figure class="module-figure">
                 <img src="figures/pretraining/bio_fig12_curated_vs_massive.svg" alt="MedMPT comparison: 154K expert-curated chest-CT image-text pairs vs 15M+ web-scraped pairs. On clinical benchmark tasks the small curated corpus consistently outperforms the massive noisy corpus across diagnosis accuracy, retrieval, and zero-shot transfer — curation quality dominates corpus size when labels are clinical and noise is structured.">
-                <figcaption><strong>Figure 11</strong><span class="fig-title">The MedMPT lesson — in biology, the small side wins.</span> Curation quality dominates corpus size on tasks where labels are clinical and noise is structured. The same pattern recurs across single-cell: ~10M well-annotated CELLxGENE cells often beat 100M+ heterogeneously-processed cells. Budget curation, not scraping, when your downstream task is clinical.</figcaption>
+                <figcaption><strong>Figure 12</strong><span class="fig-title">The MedMPT lesson — in biology, the small side wins.</span> Curation quality dominates corpus size on tasks where labels are clinical and noise is structured. The same pattern recurs across single-cell: ~10M well-annotated CELLxGENE cells often beat 100M+ heterogeneously-processed cells. Budget curation, not scraping, when your downstream task is clinical.</figcaption>
             </figure>
         </section>
 

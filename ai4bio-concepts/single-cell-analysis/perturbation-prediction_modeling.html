@@ -682,7 +682,7 @@
             <p class="description">
                 A comprehensive guide to state-of-the-art approaches combining single-cell transcriptomics,
                 CRISPR screens, and machine learning to predict how cells respond to perturbations.
-                Covering methods from 2016-2025, including recent critical evaluations of foundation models.
+                Covering methods from 2016-2026, including recent critical evaluations of foundation models.
             </p>
         </header>
 
@@ -751,7 +751,24 @@
         </section>
 
         <!-- Statistics Bar -->
-        
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">19</span>
+                <span class="stat-label">Curated Papers &amp; Resources</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <span class="stat-label">Method Categories</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">8</span>
+                <span class="stat-label">Datasets &amp; Benchmarks</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2016-2026</span>
+                <span class="stat-label">Years Covered</span>
+            </div>
+        </div>
 
         <!-- Core Concepts Section -->
         <section id="foundations" class="content-section">
@@ -896,7 +913,7 @@
                     <ul class="key-contributions">
                         <li>Compositional: combines perturbation + cell-type + dose embeddings</li>
                         <li>Predicts full distributions, not just means</li>
-                        <li>First method that predicted combinatorial drug and genetic perturbation</li>
+                        <li>First method to model combinatorial drug perturbations with continuous dose and covariate information</li>
 
                     </ul>
                     <div class="paper-links">
@@ -1055,7 +1072,42 @@
                         </a>
                     </div>
                 </article>
+
+                <!-- STACK Card -->
+                <article class="paper-card">
+                    <h4>STACK: In-Context Learning of Single-Cell Biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">In-Context Learning</span>
+                    </div>
+                    <p class="paper-description">
+                        Tabular-attention foundation model trained on 149M cells that performs true in-context
+                        learning at the cell-set level, reframing perturbation prediction as prompting rather
+                        than fine-tuning: give the model a labelled prompt cell-set at inference time and it
+                        predicts the response to a new, unseen perturbation with no weight updates.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Ranks 1st in 28/31 in-context-learning evaluations, spanning zero-shot perturbation, donor, and condition transfer</li>
+                        <li>Releases Perturb-Sapiens: 513,870 cells, 28 tissues, 40 cell classes, 201 perturbations with cross-tissue validation</li>
+                        <li>Directly targets the field's fine-tuning-data bottleneck — no per-dataset training loop required</li>
+                        <li>See the <a href="../foundation-models-deep-learning/pretraining.html">Foundation Models module</a> for the pretraining recipe behind STACK</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.64898/2026.01.09.698608">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </article>
             </div>
+
+            <p style="margin-top: 18px;">
+                <em>Both State and STACK are 2026-era transformer approaches, but they represent opposite
+                adaptation paradigms: State fine-tunes a set-based transformer on the target task, while STACK
+                uses in-context learning with no weight updates. For the pretraining objectives, tokenisation
+                choices, and scaling laws behind these and other foundation models, see the
+                <a href="../foundation-models-deep-learning/pretraining.html">Pretraining &amp; Foundation Models module</a>.</em>
+            </p>
 
             <h3>5. GRN-Based & Physics-Inspired Methods</h3>
             <div class="paper-grid">
@@ -1115,6 +1167,15 @@
                     </div>
                 </article>
             </div>
+
+            <p style="margin-top: 18px;">
+                <em>CellOracle and CIPHER predict perturbation responses <strong>through</strong> a fixed or
+                inferred regulatory graph. For methods that instead <strong>discover</strong> the underlying
+                causal graph from perturbation data (DCDI, ENCO, and related structure-learning approaches), see
+                the <a href="../mathematical-algorithmic-foundations/causal-inference.html">Causal Inference module</a>
+                — the two problems share data (Perturb-seq screens) but answer different questions: this module
+                asks "what will happen," causal inference asks "what regulates what."</em>
+            </p>
         </section>
 
         <!-- Large-Scale Datasets Section -->
@@ -1164,8 +1225,9 @@
                         <span class="meta-badge type-badge">Repository</span>
                     </div>
                     <p class="paper-description">
-                        Harmonized repository of 44 datasets from 25 publications. 32 CRISPR + 9 drug datasets,
-                        average 160K cells per dataset. Introduces Energy statistics for perturbation quantification.
+                        Harmonized repository of 44 datasets from 25 publications: 32 CRISPR + 9 drug + 3 datasets
+                        from other perturbation/readout modalities, average 160K cells per dataset. Introduces
+                        Energy statistics for perturbation quantification.
                     </p>
                     <ul class="key-contributions">
                         <li>Standardized processing across diverse experimental platforms</li>
@@ -1266,20 +1328,24 @@
         </section>
 
         <!-- Benchmarking Section -->
-        <section class="content-section">
-            <h2>📊 Benchmarking & Evaluation (2024-2025)</h2>
-     
+        <section class="content-section" id="benchmarking">
+            <h2>📊 Benchmarking & Evaluation (2024-2026)</h2>
 
             <div class="paper-grid">
                 <!-- Critical Benchmark Card -->
                 <article class="paper-card">
-                    <h4>Ahlmann-Eltze, Huber & Anders: Critical Benchmark of Foundation Models</h4>
+                    <h4>Ahlmann-Eltze, Huber & Anders: Deep-learning-based gene perturbation effect prediction does not yet outperform simple linear baselines</h4>
                     <div class="paper-meta">
                         <span class="meta-badge year-badge">2025</span>
                         <span class="meta-badge journal-badge">Nature Methods</span>
                         <span class="meta-badge type-badge">Benchmark</span>
                     </div>
-                
+                    <p class="paper-description">
+                        Systematic benchmark pitting five foundation models plus two additional deep-learning
+                        methods against deliberately simple linear/additive baselines for single- and
+                        double-gene-perturbation transcriptome prediction. None of the deep models beat the
+                        baselines.
+                    </p>
                     <ul class="key-contributions">
                         <li>Linear additive model often has LOWER MSE than foundation models</li>
                         <li>Detected mode collapse: predictions don't vary across perturbations</li>
@@ -1297,27 +1363,60 @@
                 <article class="paper-card">
                     <h4>Virtual Cell Challenge</h4>
                     <div class="paper-meta">
-                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge year-badge">2025-2026</span>
                         <span class="meta-badge journal-badge">Cell (Commentary)</span>
                         <span class="meta-badge type-badge">Competition</span>
                     </div>
                     <p class="paper-description">
-                        Arc Institute's recurring benchmark competition for perturbation prediction. Aims to
-                        establish rigorous standards like CASP did for protein structure prediction. First
-                        challenge focuses on context generalization (H1 hESC).
+                        Arc Institute's recurring benchmark competition for perturbation prediction, aiming to
+                        establish rigorous, CASP-style standards for the field. The inaugural 2025 challenge
+                        (H1 hESC context generalization) closed with results in early 2026; the 2026 edition
+                        raises the bar to zero-shot CRISPRi-response prediction across six held-out cell lines
+                        with no released training set.
                     </p>
                     <ul class="key-contributions">
-                        <li>$100K grand prize, sponsored by NVIDIA, 10x Genomics, Ultima</li>
-                        <li>Training data: 500M+ cells from Arc Virtual Cell Atlas</li>
-                        <li>Focus on genetic perturbations (single-gene knockdowns)</li>
-                        <li>Aims to surface best practices and data quality standards</li>
+                        <li>2025 winner: Team BM_xTVC (BioMap Research) with xTrimoSCPerturb, combining deep learning with classical statistical features — 5,000+ participants across 114 countries, 1,200+ teams, 300+ final submissions</li>
+                        <li>Even the winning approach needed hand-engineered statistical features layered on deep learning — pure end-to-end learning has not yet solved the problem</li>
+                        <li>2026 edition: $100K grand prize (NVIDIA, 10x Genomics, Ultima Genomics); harder zero-shot generalization task, no released training data</li>
+                        <li>Adopts PerturBench's rank-based metrics as part of the evaluation standard</li>
                     </ul>
                     <div class="paper-links">
                         <a href="https://www.cell.com/cell/fulltext/S0092-8674(25)00675-0">
                             <i class="fas fa-file-alt"></i> Paper
                         </a>
-                        <a href="https://arcinstitute.org/news/virtual-cell-challenge">
-                            <i class="fas fa-info-circle"></i> Info
+                        <a href="https://arcinstitute.org/news/virtual-cell-challenge-2025-wrap-up">
+                            <i class="fas fa-info-circle"></i> 2025 Results
+                        </a>
+                        <a href="https://arcinstitute.org/news/virtual-cell-challenge-2026">
+                            <i class="fas fa-info-circle"></i> 2026 Challenge
+                        </a>
+                    </div>
+                </article>
+
+                <!-- PerturBench Card -->
+                <article class="paper-card">
+                    <h4>PerturBench: Benchmarking Machine Learning Models for Cellular Perturbation Analysis</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">NeurIPS / Nat Methods 2025</span>
+                        <span class="meta-badge type-badge">Benchmark Framework</span>
+                    </div>
+                    <p class="paper-description">
+                        Standardized benchmarking framework from Altos Labs — unified data loaders, biologically
+                        meaningful train/test splits, a modular model zoo, and rank-based metrics designed to
+                        complement (and expose the limits of) standard RMSE/R² fit measures.
+                    </p>
+                    <ul class="key-contributions">
+                        <li>Rank-based metrics later adopted as part of the Virtual Cell Challenge's evaluation standard</li>
+                        <li>Shows simpler architectures often match complex ones and surfaces mode-collapse failure modes across published models</li>
+                        <li>Modular model zoo + diverse datasets at multiple scales enable apples-to-apples comparison across methods</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02980-0">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/altoslabs/perturbench">
+                            <i class="fab fa-github"></i> Code
                         </a>
                     </div>
                 </article>
@@ -1345,7 +1444,8 @@
                 </li>
                 <li>
                     <strong>scPerturb</strong> (Peidli et al., Nature Methods 2024): Harmonized repository of 44
-                    datasets from 25 publications, 32 CRISPR + 9 drug datasets, average 160K cells per dataset.
+                    datasets from 25 publications — 32 CRISPR + 9 drug + 3 other-modality datasets — average
+                    160K cells per dataset.
                 </li>
             </ul>
 
@@ -1402,15 +1502,16 @@
                 <article class="timeline-item">
                     <h3>2023: Diverse Methodological Advances</h3>
                     <p>
-                        Neural OT (CellOT), VAEs (SAMS-VAE, CPA), and GNNs (GEARS) provide alternative frameworks.
-                        Each method claims superiority on different metrics and datasets.
+                        Neural OT (CellOT) and VAEs (SAMS-VAE, CPA) provide alternative frameworks. Each method
+                        claims superiority on different metrics and datasets.
                     </p>
                 </article>
 
                 <article class="timeline-item">
-                    <h3>2024: Foundation Models </h3>
+                    <h3>2024: Foundation Models & GNNs Reach Journal Publication</h3>
                     <p>
-                        scFoundation, scGPT adapted for perturbation tasks. 
+                        GEARS (dual knowledge-graph GNN) reaches Nature Biotechnology. scFoundation and scGPT
+                        are adapted for perturbation tasks.
                     </p>
                 </article>
 
@@ -1420,6 +1521,21 @@
                         100M+ cell datasets emerging. Physics-inspired methods (CIPHER) and biological
                         priors (<a href="https://github.com/gefeiwang/scLAMBDA" target="_blank">scLAMBDA</a> with LLM embeddings) show up. Field recognizes need for
                         proper baselines and evaluation.
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h3>2026: Scaling, In-Context Learning, and the First Challenge Results</h3>
+                    <p>
+                        The Virtual Cell Challenge's inaugural 2025 competition wraps up — the first CASP-style
+                        blind evaluation for perturbation prediction — and reveals that even the winning approach
+                        needed hand-engineered statistical features layered on deep learning; the harder,
+                        zero-shot 2026 edition launches immediately after. STACK (bioRxiv) reframes perturbation
+                        prediction as in-context learning: no fine-tuning, just a labelled prompt cell-set at
+                        inference time. Geneformer-scaling (Nat Comput Sci) brings 4-bit QLoRA quantization to
+                        genome-scale virtual knockout screens, cutting a 316M-parameter screen from $25k/33 days
+                        to &lt;$5k/6 days. The field converges on rank-based metrics and mandatory linear
+                        baselines following the Ahlmann-Eltze benchmark.
                     </p>
                 </article>
             </div>
@@ -1510,7 +1626,7 @@
                     </tr>
                     <tr>
                         <td>GEARS</td>
-                        <td>2023/2024</td>
+                        <td>2024</td>
                         <td>GNN</td>
                         <td>~600K cells</td>
                         <td>Dual knowledge graphs (GO + coexpression)</td>
@@ -1542,6 +1658,20 @@
                         <td>Statistical Physics</td>
                         <td>~1.4M cells</td>
                         <td>Linear response theory (Δx = Σu)</td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td>2025</td>
+                        <td>Transformer (Set-based)</td>
+                        <td>100M+ cells pretrain</td>
+                        <td>State Embedding + State Transition, bidirectional attention over cell populations</td>
+                    </tr>
+                    <tr>
+                        <td>STACK</td>
+                        <td>2026</td>
+                        <td>Transformer (ICL)</td>
+                        <td>149M cells pretrain</td>
+                        <td>True in-context learning — no fine-tuning, no weight updates</td>
                     </tr>
                 </tbody>
             </table>
@@ -1587,6 +1717,13 @@
                     <li>Uncertainty quantification → GEARS (Bayesian), CIPHER (Horseshoe priors)</li>
                     <li>Avoid black-box transformers if interpretability is priority</li>
                 </ul>
+
+                <p><strong>For Zero-Shot / Few-Shot Transfer (no fine-tuning):</strong></p>
+                <ul>
+                    <li>STACK's in-context-learning recipe → provide a labelled prompt cell-set at inference time, no weight updates. Strongest for cross-tissue and cross-perturbation transfer, but requires a model pretrained on cell-set-level inputs in the first place — not a free downstream choice for arbitrary architectures.</li>
+                    <li>Zero-shot in-silico knockout via a pretrained scFM's attention/embedding perturbation (e.g., Geneformer) → cheaper than full fine-tuning if you only need a coarse ranked target list.</li>
+                    <li>If adaptation is still needed → Geneformer-scaling's 4-bit QLoRA recipe fits a full 316M-parameter fine-tune on a single consumer GPU, making genome-scale in-silico screens routinely affordable (&lt;$5k vs $25k for a 30K-cell × 4K-gene screen).</li>
+                </ul>
             </div>
 
             <h3>Common Pitfalls & Best Practices</h3>
@@ -1624,7 +1761,7 @@
             <ul>
                 <li><strong><a href="https://scanpy.readthedocs.io/en/stable/" target="_blank">Scanpy</a>:</strong> Standard preprocessing, analysis, visualization (Python)</li>
                 <li><strong><a href="https://scvi-tools.org/" target="_blank">scvi-tools</a>:</strong> Implementations of scVI, scGen, CellOT</li>
-                <li><strong><a href="https://pertpy.readthedocs.io/en/stable/tutorials/notebooks/mixscape.html" target="_blank">Pertpy</a>:</strong> Perturbation-specific analysis (<a href="https://pertpy.readthedocs.io/en/stable/tutorials/notebooks/mixscape.html" target="_blank">Mixscape</a>, <a href="https://github.com/neurorestore/Augur" target="_blank">Augur</a>)</li>
+                <li><strong><a href="https://pertpy.readthedocs.io/" target="_blank">Pertpy</a>:</strong> Perturbation-specific analysis (<a href="https://pertpy.readthedocs.io/en/stable/tutorials/notebooks/mixscape.html" target="_blank">Mixscape</a>, <a href="https://github.com/neurorestore/Augur" target="_blank">Augur</a>)</li>
                 <li><strong>Method-specific repos:</strong> GEARS, SAMS-VAE, scGPT, CPA all on GitHub</li>
                 <li><strong><a href="https://github.com/altoslabs/perturbench" target="_blank">PerturBench</a>:</strong> Standardized benchmarking framework (altoslabs, 2024)</li>
             </ul>
@@ -1641,10 +1778,13 @@
 conda create -n pertpred python=3.10 -y
 conda activate pertpred
 
-# 1. PyTorch first — pick the build that matches your driver
-pip install torch --index-url https://download.pytorch.org/whl/cu121
+# 1. PyTorch first — pin the exact version so it matches the PyG wheel below
+pip install torch==2.1.0 --index-url https://download.pytorch.org/whl/cu121
 
-# 2. PyTorch Geometric + companion wheels (GEARS' graph backend)
+# 2. PyTorch Geometric + companion wheels (GEARS' graph backend).
+#    The wheel URL is locked to torch 2.1.0+cu121 — if you install a
+#    different torch/CUDA combo above, update this URL to match
+#    (see https://data.pyg.org/whl/ for the available combinations).
 pip install torch_geometric
 pip install torch_scatter torch_sparse \
     -f https://data.pyg.org/whl/torch-2.1.0+cu121.html
