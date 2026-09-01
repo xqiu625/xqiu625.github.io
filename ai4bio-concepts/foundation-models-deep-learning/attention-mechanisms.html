@@ -1014,9 +1014,7 @@
 
                     <!-- CARD 2: MULTI-HEAD ATTENTION (The Specialist Team) -->
                     <div class="attention-card">
-                    <figure class="content-figure">
-                        <img src="figures/lego-attention-spotlight.webp" width="1600" height="760" loading="lazy" decoding="async" alt="Attention spotlight: Q from the instruction plan checks K-labeled bricks, the best matches glow with softmax weights (62%, 24%, 11%), producing the output V">
-                    </figure>
+                   
                         <h3>2. Multi-Head Attention: The Team of Specialists</h3>
                         
                         <div class="analogy-box">
@@ -1169,14 +1167,68 @@
                                 <strong>In Biology:</strong> Different "heads" in the AI model learn different biological rules at the same time. One head might focus on which genes are turned on together. Another might focus on the physical chemistry between molecules. A third might look at evolutionary patterns across species. The AI combines all these different "views" for a complete picture.
                             </p>
                         </div>
+
+                        <div class="analogy-box" style="border-left-color:#426DB4; margin-top:20px;">
+                            <h4><i class="fas fa-layer-group"></i>
+                                Multi-Head Variants — Same Parallel Idea, Different Trade-offs</h4>
+                            <p>All multi-head variants run several attention computations in parallel and
+                               concatenate the outputs. The differences are in how K and V are shared
+                               across heads — a knob that trades expressivity against memory and speed.</p>
+                            <table class="comparison-table" style="margin-top:12px;">
+                                <thead>
+                                    <tr>
+                                        <th>Variant</th>
+                                        <th>K/V sharing</th>
+                                        <th>Memory vs MHA</th>
+                                        <th>Single-cell / bio models</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Standard MHA</strong></td>
+                                        <td>Each head has its own Q, K, V</td>
+                                        <td>Baseline (1×)</td>
+                                        <td>scGPT, Geneformer, GeneCompass, TranscriptFormer</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Multi-Query (MQA)</strong></td>
+                                        <td>All Q-heads share one K and one V</td>
+                                        <td>~H× smaller KV-cache</td>
+                                        <td>LLaMA-family; used in large-scale cell LMs for inference speed</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Grouped-Query (GQA)</strong></td>
+                                        <td>Q-heads split into G groups; each group shares one K/V</td>
+                                        <td>H/G× smaller KV-cache</td>
+                                        <td>LLaMA-3, Mistral-based bio adapters; better quality than MQA</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Knowledge-Guided Heads</strong></td>
+                                        <td>Some heads masked to known gene-regulatory pairs</td>
+                                        <td>Same as MHA</td>
+                                        <td><strong>GeneCompass</strong> — prior knowledge (TF→target) injected as attention bias</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>RoPE / ALiBi positional</strong></td>
+                                        <td>Standard MHA + relative-position score bias</td>
+                                        <td>Negligible overhead</td>
+                                        <td>TranscriptFormer (RoPE on gene-rank positions); STACK</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p style="margin-top:10px;font-size:.9em;color:#555;">
+                                <strong>LEGO analogy:</strong> MQA is all eight specialists sharing one
+                                master parts-list instead of each keeping their own clipboard — faster
+                                to look up, but every specialist reads the same list even when their task
+                                differs. GQA is a compromise: specialists in teams of two share one list.
+                            </p>
+                        </div>
                     </div>
 
 
                     <!-- CARD 3: CROSS-ATTENTION (The Instruction Manual) -->
                     <div class="attention-card">
-                    <figure class="content-figure">
-                        <img src="figures/lego-attention-heads.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Multi-head attention: four lenses labeled color, length, studs, and shape each inspect one feature of the same brick, then combine">
-                    </figure>
+     
                         <h3>3. Cross-Attention: Following the Instructions</h3>
                         
                         <div class="analogy-box">
@@ -1283,8 +1335,59 @@
                                 <strong>In Biology:</strong> This is used when we have two different types of data. For example, the "instruction manual" could be a DNA sequence, and the "pile" could be data about protein structures. The AI uses the DNA instructions to know exactly which parts of the protein structure data to focus on to find connections between the two.
                             </p>
                         </div>
+
+                        <div class="analogy-box" style="border-left-color:#C05540; margin-top:20px;">
+                            <h4><i class="fas fa-arrows-left-right"></i>
+                                Cross-Attention Variants — How Queries Meet a Foreign Source</h4>
+                            <p>Cross-attention always has <em>Q from one modality</em> and
+                               <em>K, V from a second modality</em>. The variants differ in
+                               how many tokens each side has and whether the attention is symmetric.</p>
+                            <table class="comparison-table" style="margin-top:12px;">
+                                <thead>
+                                    <tr>
+                                        <th>Variant</th>
+                                        <th>Q source → K/V source</th>
+                                        <th>Complexity</th>
+                                        <th>Single-cell / bio models</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Encoder–Decoder</strong></td>
+                                        <td>Decoder tokens → Encoder hidden states</td>
+                                        <td>O(N<sub>dec</sub>·N<sub>enc</sub>)</td>
+                                        <td>scTranslator (RNA → protein expression), BioTranslator</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Multi-Modal</strong></td>
+                                        <td>RNA tokens ⇄ ATAC / protein tokens</td>
+                                        <td>O(N<sub>rna</sub>·N<sub>atac</sub>)</td>
+                                        <td><strong>MultiVI</strong> (scRNA ↔ scATAC), <strong>totalVI</strong> (CITE-seq RNA ↔ protein)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Latent / Perceiver-style</strong></td>
+                                        <td>Small latent Q (L tokens) → large input K/V (N tokens), L ≪ N</td>
+                                        <td>O(L·N) — sub-quadratic</td>
+                                        <td>Perceiver IO; spatial multi-omics models with many input modalities</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Conditioning</strong></td>
+                                        <td>Sequence tokens → condition embedding (text / drug)</td>
+                                        <td>O(N·C), C = condition length</td>
+                                        <td><strong>GET</strong> (chromatin regions → cell-type condition); drug-conditioned scFMs</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p style="margin-top:10px;font-size:.9em;color:#555;">
+                                <strong>LEGO analogy:</strong> Encoder–decoder is one builder reading
+                                another builder's completed section before adding their own bricks.
+                                Latent cross-attention is a tiny team of supervisors (L=64 summary tokens)
+                                scanning a warehouse of 100,000 bricks — they distil the whole warehouse
+                                into their small set of notes, then hand those notes to the building crew.
+                            </p>
+                        </div>
                     </div>
-                    
+
                     <!-- CARD 4: GRAPH-BASED ATTENTION (The Local Network) -->
                     <div class="attention-card">
                         <h3>4. Graph-Based Attention: The Local Network</h3>
@@ -1438,6 +1541,63 @@
                                 <li><strong>CellPLM:</strong> Spatial graph attention for neighboring cells in tissue</li>
                             </ul>
                         </div>
+
+                        <div class="analogy-box" style="border-left-color:#E67E22; margin-top:20px;">
+                            <h4><i class="fas fa-project-diagram"></i>
+                                Graph Attention Variants — Which Edges Define the Neighborhood?</h4>
+                            <p>The key choice is how the graph is constructed — fixed by biology,
+                               learned, or randomly sampled — because that determines which pairs
+                               ever exchange information at all.</p>
+                            <table class="comparison-table" style="margin-top:12px;">
+                                <thead>
+                                    <tr>
+                                        <th>Variant</th>
+                                        <th>Edge definition</th>
+                                        <th>Scalability</th>
+                                        <th>Single-cell / bio models</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>k-NN Graph</strong></td>
+                                        <td>k nearest neighbors in 3D space or embedding</td>
+                                        <td>O(kN), k fixed</td>
+                                        <td><strong>Structured Transformer</strong> (k=30 for protein backbone); <strong>CellPLM</strong> (k neighbors in tissue slide)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Random Graph</strong></td>
+                                        <td>Random sparse connections; expected degree k</td>
+                                        <td>O(kN), stochastic</td>
+                                        <td><strong>Chroma</strong> — 60,000-residue protein complexes via random backbone graphs</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Biological Knowledge Graph</strong></td>
+                                        <td>Edges = known PPI / TF-target / signaling links</td>
+                                        <td>O(E), E from DB</td>
+                                        <td>GAT on STRING/BioGRID networks; GRN-guided scRNA models</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Spatial Cell Graph</strong></td>
+                                        <td>Edges = physical proximity in tissue (e.g., Delaunay)</td>
+                                        <td>O(kN), k ≈ 6–10</td>
+                                        <td><strong>BANKSY</strong> (spatial domain), <strong>GraphST</strong>, <strong>spatialdata</strong> workflows</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Hierarchical Graph</strong></td>
+                                        <td>Multi-level: atom → residue → domain → complex</td>
+                                        <td>O(N log N) per level</td>
+                                        <td>RoseTTAFold All-Atom; multi-scale protein structure models</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p style="margin-top:10px;font-size:.9em;color:#555;">
+                                <strong>LEGO analogy:</strong> k-NN is "only check the 30 bricks
+                                physically touching yours"; random graph is "randomly assign each
+                                brick 10 buddies to chat with regardless of location" — still sparse,
+                                but breaks spatial bias; knowledge graph is "check only the bricks
+                                listed in the official instruction manual as connected to yours."
+                            </p>
+                        </div>
                     </div>
 
                     <div class="attention-card">
@@ -1513,6 +1673,66 @@
                                 <li><strong>AlphaFold3</strong> (Abramson et al., Nature 2024): joint structure prediction for proteins, nucleic acids, and ligands via pair representation + triangle attention.</li>
                                 <li><strong>RoseTTAFold All-Atom</strong> (2024): extends pair-representation-style attention to arbitrary biomolecular assemblies.</li>
                             </ul>
+                        </div>
+
+                        <div class="analogy-box" style="border-left-color:#6C4F9E; margin-top:20px;">
+                            <h4><i class="fas fa-table"></i>
+                                Pair Representation Variants — How the N×N Matrix Gets Updated</h4>
+                            <p>All variants maintain an explicit (i, j) relationship matrix on top of
+                               the standard per-token representations. They differ in how triangular
+                               consistency is enforced and whether the pair matrix feeds back into
+                               per-token attention scores.</p>
+                            <table class="comparison-table" style="margin-top:12px;">
+                                <thead>
+                                    <tr>
+                                        <th>Variant</th>
+                                        <th>Update rule</th>
+                                        <th>Memory cost</th>
+                                        <th>Models</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Triangle Attention</strong></td>
+                                        <td>Pair (i,j) updated via triangle: sum over k of (i,k)·(k,j)</td>
+                                        <td>O(N²·d) pairs + O(N²) attn</td>
+                                        <td><strong>AlphaFold2 Evoformer</strong>, <strong>AlphaFold3 Pairformer</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Triangle Multiplication</strong></td>
+                                        <td>Incoming / outgoing edge products enforce triangle inequality</td>
+                                        <td>O(N²·d)</td>
+                                        <td>AlphaFold2/3 (runs before triangle attention in each block)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Axial Attention on Pairs</strong></td>
+                                        <td>Attend along rows, then columns of pair matrix separately</td>
+                                        <td>O(N²·d), cheaper constant</td>
+                                        <td><strong>RoseTTAFold</strong>; MSA Transformer (row + column attention)</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Outer Product Mean</strong></td>
+                                        <td>Pair(i,j) ← mean(token_i ⊗ token_j) — implicit, no true pair attn</td>
+                                        <td>O(N²·d) build; no pair attn pass</td>
+                                        <td><strong>ESMFold</strong> — approximates pair representation without full triangle attention</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Distance-Biased Pair</strong></td>
+                                        <td>3D distance / orientation injected as attention score bias</td>
+                                        <td>O(N²) bias addition</td>
+                                        <td><strong>RoseTTAFold All-Atom</strong>; Uni-Mol (small-molecule conformer)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p style="margin-top:10px;font-size:.9em;color:#555;">
+                                <strong>LEGO analogy:</strong> Triangle multiplication is the rule "if
+                                brick A connects to brick B, and brick B connects to brick C, the A–C
+                                connector piece must be geometrically consistent" — the pair matrix
+                                enforces this explicitly rather than hoping the model learns it.
+                                Outer product mean is like estimating the A–C relationship from
+                                A's and C's individual name-tags without a dedicated index card —
+                                cheaper, but loses fine-grained distance information.
+                            </p>
                         </div>
                     </div>
 
