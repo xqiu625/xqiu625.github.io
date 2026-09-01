@@ -2428,6 +2428,52 @@
                             <a href="https://github.com/snap-stanford/saturn/" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
+
+                    <!-- STATE (Arc Institute) -->
+                    <div class="paper-card">
+                        <h4>State: A Scalable Virtual Cell Model Predicting Cellular Responses Across Diverse Contexts</h4>
+                        <div class="meta">Brixi et al. (Arc Institute) | bioRxiv June 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Set Transformer</span>
+                            <span class="tag strategy">Cell-as-Token</span>
+                        </div>
+                        <div class="summary">
+                            State breaks perturbation prediction into two stages: a <strong>State Embedding (SE)</strong> model pretrained on 167M observational cells that maps any cell's transcriptome to a single embedding vector, and a <strong>State Transition (ST)</strong> model pretrained on 100M perturbation-paired cells that maps a set of control embeddings to their perturbed state. The token is the whole cell, not the gene &mdash; bidirectional set attention runs across a population of cell vectors.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Cell-as-token: each cell's full transcriptome (gene identities + expression values) is compressed into one embedding vector by SE &mdash; the gene-level tokens are upstream inputs to that encoder, not the model's sequence elements. ST then applies set attention across a batch of such cell vectors, treating each cell embedding as a "token" in the context of the cell population. Granularity is one level up from every gene-level strategy on this page.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 167M observational + 100M perturbation cells | <strong>Context:</strong> Set-based (variable cell count) | <strong>Params:</strong> not disclosed</p>
+                        <div class="links">
+                            <a href="https://www.biorxiv.org/content/10.1101/2025.06.26.661135v1" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://arcinstitute.org/tools/state" target="_blank"><i class="fas fa-globe"></i> Arc Institute</a>
+                        </div>
+                    </div>
+
+                    <!-- STACK (Arc Institute) -->
+                    <div class="paper-card">
+                        <h4>STACK: In-Context Learning of Single-Cell Biology</h4>
+                        <div class="meta">Brixi et al. (Arc Institute) | preprint 2026</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Tabular Transformer (ICL)</span>
+                            <span class="tag strategy">Cell-as-Token</span>
+                        </div>
+                        <div class="summary">
+                            STACK treats the cell &times; gene expression matrix as a table and applies <strong>tabular attention</strong> &mdash; attending within each row (across genes per cell) and across rows (across cells in the batch). At inference, labeled "example" cells are prepended as context rows; the model reads the control&rarr;perturbed pattern from those rows without any weight update, enabling true zero-shot perturbation prediction across new conditions, tissues, and donors.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Tabular cell-as-token: the input is a cell &times; gene matrix, not a sequence of gene tokens. Within-cell attention (along gene columns) captures co-expression; across-cell attention (along the row dimension) compares cell states. At inference, labeled context cells are appended as additional rows &mdash; the model treats them as "few-shot examples" read directly from the table, no gradient required. Pretrained on 149M cells from the Perturb Sapiens atlas.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 149M cells (Perturb Sapiens atlas) | <strong>Context:</strong> Tabular (variable cell count &times; gene count) | <strong>Params:</strong> not disclosed</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.64898/2026.01.09.698608" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://arcinstitute.org/tools/stack" target="_blank"><i class="fas fa-globe"></i> Arc Institute</a>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="intro-box" style="margin-top: 25px;">
@@ -2554,6 +2600,13 @@
                             <td>Requires a state-space architecture (Hyena/Mamba), not a plain Transformer</td>
                             <td>Evo 2, HyenaDNA</td>
                         </tr>
+                        <tr>
+                            <td><strong>Cell-as-Token (Set / Tabular)</strong></td>
+                            <td>scRNA-seq</td>
+                            <td>Attends across whole cell populations; enables in-context perturbation prediction without fine-tuning</td>
+                            <td>Token is an entire cell &mdash; requires a cell-level encoder upstream of the set/tabular operator</td>
+                            <td>State, STACK</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -2629,6 +2682,18 @@
                             <td>up to 1M tokens</td>
                             <td>7B / 40B</td>
                         </tr>
+                        <tr>
+                            <td>State</td>
+                            <td>Cell-as-Token (Set Transformer)</td>
+                            <td>Set-based (variable &mdash; whole cell population)</td>
+                            <td>not disclosed</td>
+                        </tr>
+                        <tr>
+                            <td>STACK</td>
+                            <td>Cell-as-Token (Tabular ICL)</td>
+                            <td>Tabular (variable cells &times; ~20K genes)</td>
+                            <td>not disclosed</td>
+                        </tr>
                     </tbody>
                 </table>
 
@@ -2681,6 +2746,11 @@
                             <td>Cross-species comparative genomics without 1:1 orthologs</td>
                             <td><strong>Macrogene</strong></td>
                             <td>Clustering by protein-embedding similarity bridges species separated by hundreds of millions of years of divergence.</td>
+                        </tr>
+                        <tr>
+                            <td>Perturbation prediction across new conditions / tissues without fine-tuning</td>
+                            <td><strong>Cell-as-Token (STACK)</strong></td>
+                            <td>Tabular in-context learning reads labeled example cells at inference &mdash; no gradient update needed for new perturbations or donors.</td>
                         </tr>
                     </tbody>
                 </table>
