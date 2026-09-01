@@ -827,7 +827,7 @@
             </div>
 
             <div class="content-section" id="types">
-                <h2>How the Factory Works: Four Types of Attention</h2>
+                <h2>How the Factory Works: Five Types of Attention</h2>
 
                 <!-- CHANGED CONTAINER FROM GRID TO FLEX COLUMN FOR FULL WIDTH -->
                 <div class="attention-types-container">
@@ -978,6 +978,36 @@
                             <p>
                                 <strong>In Biology:</strong> The model looks at a protein sequence, and every single amino acid determines its relationship with every other amino acid in the chain. This helps the AI understand the 3D shape of the protein based on how distant parts interact, which is crucial for understanding how drugs might bind to it.
                             </p>
+                        </div>
+
+                        <div class="analogy-box">
+                            <h4><i class="fas fa-arrows-left-right"></i> Bidirectional vs. Causal: Same Q&middot;K<sup>T</sup>, Different Mask</h4>
+                            <p>Self-attention scores every token against every other token &mdash; but a <em>mask</em> decides which of those scores are allowed to matter. Set every entry to visible and you get a <strong>bidirectional</strong> (BERT-style) encoder trained on masked-token prediction. Zero out everything "after" a token and you get a <strong>causal</strong> (GPT-style) decoder trained to predict the next token, one at a time.</p>
+                            <table class="comparison-table" style="margin-top: 12px;">
+                                <thead>
+                                    <tr>
+                                        <th>Mode</th>
+                                        <th>Mask</th>
+                                        <th>Pre-training objective</th>
+                                        <th>Single-cell examples</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Bidirectional</strong></td>
+                                        <td>All-ones &mdash; every gene sees every other gene</td>
+                                        <td>Masked gene / expression prediction</td>
+                                        <td>Geneformer, scGPT</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Causal</strong></td>
+                                        <td>Upper-triangular &rarr; masked entries set to &minus;&infin; before softmax</td>
+                                        <td>Next-gene prediction along a "cell sentence"</td>
+                                        <td>TranscriptFormer</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p style="margin-top: 10px;"><strong>LEGO analogy:</strong> bidirectional is every brick reading the whole conveyor belt at once; causal is a brick that can only see the pieces already behind it &mdash; useful when the model must generate a sequence (or a cell's transcriptome) one token at a time rather than just understand a fixed one.</p>
                         </div>
                     </div>
 
@@ -1255,7 +1285,7 @@
                         </div>
                     </div>
                     
-                    <!-- CARD 4: GRAPH-BASED ATTENTION (The Local Network) - NEW INSERTION -->
+                    <!-- CARD 4: GRAPH-BASED ATTENTION (The Local Network) -->
                     <div class="attention-card">
                         <h3>4. Graph-Based Attention: The Local Network</h3>
                         
@@ -1530,6 +1560,24 @@
                             <td>Spatial transcriptomics</td>
                             <td>Spatial graph attention</td>
                             <td>Cell-level tokens capture spatial context</td>
+                        </tr>
+                        <tr>
+                            <td><strong>State</strong> (Adduri et al., Arc Institute, bioRxiv 2025)</td>
+                            <td>Perturbation response prediction across cellular contexts</td>
+                            <td>Multi-head self-attention, two-module design: State Embedding (SE) + State Transition (ST)</td>
+                            <td>SE trained on 167M cells, ST on 100M+ perturbed cells; &gt;30% improvement in discriminating perturbation effects; identifies strong perturbations in cellular contexts unseen during training</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sigmoid Attention for scFMs</strong> (2026)</td>
+                            <td>Single-cell foundation model pre-training</td>
+                            <td>Sigmoid replaces softmax in attention scoring</td>
+                            <td>25% higher cell-type separation, up to 10% faster training, and more stable training (bounded derivatives avoid the divergence softmax shows on long sequences without gradient clipping)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SAVE</strong> (Fudan Univ., ICLR 2026)</td>
+                            <td>Multi-condition single-cell generation</td>
+                            <td>Gene Block Attention &mdash; genes grouped into pathway-based blocks rather than treated as independent tokens</td>
+                            <td>Generalizes across biological/technical conditions by modeling higher-order dependencies among gene modules</td>
                         </tr>
                     </tbody>
                 </table>
