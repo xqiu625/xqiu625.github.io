@@ -229,9 +229,28 @@
             <h1>Pretraining &amp;<br>Foundation Models</h1>
             <div class="subtitle">From masked-gene encoders to billion-parameter cell-as-sentence LLMs — how foundation models are built for biology.</div>
             <p class="description">
-                26 curated papers on the pretraining recipes behind biological foundation models. Spans rank-value masked LMs (Geneformer), contrastive teacher–student (Concerto), cell-as-sentence decoder LLMs (C2S-Scale), discrete diffusion for proteins (DPLM), masked-LM protein foundation models trained at metagenomic scale (ESM Cambrian, 2.806B sequences), genomic transformers (Nucleotide Transformer, CodonFM), cross-species/multimodal models (UCE, Nicheformer, scTranslator), and the data + benchmarking infrastructure (scBaseCount, the Nat Mach Intell SSL benchmark) that makes scale possible.
+29 curated papers on the pretraining recipes behind biological foundation models. Spans rank-value masked LMs (Geneformer), contrastive teacher–student (Concerto), cell-as-sentence decoder LLMs (C2S-Scale), discrete diffusion for proteins (DPLM), masked-LM protein foundation models trained at metagenomic scale (ESM Cambrian, 2.806B sequences), genomic transformers (Nucleotide Transformer, CodonFM, Evo 2), cross-species/multimodal models (UCE, Nicheformer, scTranslator), and the data + benchmarking infrastructure (scBaseCount, the Nat Mach Intell SSL benchmark) that makes scale possible.
             </p>
         </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">29</span>
+                <span class="stat-label">Papers Covered</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">4</span>
+                <span class="stat-label">Model Families</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">350M+</span>
+                <span class="stat-label">Pretraining Cells</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2022&ndash;2026</span>
+                <span class="stat-label">Years Covered</span>
+            </div>
+        </div>
 
         <!-- CASEWORK BANNER (Model · LEGO lens) -->
         <section class="casework-banner" aria-label="LEGO inspired pretraining casework">
@@ -370,7 +389,7 @@
 
             <h3>The four design axes</h3>
             <ul>
-                <li><strong>Tokenisation.</strong> Rank-value tokens (Geneformer), continuous counts (scHyena, AIDO), bag-of-RNA gene tokens (UCE), cell sentences (C2S-Scale), discrete VQ codes (ChrisCell). The choice is upstream of every downstream property.</li>
+                <li><strong>Tokenisation.</strong> Rank-value tokens (Geneformer), continuous counts (scHyena, AIDO), bag-of-RNA gene tokens (UCE), cell sentences (C2S-Scale), discrete VQ codes (CellVQ). The choice is upstream of every downstream property.</li>
                 <li><strong>Objective.</strong> Masked LM (Geneformer, scBERT, NT, UCE), contrastive (Concerto), discrete diffusion (DPLM), autoregressive next-token (C2S-Scale, TranscriptFormer — with a paired gene-identity + zero-truncated-Poisson count head), denoising (scPRINT-2), in-context learning (STACK).</li>
                 <li><strong>Scale.</strong> 5.7M cells (C2S-Scale) → 22M (scTab) → 50M (AIDO) → 110M (Nicheformer) → 230M (scBaseCount) → 350M (scPRINT-2). Genomic LMs run 850 genomes (NT) to 9.3 trillion bp (Evo). Protein LMs reach 2.806B sequences (ESM Cambrian) — ~56× ESM-2's UniRef50 corpus once metagenomic databases (SPIRE, MGnify, JGI/IMG) are added; contact-precision then improves log-linearly with FLOPs up to 6B parameters (R²=0.99) without plateau.</li>
                 <li><strong>Downstream coverage.</strong> Single-task fine-tune (most scFMs), zero-shot (UCE, scCello), in-context learning (STACK), natural-language interface (C2S-Scale, MedMPT).</li>
@@ -403,7 +422,7 @@
                 </div>
                 <div class="timeline-item">
                     <h3>2026 — Resource efficiency, in-context learning, and generative cross-species</h3>
-                    <p>Geneformer-scaling (Nat Comput Sci) brings 4-bit QLoRA to scFMs while preserving perturbation fidelity at r=0.998. STACK introduces true in-context learning for single-cell biology. ChrisCell uses VQ discretisation for interpretable cell codes. TranscriptFormer (Science) makes the leap from masked encoders to <em>autoregressive generative</em> pretraining — predicting gene identity and count sequentially across 12 species and 1.53 billion years of evolution. On the protein side, ESM Cambrian (EvolutionaryScale) re-baselines masked-LM pretraining at metagenomic scale: 2.806B sequences (~56× ESM-2's corpus), 300M / 600M / 6B parameter trio, and the first clean log-linear contact-precision scaling law for proteins (R²=0.99) — the field's evidence that the "ESM-2 plateau" was a data ceiling, not a model ceiling.</p>
+                    <p>Geneformer-scaling (Nat Comput Sci) brings 4-bit QLoRA to scFMs while preserving perturbation fidelity at r=0.998. STACK introduces true in-context learning for single-cell biology. CellVQ uses VQ discretisation for interpretable cell codes. TranscriptFormer (Science) makes the leap from masked encoders to <em>autoregressive generative</em> pretraining — predicting gene identity and count sequentially across 12 species and 1.53 billion years of evolution. On the protein side, ESM Cambrian (EvolutionaryScale) re-baselines masked-LM pretraining at metagenomic scale: 2.806B sequences (~56× ESM-2's corpus), 300M / 600M / 6B parameter trio, and the first clean log-linear contact-precision scaling law for proteins (R²=0.99) — the field's evidence that the "ESM-2 plateau" was a data ceiling, not a model ceiling. On the DNA side, <strong>Evo 2</strong> (Arc Institute, Nature) scales single-nucleotide genomic pretraining to 9.3 trillion base pairs and 128,000+ species via a StripedHyena 2 hybrid SSM/sparse-attention backbone, reaching a 1M-token context without quadratic attention cost. GenBio AI's <strong>AIDO</strong> perspective (Nat Med) reframes single-modality scFMs as one layer of a larger AI-Driven Digital Organism — a differentiable DNA→RNA→protein→whole-cell stack — with AIDO.Cell as its first open-sourced module. Meanwhile <strong>Dimitrov et al.'s</strong> field-wide review (Nat Rev Genet) delivers the year's most systematic audit of scFM benchmarking practice: linear baselines still match scGPT and Geneformer once evaluation sets are kept independent of the pretraining corpus.</p>
                 </div>
             </div>
         </section>
@@ -488,7 +507,7 @@
             <p>BERT-style and decoder-only LMs pretrained on tens to hundreds of millions of single cells. Tokenisation is the key design axis — rank values, masked counts, or cell sentences.</p>
 
             <figure class="module-figure">
-                <img src="figures/pretraining/bio_fig07_tokenisation_zoo.svg" alt="Five-panel diagram showing one source cell tokenised five different ways: rank-value tokens (Geneformer), continuous counts (scHyena/AIDO), bag-of-RNA with ESM2 embeddings (UCE), cell-as-sentence with repeated gene names (C2S-Scale), and discrete VQ codes (ChrisCell). Each tokenisation keeps and discards different information.">
+                <img src="figures/pretraining/bio_fig07_tokenisation_zoo.svg" alt="Five-panel diagram showing one source cell tokenised five different ways: rank-value tokens (Geneformer), continuous counts (scHyena/AIDO), bag-of-RNA with ESM2 embeddings (UCE), cell-as-sentence with repeated gene names (C2S-Scale), and discrete VQ codes (CellVQ). Each tokenisation keeps and discards different information.">
                 <figcaption><strong>Figure 5</strong><span class="fig-title">The tokenisation zoo — one cell, five representations.</span> Same source cell, five tokenisation choices, very different things kept and discarded. The transformer downstream is the same; what reaches it is decided here. Rank-value drops magnitude; bag-of-RNA drops order; VQ codes drop continuity; cell-sentence preserves both magnitude (via repetition) and order but pays in sequence length.</figcaption>
             </figure>
 
@@ -637,7 +656,7 @@
                         <li>Releases Perturb-Sapiens: 513,870 cells, 28 tissues, 40 cell classes, 201 perturbations with cross-tissue validation</li>
                     </ul>
                     <div class="paper-links">
-                        <a href="https://doi.org/10.64898/2026.01.09.698608" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://doi.org/10.64898/2026.01.09.698608" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/ArcInstitute/stack" target="_blank"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </article>
 
@@ -646,14 +665,14 @@
                     <div class="paper-meta">
                         <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">Discrete VQ + GAT</span>
                     </div>
-                    <p class="paper-description">ChrisCell is a 511M-parameter foundation model trained on 68M cells. Introduces Single-Cell Discretization (SCD) via SoftCVQ to convert continuous embeddings into a 65,536-code vocabulary, integrates Gene Ontology priors, and supports a plug-in graph attention layer (ChrisCell-Graph).</p>
+                    <p class="paper-description">CellVQ is a 511M-parameter foundation model trained on 68M cells. Introduces Single-Cell Discretization (SCD) via SoftCVQ to convert continuous embeddings into a 65,536-code vocabulary, integrates Gene Ontology priors, and supports a plug-in graph attention layer (CellVQ-Graph).</p>
                     <ul class="key-contributions">
                         <li>Pancreas clustering ARI 0.95 (vs scGPT &lt;0.77); drug response Pearson 0.923 (vs DeepCDR 0.780)</li>
                         <li>Discrete cell codes enable quantitative state-distance metrics and interpretable marker discovery</li>
                         <li>Recovers disease-relevant gene co-expression: PRSS1↔CTRB1, CTRC↔CFB</li>
                     </ul>
                     <div class="paper-links">
-                        <a href="https://doi.org/10.1038/s41467-026-70071-5" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://doi.org/10.1038/s41467-026-70071-5" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/A4Bio/CellVQ" target="_blank"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </article>
 
@@ -674,7 +693,7 @@
                 </article>
             </div>
 
-            <h3>Genomic Language Models (2)</h3>
+            <h3>Genomic Language Models (3)</h3>
             <p>Pretrained models over DNA/codon sequence. Scale from millions to billions of parameters with multispecies and megabase context.</p>
 
             <figure class="module-figure">
@@ -714,6 +733,23 @@
                         <a href="https://github.com/NVIDIA-Digital-Bio/CodonFM" target="_blank"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </article>
+
+                <article class="paper-card">
+                    <h4>Genome modelling and design across all domains of life with Evo 2</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nature</span> <span class="meta-badge type-badge">SSM + sparse attention, single-nucleotide</span>
+                    </div>
+                    <p class="paper-description">Evo 2 (Arc Institute, StripedHyena 2 architecture) trains 7B and 40B-parameter hybrid state-space/attention models on 9.3 trillion base pairs spanning 128,000+ species across all domains of life — prokaryotes, eukaryotes, and organelles. Single-nucleotide tokenisation with near-linear compute/memory scaling gives a 1-million-token context window without the quadratic cost of full self-attention.</p>
+                    <ul class="key-contributions">
+                        <li>Largest genomic pretraining corpus to date: 9.3T bp across 128,000+ species, at single-nucleotide resolution with no k-mer binning</li>
+                        <li>1M-token context via StripedHyena 2 (interleaved SSM + sparse-attention blocks) — enables whole-gene and regulatory-region modelling in one forward pass</li>
+                        <li>Zero-shot variant-effect prediction (noncoding pathogenic mutations, clinically significant BRCA1 variants) without task-specific fine-tuning</li>
+                        <li>Generative design: produces novel genomic sequences up to simple-bacterial-genome length</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41586-026-10176-5" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/ArcInstitute/evo2" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
             </div>
 
             <h3>Protein &amp; Sequence Pretraining (2)</h3>
@@ -733,7 +769,7 @@
                         <li><strong>Atlas downstream of pretraining.</strong> The 6B encoder is run over 6.8B proteins; clustering by SAE-feature Jaccard ≥ 0.6 yields 7.7M clusters with ≥50 members; ESMFold2 then predicts 1.1B structures (418.5M at pLDDT &gt; 0.7), of which 756M are not in AlphaFold DB.</li>
                     </ul>
                     <div class="paper-links">
-                        <a href="https://www.evolutionaryscale.ai/blog/esm-cambrian" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/evolutionaryscale/esm" target="_blank"><i class="fab fa-github"></i> Code</a>
+                        <a href="https://www.evolutionaryscale.ai/blog/esm-cambrian" target="_blank"><i class="fas fa-external-link-alt"></i> Blog / Report</a> <a href="https://github.com/evolutionaryscale/esm" target="_blank"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </article>
 
@@ -773,7 +809,7 @@
                         <li><strong>Emergent phylogeny.</strong> Pairwise cell-embedding cosine similarity decreases with evolutionary distance (Spearman r = &#x2212;0.705, p = 0.004) even though TF-Metazoa is trained on a single species (chicken) from that test set — phylogenetic structure emerges unsupervised.</li>
                     </ul>
                     <div class="paper-links">
-                        <a href="https://www.science.org/doi/10.1126/science.aec8514" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://doi.org/10.5281/zenodo.18381225" target="_blank"><i class="fas fa-cube"></i> Zenodo</a>
+                        <a href="https://doi.org/10.1126/science.aec8514" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/czi-ai/transcriptformer" target="_blank"><i class="fab fa-github"></i> Code</a> <a href="https://doi.org/10.5281/zenodo.18381225" target="_blank"><i class="fas fa-cube"></i> Zenodo</a>
                     </div>
                 </article>
 
@@ -876,7 +912,7 @@
                 </article>
             </div>
 
-            <h3>Reviews &amp; Benchmarks (5)</h3>
+            <h3>Reviews &amp; Benchmarks (7)</h3>
             <p>Field syntheses and systematic comparisons of pretraining strategies.</p>
             <div class="paper-grid">
                 <article class="paper-card">
@@ -958,6 +994,39 @@
                         <a href="https://doi.org/10.1038/s41592-025-02918-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/TranslationalBioinformaticsUnit/Transformers-for-Multiscale-Genomics" target="_blank"><i class="fab fa-github"></i> Code</a>
                     </div>
                 </article>
+
+                <article class="paper-card">
+                    <h4>Interpretation, extrapolation and perturbation of single cells</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Rev Genet</span> <span class="meta-badge type-badge">Benchmark · Critique</span>
+                    </div>
+                    <p class="paper-description">Dimitrov, Schrod, Rohbeck et al. propose a unifying ontology of five modelling concepts — interpret, extrapolate, decompose, trace, intervene — for judging when a causal or foundation-model claim about single-cell data is actually warranted. Documents that linear baselines match or exceed foundation models (scGPT, Geneformer) on standard perturbation-prediction benchmarks once the evaluation set is independent of the pretraining corpus.</p>
+                    <ul class="key-contributions">
+                        <li>Five causal aims with concrete method exemplars for each — a checklist for what "causal" or "foundation model" claims actually mean in a given paper</li>
+                        <li>"Linear beats foundation model" — a sober, systematic accounting of when scale claims do and don't translate into real predictive advantage</li>
+                        <li>Roadmap for translating causal/mechanistic claims into testable biological hypotheses rather than leaderboard numbers</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41576-025-00920-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>How to build an AI-driven digital organism</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Med</span> <span class="meta-badge type-badge">Perspective · Vision</span>
+                    </div>
+                    <p class="paper-description">Song, Segal &amp; Xing (GenBio AI) lay out an architectural blueprint for an AI-Driven Digital Organism (AIDO): a hierarchical system of multiscale foundation models spanning DNA, RNA, protein, and whole-cell behaviour, connected by shared central-dogma sequence encoders and a differentiable computation graph — positioned as the successor paradigm to single-modality scFMs like the ones catalogued above.</p>
+                    <ul class="key-contributions">
+                        <li>Central-dogma foundation-model stack (DNA → RNA → protein) with shared positional encodings bridging sequence and spatial context across scales</li>
+                        <li>Differentiable multi-scale computation graph enabling bidirectional information propagation between molecular, cellular, and whole-organism levels</li>
+                        <li>Frames a virtual-cell "world model" as the endpoint capability: condition on a cell state, apply an intervention, roll out the counterfactual trajectory</li>
+                        <li>AIDO.Cell (open-sourced earlier in this catalogue) is Phase 1 of this roadmap; a commercial AIDO Cell world model entered closed alpha in August 2026</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-026-04595-0" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
             </div>
         </section>
 
@@ -985,6 +1054,8 @@
                     <tr><td>AIDO.Cell</td><td>scRNA FM</td><td>50M cells, 3M–650M params</td><td>Full transcriptome, perturbation</td><td>FlashAttention-2 dense</td></tr>
                     <tr><td>STACK</td><td>scRNA ICL</td><td>149M cells</td><td>Zero-shot perturbation transfer</td><td>True in-context learning</td></tr>
                     <tr><td>Geneformer-scaling 2026</td><td>QLoRA scFM</td><td>316M params, 4-bit</td><td>Resource-efficient virtual screens</td><td>QLoRA preserves embeddings</td></tr>
+                    <tr><td>TranscriptFormer</td><td>Cross-species generative</td><td>112M cells, 12 species</td><td>Zero-shot expression generation, cross-species transfer</td><td>ESM2 gene tokens + autoregressive</td></tr>
+                    <tr><td>Evo 2</td><td>Genomic LM</td><td>9.3T bp, 7B–40B params</td><td>SNV effect, CRISPR/genome design, megabase context</td><td>StripedHyena 2 SSM + sparse attn, 1M-token context</td></tr>
                 </tbody>
             </table>
         </section>
@@ -1023,7 +1094,7 @@
             <h2>Practical Implementation Guide</h2>
             <div class="highlight-box">
                 <h4>If your goal is transfer learning to a small dataset</h4>
-                <p>Use a pretrained <strong>Geneformer</strong> or <strong>scFoundation</strong> checkpoint and fine-tune. With the new 4-bit <strong>Geneformer-scaling</strong> recipe, full fine-tuning of 316M parameters fits on a single consumer GPU. Don't pretrain from scratch unless you have &gt;10M cells and a real domain shift.</p>
+                <p>Use a pretrained <strong>Geneformer</strong> or <strong>scFoundation</strong> <span style="font-size:0.85em; opacity:0.75;">(Hao et al., Nature Methods 2024, DOI <a href="https://doi.org/10.1038/s41592-024-02305-7" target="_blank">10.1038/s41592-024-02305-7</a>)</span> checkpoint and fine-tune. With the new 4-bit <strong>Geneformer-scaling</strong> recipe, full fine-tuning of 316M parameters fits on a single consumer GPU. Don't pretrain from scratch unless you have &gt;10M cells and a real domain shift.</p>
             </div>
             <div class="highlight-box">
                 <h4>If your goal is cross-species or cross-platform</h4>
@@ -1036,6 +1107,10 @@
             <div class="highlight-box">
                 <h4>If your goal is virtual perturbation / target ID</h4>
                 <p>Pipeline: pretrained <strong>Geneformer</strong> → fine-tune on your disease atlas → in-silico KO via attention or embedding perturbation. <strong>STACK</strong>'s in-context recipe is the new alternative — no fine-tune, just provide a labeled prompt cell set. For protein-level outputs, chain <strong>scTranslator</strong> after the cell-state predictor.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is whole-cell multi-scale simulation</h4>
+                <p>The field is moving beyond scRNA-only foundation models. <strong>AIDO</strong> (GenBio AI) integrates DNA, RNA, protein, and regulatory networks into a single differentiable world model — condition on a cell state, apply a genetic or chemical perturbation, and read out the rollout across molecular scales. The world-model API is currently in closed alpha (as of August 2026); for an open-source entry point today, use <strong>AIDO.Cell</strong> (the same pretrained weights, catalogued above) for standard scRNA tasks while the full simulator API opens up.</p>
             </div>
 
             <figure class="module-figure">
