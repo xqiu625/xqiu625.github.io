@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE FIVE CAUSAL AIMS  (Dimitrov et al.)</text>
+  <text x="60" y="96" class="h1">Interpret. Extrapolate. Decompose. Trace. Intervene.</text>
+  <text x="60" y="124" class="h-sub">Five different things &#34;causal modelling&#34; can actually mean in single-cell biology  —  pick the one that matches your question.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="190" width="360" height="640" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="80" y="218" class="aim-tag" fill="#4a6a8a">AIM ①</text>
+    <text x="80" y="252" class="aim-title">Interpret</text>
+    <text x="240" y="354" text-anchor="middle" class="emoji">🔍</text>
+    <text x="80" y="430" class="annot" font-weight="700">question</text>
+    <text x="80" y="452" class="annot">&#34;why did the model predict this?&#34;</text>
+
+    <text x="80" y="494" class="annot" font-weight="700">example</text>
+    <text x="80" y="516" class="annot">which genes drive the cell-type call?</text>
+
+    <text x="80" y="558" class="annot" font-weight="700">methods</text>
+    <text x="80" y="580" class="annot">attention analysis</text>
+    <text x="80" y="600" class="annot">SHAP  ·  integrated gradients</text>
+    <text x="80" y="620" class="annot">feature ablation</text>
+
+    <line x1="80" y1="650" x2="400" y2="650" stroke="#bcd2e6" stroke-width="1"></line>
+    <text x="80" y="678" class="key" fill="#4a6a8a">use when</text>
+    <text x="80" y="700" class="annot" fill="#5c5c66">a black-box model already works,</text>
+    <text x="80" y="720" class="annot" fill="#5c5c66">and you need to know what it is using.</text>
+    <text x="80" y="760" class="annot" font-style="italic" fill="#5c5c66">⚠  attribution ≠ causation;</text>
+    <text x="80" y="780" class="annot" font-style="italic" fill="#5c5c66">feature importance is correlational.</text>
+  </g>
+
+  <g>
+    <rect x="440" y="190" width="360" height="640" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="460" y="218" class="aim-tag" fill="#2c8a4f">AIM ②</text>
+    <text x="460" y="252" class="aim-title">Extrapolate</text>
+    <text x="620" y="354" text-anchor="middle" class="emoji">🔮</text>
+    <text x="460" y="430" class="annot" font-weight="700">question</text>
+    <text x="460" y="452" class="annot">&#34;what would happen if I changed X?&#34;</text>
+
+    <text x="460" y="494" class="annot" font-weight="700">example</text>
+    <text x="460" y="516" class="annot">predict an unseen perturbation</text>
+    <text x="460" y="534" class="annot">on an unseen cell type.</text>
+
+    <text x="460" y="576" class="annot" font-weight="700">methods</text>
+    <text x="460" y="598" class="annot">CPA  ·  GEARS  ·  FCR</text>
+    <text x="460" y="618" class="annot">identifiable VAEs</text>
+
+    <line x1="460" y1="648" x2="780" y2="648" stroke="#bcd6bc" stroke-width="1"></line>
+    <text x="460" y="676" class="key" fill="#2c8a4f">use when</text>
+    <text x="460" y="698" class="annot" fill="#5c5c66">screen space is too big</text>
+    <text x="460" y="718" class="annot" fill="#5c5c66">to brute-force experimentally.</text>
+    <text x="460" y="760" class="annot" font-style="italic" fill="#5c5c66">⚠  validate on held-out</text>
+    <text x="460" y="780" class="annot" font-style="italic" fill="#5c5c66">cell-types AND perturbations.</text>
+  </g>
+
+  <g>
+    <rect x="820" y="190" width="360" height="640" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="840" y="218" class="aim-tag" fill="#c95a2a">AIM ③</text>
+    <text x="840" y="252" class="aim-title">Decompose</text>
+    <text x="1000" y="354" text-anchor="middle" class="emoji">🧩</text>
+    <text x="840" y="430" class="annot" font-weight="700">question</text>
+    <text x="840" y="452" class="annot">&#34;which factor is doing the work?&#34;</text>
+
+    <text x="840" y="494" class="annot" font-weight="700">example</text>
+    <text x="840" y="516" class="annot">separate treatment effect</text>
+    <text x="840" y="534" class="annot">from cell-type context.</text>
+
+    <text x="840" y="576" class="annot" font-weight="700">methods</text>
+    <text x="840" y="598" class="annot">FCR  ·  treatment × context</text>
+    <text x="840" y="618" class="annot">SIMVI  ·  intrinsic × niche</text>
+
+    <line x1="840" y1="648" x2="1160" y2="648" stroke="#e7c5a8" stroke-width="1"></line>
+    <text x="840" y="676" class="key" fill="#c95a2a">use when</text>
+    <text x="840" y="698" class="annot" fill="#5c5c66">two signals are confounded</text>
+    <text x="840" y="718" class="annot" fill="#5c5c66">in the observational data.</text>
+    <text x="840" y="760" class="annot" font-style="italic" fill="#5c5c66">⚠  identifiability requires</text>
+    <text x="840" y="780" class="annot" font-style="italic" fill="#5c5c66">extra assumptions (iVAE etc.).</text>
+  </g>
+
+  <g>
+    <rect x="1200" y="190" width="360" height="640" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <text x="1220" y="218" class="aim-tag" fill="#6b4e8a">AIM ④</text>
+    <text x="1220" y="252" class="aim-title">Trace</text>
+    <text x="1380" y="354" text-anchor="middle" class="emoji">🕰</text>
+    <text x="1220" y="430" class="annot" font-weight="700">question</text>
+    <text x="1220" y="452" class="annot">&#34;what came before what?&#34;</text>
+
+    <text x="1220" y="494" class="annot" font-weight="700">example</text>
+    <text x="1220" y="516" class="annot">reconstruct lineage</text>
+    <text x="1220" y="534" class="annot">or pseudotime ordering.</text>
+
+    <text x="1220" y="576" class="annot" font-weight="700">methods</text>
+    <text x="1220" y="598" class="annot">RNA velocity</text>
+    <text x="1220" y="618" class="annot">lineage barcoding  ·  Waddington-OT</text>
+
+    <line x1="1220" y1="648" x2="1540" y2="648" stroke="#cfc5dd" stroke-width="1"></line>
+    <text x="1220" y="676" class="key" fill="#6b4e8a">use when</text>
+    <text x="1220" y="698" class="annot" fill="#5c5c66">you have a dynamic process</text>
+    <text x="1220" y="718" class="annot" fill="#5c5c66">but only static snapshots.</text>
+    <text x="1220" y="760" class="annot" font-style="italic" fill="#5c5c66">⚠  pseudotime can mis-order</text>
+    <text x="1220" y="780" class="annot" font-style="italic" fill="#5c5c66">when populations are mixed.</text>
+  </g>
+
+  <g>
+    <rect x="1580" y="190" width="360" height="640" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1600" y="218" class="aim-tag" fill="#7a5b13">AIM ⑤</text>
+    <text x="1600" y="252" class="aim-title">Intervene</text>
+    <text x="1760" y="354" text-anchor="middle" class="emoji">✂</text>
+    <text x="1600" y="430" class="annot" font-weight="700">question</text>
+    <text x="1600" y="452" class="annot">&#34;do the intervention; measure.&#34;</text>
+
+    <text x="1600" y="494" class="annot" font-weight="700">example</text>
+    <text x="1600" y="516" class="annot">design + run gene knockouts;</text>
+    <text x="1600" y="534" class="annot">drug screens.</text>
+
+    <text x="1600" y="576" class="annot" font-weight="700">methods</text>
+    <text x="1600" y="598" class="annot">Perturb-seq  ·  CRISPRi / a</text>
+    <text x="1600" y="618" class="annot">CausalBench  ·  scTenifoldKnk</text>
+
+    <line x1="1600" y1="648" x2="1920" y2="648" stroke="#e1c66b" stroke-width="1"></line>
+    <text x="1600" y="676" class="key" fill="#7a5b13">use when</text>
+    <text x="1600" y="698" class="annot" fill="#5c5c66">claims need to be true,</text>
+    <text x="1600" y="718" class="annot" fill="#5c5c66">not merely plausible.</text>
+    <text x="1600" y="760" class="annot" font-style="italic" fill="#5c5c66">⚠  this is the ground truth</text>
+    <text x="1600" y="780" class="annot" font-style="italic" fill="#5c5c66">other methods are estimating.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="860" width="1880" height="210" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="890" class="aim-tag" fill="#a14854">THE SOBER FINDING  ⚠</text>
+    <text x="80" y="924" class="key" fill="#a14854">linear models match foundation models on standard perturbation benchmarks.</text>
+    <text x="80" y="952" class="key" fill="#a14854">scale  ≠  mechanism.</text>
+    <text x="80" y="988" class="annot">naming a model &#34;causal&#34; doesn&#39;t make it causal.</text>
+    <text x="80" y="1010" class="annot">the question (interpret / extrapolate / decompose / trace / intervene)</text>
+    <text x="80" y="1032" class="annot">determines which methods are actually appropriate  —  not the parameter count.</text>
+    <text x="80" y="1062" class="annot" font-style="italic" fill="#5c5c66">name your aim before you pick your method.</text>
+  </g>
+</svg>

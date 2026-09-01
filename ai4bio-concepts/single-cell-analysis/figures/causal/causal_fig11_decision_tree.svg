@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  WHICH CAUSAL METHOD FOR WHICH QUESTION?</text>
+  <text x="60" y="96" class="h1">Top-down from what data you actually have.</text>
+  <text x="60" y="124" class="h-sub">Start at &#34;what&#39;s on disk?&#34; — perturbations and genotypes unlock different methods than scRNA-seq alone.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="780" y="170" width="440" height="80" rx="14" fill="#ffffff" stroke="#1a1a22" stroke-width="2"></rect>
+    <text x="1000" y="198" text-anchor="middle" class="root-tag">START HERE  🎯</text>
+    <text x="1000" y="232" text-anchor="middle" class="root-q">What data do you have?</text>
+  </g>
+
+  
+  <g fill="none" stroke-width="2">
+    <path d="M 1000 250 C 1000 285, 230 285, 230 320" stroke="#8a8275" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 600 285, 600 320" stroke="#c95a2a" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 970 285, 970 320" stroke="#2c8a4f" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 1340 285, 1340 320" stroke="#4a6a8a" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 1770 285, 1770 320" stroke="#6b4e8a" marker-end="url(#ar)"></path>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="322" width="340" height="84" rx="12" fill="#efeae0" stroke="#8a8275" stroke-width="1.8"></rect>
+    <text x="78" y="350" class="node-tag" fill="#8a8275">BRANCH 1  📊</text>
+    <text x="78" y="378" class="node-q">Only observational</text>
+    <text x="78" y="398" class="node-q">scRNA-seq?</text>
+  </g>
+  <line x1="230" y1="408" x2="230" y2="430" stroke="#8a8275" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="60" y="436" width="340" height="200" rx="10" fill="#ffffff" stroke="#8a8275" stroke-width="1.4"></rect>
+    <text x="78" y="462" class="node-tag" fill="#8a8275">PICK BY GENE-SET SIZE</text>
+    <text x="78" y="488" class="leaf-title">small set  ·  &lt; 100 nodes  🪶</text>
+    <text x="78" y="510" class="leaf-body">NOTEARS  /  NOTEARS-MLP</text>
+    <text x="78" y="528" class="leaf-body" fill="#5c5c66">DAG discovery in continuous opt</text>
+    <line x1="78" y1="548" x2="380" y2="548" stroke="#e5dfcf"></line>
+    <text x="78" y="570" class="leaf-title">genome-scale  🌍</text>
+    <text x="78" y="592" class="leaf-body">scTenifoldKnk  →  virtual KO</text>
+    <text x="78" y="610" class="leaf-body" fill="#5c5c66">manifold-aligned perturbation</text>
+  </g>
+
+  
+  <g>
+    <rect x="430" y="322" width="340" height="84" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="448" y="350" class="node-tag" fill="#c95a2a">BRANCH 2  ✂</text>
+    <text x="448" y="378" class="node-q">Perturbation data?</text>
+    <text x="448" y="398" class="node-q">Perturb-seq, CRISPRi</text>
+  </g>
+  <line x1="600" y1="408" x2="600" y2="430" stroke="#c95a2a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="430" y="436" width="340" height="280" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+    <text x="448" y="462" class="node-tag" fill="#c95a2a">PICK BY GOAL</text>
+
+    <text x="448" y="488" class="leaf-title">benchmark methods  🏁</text>
+    <text x="448" y="508" class="leaf-body">CausalBench  ·  K562, RPE1</text>
+
+    <text x="448" y="544" class="leaf-title">decompose context × treatment  🧩</text>
+    <text x="448" y="564" class="leaf-body">FCR  ·  identifiable iVAE</text>
+
+    <text x="448" y="600" class="leaf-title">discover DAG edges  🕸</text>
+    <text x="448" y="620" class="leaf-body">DCDI  (known targets)</text>
+    <text x="448" y="640" class="leaf-body">ENCO  (unknown targets)</text>
+
+    <text x="448" y="676" class="leaf-body" font-style="italic" fill="#5c5c66">interventional data unlocks identifiability</text>
+    <text x="448" y="694" class="leaf-body" font-style="italic" fill="#5c5c66">observational data cannot give you.</text>
+  </g>
+
+  
+  <g>
+    <rect x="800" y="322" width="340" height="84" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="818" y="350" class="node-tag" fill="#2c8a4f">BRANCH 3  🗺</text>
+    <text x="818" y="378" class="node-q">Spatial</text>
+    <text x="818" y="398" class="node-q">transcriptomics?</text>
+  </g>
+  <line x1="970" y1="408" x2="970" y2="430" stroke="#2c8a4f" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="800" y="436" width="340" height="200" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="818" y="462" class="node-tag" fill="#2c8a4f">RECOMMENDED</text>
+    <text x="818" y="488" class="leaf-title">SIMVI  🧱</text>
+    <text x="818" y="510" class="leaf-body">niche-vs-intrinsic decomposition</text>
+    <text x="818" y="530" class="leaf-body">double machine learning for niche effects</text>
+    <line x1="818" y1="552" x2="1120" y2="552" stroke="#bcd6bc"></line>
+    <text x="818" y="576" class="leaf-body" font-style="italic" fill="#5c5c66">answers: is this gene up because</text>
+    <text x="818" y="594" class="leaf-body" font-style="italic" fill="#5c5c66">of identity, or because of neighbours?</text>
+  </g>
+
+  
+  <g>
+    <rect x="1170" y="322" width="340" height="84" rx="12" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="1188" y="350" class="node-tag" fill="#4a6a8a">BRANCH 4  🧬</text>
+    <text x="1188" y="378" class="node-q">Genotypes + scRNA-seq?</text>
+    <text x="1188" y="398" class="node-q">(population cohort)</text>
+  </g>
+  <line x1="1340" y1="408" x2="1340" y2="430" stroke="#4a6a8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="1170" y="436" width="340" height="200" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+    <text x="1188" y="462" class="node-tag" fill="#4a6a8a">RECOMMENDED</text>
+    <text x="1188" y="488" class="leaf-title">Airqtl  📐</text>
+    <text x="1188" y="510" class="leaf-body">MR-based directional GRN</text>
+    <text x="1188" y="530" class="leaf-body">50 K cells × 4 M SNPs  ·  10⁸× speedup</text>
+    <line x1="1188" y1="552" x2="1490" y2="552" stroke="#bcd2e6"></line>
+    <text x="1188" y="576" class="leaf-body" font-style="italic" fill="#5c5c66">orthogonal evidence to Perturb-seq.</text>
+    <text x="1188" y="594" class="leaf-body" font-style="italic" fill="#5c5c66">no CRISPR required.</text>
+  </g>
+
+  
+  <g>
+    <rect x="1600" y="322" width="340" height="84" rx="12" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <text x="1618" y="350" class="node-tag" fill="#6b4e8a">BRANCH 5  🩺</text>
+    <text x="1618" y="378" class="node-q">Human genetics</text>
+    <text x="1618" y="398" class="node-q">+ Perturb-seq?</text>
+  </g>
+  <line x1="1770" y1="408" x2="1770" y2="430" stroke="#6b4e8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="1600" y="436" width="340" height="200" rx="10" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+    <text x="1618" y="462" class="node-tag" fill="#6b4e8a">RECOMMENDED</text>
+    <text x="1618" y="488" class="leaf-title">Gene → Program → Trait  🪜</text>
+    <text x="1618" y="510" class="leaf-body">three-tier integrative pipeline</text>
+    <text x="1618" y="530" class="leaf-body">UK Biobank LoF + K562 programs</text>
+    <line x1="1618" y1="552" x2="1920" y2="552" stroke="#cfc5dd"></line>
+    <text x="1618" y="576" class="leaf-body" font-style="italic" fill="#5c5c66">target discovery with mechanism</text>
+    <text x="1618" y="594" class="leaf-body" font-style="italic" fill="#5c5c66">and disease association built in.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="700" width="1880" height="160" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="730" class="root-tag" fill="#7a5b13">SIDE BRANCH  ·  METHOD DEVELOPMENT  🧪</text>
+    <text x="80" y="762" class="leaf-title" fill="#7a5b13">need synthetic ground truth to benchmark a new method?</text>
+    <text x="80" y="788" class="leaf-body">→  GRouNdGAN  ·  embed a known GRN into synthetic cells</text>
+    <text x="80" y="808" class="leaf-body">honest precision / recall on a hand-specified ground truth</text>
+    <text x="80" y="840" class="leaf-body" font-style="italic" fill="#5c5c66">also supports in-silico KO  ·  remove a TF, watch downstream genes shift.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="880" width="1880" height="190" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <text x="80" y="910" class="node-tag" fill="#1a1a22">METHOD FAMILY COLOUR KEY</text>
+
+    <g transform="translate(80,926)">
+      <rect x="0" y="0" width="18" height="14" fill="#efeae0" stroke="#8a8275" stroke-width="1.5"></rect>
+      <text x="28" y="12" class="leaf-body">observational DAG  ·  NOTEARS · scTenifoldKnk</text>
+
+      <rect x="380" y="0" width="18" height="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.5"></rect>
+      <text x="408" y="12" class="leaf-body">perturbation methods  ·  CausalBench · FCR · DCDI · ENCO</text>
+
+      <rect x="900" y="0" width="18" height="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.5"></rect>
+      <text x="928" y="12" class="leaf-body">spatial decomposition  ·  SIMVI</text>
+
+      <rect x="1240" y="0" width="18" height="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.5"></rect>
+      <text x="1268" y="12" class="leaf-body">genetics-anchored  ·  Airqtl</text>
+
+      <rect x="1560" y="0" width="18" height="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.5"></rect>
+      <text x="1588" y="12" class="leaf-body">integrative trait pipeline  ·  Gene→Program→Trait</text>
+    </g>
+
+    <line x1="80" y1="970" x2="1920" y2="970" stroke="#e5dfcf"></line>
+
+    <text x="80" y="1000" class="leaf-body" font-style="italic" fill="#5c5c66">pick by data, not by familiarity. perturbations + genetics are the rare resources;</text>
+    <text x="80" y="1020" class="leaf-body" font-style="italic" fill="#5c5c66">when you have either one, use the method that takes advantage of it.</text>
+    <text x="80" y="1052" class="leaf-title" fill="#a14854">⚠  combining two branches (e.g. Airqtl + Perturb-seq) gives the strongest causal claim.</text>
+  </g>
+</svg>

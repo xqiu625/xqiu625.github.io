@@ -57,19 +57,19 @@
             transition: color 0.3s;
         }
         .navbar-nav a:hover {
-            color: #189177;
+            color: #D52E37;
         }
         .home-link {
-            color: #189177 !important;
+            color: #D52E37 !important;
         }
         .header {
-            background: linear-gradient(135deg, #189177 0%, #48B09E 100%);
+            background: linear-gradient(135deg, #D52E37 0%, #E8555F 100%);
             color: white;
             padding: 40px;
             border-radius: 15px;
             margin: 20px 0;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(24, 145, 119, 0.3);
+            box-shadow: 0 4px 20px rgba(213, 46, 55, 0.3);
         }
         .header h1 {
             margin: 0 0 15px 0;
@@ -87,13 +87,13 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .content-section h2 {
-            color: #189177;
-            border-bottom: 3px solid #189177;
+            color: #D52E37;
+            border-bottom: 3px solid #D52E37;
             padding-bottom: 10px;
             margin-bottom: 20px;
         }
         .content-section h3 {
-            color: #0D8A85;
+            color: #A31525;
             margin-top: 25px;
         }
         .method-grid {
@@ -110,18 +110,18 @@
             background: #fafafa;
         }
         .method-card:hover {
-            border-color: #189177;
-            box-shadow: 0 4px 12px rgba(24, 145, 119, 0.2);
+            border-color: #D52E37;
+            box-shadow: 0 4px 12px rgba(213, 46, 55, 0.2);
             transform: translateY(-3px);
         }
         .method-card h4 {
-            color: #189177;
+            color: #D52E37;
             margin-top: 0;
             font-size: 1.3em;
         }
         .method-card .year {
             display: inline-block;
-            background: #189177;
+            background: #D52E37;
             color: white;
             padding: 3px 10px;
             border-radius: 12px;
@@ -167,7 +167,7 @@
             display: inline-block;
             padding: 6px 12px;
             margin: 3px;
-            background: #189177;
+            background: #D52E37;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -175,7 +175,7 @@
             transition: background 0.3s ease;
         }
         .method-card .links a:hover {
-            background: #0D8A85;
+            background: #A31525;
         }
         .comparison-table {
             width: 100%;
@@ -189,7 +189,7 @@
             text-align: left;
         }
         .comparison-table th {
-            background: #189177;
+            background: #D52E37;
             color: white;
             font-weight: bold;
         }
@@ -207,15 +207,41 @@
             color: #e74c3c;
             font-weight: bold;
         }
+        .stats-bar {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-left: 3px solid #D52E37;
+        }
+        .stat-number {
+            font-size: 2.3em;
+            font-weight: 700;
+            color: #D52E37;
+            display: block;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.92em;
+            margin-top: 5px;
+        }
         .decision-tree {
             background: #f8f9fa;
             padding: 25px;
             border-radius: 10px;
             margin: 25px 0;
-            border-left: 5px solid #189177;
+            border-left: 5px solid #D52E37;
         }
         .decision-tree h4 {
-            color: #189177;
+            color: #D52E37;
             margin-top: 0;
         }
         .decision-option {
@@ -225,7 +251,7 @@
             border-radius: 8px;
         }
         .decision-option strong {
-            color: #0D8A85;
+            color: #A31525;
         }
         .highlight-box {
             background: linear-gradient(135deg, #fff5e6 0%, #ffe6cc 100%);
@@ -246,118 +272,37 @@
             border-left: 4px solid #4caf50;
         }
 
-        /* ===== LEGO ANALOGY ===== */
-        .sport-analogy {
-            display: grid;
-            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
-            gap: 30px;
-            align-items: center;
-            margin: 25px 0;
-            padding: 30px;
-            overflow: hidden;
-            border: 2px solid #48B09E;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #e6f4f0 0%, #ffffff 60%, #f3f1fa 100%);
-            box-shadow: 0 4px 18px rgba(13, 138, 133, 0.14);
-        }
-
-        .sport-analogy-copy .analogy-label {
-            color: #0D8A85;
-            font-size: 0.76em;
-            font-weight: bold;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .sport-analogy-copy h2 {
-            margin: 7px 0 12px;
-            color: #189177;
-            border: 0;
-            padding: 0;
-        }
-
-        .lego-trajectory-hero {
-            margin: 0;
-            overflow: hidden;
-            border: 8px solid white;
-            border-radius: 14px;
-            background: #f3f1fa;
-            box-shadow: 0 12px 30px rgba(24, 145, 119, 0.2);
-        }
-
-        .lego-trajectory-hero img,
-        .readout-player-strip img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        .analogy-steps {
-            display: grid;
-            gap: 9px;
-            margin-top: 18px;
-        }
-
-        .analogy-step {
-            display: grid;
-            grid-template-columns: 32px 1fr;
-            gap: 10px;
-            align-items: start;
-        }
-
-        .analogy-step span {
-            width: 28px;
-            height: 28px;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            background: #189177;
-            color: white;
-            font-weight: bold;
-        }
-
-        .readout-player-strip {
-            margin: 30px 0;
-            padding: 24px;
-            border: 2px solid #48B09E;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #fff 0%, #eaf6f2 58%, #f3f1fa 100%);
-            box-shadow: 0 4px 18px rgba(13, 138, 133, 0.12);
-        }
-
-        .readout-player-strip img {
-            max-width: 980px;
-            margin: 0 auto;
-            filter: drop-shadow(0 16px 18px rgba(13, 138, 133, 0.16));
-        }
-
-        .player-steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-top: 16px;
-        }
-
-        .player-step {
-            padding: 14px 16px;
-            border-left: 4px solid #48B09E;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.78);
-        }
-
-        .player-step strong {
-            display: block;
-            color: #0D8A85;
-            margin-bottom: 4px;
-        }
-
-        .player-step span {
-            color: #5d6d6f;
-            font-size: 0.94em;
-        }
-
-
-
+        /* ===== CASEWORK BANNER + STORY (Formula 1, 05 Monitor) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#2b0d10 0%,#8f1a24 60%,#4a0f16 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(122,21,32,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #f5d9d9; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #f7e3e3; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: #fdf9ec; border: 1.5px solid #f0e3c0; }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: #7a1520; border-left: 4px solid #D52E37; padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid #f0e3c0; border-left: 5px solid #D52E37; border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(122,21,32,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(122,21,32,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: #D52E37; }
+        .library-card h4 { color: #7a1520; font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: #7a1520; background: #fdf3d0; border: 1px dashed #e8cf8a; border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: #A31525; font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: #D52E37; font-size: .95em; clear: both; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid #f0e3c0; box-shadow: 0 10px 28px rgba(122,21,32,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #f0a79b; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #f0a79b; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(213,46,55,.15); border-color: rgba(240,167,155,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #f0a79b; }
+        [data-theme="dark"] .library-footnote { color: #f0a79b; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
 
         /* mobile fit: keep layout inside small viewports */
         @media (max-width: 768px) {
@@ -366,25 +311,14 @@
             .navbar-nav a { font-size: 12.5px; }
             .container { padding-left: 12px; padding-right: 12px; }
 
-            .sport-analogy {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-
-            .player-steps {
-                grid-template-columns: 1fr;
-            }
-
-            .readout-player-strip {
-                padding: 16px;
-            }
+            .story-hero { float: none; width: min(320px, 82%); margin: 0 auto 18px; }
         }
     </style>
     <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
     <script src="../../theme.js" data-theme-asset="js"></script>
     <link rel="stylesheet" href="../sport-themes.css">
 </head>
-<body data-sport="model">
+<body data-sport="monitor">
     <nav class="navbar">
         <div class="container">
             <ul class="navbar-nav">
@@ -396,6 +330,29 @@
                 <li>
                     <a href="https://xqiu625.github.io/">
                         <i class="fas fa-home"></i> Homepage
+                    </a>
+                </li>
+                <li>
+                    <a href="#f1-trajectory">🏁 Race</a>
+                </li>
+                <li>
+                    <a href="#overview">
+                        <i class="fas fa-book-open"></i> Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="#methods">
+                        <i class="fas fa-flask"></i> Methods
+                    </a>
+                </li>
+                <li>
+                    <a href="#comparison">
+                        <i class="fas fa-table"></i> Comparison
+                    </a>
+                </li>
+                <li>
+                    <a href="#best-practices">
+                        <i class="fas fa-lightbulb"></i> Best Practices
                     </a>
                 </li>
                 <li>
@@ -412,71 +369,87 @@
             <p class="subtitle">A comprehensive guide to computational tools for reconstructing cellular developmental trajectories</p>
         </div>
 
-        <section class="sport-analogy" aria-labelledby="lego-analogy-title">
-            <figure class="lego-trajectory-hero">
-                <img
-                    src="../animations/rive-assets/stage-themes-v5/lego-trajectory-hero.webp"
-                    width="1400"
-                    height="1400"
-                    loading="lazy"
-                    decoding="async"
-                    alt="Healshu the fox in a hard hat and headlamp beside a sorted brick tray, with two part-built brick stacks of different heights linked by a dashed path">
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">23</span>
+                <div class="stat-label">Methods Covered</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <div class="stat-label">Method Categories</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2017&ndash;2025</span>
+                <div class="stat-label">Publication Years</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">Jul 2026</span>
+                <div class="stat-label">Last Updated</div>
+            </div>
+        </div>
+
+        <!-- CASEWORK BANNER (Monitor · Formula 1 lens) -->
+        <section class="casework-banner" aria-label="Formula 1 inspired trajectory inference casework">
+            <div class="casework-art">
+                <img src="../animations/rive-assets/stage-themes-v5/f1-trajectory-three-poses.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Healshu as a red Formula 1 driver reading sector timing, telemetry, and a branching racing line">
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">Scuderia Ferrari lens · trajectory inference</div>
+                <h2>看不见整场比赛，就从计时数据里读出赛车线。</h2>
+                <p>The Scuderia is the oldest garage on the grid — and its archive holds seventy years of sector times, telemetry streams, and result sheets. 从这个红色车库的方法论开始：no race is ever watched whole; it is reconstructed from the data, one sector at a time. That is trajectory inference from a single-cell snapshot.</p>
+            </div>
+        </section>
+
+        <!-- STORY LINE: the race you never watch -->
+        <section class="content-section story-section" id="f1-trajectory">
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/f1-trajectory-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu as an F1 driver in a red racing suit, helmet tucked under one arm, pointing at a timing screen of sector dots on the pit wall while a red F1 car passes behind">
             </figure>
-            <div class="sport-analogy-copy">
-                <div class="analogy-label">🧱 LEGO analogy · 02.3 The Unfinished Models</div>
-                <h2 id="lego-analogy-title">You never saw the build — only the room.</h2>
-                <p>
-                    Walk into a room full of half-built LEGO models, every one frozen at a different stage.
-                    Nobody filmed any single model going up, yet the build order is still recoverable from how
-                    finished each one looks. That room is a scRNA-seq snapshot: thousands of cells caught
-                    mid-differentiation, and trajectory inference is the argument you make from the still image.
-                </p>
-                <div class="analogy-steps">
-                    <div class="analogy-step">
-                        <span>1</span>
-                        <div><strong>A photo, not a timelapse:</strong> a cell is destroyed the moment it is sequenced, so you get one frame holding many builds at many stages — never one build followed through time.</div>
-                    </div>
-                    <div class="analogy-step">
-                        <span>2</span>
-                        <div><strong>Order by how finished:</strong> rank the models from bare baseplate to nearly complete. That ranking is pseudotime — a position along a progression, not minutes or hours on a clock.</div>
-                    </div>
-                    <div class="analogy-step">
-                        <span>3</span>
-                        <div><strong>Pick the starting pile:</strong> you have to declare which model is the beginning, and that call comes from biology (marker genes, known progenitors, RNA velocity), not from the algorithm. A wrong root silently runs the whole trajectory backwards.</div>
-                    </div>
-                    <div class="analogy-step">
-                        <span>4</span>
-                        <div><strong>Watch where builds diverge:</strong> some become a castle, some a spaceship. Branches are real biology — but these methods will happily fit a smooth path through populations that are actually discrete, so first ask whether a trajectory is warranted at all.</div>
-                    </div>
+            <h2>🏁 The Race You Never Watch, in Six Reads</h2>
+            <p class="story-quote">「整场比赛，只有计时塔看得见。」</p>
+            <p class="story-intro">In the red garage, a grand prix is never one movie — it is thousands of sector times and telemetry messages streaming past the pit wall. Reconstructing the race from that data is the exact shape of trajectory inference: one snapshot of thousands of cells, no timelapse of any single one. Six reads from the Scuderia's pit wall, re-read as the concepts this module's methods formalize.</p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Read 1 · 计时塔 The timing tower</div>
+                    <h4>Pseudotime</h4>
+                    <p class="plot">The tower never shows the race; it posts sector times, car by car. Order the field by sector and the running order appears — nobody had to watch a single lap.</p>
+                    <p class="echo"><strong>Pseudotime.</strong> Rank cells by progression, not by timestamps: a position along the course, inferred from state, not read off a clock.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Read 2 · 遥测 Telemetry</div>
+                    <h4>RNA velocity</h4>
+                    <p class="plot">Every car streams speed, gear, and throttle at each meter. Current velocity is a free prediction of the next sector — if the channel is honest.</p>
+                    <p class="echo"><strong>RNA velocity.</strong> Unspliced and spliced counts are a cell's telemetry channel: where it is headed next, read off the current stream.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Read 3 · 赛车线 The racing line</div>
+                    <h4>Trajectory manifold</h4>
+                    <p class="plot">Through any corner there is one fast line, and every car approximates it. Stray off it and you are slow, not creative.</p>
+                    <p class="echo"><strong>Trajectory as a manifold.</strong> Cells move along low-dimensional lines through state space; the methods below differ in how they draw that line — trees, curves, graphs, or optimal-transport flows.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Read 4 · 分叉弯 The fork</div>
+                    <h4>Branching, verified</h4>
+                    <p class="plot">Some circuits offer two lines through the same complex — and both can win. But a careful steward asks whether the fork is real asphalt or a mirage in the spray.</p>
+                    <p class="echo"><strong>Branching, verified.</strong> Bifurcations are real biology — yet a smoother will happily draw a fork through discrete populations. Check the split exists before publishing it.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Read 5 · 发车格 The starting grid</div>
+                    <h4>Root selection</h4>
+                    <p class="plot">Hand the wrong car pole position and the whole result sheet reads backwards. The grid is declared before the race, by the rules — not inferred from it.</p>
+                    <p class="echo"><strong>Root selection.</strong> The algorithm does not know where the trajectory starts; biology declares it (progenitors, marker genes, velocity). A wrong root silently runs time in reverse.</p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Read 6 · 成绩审计 The results audit</div>
+                    <h4>Benchmark before belief</h4>
+                    <p class="plot">Before the sheet is official, the FIA audits the telemetry — sensor by sensor, sector by sector. A beautiful reconstruction with no audit is a rumor, not a result.</p>
+                    <p class="echo"><strong>Benchmark before belief.</strong> Validate reconstructions against held-out timepoints and known biology (the Saelens et al. TI benchmark is the canonical audit) — then publish the line.</p>
                 </div>
             </div>
+            <p class="library-footnote">「看不见整场比赛，就从计时数据里读出赛车线。」 — you never watch the race; you read it.</p>
         </section>
 
-        <section class="readout-player-strip" aria-label="Healshu LEGO trajectory readout poses">
-            <img
-                src="../animations/rive-assets/stage-themes-v5/lego-trajectory-three-poses.webp"
-                width="1672"
-                height="941"
-                loading="lazy"
-                decoding="async"
-                alt="Three poses of Healshu the fox: inspecting a sorted brick tray with a magnifier, holding a two-brick stack next to a one-brick and two-brick comparison, and pointing at a tall finished brick wall with a branching dotted path">
-            <div class="player-steps">
-                <div class="player-step">
-                    <strong>Snapshot</strong>
-                    <span>One frame, many builds at different stages.</span>
-                </div>
-                <div class="player-step">
-                    <strong>Order</strong>
-                    <span>Rank by completeness — that ranking is pseudotime.</span>
-                </div>
-                <div class="player-step">
-                    <strong>Branch</strong>
-                    <span>Follow where builds split, and check the split is real.</span>
-                </div>
-            </div>
-        </section>
-
-        <div class="content-section">
+        <div class="content-section" id="overview">
             <h2>📋 Overview</h2>
             <p>Trajectory inference (TI) methods reconstruct the dynamic processes of cellular differentiation, development, and state transitions from single-cell data. These computational approaches allow researchers to understand how cells progress through different states over time, identify key transition points, and discover the genes that drive these changes.</p>
             
@@ -491,10 +464,20 @@
                     <li><strong>Computational resources:</strong> Available memory and processing power</li>
                 </ul>
             </div>
+
+            <div class="highlight-box">
+                <h4>🕐 Recent Developments (2023&ndash;2025)</h4>
+                <ul>
+                    <li><strong>CytoTRACE 2</strong> (2025, Nat Methods) &mdash; predicts developmental potential from a single snapshot with no velocity data and no declared root, filling the "how progenitor-like is this cell?" gap before committing to a full trajectory run.</li>
+                    <li><strong>PHLOWER</strong> (2025, Nat Methods) &mdash; Hodge Laplacian tree structure resolving up to 26 branches with built-in uncertainty quantification.</li>
+                    <li><strong>dynamo</strong> (Cell, 2022) &mdash; the vector-field reformulation of RNA velocity keeps gaining adoption as metabolic-labeling data (SLAM-seq, sci-fate) becomes standard alongside splicing-based velocity.</li>
+                    <li><strong>MOSCOT</strong> (Nature, published online Jan 2025) &mdash; multi-omic optimal transport now demonstrated at the 1.7M-cell, 20-timepoint mouse-embryo scale.</li>
+                </ul>
+            </div>
         </div>
 
 
-        <div class="content-section">
+        <div class="content-section" id="methods">
             <h2>🔬 Major Method Categories</h2>
             
             <h3>1. RNA Velocity-Based Methods</h3>
@@ -584,6 +567,49 @@
                         <a href="https://doi.org/10.1038/s41467-022-34188-7" target="_blank">Paper</a>
                     </div>
                 </div>
+
+                <div class="method-card">
+                    <h4>dynamo</h4>
+                    <span class="year">2022</span>
+                    <p class="journal">Cell</p>
+                    <p class="description">The most systematic extension of the RNA velocity framework: upgrades per-gene velocity estimates into a single continuous, transcriptome-wide vector field, and extends beyond the steady-state/dynamical splicing model to metabolically labeled data (SLAM-seq, sci-fate, NASC-seq).</p>
+                    <ul class="key-features">
+                        <li>Continuous vector field, not per-gene velocity arrows</li>
+                        <li>Supports metabolic-labeling data, not just splicing ratios</li>
+                        <li>Derives acceleration and curvature from the learned field</li>
+                        <li>Least-action-path analysis for optimal reprogramming routes</li>
+                        <li>In silico perturbation via the vector field's Jacobian</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Where scVelo estimates velocity gene-by-gene and reads off arrows in a fixed low-dimensional embedding, dynamo fits a single continuous vector field function over the full expression manifold using kernel/sparse regression, then differentiates it analytically for acceleration, curvature, and divergence. This resolves a reference-frame inconsistency that per-gene velocity estimates otherwise leave uncorrected, and supports labeling-based (not just splicing-based) velocity when metabolic labeling data is available.
+                    </div>
+                    <div class="links">
+                        <a href="https://dynamo-release.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/aristoteleo/dynamo-release" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1016/j.cell.2021.12.045" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>MultiVelo</h4>
+                    <span class="year">2023</span>
+                    <p class="journal">Nature Biotechnology</p>
+                    <p class="description">Extends RNA velocity to multi-omic (RNA + ATAC) data, modeling the temporal relationship between chromatin accessibility and transcription rather than inferring velocity from splicing alone.</p>
+                    <ul class="key-features">
+                        <li>Joint chromatin-accessibility + transcription differential-equation model</li>
+                        <li>Estimates switch times for both modalities, not just spliced/unspliced</li>
+                        <li>Distinguishes genes where chromatin closes before vs. after transcription stops</li>
+                        <li>Improves cell-fate prediction over RNA-only velocity, especially at low sequencing depth</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Probabilistic latent-variable model that fits a differential-equation system over chromatin accessibility and spliced/unspliced RNA jointly, estimating per-gene switch times and rate parameters for both the epigenomic and transcriptomic layers. Because it uses accessibility as an upstream signal, it degrades more gracefully than RNA-only scVelo on cells with low sequencing depth, where splicing ratios alone are noisy.
+                    </div>
+                    <div class="links">
+                        <a href="https://multivelo.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/welch-lab/MultiVelo" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41587-022-01476-y" target="_blank">Paper</a>
+                    </div>
+                </div>
             </div>
 
             <h3>2. Optimal Transport-Based Methods</h3>
@@ -614,7 +640,7 @@
                 <div class="method-card">
                     <h4>MOSCOT</h4>
                     <span class="year">2025</span>
-                    <p class="journal">Nature (preprint 2023)</p>
+                    <p class="journal">Nature (published online Jan 2025; bioRxiv preprint 2023)</p>
                     <p class="description">Multi-Omics Single-Cell Optimal Transport - the most scalable OT framework, handling over 1.7 million cells with linear time complexity.</p>
                     <ul class="key-features">
                         <li>Atlas-scale: handles 500K+ cells efficiently</li>
@@ -650,6 +676,7 @@
                     </div>
                     <div class="links">
                         <a href="https://genot.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://arxiv.org/abs/2310.09254" target="_blank">Paper</a>
                     </div>
                 </div>
             </div>
@@ -737,7 +764,7 @@
                         <li>Handles complex topologies</li>
                         <li>Integrated with Scanpy</li>
                         <li>Good for exploratory analysis</li>
-                        <li>130× faster than UMAP</li>
+                        <li>PAGA-initialized UMAP embeds faster than UMAP alone; PAGA's own cluster-level graph abstraction is a different, much cheaper computation than a cell-level embedding, benchmarked on datasets up to ~1M neurons</li>
                     </ul>
                     <div class="feature-highlight">
                         <strong>Algorithm:</strong> Creates partition-based graph where nodes represent cell clusters and edges represent connectivity strength. Computes edge weights using statistical tests on inter-cluster vs. intra-cluster distances. Preserves global topology while allowing multi-resolution analysis through hierarchical clustering. Can initialize UMAP for faster embedding.
@@ -745,6 +772,28 @@
                     <div class="links">
                         <a href="https://scanpy.readthedocs.io/en/stable/api/scanpy.tl.paga.html" target="_blank">Documentation</a>
                         <a href="https://doi.org/10.1186/s13059-019-1663-x" target="_blank">Paper</a>
+                    </div>
+                </div>
+
+                <div class="method-card">
+                    <h4>Palantir</h4>
+                    <span class="year">2019</span>
+                    <p class="journal">Nature Biotechnology</p>
+                    <p class="description">Models differentiation as a multi-step diffusion-like process over a Markov chain, outputting a probabilistic fate — not a single deterministic branch assignment — for every cell. One of the most widely cited single-cell trajectory methods.</p>
+                    <ul class="key-features">
+                        <li>Fate probabilities per cell, not hard branch labels</li>
+                        <li>Diffusion-map-based Markov chain over cell states</li>
+                        <li>Entropy measures cell plasticity along the trajectory</li>
+                        <li>Terminal-state identification without manual branch curation</li>
+                        <li>Kernel used by CellRank's pseudotime-based transition matrix</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Builds a diffusion map over cell-cell similarity, then defines a Markov chain where transition probabilities decay with diffusion distance from a user-specified early cell. Computes each cell's absorption probability into every terminal state by solving the chain to convergence — so a single cell can carry, say, 60% probability toward an erythroid fate and 40% toward myeloid, rather than being assigned to one branch. Differs from Monocle's deterministic tree assignment by keeping fate genuinely probabilistic.
+                    </div>
+                    <div class="links">
+                        <a href="https://palantir.readthedocs.io/" target="_blank">Documentation</a>
+                        <a href="https://github.com/dpeerlab/Palantir" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41587-019-0068-4" target="_blank">Paper</a>
                     </div>
                 </div>
             </div>
@@ -818,6 +867,7 @@
                     </div>
                     <div class="links">
                         <a href="https://doi.org/10.1038/s41598-024-58566-x" target="_blank">Paper</a>
+                        <a href="https://github.com/yizhuo-wang/CASi" target="_blank">GitHub</a>
                     </div>
                 </div>
 
@@ -837,12 +887,13 @@
                     </div>
                     <div class="links">
                         <a href="https://doi.org/10.1038/s41592-023-02060-1" target="_blank">Paper</a>
+                        <a href="https://github.com/Fraternalilab/sciCSR" target="_blank">GitHub</a>
                     </div>
                 </div>
 
                 <div class="method-card">
                     <h4>TIGON</h4>
-                    <span class="year">2024</span>
+                    <span class="year">2023</span>
                     <p class="journal">Nature Machine Intelligence</p>
                     <p class="description">Models growth dynamics explicitly during trajectory inference to account for proliferation using dynamic unbalanced optimal transport.</p>
                     <ul class="key-features">
@@ -923,10 +974,30 @@
                         <a href="https://doi.org/10.1038/s41592-025-02870-5" target="_blank">Paper</a>
                     </div>
                 </div>
+
+                <div class="method-card">
+                    <h4>CytoTRACE 2</h4>
+                    <span class="year">2025</span>
+                    <p class="journal">Nature Methods</p>
+                    <p class="description">Predicts absolute developmental potential (a "how progenitor-like is this cell" score, from 1 = totipotent to 0 = fully differentiated) directly from a single-snapshot transcriptome — no unspliced/spliced reads, no defined root, no trajectory algorithm required.</p>
+                    <ul class="key-features">
+                        <li>Interpretable deep-learning framework, not a velocity or graph method</li>
+                        <li>Continuous 0–1 potency score enabling cross-dataset comparison</li>
+                        <li>Resolves six potency categories from totipotent to differentiated</li>
+                        <li>Useful as a fast pre-check before committing to RNA velocity or trajectory reconstruction</li>
+                    </ul>
+                    <div class="feature-highlight">
+                        <strong>Algorithm:</strong> Trains an interpretable deep-learning model on transcriptional diversity features (gene-count-based and other unsupervised signatures correlated with stemness) across a large reference compendium, then predicts each query cell's absolute developmental potential on a continuous scale. Unlike velocity or graph-based trajectory methods, it needs neither spliced/unspliced counts nor a user-declared root — making it a cheap way to sanity-check "which cells are plausibly progenitors" before running a full trajectory pipeline.
+                    </div>
+                    <div class="links">
+                        <a href="https://github.com/digitalcytometry/cytotrace2" target="_blank">GitHub</a>
+                        <a href="https://doi.org/10.1038/s41592-025-02857-2" target="_blank">Paper</a>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="content-section">
+        <div class="content-section" id="comparison">
             <h2>📊 Detailed Method Comparison</h2>
             <p>This table provides a comprehensive comparison of key features across different trajectory inference methods:</p>
             
@@ -1078,32 +1149,164 @@
                             <td class="no-icon">✗</td>
                             <td>Graph abstraction, exploratory</td>
                         </tr>
+                        <tr>
+                            <td>Waddington-OT</td>
+                            <td>2019</td>
+                            <td>Variable (temporal timecourse)</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td>Foundational temporal OT, fate probabilities</td>
+                        </tr>
+                        <tr>
+                            <td>DELVE</td>
+                            <td>2024</td>
+                            <td>Variable</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td>Feature selection layer, cross-modality</td>
+                        </tr>
+                        <tr>
+                            <td>TIGON</td>
+                            <td>2023</td>
+                            <td>Variable</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td>Growth-aware unbalanced OT + GRN inference</td>
+                        </tr>
+                        <tr>
+                            <td>PRESCIENT</td>
+                            <td>2021</td>
+                            <td>Variable</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Waddington potential landscape, in silico perturbation</td>
+                        </tr>
+                        <tr>
+                            <td>FLOW-MAP</td>
+                            <td>2020</td>
+                            <td>Variable (cytometry-scale)</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Flow/CyTOF-optimized force-directed visualization</td>
+                        </tr>
+                        <tr>
+                            <td>PHLOWER</td>
+                            <td>2025</td>
+                            <td>Variable</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td>Up to 26 branches, uncertainty quantification</td>
+                        </tr>
+                        <tr>
+                            <td>Palantir</td>
+                            <td>2019</td>
+                            <td>Variable</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>Probabilistic multi-fate absorption, not hard branches</td>
+                        </tr>
+                        <tr>
+                            <td>dynamo</td>
+                            <td>2022</td>
+                            <td>Variable</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td>Metabolic labeling optional</td>
+                            <td class="no-icon">✗</td>
+                            <td>Continuous vector field, acceleration/curvature</td>
+                        </tr>
+                        <tr>
+                            <td>MultiVelo</td>
+                            <td>2023</td>
+                            <td>Variable (10x Multiome scale)</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td>RNA + ATAC joint velocity</td>
+                        </tr>
+                        <tr>
+                            <td>CytoTRACE 2</td>
+                            <td>2025</td>
+                            <td>Variable (broad platform validation)</td>
+                            <td class="no-icon">✗</td>
+                            <td class="yes-icon">✓</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td class="no-icon">✗</td>
+                            <td>No-velocity, no-root developmental potential score</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="content-section">
+        <div class="content-section" id="selection-guide">
             <h2>🗺️ Method Selection Guide</h2>
-            
+
+            <div class="decision-tree">
+                <h4>🌳 Start Here: Walk the Tree</h4>
+                <div class="decision-option">
+                    <strong>Q1: Do you have multiple experimental timepoints (temporal data)?</strong>
+                    <p>If <strong>yes</strong> → go to Q2. If <strong>no</strong> (a single snapshot) → skip to Q3.</p>
+                </div>
+                <div class="decision-option">
+                    <strong>Q2 (temporal data): Is the dataset larger than ~200K cells?</strong>
+                    <p><strong>Yes, large-scale:</strong> MOSCOT (multimodal/spatial, atlas-scale) or Monocle 3 (complex topologies, discontinuous trajectories).</p>
+                    <p><strong>No, smaller-scale:</strong> Waddington-OT (foundational OT) | PRESCIENT (Waddington landscape) | TIGON (proliferation-aware, unbalanced OT) | GENOT (stochastic/cross-modality) | PRESCIENT and TIGON if you need growth/death modeled explicitly.</p>
+                </div>
+                <div class="decision-option">
+                    <strong>Q3 (single snapshot): Is sequencing depth sufficient for RNA velocity (roughly &gt;2,000 UMI/cell, with clear unspliced/spliced signal)?</strong>
+                    <p>If <strong>no</strong> (low depth, or you just want a fast pre-check) → CytoTRACE 2 (no-velocity developmental potential score) or PAGA (graph abstraction, exploratory). If <strong>yes</strong> → go to Q4.</p>
+                </div>
+                <div class="decision-option">
+                    <strong>Q4 (sufficient depth): Do you need uncertainty quantification on the velocity itself?</strong>
+                    <p><strong>Yes:</strong> veloVI (variational, posterior-sampled uncertainty).</p>
+                    <p><strong>No:</strong> scVelo (standard, most widely used) | dynamo (continuous vector field, metabolic-labeling-aware) | UniTVelo (unified latent time) | MultiVelo (if you have paired RNA+ATAC) | Palantir (if you want probabilistic multi-fate absorption instead of a velocity vector) | CellRank 2 (to combine velocity + pseudotime + real time into one fate model).</p>
+                </div>
+            </div>
 
             <div class="highlight-box" style="margin-top: 30px;">
                 <h4>🎯 Quick Reference Summary</h4>
                 <ul style="line-height: 2; margin: 15px 0;">
-                    <li><strong>Single snapshot:</strong> scVelo (development) | veloVI (uncertainty) | UniTVelo (unified time)</li>
+                    <li><strong>Single snapshot:</strong> scVelo (development) | veloVI (uncertainty) | UniTVelo (unified time) | dynamo (vector field)</li>
                     <li><strong>&lt;200K cells + temporal:</strong> GENOT (stochastic/unbalanced) | PRESCIENT (landscape) | Monocle 2</li>
                     <li><strong>200K-1M cells:</strong> MOSCOT (multimodal/spatial) | Monocle 3 (complex topologies)</li>
                     <li><strong>&gt;1M cells:</strong> MOSCOT, Monocle 3, CellRank 2, or PAGA (atlas-scale options)</li>
                     <li><strong>B cells:</strong> sciCSR | <strong>Novel types:</strong> CASi | <strong>Drivers:</strong> DELVE + scVelo</li>
-                    <li><strong>Cross-modality:</strong> GENOT | <strong>Multi-method:</strong> CellRank 2</li>
+                    <li><strong>Cross-modality:</strong> GENOT (OT) | MultiVelo (RNA+ATAC velocity) | <strong>Multi-method:</strong> CellRank 2</li>
                     <li><strong>Growth dynamics:</strong> TIGON or GENOT (unbalanced) | <strong>Visualization:</strong> FLOW-MAP</li>
                     <li><strong>Complex branching/discontinuous:</strong> Monocle 3 | <strong>Convergent fates:</strong> Monocle 3</li>
+                    <li><strong>Probabilistic multi-fate scoring:</strong> Palantir | <strong>No-velocity potency check:</strong> CytoTRACE 2</li>
                 </ul>
             </div>
 
         </div>
 
-        <div class="content-section">
+        <div class="content-section" id="best-practices">
             <h2>💡 Best Practices</h2>
             <h3>General Recommendations</h3>
             <ul>
@@ -1113,6 +1316,7 @@
                 <li><strong>Consider scale:</strong> For atlas-scale data (>500K cells), use MOSCOT or Monocle 3</li>
                 <li><strong>Quality control:</strong> Ensure high-quality data preprocessing before trajectory inference</li>
                 <li><strong>Assess topology:</strong> Use Monocle 3 for complex branching or disconnected structures</li>
+                <li><strong>Pre-check with a potency score:</strong> Before trusting a velocity result, consider running CytoTRACE 2's no-velocity developmental-potential score as a sanity check. Low <code>velocity_confidence</code> does not mean the biological signal is absent — cells with low sequencing depth simply produce a weak velocity signal, but their developmental-potential score can still be meaningful. Used together: velocity tells you direction, CytoTRACE 2 tells you who is plausibly a progenitor.</li>
             </ul>
 
             <h3>When to Use RNA Velocity vs Optimal Transport vs Graph-Based Methods</h3>

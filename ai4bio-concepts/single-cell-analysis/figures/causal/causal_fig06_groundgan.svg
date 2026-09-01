@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  GROUNDGAN  ·  EMBED A KNOWN GRN INTO SYNTHETIC CELLS</text>
+  <text x="60" y="96" class="h1">Hard-code the ground-truth edges, then benchmark anything.</text>
+  <text x="60" y="124" class="h-sub">If you wrote the GRN, you know every causal edge — so you can finally grade GRN-inference methods honestly.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="400" height="240" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="80" y="208" class="stage-tag" fill="#4a6a8a">INPUT  ·  USER-SPECIFIED GRN  📜</text>
+    <text x="80" y="236" class="stage-title">a small directed graph of known TF → target edges</text>
+    <g transform="translate(80,260)">
+      <circle cx="40" cy="40" r="20" fill="#4a6a8a"></circle>
+      <text x="40" y="46" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">TP53</text>
+      <circle cx="180" cy="40" r="20" fill="#c95a2a"></circle>
+      <text x="180" y="46" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">CDKN1A</text>
+      <line x1="60" y1="40" x2="160" y2="40" stroke="#4a6a8a" stroke-width="2" marker-end="url(#ar)"></line>
+
+      <circle cx="40" cy="110" r="20" fill="#4a6a8a"></circle>
+      <text x="40" y="116" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">MYC</text>
+      <circle cx="180" cy="110" r="20" fill="#c95a2a"></circle>
+      <text x="180" y="116" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">CDK4</text>
+      <line x1="60" y1="110" x2="160" y2="110" stroke="#4a6a8a" stroke-width="2" marker-end="url(#ar)"></line>
+    </g>
+    <text x="80" y="402" class="annot" font-style="italic" fill="#5c5c66">small enough to specify, large enough to test methods on.</text>
+  </g>
+
+  <line x1="475" y1="300" x2="515" y2="300" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="520" y="180" width="600" height="240" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="540" y="208" class="stage-tag" fill="#2c8a4f">STAGE 1  ·  GAN BACKBONE PRE-TRAINING  🧠</text>
+    <text x="540" y="236" class="stage-title">learn realistic scRNA-seq distribution from a reference dataset</text>
+    <text x="540" y="280" class="annot">standard GAN: generator + discriminator</text>
+    <text x="540" y="302" class="annot">generator emits realistic gene-expression vectors</text>
+    <text x="540" y="322" class="annot">discriminator distinguishes real from synthetic cells</text>
+    <text x="540" y="362" class="annot" font-style="italic" fill="#5c5c66">at this stage, no GRN constraint yet — just realism.</text>
+    <text x="540" y="396" class="emoji">🎲</text>
+  </g>
+
+  <line x1="1135" y1="300" x2="1175" y2="300" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="1180" y="180" width="760" height="240" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="1200" y="208" class="stage-tag" fill="#c95a2a">STAGE 2  ·  GRN ENFORCEMENT  🛠</text>
+    <text x="1200" y="236" class="stage-title">Labeler + Anti-labeler heads force the GRN into the generator</text>
+    <text x="1200" y="280" class="annot"><tspan font-weight="700">Labeler</tspan>  →  predicts whether the TF → target dependency exists in a generated cell</text>
+    <text x="1200" y="302" class="annot"><tspan font-weight="700">Anti-labeler</tspan>  →  ensures the dependency is biologically grounded</text>
+    <text x="1200" y="324" class="annot">(not trivially satisfied by a shortcut)</text>
+    <text x="1200" y="362" class="annot" font-style="italic" fill="#5c5c66">the generator is retrained until the specified TF → target edges</text>
+    <text x="1200" y="380" class="annot" font-style="italic" fill="#5c5c66">appear in the synthetic expression patterns.</text>
+    <text x="1900" y="400" text-anchor="end" class="emoji">🪡</text>
+  </g>
+
+  
+  <line x1="1000" y1="430" x2="1000" y2="464" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="470" width="1880" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="500" class="stage-tag" fill="#7a5b13">OUTPUT  ·  SYNTHETIC SCRNA-SEQ WITH KNOWN CAUSAL EDGES  🎯</text>
+    <text x="80" y="534" class="stage-title">expression vectors whose TF → target dependencies are exactly the specified GRN</text>
+
+    <g transform="translate(80,556)">
+      <rect x="0" y="0" width="900" height="80" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="20" y="26" class="annot" font-weight="700">USE-CASE 1  ·  HONEST BENCHMARKING  📐</text>
+      <text x="20" y="50" class="annot">run any GRN-inference method on the synthetic data</text>
+      <text x="20" y="70" class="annot">compare inferred edges against the known input GRN → real precision / recall</text>
+
+      <rect x="940" y="0" width="900" height="80" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="960" y="26" class="annot" font-weight="700">USE-CASE 2  ·  IN-SILICO KNOCKOUT  ✂</text>
+      <text x="960" y="50" class="annot">remove a TF from the generation process</text>
+      <text x="960" y="70" class="annot">observe which target genes are affected → mechanistic predictions</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="700" width="900" height="240" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="728" class="stage-tag" fill="#8a5a4a">HOW THE BENCHMARK WORKS  🏁</text>
+    <g transform="translate(80,750)">
+      <rect x="0" y="0" width="160" height="60" rx="8" fill="#e3edf6" stroke="#4a6a8a"></rect>
+      <text x="80" y="26" text-anchor="middle" class="annot" font-weight="700">user GRN  📜</text>
+      <text x="80" y="46" text-anchor="middle" class="annot" fill="#5c5c66">ground truth</text>
+      <text x="180" y="34" class="annot">→</text>
+      <rect x="200" y="0" width="200" height="60" rx="8" fill="#dfeede" stroke="#2c8a4f"></rect>
+      <text x="300" y="26" text-anchor="middle" class="annot" font-weight="700">GRouNdGAN cells  🧬</text>
+      <text x="300" y="46" text-anchor="middle" class="annot" fill="#5c5c66">synthetic atlas</text>
+      <text x="420" y="34" class="annot">→</text>
+      <rect x="440" y="0" width="200" height="60" rx="8" fill="#fbe6d8" stroke="#c95a2a"></rect>
+      <text x="540" y="26" text-anchor="middle" class="annot" font-weight="700">candidate method</text>
+      <text x="540" y="46" text-anchor="middle" class="annot" fill="#5c5c66">e.g. NOTEARS</text>
+      <text x="660" y="34" class="annot">→</text>
+      <rect x="680" y="0" width="160" height="60" rx="8" fill="#fff7d9" stroke="#b8902c"></rect>
+      <text x="760" y="26" text-anchor="middle" class="annot" font-weight="700">inferred edges</text>
+      <text x="760" y="46" text-anchor="middle" class="annot" fill="#5c5c66">vs. truth</text>
+    </g>
+    <text x="80" y="864" class="annot">precision  ·  recall  ·  F1 on the edge set</text>
+    <text x="80" y="888" class="annot" font-style="italic" fill="#5c5c66">a benchmark you can actually trust because the ground truth is the input.</text>
+  </g>
+
+  
+  <g>
+    <rect x="980" y="700" width="960" height="240" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="1000" y="728" class="stage-tag" fill="#8a5a4a">IN-SILICO KNOCKOUT  ✂  ·  THE OTHER DELIVERABLE</text>
+    <text x="1000" y="760" class="annot">remove TP53 from the generator&#39;s input GRN  →</text>
+    <text x="1000" y="782" class="annot">generate new cells without that TF  →</text>
+    <text x="1000" y="804" class="annot">CDKN1A and downstream targets shift predictably</text>
+    <text x="1000" y="838" class="annot" font-style="italic" fill="#5c5c66">a controllable &#34;wet-lab in silico&#34; — perfect for method development</text>
+    <text x="1000" y="860" class="annot" font-style="italic" fill="#5c5c66">and for ranking candidate gene-knockout experiments.</text>
+    <text x="1900" y="908" text-anchor="end" class="emoji">🧬✂</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="970" width="1880" height="100" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1000" class="stage-tag" fill="#7a5b13">THE IDEA</text>
+    <text x="80" y="1034" class="key" fill="#7a5b13">if you can&#39;t get a real ground truth, manufacture one  —  and benchmark every method against it.</text>
+    <text x="80" y="1058" class="annot" font-style="italic" fill="#5c5c66">GRouNdGAN turns &#34;we have no causal ground truth in single cell&#34; from a complaint into a design choice.</text>
+  </g>
+</svg>

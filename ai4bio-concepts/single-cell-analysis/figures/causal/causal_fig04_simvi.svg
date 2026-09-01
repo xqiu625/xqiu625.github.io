@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  SIMVI  ·  NICHE vs INTRINSIC DISENTANGLEMENT</text>
+  <text x="60" y="96" class="h1">A cell next to a tumour is not the same as a cell that is a tumour.</text>
+  <text x="60" y="124" class="h-sub">SIMVI separates the cell&#39;s own programme from the expression changes its neighbourhood drives.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="900" height="540" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="208" class="block-tag" fill="#8a5a4a">TISSUE SECTION  🧫  ·  PICK ONE CELL</text>
+
+    
+    <rect x="80" y="240" width="860" height="380" rx="10" fill="#fff7d9" opacity="0.5" stroke="#b8902c" stroke-width="0.8"></rect>
+
+    
+    <g>
+      <circle cx="200" cy="320" r="14" fill="#c95a2a" opacity="0.75"></circle>
+      <circle cx="280" cy="290" r="14" fill="#c95a2a" opacity="0.75"></circle>
+      <circle cx="360" cy="320" r="14" fill="#c95a2a" opacity="0.75"></circle>
+      <circle cx="440" cy="290" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="520" cy="320" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="600" cy="290" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="680" cy="320" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="760" cy="290" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="200" cy="540" r="14" fill="#6b4e8a" opacity="0.75"></circle>
+      <circle cx="280" cy="570" r="14" fill="#6b4e8a" opacity="0.75"></circle>
+      <circle cx="360" cy="540" r="14" fill="#6b4e8a" opacity="0.75"></circle>
+      <circle cx="440" cy="570" r="14" fill="#6b4e8a" opacity="0.75"></circle>
+      <circle cx="520" cy="540" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="600" cy="570" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="680" cy="540" r="14" fill="#a14854" opacity="0.75"></circle>
+      <circle cx="760" cy="570" r="14" fill="#a14854" opacity="0.75"></circle>
+
+      
+      <circle cx="480" cy="430" r="30" fill="#4a6a8a" stroke="#1a1a22" stroke-width="3"></circle>
+      <text x="480" y="438" text-anchor="middle" class="block-tag" fill="#ffffff">FOCAL</text>
+      <text x="480" y="490" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">this cell sits next to a tumour patch</text>
+    </g>
+
+    <text x="80" y="666" class="annot" font-weight="700">colour</text>
+    <text x="160" y="666" class="annot" fill="#5c5c66">= cell type   ·   the focal cell (blue) is surrounded by tumour cells (red)</text>
+    <text x="80" y="694" class="annot" font-style="italic" fill="#5c5c66">its observed expression is the sum of its own programme + what the neighbourhood pushed it to do.</text>
+  </g>
+
+  
+  <line x1="975" y1="450" x2="1015" y2="450" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <text x="1040" y="208" class="block-tag" fill="#2c8a4f">SIMVI DECOMPOSITION  🧮</text>
+  <text x="1040" y="244" class="h1" style="font-size:22px">x_cell  =  z_i  +  z_s</text>
+
+  
+  <g>
+    <rect x="1020" y="280" width="900" height="180" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="1040" y="308" class="block-tag" fill="#4a6a8a">z_i  ·  INTRINSIC  🧬</text>
+    <text x="1040" y="336" class="block-title">what the cell would express if isolated</text>
+    <text x="1040" y="360" class="annot">identity-driven gene programme</text>
+    <text x="1040" y="384" class="annot">same expression in a dish as in the tissue</text>
+    <line x1="1040" y1="402" x2="1900" y2="402" stroke="#bcd2e6" stroke-width="1"></line>
+    <text x="1040" y="426" class="annot" font-style="italic" fill="#5c5c66">&#34;who is this cell, ignoring its neighbours?&#34;</text>
+    <text x="1040" y="448" class="annot" font-weight="700" fill="#4a6a8a">colour : the cell&#39;s own type colour</text>
+  </g>
+
+  
+  <g>
+    <rect x="1020" y="480" width="900" height="240" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="1040" y="508" class="block-tag" fill="#c95a2a">z_s  ·  INDUCED  /  NICHE  🌐</text>
+    <text x="1040" y="536" class="block-title">expression changes the microenvironment drives</text>
+    <text x="1040" y="560" class="annot">neighbouring cell types  ·  ECM signals  ·  hypoxia gradients</text>
+    <text x="1040" y="582" class="annot">would not appear if the cell were dissociated</text>
+    <line x1="1040" y1="602" x2="1900" y2="602" stroke="#e7c5a8" stroke-width="1"></line>
+    <text x="1040" y="626" class="annot" font-style="italic" fill="#5c5c66">&#34;how is this cell being shaped by its neighbours?&#34;</text>
+    <text x="1040" y="650" class="annot" font-weight="700" fill="#c95a2a">colour : a gradient inherited from the surrounding tissue</text>
+    <text x="1040" y="690" class="annot" font-style="italic" fill="#5c5c66">a hypoxia signature here means &#34;this cell is near hypoxic tumour&#34;, not &#34;this cell is hypoxic-by-nature&#34;.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="740" width="1880" height="240" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="80" y="768" class="block-tag" fill="#2c8a4f">DOUBLE MACHINE LEARNING  ·  EXTRACT THE CAUSAL NICHE EFFECT  📐</text>
+    <text x="80" y="800" class="block-title">two-step orthogonalisation; classical Chernozhukov DML recipe</text>
+
+    <g transform="translate(80,820)">
+      <rect x="0" y="0" width="580" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="28" class="block-tag" fill="#2c8a4f">STEP 1  ·  REGRESS OUT CONFOUNDERS</text>
+      <text x="20" y="58" class="annot">regress  niche  ↔  cell-type ID</text>
+      <text x="20" y="78" class="annot">regress  expression  ↔  cell-type ID</text>
+      <text x="20" y="106" class="annot" font-style="italic" fill="#5c5c66">→  take residuals of both</text>
+
+      <rect x="600" y="0" width="580" height="120" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="620" y="28" class="block-tag" fill="#2c8a4f">STEP 2  ·  REGRESS RESIDUAL EXP ON RESIDUAL NICHE</text>
+      <text x="620" y="58" class="annot">the slope is the causal niche effect</text>
+      <text x="620" y="78" class="annot">orthogonal to anything cell-type ID could explain</text>
+      <text x="620" y="106" class="annot" font-style="italic" fill="#5c5c66">→  identifiable causal estimand for z_s on expression</text>
+
+      <rect x="1200" y="0" width="580" height="120" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="1220" y="28" class="block-tag" fill="#7a5b13">WHAT YOU CAN ANSWER</text>
+      <text x="1220" y="58" class="annot">&#34;is gene X upregulated because of identity, or because of niche?&#34;</text>
+      <text x="1220" y="80" class="annot">&#34;which niches push neighbouring T cells toward exhaustion?&#34;</text>
+      <text x="1220" y="106" class="annot" font-style="italic" fill="#5c5c66">questions correlation cannot answer.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="1000" width="1880" height="70" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1028" class="block-tag" fill="#7a5b13">THE POINT</text>
+    <text x="80" y="1060" class="key" fill="#7a5b13">Without this disentanglement, you can&#39;t tell if a gene is up because of the cell&#39;s identity — or because it sits next to a tumour.</text>
+  </g>
+</svg>

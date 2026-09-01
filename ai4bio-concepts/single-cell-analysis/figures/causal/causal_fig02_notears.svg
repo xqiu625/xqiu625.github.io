@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  NOTEARS  ·  ACYCLICITY AS A SMOOTH CONSTRAINT</text>
+  <text x="60" y="96" class="h1">From combinatorial search to gradient descent.</text>
+  <text x="60" y="124" class="h-sub">The same DAG-discovery problem, reformulated so any continuous optimiser can solve it.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="380" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.8"></rect>
+    <text x="80" y="208" class="panel-tag" fill="#a14854">THE OLD WAY  🗂  ·  COMBINATORIAL SEARCH</text>
+    <text x="80" y="244" class="panel-title">enumerate directed graphs on d nodes; reject the cyclic ones</text>
+
+    
+    <g transform="translate(80,280)">
+      <text x="0" y="0" class="annot">space of directed graphs on 5 nodes</text>
+      
+      <circle cx="600" cy="20" r="14" fill="#a14854"></circle>
+      
+      <line x1="600" y1="34" x2="200" y2="100" stroke="#a14854" stroke-width="1"></line>
+      <line x1="600" y1="34" x2="450" y2="100" stroke="#a14854" stroke-width="1"></line>
+      <line x1="600" y1="34" x2="600" y2="100" stroke="#a14854" stroke-width="1"></line>
+      <line x1="600" y1="34" x2="750" y2="100" stroke="#a14854" stroke-width="1"></line>
+      <line x1="600" y1="34" x2="1000" y2="100" stroke="#a14854" stroke-width="1"></line>
+      <g>
+        <circle cx="200" cy="110" r="8" fill="#a14854"></circle>
+        <circle cx="450" cy="110" r="8" fill="#a14854"></circle>
+        <circle cx="600" cy="110" r="8" fill="#a14854"></circle>
+        <circle cx="750" cy="110" r="8" fill="#a14854"></circle>
+        <circle cx="1000" cy="110" r="8" fill="#a14854"></circle>
+      </g>
+      
+      <g>
+        <line x1="200" y1="118" x2="160" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="200" y1="118" x2="200" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="200" y1="118" x2="240" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="450" y1="118" x2="410" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="450" y1="118" x2="450" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="450" y1="118" x2="490" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="600" y1="118" x2="560" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="600" y1="118" x2="600" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="600" y1="118" x2="640" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="750" y1="118" x2="710" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="750" y1="118" x2="750" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="750" y1="118" x2="790" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="1000" y1="118" x2="960" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="1000" y1="118" x2="1000" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+        <line x1="1000" y1="118" x2="1040" y2="170" stroke="#a14854" stroke-width="0.6"></line>
+      </g>
+      <text x="600" y="216" text-anchor="middle" class="annot" fill="#5c5c66">…  branching factor grows super-exponentially</text>
+    </g>
+
+    <g transform="translate(1380,290)">
+      <rect x="0" y="0" width="500" height="240" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="panel-tag" fill="#a14854">VERDICT</text>
+      <text x="20" y="68" class="panel-title" fill="#a14854">NP-HARD  ✗</text>
+      <text x="20" y="108" class="annot">number of DAGs on d nodes blows up</text>
+      <text x="20" y="128" class="annot">for d = 10:  10¹⁸ candidate graphs</text>
+      <text x="20" y="148" class="annot">cycle-check every candidate by hand</text>
+      <text x="20" y="184" class="annot" font-style="italic" fill="#5c5c66">heuristics, score-based searches</text>
+      <text x="20" y="204" class="annot" font-style="italic" fill="#5c5c66">— but no off-the-shelf optimiser.</text>
+    </g>
+  </g>
+
+  
+  <text x="1000" y="608" text-anchor="middle" class="key" fill="#8a5a4a">⇣  reformulate the constraint  ⇣</text>
+
+  
+  <g>
+    <rect x="60" y="640" width="1880" height="320" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="80" y="668" class="panel-tag" fill="#2c8a4f">THE NOTEARS WAY  ⛰  ·  CONTINUOUS OPTIMISATION</text>
+    <text x="80" y="704" class="panel-title">treat W as a real-valued matrix; impose acyclicity as a smooth equality</text>
+
+    <g transform="translate(80,724)">
+      <text x="0" y="0" class="annot" font-weight="700">edge weights live in  W ∈ ℝ^{d×d}</text>
+      <text x="0" y="24" class="annot" fill="#5c5c66">positive entries  →  the edge exists</text>
+
+      <text x="0" y="68" class="annot" font-weight="700">acyclicity constraint</text>
+      <text x="0" y="106" class="formula">h ( W )  =  tr ( e^{W ∘ W} )  −  d  =  0</text>
+      <text x="0" y="138" class="annot" fill="#5c5c66">zero iff the graph is a DAG  ·  smooth and differentiable everywhere</text>
+    </g>
+
+    
+    <g transform="translate(900,724)">
+      <rect x="0" y="0" width="500" height="200" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="28" class="panel-tag" fill="#2c8a4f">LOSS LANDSCAPE  📉  ·  GRADIENT TRAJECTORY</text>
+
+      
+      <g>
+        <ellipse cx="300" cy="120" rx="160" ry="60" fill="none" stroke="#bcd6bc"></ellipse>
+        <ellipse cx="300" cy="120" rx="110" ry="40" fill="none" stroke="#9ec7a4"></ellipse>
+        <ellipse cx="300" cy="120" rx="60" ry="22" fill="none" stroke="#7caf8f"></ellipse>
+        <circle cx="300" cy="120" r="10" fill="#2c8a4f"></circle>
+        <text x="300" y="166" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">h(W) = 0</text>
+      </g>
+      
+      <path d="M 60 60 C 120 100, 180 150, 240 130 C 260 124, 280 122, 296 122" fill="none" stroke="#5c5c66" stroke-width="2.5" stroke-dasharray="4 3" marker-end="url(#ar)"></path>
+      <circle cx="60" cy="60" r="6" fill="#5c5c66"></circle>
+      <text x="46" y="46" class="annot" fill="#5c5c66">W₀</text>
+    </g>
+
+    <g transform="translate(1430,724)">
+      <rect x="0" y="0" width="460" height="200" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="20" y="28" class="panel-tag" fill="#7a5b13">WHAT YOU GET</text>
+      <text x="20" y="60" class="key" fill="#7a5b13">off-the-shelf solvers work  ✅</text>
+      <text x="20" y="86" class="annot">Adam, L-BFGS, augmented Lagrangian</text>
+      <text x="20" y="124" class="annot" font-weight="700">scale</text>
+      <text x="20" y="146" class="annot">~ 100 nodes practical  ·  O ( d³ ) / iteration</text>
+      <text x="20" y="180" class="annot" font-style="italic" fill="#5c5c66">enabled NOTEARS-MLP, DCDI, ENCO, all built on this idea.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="980" width="1880" height="90" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1010" class="panel-tag" fill="#7a5b13">THE IDEA IN ONE LINE</text>
+    <text x="80" y="1044" class="key" fill="#7a5b13">turn a discrete constraint  ( &#34;is this a DAG ?&#34; )  into a smooth one  ( h ( W ) = 0 ).</text>
+    <text x="80" y="1066" class="annot" font-style="italic" fill="#5c5c66">everything else  —  scoring, regularisation, fine-tuning  —  is now standard ML machinery.</text>
+  </g>
+</svg>

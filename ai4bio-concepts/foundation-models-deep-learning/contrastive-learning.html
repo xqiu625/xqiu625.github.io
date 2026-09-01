@@ -343,7 +343,7 @@
         <header class="header">
             <div style="font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 24px;">AI4Bio Learning Hub · Field Guide</div>
             <h1>Contrastive Learning in Biomedical AI</h1>
-            <p class="subtitle">Pull what belongs together, push what doesn't — a guide to contrastive objectives for single-cell, spatial, and multimodal biology, 2022–2025.</p>
+            <p class="subtitle">Pull what belongs together, push what doesn't — a guide to contrastive objectives for single-cell, spatial, and multimodal biology, 2022–2026.</p>
             <p class="description">
                 From NT-Xent on single cells (Concerto, 2022) to CLIP-style alignment of histology
                 with transcriptomics (OmiCLIP, 2025) and chat-based exploration of cell atlases
@@ -391,6 +391,24 @@
         </nav>
 
         <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">12</span>
+                <div class="stat-label">Landmark Papers</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <div class="stat-label">Contrastive Families</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2022&ndash;2025</span>
+                <div class="stat-label">Publication Years</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">4</span>
+                <div class="stat-label">Modality Types: RNA, Spatial, Imaging, Text</div>
+            </div>
+        </div>
 
         <!-- Overview Section -->
 
@@ -1146,7 +1164,33 @@
                     </svg>
                     <p>A kernel measure of statistical dependence between two variables: <strong>HSIC(X,Y) = 0 if and only if X and Y are independent</strong> (with a characteristic kernel). It is estimated as <strong>tr(K H L H)/(n−1)²</strong>, where K and L are Gram (kernel) matrices over the two variables and H = I − (1/n)11ᵀ centers them. <strong>SSL-HSIC</strong> recasts contrastive learning as <em>maximizing the dependence</em> between a representation and its pair-identity, and shows InfoNCE is approximately a biased HSIC estimate — but the kernel supplies the spread, so it needs far fewer negatives.</p>
                     <span class="formula">HSIC = tr(K H L H) / (n−1)²</span>
-                    <div class="seen-in"><strong>Seen in:</strong> SSL-HSIC (Li et al. 2021, kernel dependence maximization)</div>
+                    <div class="seen-in"><strong>Seen in:</strong> SSL-HSIC (Li et al. 2021, kernel dependence maximization) — theoretical background, not a landmark paper in the Key Papers section below</div>
+                </div>
+
+                <!-- 12. Hard Negative Mining -->
+                <div class="concept-card">
+                    <div class="concept-tag">Batch Construction</div>
+                    <h4>Hard negative mining: the near-miss teaches the most</h4>
+                    <svg class="concept-svg" viewBox="0 0 320 170">
+                        <defs>
+                            <marker id="cl-hnmA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="var(--accent)"/></marker>
+                        </defs>
+                        <circle cx="160" cy="85" r="6" fill="#784384"/>
+                        <text x="160" y="70" text-anchor="middle" font-size="9" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace">anchor</text>
+                        <circle cx="235" cy="60" r="60" fill="none" stroke="#ecdcf2" stroke-width="1" stroke-dasharray="3,3"/>
+                        <circle cx="220" cy="40" r="4" fill="#e31c23"/>
+                        <text x="248" y="30" text-anchor="middle" font-size="8" fill="#e31c23" font-family="IBM Plex Mono, monospace">easy negative</text>
+                        <circle cx="90" cy="120" r="4" fill="#e31c23"/>
+                        <text x="60" y="140" text-anchor="middle" font-size="8" fill="#e31c23" font-family="IBM Plex Mono, monospace">easy negative</text>
+                        <circle cx="178" cy="95" r="4" fill="#2e7d32"/>
+                        <line x1="163" y1="88" x2="176" y2="94" stroke="#2e7d32" stroke-width="1.4" marker-end="url(#cl-hnmA)"/>
+                        <text x="200" y="105" text-anchor="middle" font-size="8.5" font-weight="600" fill="#2e7d32" font-family="IBM Plex Mono, monospace">hard negative</text>
+                        <text x="200" y="116" text-anchor="middle" font-size="7.5" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace">(near-miss subtype)</text>
+                        <text x="160" y="148" text-anchor="middle" font-size="9" fill="var(--accent-2)" font-family="IBM Plex Mono, monospace">closest wrong answer &gt; random negatives</text>
+                        <text x="160" y="160" text-anchor="middle" font-size="8" fill="var(--ink-3)" font-family="IBM Plex Mono, monospace">for sharpening the decision boundary</text>
+                    </svg>
+                    <p>Random in-batch negatives get <em>easy</em> once the model is halfway trained — cells from unrelated types are already far apart, so pushing them further apart teaches nothing new. <strong>Hard negative mining</strong> instead prioritizes the negatives that are hardest to tell apart from the positive: biologically similar but ontologically distinct cells (near-miss subtypes, allelic variants, a cancer cell next to its wild-type counterpart). Ranking candidate negatives by similarity and up-weighting the closest wrong answers sharpens the decision boundary far faster than random in-batch sampling — at atlas scale, most random negatives are "trivially easy" and contribute almost no gradient signal.</p>
+                    <div class="seen-in"><strong>Seen in:</strong> ImmunoStruct (cancer vs. near-identical wild-type peptide as a hard negative) — an engineering technique layered on top of the contrastive objectives above, not a separate loss function</div>
                 </div>
 
             </div>
@@ -1172,12 +1216,26 @@
                 <div class="timeline-item">
                     <div class="timeline-marker"></div>
                     <div class="timeline-content">
-                        <div class="timeline-year">2023: Graph contrastive meets spatial</div>
+                        <div class="timeline-year">2023: Graph contrastive meets spatial, cross-modal goes genomics-native</div>
                         <p><strong>Key Innovations:</strong></p>
                         <ul>
                             <li><strong>GraphST (2023):</strong> Deep Graph Infomax (DGI) variant for spatial transcriptomics — corrupts gene expression on a spatial graph to form negatives; unifies spatial clustering, multi-sample integration, and deconvolution.</li>
+                            <li><strong>scCLIP (2023, NeurIPS AI for Science Workshop):</strong> CLIP-style dual-encoder alignment of scRNA-seq and scATAC-seq from the same cell (paired 10x Multiome data) — a genomics-native cross-modal pair a full two years before the 2025 CLIP wave below.</li>
                         </ul>
-                        <p><em>Era characteristic:</em> Spatial adjacency reframed as contrastive supervision; graph-level rather than instance-level objectives.</p>
+                        <p><em>Era characteristic:</em> Spatial adjacency reframed as contrastive supervision; the first genomics-only (no imaging) CLIP-style pairing appears.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-year">2024: Cross-modal contrastive matures in adjacent biomedical domains</div>
+                        <p><strong>Key Innovations:</strong></p>
+                        <ul>
+                            <li><strong>CONCH (2024, Nat Medicine):</strong> Pathology vision-language foundation model trained on 1.17M histology image-caption pairs; combines contrastive and captioning objectives (CoCa-style) — the bridge in scale and design between OmiCLIP's spot-level H&amp;E pairing and MedMPT's report-level pairing.</li>
+                            <li><strong>BiomedCLIP (2024, NEJM AI):</strong> 15M biomedical image-text pairs mined from PubMed Central articles — establishes the largest general-biomedical-imaging contrastive baseline the field's genomics-specific models are implicitly compared against.</li>
+                        </ul>
+                        <p><em>Era characteristic:</em> Cross-modal contrastive proves out at scale in pathology and general biomedical imaging before the 2025 single-cell/spatial CLIP wave.</p>
                     </div>
                 </div>
 
@@ -1219,7 +1277,7 @@
                 <p><strong>Principle:</strong> Two encoders project two different modalities into one shared space; paired samples are positives, all other pairs in the batch are negatives. Trained with symmetric InfoNCE.</p>
                 <p><strong>Advantages:</strong> Enables zero-shot transfer, retrieval across modalities, and natural-language interfaces; doesn't require imputation between modalities.</p>
                 <p><strong>Watch out for:</strong> Quality of paired data dominates everything; LLM-generated captions can leak label information; modality gap (representations cluster by modality rather than semantics) is a known failure mode.</p>
-                <p><strong>Representative work:</strong> <a href="https://doi.org/10.1038/s41592-025-02707-1" target="_blank">OmiCLIP (2025)</a> · <a href="https://doi.org/10.1038/s41587-025-02857-9" target="_blank">CellWhisperer (2025)</a> · <a href="https://doi.org/10.1038/s41551-025-01544-z" target="_blank">MedMPT (2025)</a>.</p>
+                <p><strong>Representative work:</strong> <a href="https://openreview.net/forum?id=KMtM5ZHxct" target="_blank">scCLIP (2023)</a> · <a href="https://doi.org/10.1038/s41591-024-02856-4" target="_blank">CONCH (2024)</a> · <a href="https://doi.org/10.1038/s41592-025-02707-1" target="_blank">OmiCLIP (2025)</a> · <a href="https://doi.org/10.1038/s41587-025-02857-9" target="_blank">CellWhisperer (2025)</a> · <a href="https://doi.org/10.1038/s41551-025-01544-z" target="_blank">MedMPT (2025)</a>.</p>
             </div>
 
             <div class="method-category">
@@ -1238,6 +1296,14 @@
                 <p><strong>Representative work:</strong> <a href="https://doi.org/10.1038/s42256-025-01163-y" target="_blank">ImmunoStruct (2025)</a>.</p>
             </div>
 
+            <div class="method-category">
+                <h4>🔺 Hierarchical / Multi-Granularity Contrastive</h4>
+                <p><strong>Principle:</strong> Apply contrastive objectives at multiple biological scales simultaneously — cell-level, niche-level, and tissue/section-level — rather than collapsing everything to one granularity. Cell-to-cell positives, neighborhood-to-neighborhood positives, and section-to-section positives are optimized jointly, so structure at every scale survives in the embedding.</p>
+                <p><strong>Advantages:</strong> A single embedding encodes both fine-grained (cell identity) and coarse-grained (tissue architecture) structure at once, instead of forcing a choice between them; scales that would otherwise need separate models share one training signal.</p>
+                <p><strong>Watch out for:</strong> More moving parts than a single-scale objective — the loss weighting across granularities is itself a hyperparameter, and a poorly balanced objective lets the coarsest scale dominate and wash out cell-level signal.</p>
+                <p><strong>Representative work:</strong> <a href="https://doi.org/10.1038/s41592-025-02926-6" target="_blank">SpatialEx (2025)</a>'s hypergraph (niche-level group interactions on top of cell-level features) is the field's current hierarchical/multi-scale hypergraph baseline; CONCH's slide → region → cell tiling is an analogous multi-scale hierarchy in pathology.</p>
+            </div>
+
             <h3>Choosing a Contrastive Recipe</h3>
             <div class="highlight-box">
                 <h4>Quick decision guide</h4>
@@ -1247,6 +1313,7 @@
                     <li><strong>Spatial data or any graph-structured input:</strong> Graph contrastive (DGI variant) — GraphST / CellNEST / SpatialEx-style.</li>
                     <li><strong>You have labels and near-identical inputs to separate:</strong> Supervised contrastive — ImmunoStruct-style.</li>
                     <li><strong>Foundation model pretraining:</strong> Combine masked reconstruction + contrastive — MedMPT-style.</li>
+                    <li><strong>You need cell-, niche-, and tissue-level structure in one embedding:</strong> Hierarchical / multi-granularity contrastive — SpatialEx-style.</li>
                 </ul>
             </div>
         </section>
@@ -1348,7 +1415,7 @@
                             <i class="fas fa-file-alt"></i> Paper
                         </a>
                         <a href="https://github.com/melobio/Concerto-reproducibility" class="paper-link" target="_blank">
-                            <i class="fab fa-github"></i> GitHub
+                            <i class="fab fa-github"></i> GitHub (reproducibility code)
                         </a>
                     </div>
                 </div>
@@ -1483,6 +1550,37 @@
 
             <h3>🔗 Cross-Modal CLIP-Style Models</h3>
             <div class="paper-grid">
+                <!-- scCLIP -->
+                <div class="paper-card">
+                    <h4>scCLIP: Multi-modal Single-cell Contrastive Learning Integration Pre-training</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">NeurIPS AI4Science Workshop</span>
+                        <span class="meta-badge modality-badge">scRNA + scATAC</span>
+                        <span class="meta-badge type-badge">Dual-Encoder InfoNCE</span>
+                    </div>
+                    <div class="paper-description">
+                        The earliest genomics-native CLIP-style model — two years before the 2025 cross-modal
+                        wave below, and with no imaging modality involved at all. Modality-specific transformer
+                        encoders for accessibility (scATAC-seq peaks) and expression (scRNA-seq genes) are
+                        trained with symmetric InfoNCE, using paired chromatin + transcriptome profiles from the
+                        <em>same cell</em> (10x Multiome) as positives.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Why it matters:</strong>
+                        <ul>
+                            <li>First CLIP-style alignment between two purely genomic modalities — no image or text bridge needed</li>
+                            <li>Requires paired multiome data to define positives (unlike OmiCLIP/CellWhisperer's separately-collected pairs)</li>
+                            <li>Zero-shot transfer of the shared peak↔gene embedding space to new datasets</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://openreview.net/forum?id=KMtM5ZHxct" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                    </div>
+                </div>
+
                 <!-- OmiCLIP -->
                 <div class="paper-card">
                     <h4>OmiCLIP: A visual–omics foundation model bridging histopathology and spatial transcriptomics</h4>
@@ -1594,6 +1692,39 @@
                             <i class="fas fa-file-alt"></i> Paper
                         </a>
                         <a href="https://github.com/maliangdi/MedMPT" class="paper-link" target="_blank">
+                            <i class="fab fa-github"></i> GitHub
+                        </a>
+                    </div>
+                </div>
+
+                <!-- CONCH -->
+                <div class="paper-card">
+                    <h4>CONCH: A visual-language foundation model for computational pathology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Nat Medicine</span>
+                        <span class="meta-badge modality-badge">Histology + Text</span>
+                        <span class="meta-badge type-badge">CoCa / Contrastive + Captioning</span>
+                    </div>
+                    <div class="paper-description">
+                        Task-agnostic pathology vision–language pretraining on 1.17M histology image–caption
+                        pairs mined from biomedical text, combining a CLIP-style contrastive objective with a
+                        captioning loss (CoCa-style) — the scale and design midpoint between OmiCLIP's
+                        spot-level H&amp;E pairing and MedMPT's report-level pairing.
+                    </div>
+                    <div class="paper-highlights">
+                        <strong>Why it matters:</strong>
+                        <ul>
+                            <li>Largest pathology image-caption pretraining corpus at the time (1.17M pairs)</li>
+                            <li>State-of-the-art across 14 diverse downstream pathology benchmarks</li>
+                            <li>Zero-shot tumor subtyping directly from the joint embedding, no fine-tuning</li>
+                        </ul>
+                    </div>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-024-02856-4" class="paper-link" target="_blank">
+                            <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/mahmoodlab/CONCH" class="paper-link" target="_blank">
                             <i class="fab fa-github"></i> GitHub
                         </a>
                     </div>
@@ -1799,7 +1930,7 @@
             </ul>
 
             <figure class="module-figure">
-                <img src="figures/contrastive/contrastive_fig12_temperature.svg" alt="The InfoNCE temperature parameter τ across three regimes on the unit hypersphere. Cold (τ small, e.g. 0.01): representations concentrate to a few sharp clusters, indistinguishable representations collapse onto each other, useful structure is lost. Warm (τ moderate, e.g. 0.07–0.1): healthy spread on the hypersphere, semantically related points cluster while preserving fine-grained distinctions — this is what Concerto (τ=0.1) and MedMPT (τ=0.07) use. Hot (τ large, e.g. 0.5+): representations dissolve toward uniform on the sphere, contrastive signal washes out, the model can't discriminate. The regime is task-dependent — tune τ on a held-out downstream task.">
+                <img src="figures/contrastive/contrastive_fig11_temperature.svg" alt="The InfoNCE temperature parameter τ across three regimes on the unit hypersphere. Cold (τ small, e.g. 0.01): representations concentrate to a few sharp clusters, indistinguishable representations collapse onto each other, useful structure is lost. Warm (τ moderate, e.g. 0.07–0.1): healthy spread on the hypersphere, semantically related points cluster while preserving fine-grained distinctions — this is what Concerto (τ=0.1) and MedMPT (τ=0.07) use. Hot (τ large, e.g. 0.5+): representations dissolve toward uniform on the sphere, contrastive signal washes out, the model can't discriminate. The regime is task-dependent — tune τ on a held-out downstream task.">
                 <figcaption><strong>Figure 11</strong><span class="fig-title">The temperature parameter τ — too cold collapses, too hot dissolves.</span> τ controls the concentration of representations on the unit hypersphere. Three regimes: cold ❄ · warm 🟢 · hot 🔥. Tune it on a downstream task — there is no universal optimum. The published recipes that worked (Concerto τ=0.1, MedMPT τ=0.07) all sit in the warm regime, but the right value depends on batch size, negative-pair difficulty, and the geometry of the desired output space.</figcaption>
             </figure>
 
@@ -1816,14 +1947,14 @@
             </div>
 
             <figure class="module-figure">
-                <img src="figures/contrastive/contrastive_fig11_decision_tree.svg" alt="Top-down decision tree for picking contrastive learning vs alternatives. Root: what do you need? Branch A (calibrated probabilities or generative samples): use VAE or diffusion model — not contrastive. Branch B (small dataset, less than 10k samples): use supervised cross-entropy or scVI/MOFA+. Branch C (interpretable factors): use NMF, MOFA+, or ICA. Branch D (clear positive pair available + metric space output desired): use contrastive — and within contrastive, choose by what defines a positive: augmentations (Concerto), spatial neighbors (GraphST), paired modalities (OmiCLIP), class labels (ImmunoStruct), graph corruption (CellNEST). Don't reach for contrastive when something else fits better.">
+                <img src="figures/contrastive/contrastive_fig12_decision_tree.svg" alt="Top-down decision tree for picking contrastive learning vs alternatives. Root: what do you need? Branch A (calibrated probabilities or generative samples): use VAE or diffusion model — not contrastive. Branch B (small dataset, less than 10k samples): use supervised cross-entropy or scVI/MOFA+. Branch C (interpretable factors): use NMF, MOFA+, or ICA. Branch D (clear positive pair available + metric space output desired): use contrastive — and within contrastive, choose by what defines a positive: augmentations (Concerto), spatial neighbors (GraphST), paired modalities (OmiCLIP), class labels (ImmunoStruct), graph corruption (CellNEST). Don't reach for contrastive when something else fits better.">
                 <figcaption><strong>Figure 12</strong><span class="fig-title">Contrastive learning vs alternatives — top-down decision tree.</span> Don't reach for contrastive when something else fits better. Top-down by what you actually need. Contrastive is a good default for one thing — a metric space with a clear notion of similarity — not for everything. If you need calibrated probabilities, generative samples, interpretable factors, or you can't define a positive pair clearly, pick a different tool.</figcaption>
             </figure>
 
             <h3>Software &amp; Reproducibility</h3>
             <ul>
                 <li>
-                    <strong><a href="https://github.com/melobio/Concerto-reproducibility" target="_blank">Concerto</a>:</strong>
+                    <strong><a href="https://github.com/melobio/Concerto-reproducibility" target="_blank">Concerto</a></strong> (reproducibility code, not a maintained package):
                     TensorFlow reference; sparse index-value gene encoding; multi-GPU distributed training.
                 </li>
                 <li>
@@ -1855,6 +1986,8 @@
     <h3>Environment &amp; packages</h3>
     <p>Install into a fresh conda or venv environment. <code>lightly</code> wraps common SSL objectives (NT-Xent, MoCo, BYOL) and works with any PyTorch encoder. <code>info-nce-pytorch</code> is a minimal InfoNCE reference implementation. <code>pytorch-lightning</code> handles the training loop boilerplate.</p>
     <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># Python 3.10+
+# cu118 below targets CUDA 11.8 — swap for your installed CUDA version
+# (e.g. cu121, cu124) by checking `nvidia-smi` / https://pytorch.org/get-started/locally/
 pip install torch torchvision --index-url https://download.pytorch.org/whl/cu118
 pip install pytorch-lightning lightly info-nce-pytorch
 pip install scikit-learn anndata scanpy
@@ -1910,6 +2043,28 @@ optimizer.zero_grad()
 loss.backward()
 optimizer.step()
 print(f"InfoNCE loss: {loss.item():.4f}")   # ~log(N) at init, decreases as pairs align</code></pre>
+
+    <p><strong>Extending to cross-modal pairing.</strong> The instance-discrimination loop above augments <em>one</em> modality twice. Cross-modal (CLIP-style) contrastive — OmiCLIP, scCLIP, CellWhisperer — instead uses two separate encoders, one per modality, and treats a matched pair from the <em>same</em> cell or spot (e.g. an RNA profile and its paired ATAC profile, or an H&amp;E patch and its paired transcriptome) as the positive:</p>
+    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># --- CLIP-style: two-encoder cross-modal InfoNCE ---
+# encoder_rna:  (N, G_rna)  -&gt; (N, D)
+# encoder_atac: (N, G_atac) -&gt; (N, D)
+# Positive pair: matched (RNA, ATAC) profiles from the SAME cell (e.g. 10x Multiome) —
+# this is what scCLIP does; OmiCLIP pairs an H&E patch with its spot's transcriptome instead.
+z_rna  = F.normalize(encoder_rna(x_rna),   dim=-1)   # (N, D)
+z_atac = F.normalize(encoder_atac(x_atac), dim=-1)   # (N, D)
+
+# Symmetric InfoNCE: an NxN similarity matrix, diagonal = positive pairs
+temperature = 0.07
+logits_r2a = z_rna  @ z_atac.T / temperature   # (N, N)
+logits_a2r = z_atac @ z_rna.T  / temperature   # (N, N)
+labels = torch.arange(z_rna.shape[0], device=z_rna.device)
+
+loss = (F.cross_entropy(logits_r2a, labels)
+      + F.cross_entropy(logits_a2r, labels)) / 2
+# -&gt; symmetric because the loss must penalise RNA-to-ATAC AND ATAC-to-RNA
+#    retrieval failures equally; optimising only one direction lets that
+#    encoder's negatives go unpunished.</code></pre>
+
     <h3>Common pitfalls &amp; tips</h3>
     <ul>
         <li><strong>Large batch / sufficient negatives is non-negotiable.</strong> With N=32, the loss has only 31 negatives per anchor — insufficient signal and the model learns trivially. Use N≥256, or add a MoCo-style memory bank for GPU-constrained settings.</li>

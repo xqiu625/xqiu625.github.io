@@ -604,7 +604,22 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#hands-on">
+                    <a href="#overview" target="_self">
+                        <i class="fas fa-book-open"></i> Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="#papers" target="_self">
+                        <i class="fas fa-file-alt"></i> Papers
+                    </a>
+                </li>
+                <li>
+                    <a href="#workflows" target="_self">
+                        <i class="fas fa-diagram-project"></i> Workflows
+                    </a>
+                </li>
+                <li>
+                    <a href="#hands-on" target="_self">
                         <i class="fas fa-wrench"></i> Hands-on
                     </a>
                 </li>
@@ -617,13 +632,33 @@
         <!-- Header -->
         <header class="header">
             <h1>Spatial Transcriptomics Technologies</h1>
-            <div class="subtitle">A Comprehensive Guide to Spatially-Resolved Gene Expression Analysis (2016-2025)</div>
+            <div class="subtitle">A Comprehensive Guide to Spatially-Resolved Gene Expression Analysis (2016-2026)</div>
             <div class="description">
                 From the foundational spatial transcriptomics method to cutting-edge 3D thick-tissue profiling:
                 Understanding how to map gene expression while preserving spatial context in tissues.
-                Based on systematic analysis of 17+ landmark papers spanning nearly a decade of innovation.
+                Based on systematic analysis of 14 landmark papers spanning nearly a decade of innovation.
             </div>
         </header>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">14</span>
+                <div class="stat-label">Landmark Papers</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">19</span>
+                <div class="stat-label">Technologies Covered</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2016&ndash;2026</span>
+                <div class="stat-label">Years Covered</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <div class="stat-label">Technology Categories</div>
+            </div>
+        </div>
+
         <!-- CASEWORK BANNER (Coordinate · Football lens: the goalkeeper) -->
         <section class="casework-banner" aria-label="Goalkeeper inspired spatial transcriptomics casework">
             <div class="casework-art">
@@ -650,19 +685,19 @@
                     <div class="book-meta">Scene 1 · 门卫的基本站位</div>
                     <h4>Geography before reflexes</h4>
                     <p class="plot">Before any shot comes, the keeper has already won or lost the duel — by where they chose to stand. The save is just the confirmation.</p>
-                    <p class="echo"><strong>Spatial context itself.</strong> Knowing where a cell stands is data, just like knowing what it can do. <a href="#overview">See why it matters ↓</a></p>
+                    <p class="echo"><strong>Spatial context itself.</strong> Knowing where a cell stands is data, just like knowing what it can do. <a href="#overview" target="_self">See why it matters ↓</a></p>
                 </div>
                 <div class="library-card">
                     <div class="book-meta">Scene 2 · 门线技术</div>
                     <h4>Millimetre verdicts</h4>
                     <p class="plot">Goal-line technology watches one line at centimetre precision and misses everything else; the stadium cameras cover the whole pitch at a glance, in less detail.</p>
-                    <p class="echo"><strong>Resolution vs coverage.</strong> Imaging-based methods give sub-cellular detail on fewer targets; sequencing-based arrays cover the whole transcriptome at coarser spots. <a href="#overview">See the three categories ↓</a></p>
+                    <p class="echo"><strong>Resolution vs coverage.</strong> Imaging-based methods give sub-cellular detail on fewer targets; sequencing-based arrays cover the whole transcriptome at coarser spots. <a href="#overview" target="_self">See the three categories ↓</a></p>
                 </div>
                 <div class="library-card">
                     <div class="book-meta">Scene 3 · 诺伊尔门卫</div>
                     <h4>The sweeper-keeper</h4>
                     <p class="plot">Neuer is never just on the line — he reads the entire box, steps out early, and owns the space between defense and goal.</p>
-                    <p class="echo"><strong>Spatial domains, not just spots.</strong> Good analysis reads neighborhoods and domains, not only isolated cells. <a href="#methods">See spatial analysis ↓</a></p>
+                    <p class="echo"><strong>Spatial domains, not just spots.</strong> Good analysis reads neighborhoods and domains, not only isolated cells. <a href="#workflows" target="_self">See spatial analysis ↓</a></p>
                 </div>
                 <div class="library-card">
                     <div class="book-meta">Scene 4 · 盯人 vs 区域联防</div>
@@ -674,13 +709,13 @@
                     <div class="book-meta">Scene 5 · 点球前的情报战</div>
                     <h4>Homework before the penalty</h4>
                     <p class="plot">Before every penalty the keeper studies the taker's habits — favorite corner, run-up rhythm, recent form.</p>
-                    <p class="echo"><strong>Cell–cell communication.</strong> Ligand–receptor analysis is exactly this: reading what neighboring cells are about to do from their signals. <a href="#methods">See the workflows ↓</a></p>
+                    <p class="echo"><strong>Cell–cell communication.</strong> Ligand–receptor analysis is exactly this: reading what neighboring cells are about to do from their signals. <a href="#workflows" target="_self">See the workflows ↓</a></p>
                 </div>
                 <div class="library-card">
                     <div class="book-meta">Scene 6 · 门将的出球</div>
                     <h4>Distribution from the back</h4>
                     <p class="plot">Modern keepers start the attack: where you stand decides which pass is even possible. Position shapes every downstream option.</p>
-                    <p class="echo"><strong>Spatially-informed downstream analysis.</strong> Spatially variable genes and region-specific functions only make sense with location kept. <a href="#methods">See the workflows ↓</a></p>
+                    <p class="echo"><strong>Spatially-informed downstream analysis.</strong> Spatially variable genes and region-specific functions only make sense with location kept. <a href="#workflows" target="_self">See the workflows ↓</a></p>
                 </div>
             </div>
             <p class="library-footnote">好门将一半靠反应，一半靠站位 —— spatial context turns expression into geography.</p>
@@ -698,12 +733,13 @@
 
         <!-- Evolution Timeline Figure -->
         <section class="content-section">
-            <h2>Evolution of Spatial Transcriptomics (2016-2025)</h2>
+            <h2>Evolution of Spatial Transcriptomics (2016-2026)</h2>
             <div class="figure-container">
                 <img src="figures/Spatial-Fig1.jpeg" alt="Evolution of Spatial Transcriptomics Platforms Timeline">
                 <p class="figure-caption">
                     <strong>Figure 1. Timeline of spatial transcriptomics technology development.</strong>
-                    Upper track (teal): sequencing-based methods from original ST (2016) through Visium, Slide-seq, Seq-Scope (2021), Stereo-seq (2022), to Visium HD (2023). Lower track (orange-coral): imaging-based methods from MERFISH foundation through STARmap, seqFISH+, MERSCOPE, Xenium, and CosMx. Gold stars indicate breakthroughs. Bottom scale shows resolution progression from 100μm to subcellular.
+                    Upper track (teal): sequencing-based methods from original ST (2016) through Visium, Slide-seq, Seq-Scope (2021), Stereo-seq (2022), to Visium HD (2023). Lower track (orange-coral): imaging-based methods from MERFISH foundation (Chen et al., 2015) through STARmap, seqFISH+, MERSCOPE, Xenium, and CosMx. Gold stars indicate breakthroughs. Bottom scale shows resolution progression from 100μm to subcellular.
+                    <br><em>2026 additions: Xenium Prime (5,000-plex imaging panels), STARmap PLUS (integrated transcript + protein in situ mapping), BANKSY-style joint cell-typing/domain-segmentation methods, and the first whole-organ atlases assembled at single-cell spatial resolution.</em>
                 </p>
             </div>
         </section>
@@ -752,10 +788,11 @@
                 <div class="method-list">
                     <div class="method-item"><strong>Spatial Transcriptomics</strong> (2016) - 100 um spots</div>
                     <div class="method-item"><strong>Slide-seq/V2</strong> (2019/2021) - 10 um beads</div>
-                    <div class="method-item"><strong>HDST</strong> (2019) - 2 um features</div>
-                    <div class="method-item"><strong>Seq-Scope</strong> (2021) - Subcellular resolution</div>
+                    <div class="method-item"><strong>HDST</strong> (2019, Nat Methods, DOI <a href="https://doi.org/10.1038/s41592-019-0548-y" target="_blank">10.1038/s41592-019-0548-y</a>) - 2 um features</div>
+                    <div class="method-item"><strong>Seq-Scope</strong> (2021, Cell, DOI <a href="https://doi.org/10.1016/j.cell.2021.05.010" target="_blank">10.1016/j.cell.2021.05.010</a>) - Subcellular resolution</div>
                     <div class="method-item"><strong>Stereo-seq</strong> (2022) - Nanoscale resolution</div>
                     <div class="method-item"><strong>Visium/VisiumHD</strong> (10x) - Commercial platform</div>
+                    <div class="method-item"><strong>Visium CytAssist</strong> (2022-2024, 10x Genomics) - Automated FFPE tissue processing that eliminates manual permeabilization steps; now the standard workflow for clinical archive samples in most core facilities</div>
                 </div>
             </div>
 
@@ -764,11 +801,13 @@
                 <p>Detect transcripts directly in tissue using fluorescence hybridization or in situ sequencing. Achieve single-molecule/subcellular resolution but typically target specific gene panels.</p>
                 <div class="method-list">
                     <div class="method-item"><strong>seqFISH+</strong> (2019) - 10,000 genes, super-resolution</div>
-                    <div class="method-item"><strong>MERFISH</strong> - Error-robust barcoding</div>
+                    <div class="method-item"><strong>MERFISH</strong> (2015, Chen et al., Science, DOI <a href="https://doi.org/10.1126/science.aaa6090" target="_blank">10.1126/science.aaa6090</a>) - Error-robust barcoding</div>
                     <div class="method-item"><strong>STARmap</strong> (2018) - 3D in situ sequencing</div>
                     <div class="method-item"><strong>Deep-STARmap</strong> (2025) - 200 um thick tissue</div>
                     <div class="method-item"><strong>Xenium</strong> (10x) - Commercial in situ</div>
+                    <div class="method-item"><strong>Xenium Prime</strong> (2024, 10x Genomics) - Expanded 5,000-gene panels; bridges imaging-based and sequencing-based gene coverage</div>
                     <div class="method-item"><strong>CosMx SMI</strong> (NanoString) - 1000+ genes</div>
+                    <div class="method-item"><strong>MERSCOPE Ultra</strong> (2025, Vizgen) - Next-generation throughput upgrade with improved sensitivity on low-RNA FFPE samples</div>
                 </div>
             </div>
 
@@ -862,11 +901,25 @@
                         <td>Targeted, clinical FFPE</td>
                     </tr>
                     <tr>
+                        <td><strong>Xenium Prime</strong></td>
+                        <td>Subcellular</td>
+                        <td>Up to 5,000 genes</td>
+                        <td>5-10 um</td>
+                        <td>Large panels on clinical FFPE</td>
+                    </tr>
+                    <tr>
                         <td><strong>seqFISH+</strong></td>
                         <td>Super-resolution</td>
                         <td>10,000 genes</td>
                         <td>~5 um</td>
                         <td>Discovery + localization</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MERSCOPE</strong></td>
+                        <td>Subcellular (~100 nm)</td>
+                        <td>500-1,000 genes</td>
+                        <td>10 um</td>
+                        <td>MERFISH-based targeted imaging, research grade</td>
                     </tr>
                     <tr>
                         <td><strong>CosMx SMI</strong></td>
@@ -933,7 +986,7 @@
         </section>
 
         <!-- Key Papers Section -->
- <section class="content-section">
+ <section class="content-section" id="papers">
     <h2>Landmark Papers Organized by Methodological Approach</h2>
 
     <!-- CATEGORY 1: The "Array" Approach -->
@@ -981,6 +1034,9 @@
                     <li>Genome-wide capture</li>
                 </ul>
             </div>
+            <div class="paper-links">
+                <a href="https://doi.org/10.1038/s41587-020-0739-1" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
+            </div>
         </div>
 
         <div class="paper-card">
@@ -999,6 +1055,9 @@
                     <li>Very large field of view capability (whole embryos)</li>
                     <li>Subcellular resolution with whole transcriptome</li>
                 </ul>
+            </div>
+            <div class="paper-links">
+                <a href="https://doi.org/10.1016/j.cell.2022.04.003" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
             </div>
         </div>
     </div>
@@ -1045,7 +1104,7 @@
                 <ul>
                     <li>Massive multiplexing (10,000 genes) via pseudocolour barcoding</li>
                     <li>Subcellular mRNA localization at super-resolution</li>
-                    <li>High sensitivity (~35,000 transcripts detected per cell)</li>
+                    <li>High sensitivity (~35,000 individual transcript molecules detected per cell, across the 10,000-gene targeted panel — not 35,000 unique genes)</li>
                 </ul>
             </div>
             <div class="paper-links">
@@ -1069,6 +1128,9 @@
                     <li>Robust performance on FFPE tissue sections</li>
                     <li>Focus on clinical translation and reproducibility</li>
                 </ul>
+            </div>
+            <div class="paper-links">
+                <a href="https://doi.org/10.1038/s41587-022-01483-z" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
             </div>
         </div>
     </div>
@@ -1144,6 +1206,29 @@
                 <a href="https://doi.org/10.1038/s41592-025-02863-4" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
             </div>
         </div>
+
+        <div class="paper-card">
+            <h4>STARmap PLUS (Integrated Transcript + Protein In Situ Mapping) (2023)</h4>
+            <div class="paper-meta">
+                <span class="meta-badge year-badge">2023</span>
+                <span class="meta-badge journal-badge">Nat Neurosci</span>
+            </div>
+            <p class="paper-description">
+                Zeng et al. - Extends STARmap to jointly detect RNA transcripts and proteins (including pathological markers like amyloid plaques and phosphorylated tau) in the same tissue section, applied to an Alzheimer's disease mouse model.
+            </p>
+            <div class="paper-highlights">
+                <strong>Key Innovations:</strong>
+                <ul>
+                    <li>Sub-100nm resolution, simultaneously measuring 2,000+ transcripts alongside protein pathology markers</li>
+                    <li>Maps 15 cell types across cortex and hippocampus at 8 and 13 months in a TauPS2APP mouse model</li>
+                    <li>Resolves disease-associated microglia states by their spatial proximity to amyloid plaques</li>
+                    <li>Demonstrates that multi-modal (RNA + protein) in situ mapping reveals disease progression that single-modality profiling misses</li>
+                </ul>
+            </div>
+            <div class="paper-links">
+                <a href="https://doi.org/10.1038/s41593-022-01251-x" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
+            </div>
+        </div>
     </div>
 
     <!-- CATEGORY 4: Synthesis -->
@@ -1217,10 +1302,34 @@
                 <a href="https://doi.org/10.1038/s41586-024-08338-4" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
             </div>
         </div>
+
+        <div class="paper-card">
+            <h4>BANKSY (Spatial Domain Identification) (2024)</h4>
+            <div class="paper-meta">
+                <span class="meta-badge year-badge">2024</span>
+                <span class="meta-badge journal-badge">Nat Genetics</span>
+            </div>
+            <p class="paper-description">
+                Singhal et al. - A new computational standard for spatial domain identification: embeds each cell's own expression together with a neighborhood-averaged expression signal into one combined vector before clustering.
+            </p>
+            <div class="paper-highlights">
+                <strong>Key Innovations:</strong>
+                <ul>
+                    <li>Embeds neighborhood-averaged expression alongside each cell's own profile, so clustering is sensitive to both cell identity and microenvironment</li>
+                    <li>A single tunable parameter (lambda) interpolates between pure cell typing and pure domain segmentation — no need to choose one or the other upfront</li>
+                    <li>Outperforms BayesSpace and SpaGCN on human brain, mouse embryo, and tumor tissue benchmarks</li>
+                    <li>Scales to millions of cells/spots across platforms (Visium, MERFISH, Slide-seq, CosMx)</li>
+                </ul>
+            </div>
+            <div class="paper-links">
+                <a href="https://doi.org/10.1038/s41588-024-01664-3" class="paper-link"><i class="fas fa-external-link-alt"></i> Paper</a>
+                <a href="https://github.com/prabhakarlab/Banksy" class="paper-link"><i class="fab fa-github"></i> GitHub</a>
+            </div>
+        </div>
     </div>
 </section>
         <!-- Analysis Frameworks Section -->
-        <section class="content-section">
+        <section class="content-section" id="workflows">
             <h2>Common Analysis Workflows</h2>
 
             <div class="figure-container">
@@ -1251,15 +1360,22 @@
             <ul>
                 <li><strong>Reference-Based:</strong> Transfer labels from scRNA-seq using FuseMap, Harmony, or Cell2location</li>
                 <li><strong>Unsupervised:</strong> Louvain/Leiden clustering on spatial features followed by marker gene validation</li>
-                <li><strong>Deconvolution:</strong> SpatialDecon, RCTD, or Cell2location for spot-level cell type mixtures</li>
+                <li><strong>Deconvolution:</strong> SpatialDecon, RCTD (Robust Cell Type Decomposition; Cable et al., Nat Biotechnol 2021), or Cell2location for spot-level cell type mixtures</li>
             </ul>
 
             <h3>3. Spatial Analysis</h3>
             <ul>
                 <li><strong>Neighborhood Analysis:</strong> Squidpy for cellular interaction scores, Delaunay triangulation for neighbors</li>
-                <li><strong>Spatial Domains:</strong> BayesSpace, HMRF, or SpaGCN for identifying tissue regions</li>
+                <li><strong>Spatial Domains:</strong> BayesSpace, HMRF, SpaGCN, BANKSY (joint cell-typing + domain segmentation), or GraphST (graph self-supervised clustering) for identifying tissue regions</li>
                 <li><strong>Ligand-Receptor:</strong> CellChat, CellPhoneDB for cell-cell communication inference</li>
                 <li><strong>3D Analysis:</strong> Distance transform watershed, volumetric clustering, spatial statistics</li>
+            </ul>
+
+            <h3>4. Foundation Model-Informed Spatial Analysis (2025-2026)</h3>
+            <ul>
+                <li><strong>Nicheformer</strong> (Nat Methods 2025) &mdash; pretrained jointly on 57M dissociated + 53M spatial cells; zero-shot niche and cell-type annotation transfer across tissues without retraining.</li>
+                <li><strong>scGPT spatial embedding</strong> &mdash; map spatial cells into a scGPT latent space learned from atlas-scale scRNA-seq for annotation without a matched local reference.</li>
+                <li><strong>Key use case:</strong> transfer labels from a well-annotated brain atlas onto a new spatial FFPE tumor section that has no matched scRNA-seq reference of its own.</li>
             </ul>
 
             <h3>Key Software Packages</h3>
@@ -1306,6 +1422,21 @@
                         <td><strong>BayesSpace</strong></td>
                         <td>R</td>
                         <td>Spatial clustering enhancement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>BANKSY</strong></td>
+                        <td>Python/R</td>
+                        <td>Spatial domain identification (joint cell-typing + neighborhood context)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>GraphST</strong></td>
+                        <td>Python</td>
+                        <td>Graph self-supervised spatial clustering</td>
+                    </tr>
+                    <tr>
+                        <td><strong>spatialdata</strong></td>
+                        <td>Python</td>
+                        <td>Unified multi-platform, multi-modal spatial data container (OME-Zarr, scverse)</td>
                     </tr>
                 </tbody>
             </table>

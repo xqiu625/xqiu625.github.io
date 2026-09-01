@@ -102,117 +102,40 @@
             line-height: 1.8;
         }
 
-        /* ===== TENNIS ANALOGY ===== */
-        .sport-analogy {
-            display: grid;
-            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
-            gap: 30px;
-            align-items: center;
-            margin: 25px 0;
-            padding: 30px;
-            overflow: hidden;
-            border: 2px solid #AD8B91;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #f3e8eb 0%, #ffffff 60%, #e8eee5 100%);
-            box-shadow: 0 4px 18px rgba(24, 48, 29, 0.14);
-        }
-
-        .sport-analogy-copy .analogy-label {
-            color: #859C7C;
-            font-size: 0.76em;
-            font-weight: bold;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .sport-analogy-copy h2 {
-            margin: 7px 0 12px;
-            color: #18301D;
-            border: 0;
-            padding: 0;
-        }
-
-        .tennis-scout-hero {
-            margin: 0;
-            overflow: hidden;
-            border: 8px solid white;
-            border-radius: 14px;
-            background: #55a99d;
-            box-shadow: 0 12px 30px rgba(42, 91, 84, 0.2);
-        }
-
-        .tennis-scout-hero img,
-        .readout-player-strip img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        .analogy-steps {
-            display: grid;
-            gap: 9px;
-            margin-top: 18px;
-        }
-
-        .analogy-step {
-            display: grid;
-            grid-template-columns: 32px 1fr;
-            gap: 10px;
-            align-items: start;
-        }
-
-        .analogy-step span {
-            width: 28px;
-            height: 28px;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            background: #AD8B91;
-            color: white;
-            font-weight: bold;
-        }
-
-        .readout-player-strip {
-            margin: 30px 0;
-            padding: 24px;
-            border: 2px solid #AD8B91;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #fff 0%, #f7eef0 58%, #eef7f5 100%);
-            box-shadow: 0 4px 18px rgba(93, 74, 80, 0.12);
-        }
-
-        .readout-player-strip img {
-            max-width: 980px;
-            margin: 0 auto;
-            filter: drop-shadow(0 16px 18px rgba(93, 74, 80, 0.16));
-        }
-
-        .player-steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-top: 16px;
-        }
-
-        .player-step {
-            padding: 14px 16px;
-            border-left: 4px solid #AD8B91;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.78);
-        }
-
-        .player-step strong {
-            display: block;
-            color: #5d4a50;
-            margin-bottom: 4px;
-        }
-
-        .player-step span {
-            color: #5d6d6f;
-            font-size: 0.94em;
-        }
-
-
+        /* ===== CASEWORK BANNER + STORY (tennis scout, 06 Readout) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#3d2b30 0%,#5d4a50 55%,#3d4a2a 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(61,43,48,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #f2d8dd; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #f3e6e8; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: #fbf6f7; border: 1.5px solid #f0dfe3; }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: #5d3a42; border-left: 4px solid #AD8B91; padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid #f0dfe3; border-left: 5px solid #AD8B91; border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(93,58,66,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(93,58,66,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: #AD8B91; }
+        .library-card h4 { color: #5d3a42; font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: #5d3a42; background: #f7eef0; border: 1px dashed #d8b9c0; border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: #9c707c; font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: #AD8B91; font-size: .95em; clear: both; }
+        .content-figure.comic-figure { max-width: 440px; margin-left: auto; margin-right: auto; }
+        .content-figure.comic-figure img { width: 100%; height: auto; display: block; border-radius: 12px; }
+        .content-figure.comic-figure figcaption { margin-top: 10px; font-size: .9em; line-height: 1.55; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid #f0dfe3; box-shadow: 0 10px 28px rgba(93,58,66,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #d8b9c0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #e3c9cf; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(173,139,145,.15); border-color: rgba(216,185,192,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #d8b9c0; }
+        [data-theme="dark"] .library-footnote { color: #d8b9c0; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
 
 
         /* ===== STATISTICS BAR ===== */
@@ -525,18 +448,7 @@
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .sport-analogy {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-
-            .player-steps {
-                grid-template-columns: 1fr;
-            }
-
-            .readout-player-strip {
-                padding: 16px;
-            }
+            .story-hero { float: none; width: min(320px, 82%); margin: 0 auto 18px; }
 
             .paper-grid { grid-template-columns: 1fr; }
             .header h1 { font-size: 2em; }
@@ -572,6 +484,9 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#tennis-scout">🎾 Scout</a>
+                </li>
+                <li>
                     <a href="#hands-on">
                         <i class="fas fa-wrench"></i> Hands-on
                     </a>
@@ -593,69 +508,69 @@
                 </p>
             </div>
 
-            <section class="sport-analogy" aria-labelledby="tennis-scout-title">
-                <figure class="tennis-scout-hero">
-                    <img
-                        src="../animations/rive-assets/stage-themes-v5/tennis-scout-hero.webp"
-                        width="1400"
-                        height="1400"
-                        loading="lazy"
-                        decoding="async"
-                        alt="Healshu in tennis whites on a teal court, reading match footage on a tablet while a wall chart shows four opponent profiles and a tray of tagged balls sits beside a pill marker">
-                </figure>
-                <div class="sport-analogy-copy">
-                    <div class="analogy-label">🎾 Tennis analogy · Scouting stage</div>
-                    <h2 id="tennis-scout-title">You scout the opponent before you play the point.</h2>
-                    <p>
-                        Predicting how a cell will respond to a drug is a scouting problem. Nobody has seen this
-                        particular tumour play, but thousands of hours of related footage already exist: bulk
-                        cell-line panels with measured IC50s. The job is to compress that footage into a report
-                        that still holds up against an opponent you have never faced — a single cell, profiled
-                        with far noisier equipment.
-                    </p>
-                    <div class="analogy-steps">
-                        <div class="analogy-step">
-                            <span>1</span>
-                            <div><strong>Watch the tapes:</strong> train on what has already been measured — GDSC and CCLE bulk cell-line panels with known IC50 or AUC values for each drug.</div>
-                        </div>
-                        <div class="analogy-step">
-                            <span>2</span>
-                            <div><strong>Write the report:</strong> distil those tapes into a transferable signature or model — beyondcell's drug-signature enrichment, scDEAL's shared latent space — rather than memorising per-line answers that never generalise.</div>
-                        </div>
-                        <div class="analogy-step">
-                            <span>3</span>
-                            <div><strong>Predict the match-up:</strong> apply the report to single cells. This needs explicit domain adaptation (SCAD's adversarial alignment, scDEAL's DaNN) because bulk and single-cell expression differ in dropout, sequencing depth and dynamic range.</div>
-                        </div>
-                        <div class="analogy-step">
-                            <span>4</span>
-                            <div><strong>Rewrite after the first set:</strong> check the prediction against observed response and update. A scouting report is provisional — a cell that scores "resistant" may simply be cycling, low-depth, or badly represented in the training panel.</div>
-                        </div>
-                    </div>
+            <!-- CASEWORK BANNER (Readout · Tennis scout lens) -->
+            <section class="casework-banner" aria-label="Tennis scout inspired drug response prediction casework">
+                <div class="casework-art">
+                    <img src="../animations/rive-assets/stage-themes-v5/tennis-scout-three-poses.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Three tennis scout poses of Healshu: watching match footage on a tablet, pinning a starred profile card to a draft board, and scouting an unseen player through binoculars while holding a question-mark card">
+                </div>
+                <div class="casework-copy">
+                    <div class="kicker">Tennis scout lens · drug response prediction</div>
+                    <h2>球探报告写得再好，也要上过场才算数。</h2>
+                    <p>Predicting a cell's drug response is a scouting problem. Nobody has seen this tumour play — but the tape library is full: thousands of bulk cell-line games with measured outcomes (GDSC, CCLE). 球探的工作不是背下每场比分，而是把录像压成一份在没见过的对手身上也站得住的报告。</p>
                 </div>
             </section>
 
-            <section class="readout-player-strip" aria-label="Healshu scouting poses: study, report, match-up">
-                <img
-                    src="../animations/rive-assets/stage-themes-v5/tennis-scout-three-poses.webp"
-                    width="1672"
-                    height="941"
-                    loading="lazy"
-                    decoding="async"
-                    alt="Three poses of Healshu: studying a tablet next to a magnified profile card, hitting a ball toward a pill-and-target marker, and standing ready with a racquet facing a shadowy unseen opponent">
-                <div class="player-steps">
-                    <div class="player-step">
-                        <strong>Scout</strong>
-                        <span>Learn from labelled bulk cell lines.</span>
+            <!-- STORY LINE: the draft board -->
+            <section class="content-section story-section" id="tennis-scout">
+                <figure class="story-hero">
+                    <img src="../animations/rive-assets/stage-themes-v5/tennis-scout-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu dressed as a tennis scout at a courtside desk, reading a dotted tablet report in front of a draft board with silhouette cards and a basket of pill-tagged tennis balls">
+                </figure>
+                <h2>🎾 The Draft Board: A Scouting Cycle in Six Reports</h2>
+                <p class="story-quote">「不看他训练，只看他打没打过这种对手。」</p>
+                <p class="story-intro">A drug-response model is a scouting department: it files reports on players (drugs, cell lines) it has measured, then stakes its reputation on players it has never seen — your single cells. Six reports from the scouting cycle, re-read as the concepts this module's methods formalize.</p>
+                <div class="library-grid">
+                    <div class="library-card">
+                        <div class="book-meta">Report 1 · 录像资料库 The tape library</div>
+                        <h4>Training on measured panels</h4>
+                        <p class="plot">Every scouting department starts with tape: thousands of completed games, each with a final score. GDSC and CCLE are that library — bulk cell lines, each with measured IC50 or AUC for every drug on the shelf.</p>
+                        <p class="echo"><strong>Training data.</strong> You learn from what has already been measured: bulk panels with known drug outcomes. Everything else is extrapolation.</p>
                     </div>
-                    <div class="player-step">
-                        <strong>Report</strong>
-                        <span>Compress into a transferable signature.</span>
+                    <div class="library-card">
+                        <div class="book-meta">Report 2 · 体测与球探报告 Combine stats &amp; the report</div>
+                        <h4>Transferable signatures</h4>
+                        <p class="plot">Nobody scouts by re-watching every tape. You write the one-page report: speed, spin tolerance, weakness on the backhand — the few numbers that predict the rest.</p>
+                        <p class="echo"><strong>Feature compression.</strong> Distil panels into drug-signature enrichment (beyondcell) or a shared latent space (scDEAL) — a report that travels, not a memory of every score.</p>
                     </div>
-                    <div class="player-step">
-                        <strong>Match-up</strong>
-                        <span>Transfer to single cells, then check.</span>
+                    <div class="library-card">
+                        <div class="book-meta">Report 3 · 跨联盟考察 Scouting across leagues</div>
+                        <h4>Domain adaptation</h4>
+                        <p class="plot">A report written on the college league needs translation before the pros: different ball, different pace, different lights. Bulk-to-single-cell is the same trip — dropout, depth, and dynamic range all change the reading.</p>
+                        <p class="echo"><strong>Align the domains.</strong> SCAD aligns bulk and single-cell adversarially; scDEAL's DaNN learns the transfer explicitly. Without it, the report misreads the league.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Report 4 · 没见过的对手 The unscouted opponent</div>
+                        <h4>Prediction with uncertainty</h4>
+                        <p class="plot">Draft night arrives and the kid has never faced a pro serve. You submit the report anyway — with a confidence note attached, because the honest scout prices what he hasn't seen.</p>
+                        <p class="echo"><strong>Prediction ≠ certainty.</strong> Applying to single cells means scoring a player never faced. Report uncertainty; a confident number without provenance is a rumor.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Report 5 · 看走眼的首轮秀 The first-round bust</div>
+                        <h4>False positives &amp; validation</h4>
+                        <p class="plot">Every scout has one: the can't-miss prospect who misses. In our game the bust is the cell called "resistant" that was merely cycling, low-depth, or missing from the training panel — a label error, not biology.</p>
+                        <p class="echo"><strong>Validate before you sign.</strong> A "resistant" call can be a technical artifact. Check against observed response — and remember cross-league transfer can collapse (r = 0.83 in-panel to r = 0.21 out).</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Report 6 · 赛季中改报告 Rewriting mid-season</div>
+                        <h4>Provisional by design</h4>
+                        <p class="plot">Three matches in, the report gets revised: the backhand weakness was real, the serve was underrated. Good scouts rewrite — the report is a living document, not a verdict.</p>
+                        <p class="echo"><strong>Update against observation.</strong> Compare prediction with observed response and revise. A scouting report is written in pencil; so is every drug-response score.</p>
                     </div>
                 </div>
+                <figure class="content-figure comic-figure">
+                    <img src="../animations/rive-assets/stage-themes-v5/tennis-scout-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel tennis scout comic for drug response prediction: watching measured match footage, compressing tapes into a one-page report, comparing a player across different leagues, and revising the report after the first match">
+                    <figcaption><strong>One scout, one response report.</strong> Tape before talk (measured training panels) &middot; one page, not a thousand tapes (transferable signature) &middot; different league, same kid? (bulk-to-single-cell domain adaptation) &middot; watch the first match (validation and update).</figcaption>
+                </figure>
+                <p class="library-footnote">「球探报告永远写在铅笔里——上过场，再改。」 — every score is a draft, every observation an editor.</p>
             </section>
 
             <!-- Statistics -->
@@ -1576,8 +1491,6 @@ sc.pl.umap(adata, color=["pred_sensitivity", "bortezomib_sig", "leiden"])</code>
         <p style="font-size: 0.85em; margin-top: 12px; opacity: 0.7;">Created 2025 · Updated July 2026</p>
         <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
     </footer>
-</body>
-</html>
     
     <!-- JAVASCRIPT FOR INTERACTIVE DEMO -->
     <script>

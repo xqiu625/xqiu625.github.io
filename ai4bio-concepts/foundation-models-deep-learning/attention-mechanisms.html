@@ -197,6 +197,36 @@
             box-shadow: 0 4px 15px rgba(247, 162, 84, 0.1);
         }
 
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            box-shadow: 0 8px 32px rgba(247, 162, 84, 0.12), 0 0 0 2px rgba(247, 162, 84, 0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            border-left: 3px solid #F7A254;
+        }
+
+        .stat-number {
+            font-size: 2.3em;
+            font-weight: 700;
+            color: #C05540;
+            display: block;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.92em;
+            margin-top: 5px;
+        }
+
         .content-section {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -285,8 +315,10 @@
         .attention-card:nth-child(1) { border-top-color: #F5C883; }
         .attention-card:nth-child(2) { border-top-color: #426DB4; }
         .attention-card:nth-child(3) { border-top-color: #C05540; }
-        /* Add color for the new 4th card */
+        /* Card 4: Graph Attention */
         .attention-card:nth-child(4) { border-top-color: #E67E22; }
+        /* Card 5: Pair Representation Attention */
+        .attention-card:nth-child(5) { border-top-color: #6C4F9E; }
 
         .attention-card h3 {
             font-size: 1.6em;
@@ -296,8 +328,11 @@
         .attention-card:nth-child(1) h3 { color: #F5C883; }
         .attention-card:nth-child(2) h3 { color: #426DB4; }
         .attention-card:nth-child(3) h3 { color: #C05540; }
-        /* Add color for the new 4th card title */
+        /* Card 4: Graph Attention title */
         .attention-card:nth-child(4) h3 { color: #E67E22; }
+        /* Card 5: Pair Representation Attention title */
+        .attention-card:nth-child(5) h3 { color: #6C4F9E; }
+        .attention-card:nth-child(5) .examples { background: rgba(108, 79, 158, 0.1); }
 
         /* --- UPDATED VISUAL CONTAINER FOR WIDER SVGS --- */
         .attention-card .visual-container {
@@ -384,6 +419,7 @@
         .key-point:nth-child(2) { background: rgba(247, 197, 80, 0.1); border-left-color: #F7C550; }
         .key-point:nth-child(3) { background: rgba(247, 162, 84, 0.1); border-left-color: #F7A254; }
         .key-point:nth-child(4) { background: rgba(192, 85, 64, 0.1); border-left-color: #C05540; }
+        .key-point:nth-child(5) { background: rgba(230, 126, 34, 0.1); border-left-color: #E67E22; }
 
         .key-point h4 {
             margin-top: 0;
@@ -395,6 +431,7 @@
         .key-point:nth-child(2) h4 { color: #F7C550; }
         .key-point:nth-child(3) h4 { color: #F7A254; }
         .key-point:nth-child(4) h4 { color: #C05540; }
+        .key-point:nth-child(5) h4 { color: #E67E22; }
 
         .key-point p {
             color: #666;
@@ -571,6 +608,7 @@
             .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
             .navbar-nav li { margin: 3px 7px; }
             .navbar-nav a { font-size: 12.5px; }
+            .navbar-nav .section-nav-item { display: none; }
             .container { padding-left: 12px; padding-right: 12px; }
         }
     </style>
@@ -631,6 +669,26 @@
                         <i class="fas fa-home"></i> Homepage
                     </a>
                 </li>
+                <li class="section-nav-item">
+                    <a href="#types">
+                        <i class="fas fa-shapes"></i> Types
+                    </a>
+                </li>
+                <li class="section-nav-item">
+                    <a href="#applications">
+                        <i class="fas fa-dna"></i> Applications
+                    </a>
+                </li>
+                <li class="section-nav-item">
+                    <a href="#models">
+                        <i class="fas fa-layer-group"></i> Models
+                    </a>
+                </li>
+                <li class="section-nav-item">
+                    <a href="#compare">
+                        <i class="fas fa-code-compare"></i> Compare
+                    </a>
+                </li>
                 <li>
                     <a href="#hands-on">
                         <i class="fas fa-wrench"></i> Hands-on
@@ -652,6 +710,25 @@
                     learn which genes, nucleotides, or proteins are most important for a given task—without being
                     explicitly programmed with that knowledge.
                 </p>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">5</span>
+                    <div class="stat-label">Attention Mechanism Types</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">16+</span>
+                    <div class="stat-label">Model Examples</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2017&ndash;2026</span>
+                    <div class="stat-label">Publication Years</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <div class="stat-label">Modalities: Sequence, Structure, Graph</div>
+                </div>
             </div>
 
             <section class="casework-banner" aria-label="LEGO inspired attention casework">
@@ -1304,7 +1381,7 @@
                                 <!-- Info panels -->
                                 <g transform="translate(100, 340)">
                                     <rect x="0" y="0" width="320" height="35" fill="#2ecc71" rx="6" opacity="0.9"/>
-                                    <text x="160" y="23" text-anchor="middle" fill="white" font-size="13" font-weight="bold">⚡ O(N) - FAST! Only 4 checks</text>
+                                    <text x="160" y="23" text-anchor="middle" fill="white" font-size="13" font-weight="bold">⚡ O(E) - FAST! Only 4 checks (edges, not all nodes)</text>
                                 </g>
 
                                 <g transform="translate(480, 340)">
@@ -1319,7 +1396,7 @@
                                 <strong>What it is:</strong> Attention restricted to specific graph structures (e.g., k-nearest neighbors in 3D space, known biological interactions).
                             </p>
                             <p>
-                                <strong>Why it matters:</strong> Reduces computational cost from O(N²) to O(N) while maintaining biological relevance—distant in sequence can be close in 3D structure.
+                                <strong>Why it matters:</strong> Reduces computational cost from O(N²) to O(E) — E = number of graph edges, which stays sparse (E = kN for fixed average degree k ≪ N) — while maintaining biological relevance—distant in sequence can be close in 3D structure.
                             </p>
                         </div>
 
@@ -1329,6 +1406,82 @@
                                 <li><strong>Structured Transformer:</strong> k=30 nearest neighbors for protein structure-to-sequence design</li>
                                 <li><strong>Chroma:</strong> Random graph networks enabling 60,000-residue protein complexes</li>
                                 <li><strong>CellPLM:</strong> Spatial graph attention for neighboring cells in tissue</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="attention-card">
+                        <h3>5. Pair Representation Attention: Two Bricks, One Shared Record</h3>
+
+                        <div class="analogy-box">
+                            <h4><i class="fas fa-vector-square"></i> The Analogy:</h4>
+                            <p>Standard attention gives every brick its own name tag that gets updated as it looks around. Pair representation attention goes further: every <em>pair</em> of bricks shares a dedicated index card — brick A's card about brick B, brick B's card about brick C, brick A's card about brick C — and every attention layer updates all of these two-brick cards at once. The model isn't just tracking what each piece is; it's tracking exactly how each pair relates: "A and B are 3.8Å apart, and A-to-C has the same relative orientation as B-to-C."</p>
+                        </div>
+
+                        <div class="visual-container">
+                            <svg viewBox="0 0 900 340" style="width: 100%; height: auto; font-family: 'Manrope', sans-serif;">
+                                <text x="450" y="25" text-anchor="middle" fill="#6C4F9E" font-size="22" font-weight="bold">🏭 PAIR FACTORY: A Record Card for Every Two Bricks</text>
+
+                                <!-- Left: three single-brick tokens -->
+                                <g transform="translate(140, 90)">
+                                    <text x="0" y="-30" text-anchor="middle" fill="#555" font-size="13" font-weight="600">Standard attention: one tag per brick</text>
+                                    <rect x="-30" y="0" width="60" height="60" rx="6" fill="#6C4F9E" opacity="0.85"/>
+                                    <text x="0" y="35" text-anchor="middle" fill="white" font-size="16" font-weight="bold">A</text>
+                                    <rect x="90" y="0" width="60" height="60" rx="6" fill="#8a6bc7" opacity="0.85"/>
+                                    <text x="120" y="35" text-anchor="middle" fill="white" font-size="16" font-weight="bold">B</text>
+                                    <rect x="210" y="0" width="60" height="60" rx="6" fill="#ab8dd9" opacity="0.85"/>
+                                    <text x="240" y="35" text-anchor="middle" fill="white" font-size="16" font-weight="bold">C</text>
+                                    <text x="120" y="95" text-anchor="middle" fill="#888" font-size="11">1D vectors — no explicit A&harr;B / A&harr;C record</text>
+                                </g>
+
+                                <!-- Right: pair-representation matrix -->
+                                <g transform="translate(560, 60)">
+                                    <text x="90" y="-30" text-anchor="middle" fill="#555" font-size="13" font-weight="600">Pair representation: a card for every pair</text>
+                                    <!-- 3x3 grid of pair cells -->
+                                    <g font-family="Manrope, sans-serif">
+                                        <rect x="0" y="0" width="60" height="60" rx="4" fill="#ecdcf2" stroke="#6C4F9E" stroke-width="1.5"/>
+                                        <text x="30" y="35" text-anchor="middle" fill="#6C4F9E" font-size="12" font-weight="700">A&harr;A</text>
+                                        <rect x="65" y="0" width="60" height="60" rx="4" fill="#d9c2ea" stroke="#6C4F9E" stroke-width="2"/>
+                                        <text x="95" y="35" text-anchor="middle" fill="#3d1f47" font-size="12" font-weight="700">A&harr;B</text>
+                                        <rect x="130" y="0" width="60" height="60" rx="4" fill="#d9c2ea" stroke="#6C4F9E" stroke-width="2"/>
+                                        <text x="160" y="35" text-anchor="middle" fill="#3d1f47" font-size="12" font-weight="700">A&harr;C</text>
+                                        <rect x="0" y="65" width="60" height="60" rx="4" fill="#d9c2ea" stroke="#6C4F9E" stroke-width="2"/>
+                                        <text x="30" y="100" text-anchor="middle" fill="#3d1f47" font-size="12" font-weight="700">B&harr;A</text>
+                                        <rect x="65" y="65" width="60" height="60" rx="4" fill="#ecdcf2" stroke="#6C4F9E" stroke-width="1.5"/>
+                                        <text x="95" y="100" text-anchor="middle" fill="#6C4F9E" font-size="12" font-weight="700">B&harr;B</text>
+                                        <rect x="130" y="65" width="60" height="60" rx="4" fill="#d9c2ea" stroke="#6C4F9E" stroke-width="2"/>
+                                        <text x="160" y="100" text-anchor="middle" fill="#3d1f47" font-size="12" font-weight="700">B&harr;C</text>
+                                        <rect x="0" y="130" width="60" height="60" rx="4" fill="#d9c2ea" stroke="#6C4F9E" stroke-width="2"/>
+                                        <text x="30" y="165" text-anchor="middle" fill="#3d1f47" font-size="12" font-weight="700">C&harr;A</text>
+                                        <rect x="65" y="130" width="60" height="60" rx="4" fill="#d9c2ea" stroke="#6C4F9E" stroke-width="2"/>
+                                        <text x="95" y="165" text-anchor="middle" fill="#3d1f47" font-size="12" font-weight="700">C&harr;B</text>
+                                        <rect x="130" y="130" width="60" height="60" rx="4" fill="#ecdcf2" stroke="#6C4F9E" stroke-width="1.5"/>
+                                        <text x="160" y="165" text-anchor="middle" fill="#6C4F9E" font-size="12" font-weight="700">C&harr;C</text>
+                                    </g>
+                                    <text x="90" y="215" text-anchor="middle" fill="#888" font-size="11">an N&times;N grid of relationship vectors, not just N tokens</text>
+                                </g>
+
+                                <g transform="translate(450, 280)">
+                                    <rect x="-260" y="0" width="520" height="40" fill="#6C4F9E" rx="6" opacity="0.15"/>
+                                    <text x="0" y="26" text-anchor="middle" fill="#3d1f47" font-size="13" font-weight="bold">⚠ O(N²) memory for the pair matrix itself — one extra dimension versus standard self-attention</text>
+                                </g>
+                            </svg>
+                        </div>
+
+                        <div class="description">
+                            <p>
+                                <strong>What it is:</strong> Instead of maintaining only a 1D representation per token, the model maintains an explicit 2D matrix of pairwise representations — one vector per (token, token) pair — that is updated jointly with the per-token representations across attention layers (AlphaFold2/3's "triangle attention" over the pair representation).
+                            </p>
+                            <p>
+                                <strong>Why it matters:</strong> Encodes fine-grained relational structure standard attention only implies indirectly — explicit inter-residue distances, orientations, and consistency constraints (if A-to-B and B-to-C are known, A-to-C is constrained too) — at the cost of an extra O(N²) memory dimension for the pair matrix itself, on top of the usual O(N²) attention cost.
+                            </p>
+                        </div>
+
+                        <div class="examples">
+                            <h4>Biological Examples:</h4>
+                            <ul>
+                                <li><strong>AlphaFold3</strong> (Abramson et al., Nature 2024): joint structure prediction for proteins, nucleic acids, and ligands via pair representation + triangle attention.</li>
+                                <li><strong>RoseTTAFold All-Atom</strong> (2024): extends pair-representation-style attention to arbitrary biomolecular assemblies.</li>
                             </ul>
                         </div>
                     </div>
@@ -1411,8 +1564,20 @@
                         <tr>
                             <td><strong>AlphaGenome</strong></td>
                             <td>Regulatory element discovery</td>
-                            <td>Genome-wide</td>
+                            <td>~1 Mb window (1,048,576 bp, single-base resolution)</td>
                             <td>Multi-scale attention for different genomic features</td>
+                        </tr>
+                        <tr>
+                            <td><strong>HyenaDNA</strong> (Nguyen et al., NeurIPS 2023)</td>
+                            <td>Genomic function prediction</td>
+                            <td>Up to 1M nucleotides, single-nucleotide resolution</td>
+                            <td>Hyena state-space operator (not attention) — no k-mer tokenization, full global context per layer at O(N) cost; SOTA on 12/18 Nucleotide Transformer benchmarks with far fewer parameters</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Evo 2</strong> (Brixi et al., Arc Institute, 2025)</td>
+                            <td>Sequence generation + variant effect</td>
+                            <td>Up to 1M tokens, single-nucleotide resolution</td>
+                            <td>StripedHyena 2 (SSM); trained on 9.3T nucleotides across 128,000+ species; zero-shot variant-effect prediction</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1439,10 +1604,10 @@
                             <td>27.6% native sequence recovery; 21,000× faster on GPU, 455× on CPU vs Rosetta</td>
                         </tr>
                         <tr>
-                            <td><strong>ProGen</strong></td>
+                            <td><strong>ProGen</strong> (Madani et al., Nat Biotechnol 2023)</td>
                             <td>Protein generation</td>
                             <td>Causal self-attention (1.2B params)</td>
-                            <td>Functional lysozymes down to 31.4% identity (extreme low-identity case, ~200× lower efficiency)</td>
+                            <td>Functional lysozymes down to 31.4% identity (extreme low-identity case, ~200× lower efficiency). Not to be confused with the later-scaled <strong>ProGen2</strong> (Nijkamp et al., Cell Systems 2023; 151M&ndash;6.4B params) — a different paper, different param range.</td>
                         </tr>
                         <tr>
                             <td><strong>Chroma</strong></td>
@@ -1454,7 +1619,19 @@
                             <td><strong>ProteinMPNN</strong></td>
                             <td>Sequence design</td>
                             <td>Message passing with attention</td>
-                            <td>State-of-art for fixed backbone design</td>
+                            <td>State-of-the-art at publication (Dauparas et al., Science 2022) for fixed backbone design</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LigandMPNN</strong> (Dauparas et al., preprint 2023 / Nat Methods 2026)</td>
+                            <td>Sequence design for ligand/nucleotide/metal-binding contexts</td>
+                            <td>Message passing extended with explicit nonprotein-atom context</td>
+                            <td>ProteinMPNN successor: outperforms it on native sequence recovery at small-molecule (63.3% vs 50.5%), nucleotide (50.5% vs 34.0%), and metal (77.5% vs 40.6%) interfaces; 100+ experimentally validated binders, 4 X-ray-confirmed structures</td>
+                        </tr>
+                        <tr>
+                            <td><strong>AlphaFold3</strong> (Abramson et al., Nature 2024)</td>
+                            <td>Protein–nucleic acid–ligand complex structure prediction</td>
+                            <td>Pair representation + triangle attention (PairFormer)</td>
+                            <td>DOI 10.1038/s41586-024-07487-w; extends structure prediction beyond proteins alone to DNA/RNA/ligand complexes</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1475,7 +1652,7 @@
                     <p><strong>1. Tokenization:</strong></p>
                     <ul>
                         <li><strong>Genes:</strong> Each gene becomes a token (scGPT, GeneCompass)</li>
-                        <li><strong>DNA:</strong> 6-mers or individual nucleotides (Nucleotide Transformer)</li>
+                        <li><strong>DNA:</strong> 6-mers (Nucleotide Transformer) or single nucleotides (HyenaDNA, Evo)</li>
                         <li><strong>Proteins:</strong> Individual amino acids or structural elements</li>
                         <li><strong>Chromatin:</strong> Genomic regions with motif features (GET)</li>
                     </ul>
@@ -1510,6 +1687,7 @@
                             <th>CNN</th>
                             <th>RNN/LSTM</th>
                             <th>Transformer (Attention)</th>
+                            <th>SSM (Mamba/Hyena)</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1518,28 +1696,33 @@
                             <td>Limited by receptive field</td>
                             <td>Degrades with distance (vanishing gradients)</td>
                             <td>Direct connections between any positions</td>
+                            <td>Good, but compressed into a fixed-size hidden state (not exact all-pairs)</td>
                         </tr>
                         <tr>
                             <td><strong>Computational complexity</strong></td>
                             <td>O(N)</td>
                             <td>O(N) but sequential</td>
-                            <td>O(N²) for self-attention, O(N) for graph attention</td>
+                            <td>O(N²) for self-attention, O(E) for graph attention (E = edges, sparse when avg. degree ≪ N)</td>
+                            <td>O(N) time and memory</td>
                         </tr>
                         <tr>
                             <td><strong>Parallelization</strong></td>
                             <td>High</td>
                             <td>Low (sequential processing)</td>
                             <td>Very high (all positions processed together)</td>
+                            <td>High during training (parallel scan); sequential-style recurrence at inference</td>
                         </tr>
                         <tr>
                             <td><strong>Interpretability</strong></td>
                             <td>Filter visualization</td>
                             <td>Hidden states (opaque)</td>
                             <td>Attention weights show relationships</td>
+                            <td>State transitions (more opaque than attention weights)</td>
                         </tr>
                         <tr>
                             <td><strong>Variable-length sequences</strong></td>
                             <td>Requires padding</td>
+                            <td>Natural support</td>
                             <td>Natural support</td>
                             <td>Natural support</td>
                         </tr>
@@ -1548,6 +1731,7 @@
                             <td>Local motifs, images</td>
                             <td>Short sequences, time-series</td>
                             <td>Long sequences, relationships, foundation models</td>
+                            <td>Ultra-long sequences — whole chromosomes, 1M+ bp genomic context</td>
                         </tr>
                     </tbody>
                 </table>
@@ -1570,6 +1754,10 @@
                     <div class="key-point">
                         <h4>Structural Attention</h4>
                         <p>Structured Transformer and Chroma use 3D spatial neighborhoods instead of sequence position, capturing physical protein interactions</p>
+                    </div>
+                    <div class="key-point">
+                        <h4>State Space Models: When O(N) Matters More Than Global Context</h4>
+                        <p>Mamba (Gu &amp; Dao, 2024), Hyena (2023), and S4-family models replace attention entirely for very long sequences: O(N) time <em>and</em> memory, no N&times;N matrix. Power scHyena (single-cell), HyenaDNA (genomic, single-nucleotide), and Evo (single-nucleotide, 1M+ token context). Trade-off: no exact all-pairs global attention in one step — context is compressed into a fixed-size running state. Rule of thumb: reach for attention when global all-pairs dependencies matter; reach for an SSM when the sequence is too long for O(N²) and mostly-local dependency suffices.</p>
                     </div>
                 </div>
             </div>
@@ -1599,7 +1787,7 @@
                         <tr>
                             <th>Model</th>
                             <th>Task</th>
-                            <th>Speed</th>
+                            <th>Speed / Scale</th>
                             <th>Hardware</th>
                         </tr>
                     </thead>
@@ -1607,7 +1795,7 @@
                         <tr>
                             <td><strong>scGPT</strong></td>
                             <td>Cell annotation</td>
-                            <td>Millions of cells trained</td>
+                            <td>Pretraining scale: millions of cells (not an inference-speed figure, unlike the rows below)</td>
                             <td>8× A100 GPUs</td>
                         </tr>
                         <tr>
@@ -1761,6 +1949,20 @@ out, w = mha(x, x, x)                 # w: per-head attention weights
                     <li><strong><code>num_heads</code> must divide <code>d_model</code>.</strong> Each head gets <code>d_model / num_heads</code> dimensions; a mismatch errors or silently mis-shapes the tensors.</li>
                     <li><strong>Graph attention is only as good as its edges.</strong> <code>GATConv</code> attends solely along <code>edge_index</code>; a wrong or too-sparse graph silently starves the model of context.</li>
                 </ul>
+
+                <h3>Scaling up: FlashAttention</h3>
+                <p>The pitfall above (O(N²) memory) is what FlashAttention solves in practice — same exact attention output, computed via tiling so the full N&times;N matrix is never materialized in memory:</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># pip install flash-attn  (requires a CUDA-capable GPU)
+from flash_attn import flash_attn_qkvpacked_func
+
+# qkv: (batch, seqlen, 3, num_heads, head_dim) — same math as nn.MultiheadAttention,
+# but tiled so the N x N score matrix is never fully materialized in memory.
+# out = flash_attn_qkvpacked_func(qkv, dropout_p=0.0, causal=False)
+#
+# Exact (not approximate) attention, typically ~3-7x faster and using an order
+# of magnitude less memory than the naive O(N^2) implementation above — the
+# difference between truncating to top-K genes and attending over the full
+# ~20K-gene transcriptome in one pass.</code></pre>
             </div>
 
             <div class="content-section">
@@ -1777,7 +1979,7 @@ out, w = mha(x, x, x)                 # w: per-head attention weights
                     </div>
                     <div class="key-point">
                         <h4>Real Examples</h4>
-                        <p>scGPT (r=0.94 perturbation), ProGen (functional down to 31.4% identity), GET (r=0.94, R²=0.88), GeneCompass (101.7M cells cross-species)</p>
+                        <p>scGPT (perturbation-response Pearson r=0.94), ProGen (functional down to 31.4% identity), GET (distal-enhancer expression prediction Pearson r=0.94, R²=0.88) — two unrelated models, two different prediction tasks, coincidentally the same correlation value — GeneCompass (101.7M cells cross-species)</p>
                     </div>
                     <div class="key-point">
                         <h4>How to Use Them</h4>

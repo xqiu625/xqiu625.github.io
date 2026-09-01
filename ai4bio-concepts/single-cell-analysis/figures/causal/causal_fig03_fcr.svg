@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    <marker id="ar-stop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a14854"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  FCR  ·  IDENTIFIABLE THREE-BLOCK LATENT FACTORISATION</text>
+  <text x="60" y="96" class="h1">Context × treatment × interaction — each block is causally interpretable.</text>
+  <text x="60" y="124" class="h-sub">Built on iVAE so the blocks are provably identifiable, not just regularised.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="380" height="180" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="208" class="block-tag" fill="#8a5a4a">INPUT  ·  ONE CELL  🧬</text>
+    <text x="80" y="234" class="block-title">drug-treated single cell</text>
+    <text x="80" y="262" class="annot">cell type  ·  donor  ·  batch metadata</text>
+    <text x="80" y="284" class="annot">+  treatment assignment (drug / dose)</text>
+    <text x="80" y="320" class="annot" font-style="italic" fill="#5c5c66">from a perturbation atlas</text>
+    <text x="80" y="342" class="annot" font-style="italic" fill="#5c5c66">(Perturb-seq, drug screen, …)</text>
+  </g>
+
+  <line x1="445" y1="270" x2="490" y2="270" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="500" y="180" width="200" height="180" rx="14" fill="#efeae0" stroke="#8a8275" stroke-width="1.6"></rect>
+    <text x="600" y="208" text-anchor="middle" class="block-tag" fill="#8a8275">ENCODER</text>
+    <text x="600" y="240" text-anchor="middle" class="block-title">iVAE</text>
+    <text x="600" y="266" text-anchor="middle" class="annot" fill="#5c5c66">conditional</text>
+    <text x="600" y="284" text-anchor="middle" class="annot" fill="#5c5c66">on treatment label</text>
+    <text x="600" y="320" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">identifiability</text>
+    <text x="600" y="338" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">comes from here</text>
+  </g>
+
+  
+  <line x1="700" y1="240" x2="780" y2="200" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+  <line x1="700" y1="270" x2="780" y2="350" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+  <line x1="700" y1="300" x2="780" y2="500" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="780" y="180" width="560" height="120" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="800" y="208" class="block-tag" fill="#2c8a4f">①  z_x  ·  CONTEXT  🧱  (GREEN)</text>
+    <text x="800" y="234" class="block-title">cell type · donor · batch · everything that exists regardless of treatment</text>
+    <text x="800" y="258" class="annot" fill="#5c5c66">&#34;who is this cell, before the drug?&#34;</text>
+    <text x="800" y="282" class="annot" font-style="italic" fill="#5c5c66">should not contain any treatment information.</text>
+  </g>
+
+  
+  <g>
+    <rect x="780" y="330" width="560" height="120" rx="12" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="800" y="358" class="block-tag" fill="#4a6a8a">②  z_t  ·  TREATMENT  💊  (BLUE)</text>
+    <text x="800" y="384" class="block-title">shared drug effect — what the drug does on average</text>
+    <text x="800" y="408" class="annot" fill="#5c5c66">&#34;what would change in any cell?&#34;</text>
+    <text x="800" y="432" class="annot" font-style="italic" fill="#5c5c66">should not contain any context information.</text>
+  </g>
+
+  
+  <g>
+    <rect x="780" y="480" width="560" height="120" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="800" y="508" class="block-tag" fill="#c95a2a">③  z_tx  ·  INTERACTION  🧬💊  (ORANGE)</text>
+    <text x="800" y="534" class="block-title">cell-type-specific drug response — the part that differs by context</text>
+    <text x="800" y="558" class="annot" fill="#5c5c66">&#34;how does this drug land <tspan font-style="italic">in this cell type</tspan>?&#34;</text>
+    <text x="800" y="582" class="annot" font-style="italic" fill="#5c5c66">the bit that doesn&#39;t exist in either marginal alone.</text>
+  </g>
+
+  
+  <g>
+    <rect x="1380" y="180" width="280" height="420" rx="12" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <text x="1400" y="208" class="block-tag" fill="#a14854">DISCRIMINATORS  ⚖</text>
+    <text x="1400" y="234" class="annot" fill="#5c5c66">enforce conditional independence</text>
+
+    <text x="1400" y="280" class="annot" font-weight="700" fill="#a14854">z_x  ⊥  treatment-label</text>
+    <text x="1400" y="302" class="annot" fill="#5c5c66">a classifier tries to read T from z_x;</text>
+    <text x="1400" y="322" class="annot" fill="#5c5c66">we train z_x to defeat it.</text>
+
+    <text x="1400" y="370" class="annot" font-weight="700" fill="#a14854">z_t  ⊥  cell-type label</text>
+    <text x="1400" y="392" class="annot" fill="#5c5c66">a classifier tries to read context from z_t;</text>
+    <text x="1400" y="412" class="annot" fill="#5c5c66">we train z_t to defeat it.</text>
+
+    <text x="1400" y="460" class="annot" font-weight="700" fill="#a14854">permutation tests</text>
+    <text x="1400" y="482" class="annot" fill="#5c5c66">verify z_tx contains only interaction</text>
+
+    <text x="1400" y="540" class="annot" font-style="italic" fill="#5c5c66">adversarial separation makes the</text>
+    <text x="1400" y="560" class="annot" font-style="italic" fill="#5c5c66">three blocks actually independent.</text>
+  </g>
+
+  
+  <line x1="1340" y1="270" x2="1380" y2="270" stroke="#a14854" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ar-stop)"></line>
+  <line x1="1340" y1="420" x2="1380" y2="420" stroke="#a14854" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ar-stop)"></line>
+  <line x1="1340" y1="540" x2="1380" y2="540" stroke="#a14854" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#ar-stop)"></line>
+
+  
+  <line x1="1060" y1="600" x2="1060" y2="660" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+  <text x="1080" y="640" class="annot">concatenate  z_x  ·  z_t  ·  z_tx</text>
+
+  
+  <g>
+    <rect x="780" y="670" width="560" height="120" rx="14" fill="#efeae0" stroke="#8a8275" stroke-width="1.6"></rect>
+    <text x="800" y="698" class="block-tag" fill="#8a8275">DECODER  🔓</text>
+    <text x="800" y="726" class="block-title">reconstructs gene expression from the three blocks</text>
+    <text x="800" y="752" class="annot" fill="#5c5c66">NB / ZINB likelihood on the count matrix</text>
+    <text x="800" y="776" class="annot" font-style="italic" fill="#5c5c66">end-to-end optimisation with the discriminator losses.</text>
+  </g>
+
+  <line x1="1060" y1="790" x2="1060" y2="830" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="780" y="840" width="560" height="80" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+    <text x="800" y="868" class="block-tag" fill="#7a5b13">RECONSTRUCTED EXPRESSION  📊</text>
+    <text x="800" y="896" class="annot">x̂  ≈  decoder ( z_x , z_t , z_tx )</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="400" width="380" height="540" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="430" class="block-tag" fill="#7a5b13">WHY THIS IS CAUSAL  🧪</text>
+    <text x="80" y="464" class="key" fill="#7a5b13">identifiable, not just regularised.</text>
+    <text x="80" y="498" class="annot">iVAE provides a theoretical guarantee:</text>
+    <text x="80" y="520" class="annot">conditioning on the treatment label</text>
+    <text x="80" y="542" class="annot">recovers the true latent factors up to permutation.</text>
+
+    <line x1="80" y1="568" x2="420" y2="568" stroke="#e1c66b" stroke-width="1"></line>
+
+    <text x="80" y="598" class="annot" font-weight="700">three causal quantities you can use</text>
+    <text x="80" y="624" class="annot">•  z_t   →  average treatment effect  (ATE)</text>
+    <text x="80" y="646" class="annot">•  z_tx  →  context-conditioned effect  (CATE)</text>
+    <text x="80" y="668" class="annot">•  z_x   →  pure confounders, hold them out</text>
+
+    <text x="80" y="710" class="annot" font-style="italic" fill="#5c5c66">predicts the effect of an unseen drug</text>
+    <text x="80" y="732" class="annot" font-style="italic" fill="#5c5c66">on an unseen cell type via z_t + z_tx.</text>
+
+    <text x="80" y="780" class="key" fill="#a14854">contrast with a vanilla VAE</text>
+    <text x="80" y="806" class="annot">vanilla VAEs entangle treatment + context →</text>
+    <text x="80" y="828" class="annot">&#34;latents&#34; that may look clean but encode confounders.</text>
+    <text x="80" y="860" class="annot" font-style="italic" fill="#5c5c66">FCR&#39;s blocks are <tspan font-weight="700">genuine causal quantities</tspan>.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="960" width="1880" height="110" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="80" y="990" class="block-tag" fill="#2c8a4f">TAKEAWAY  🎯</text>
+    <text x="80" y="1024" class="key" fill="#2c8a4f">if you only train a VAE, you get latents. If you train FCR, you get causal estimands you can intervene on.</text>
+    <text x="80" y="1052" class="annot" font-style="italic" fill="#5c5c66">the identifiability theory is the reason; the discriminators are the mechanics that enforce it in practice.</text>
+  </g>
+</svg>

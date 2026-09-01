@@ -102,195 +102,40 @@
             line-height: 1.8;
         }
 
-        /* ===== TENNIS ANALOGY ===== */
-        .sport-analogy {
-            display: grid;
-            grid-template-columns: minmax(240px, 0.75fr) minmax(0, 1.25fr);
-            gap: 30px;
-            align-items: center;
-            margin: 25px 0;
-            padding: 30px;
-            overflow: hidden;
-            border: 2px solid #AD8B91;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #f3e8eb 0%, #ffffff 60%, #e8eee5 100%);
-            box-shadow: 0 4px 18px rgba(24, 48, 29, 0.14);
-        }
-
-        .tennis-court {
-            position: relative;
-            min-height: 250px;
-            border: 8px solid white;
-            border-radius: 10px;
-            background: #55a99d;
-            box-shadow: 0 12px 30px rgba(42, 91, 84, 0.2);
-        }
-
-        .tennis-court::before,
-        .tennis-court::after {
-            content: "";
-            position: absolute;
-            background: white;
-        }
-
-        .tennis-court::before {
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 4px;
-            transform: translateX(-50%);
-        }
-
-        .tennis-court::after {
-            left: 0;
-            right: 0;
-            top: 50%;
-            height: 5px;
-            transform: translateY(-50%);
-            box-shadow: 0 0 0 2px rgba(56, 67, 71, 0.18);
-        }
-
-        .court-player,
-        .court-lab {
-            position: absolute;
-            z-index: 2;
-            padding: 8px 10px;
-            border-radius: 999px;
-            color: white;
-            font-size: 0.78em;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .court-player { left: 8%; top: 16%; background: #AD8B91; }
-        .court-lab { right: 8%; bottom: 16%; background: #18301D; }
-
-        .tennis-ball {
-            position: absolute;
-            z-index: 3;
-            left: 23%;
-            top: 30%;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #eff05c;
-            box-shadow: 0 0 0 4px rgba(239, 240, 92, 0.25);
-            animation: analogyRally 2.8s ease-in-out infinite;
-        }
-
-        .rally-path {
-            position: absolute;
-            left: 25%;
-            top: 34%;
-            width: 50%;
-            height: 34%;
-            border-top: 3px dashed rgba(255,255,255,0.8);
-            border-radius: 50%;
-            transform: rotate(20deg);
-        }
-
-        .sport-analogy-copy .analogy-label {
-            color: #859C7C;
-            font-size: 0.76em;
-            font-weight: bold;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .sport-analogy-copy h2 {
-            margin: 7px 0 12px;
-            color: #18301D;
-            border: 0;
-            padding: 0;
-        }
-
-        .tennis-rally-hero {
-            margin: 0;
-            overflow: hidden;
-            border: 8px solid white;
-            border-radius: 14px;
-            background: #55a99d;
-            box-shadow: 0 12px 30px rgba(42, 91, 84, 0.2);
-        }
-
-        .tennis-rally-hero img,
-        .readout-player-strip img {
-            display: block;
-            width: 100%;
-            height: auto;
-        }
-
-        .analogy-steps {
-            display: grid;
-            gap: 9px;
-            margin-top: 18px;
-        }
-
-        .analogy-step {
-            display: grid;
-            grid-template-columns: 32px 1fr;
-            gap: 10px;
-            align-items: start;
-        }
-
-        .analogy-step span {
-            width: 28px;
-            height: 28px;
-            display: grid;
-            place-items: center;
-            border-radius: 50%;
-            background: #AD8B91;
-            color: white;
-            font-weight: bold;
-        }
-
-        .readout-player-strip {
-            margin: 30px 0;
-            padding: 24px;
-            border: 2px solid #AD8B91;
-            border-radius: 16px;
-            background: linear-gradient(135deg, #fff 0%, #f7eef0 58%, #eef7f5 100%);
-            box-shadow: 0 4px 18px rgba(93, 74, 80, 0.12);
-        }
-
-        .readout-player-strip img {
-            max-width: 980px;
-            margin: 0 auto;
-            filter: drop-shadow(0 16px 18px rgba(93, 74, 80, 0.16));
-        }
-
-        .player-steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-top: 16px;
-        }
-
-        .player-step {
-            padding: 14px 16px;
-            border-left: 4px solid #AD8B91;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.78);
-        }
-
-        .player-step strong {
-            display: block;
-            color: #5d4a50;
-            margin-bottom: 4px;
-        }
-
-        .player-step span {
-            color: #5d6d6f;
-            font-size: 0.94em;
-        }
-
-
-
-
-        @keyframes analogyRally {
-            0%, 100% { left: 23%; top: 30%; transform: scale(1); }
-            50% { left: 73%; top: 64%; transform: scale(0.82); }
-        }
+        /* ===== CASEWORK BANNER + STORY LINE: tennis rally (06 Readout) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#3d2b30 0%,#5d4a50 55%,#2e4a43 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(61,43,48,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #f2d8dd; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #f3e6e8; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: #fbf6f7; border: 1.5px solid #f0dfe3; }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: #5d3a42; border-left: 4px solid #AD8B91; padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid #f0dfe3; border-left: 5px solid #AD8B91; border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(93,58,66,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(93,58,66,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: #AD8B91; }
+        .library-card h4 { color: #5d3a42; font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: #5d3a42; background: #f7eef0; border: 1px dashed #d8b9c0; border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: #9c707c; font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: #AD8B91; font-size: .95em; clear: both; }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid #f0dfe3; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid #f0dfe3; box-shadow: 0 10px 28px rgba(93,58,66,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #d8b9c0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #e3c9cf; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(173,139,145,.15); border-color: rgba(216,185,192,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #d8b9c0; }
+        [data-theme="dark"] .library-footnote { color: #d8b9c0; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
 
         /* ===== STATISTICS BAR ===== */
         .stats-bar {
@@ -591,22 +436,7 @@
 
         /* ===== RESPONSIVE DESIGN ===== */
         @media (max-width: 768px) {
-            .sport-analogy {
-                grid-template-columns: 1fr;
-                padding: 20px;
-            }
-
-            .tennis-court {
-                min-height: 210px;
-            }
-
-            .player-steps {
-                grid-template-columns: 1fr;
-            }
-
-            .readout-player-strip {
-                padding: 16px;
-            }
+            .story-hero { float: none; width: min(320px, 82%); margin: 0 auto 18px; }
 
             .paper-grid {
                 grid-template-columns: 1fr;
@@ -663,6 +493,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#tennis-rally">
+                        <i class="fas fa-table-tennis-paddle-ball"></i> Rally
+                    </a>
+                </li>
+                <li>
                     <a href="#hands-on">
                         <i class="fas fa-wrench"></i> Hands-on
                     </a>
@@ -686,68 +521,69 @@
             </p>
         </header>
 
-        <section class="sport-analogy" aria-labelledby="tennis-analogy-title">
-            <figure class="tennis-rally-hero">
-                <img
-                    src="../animations/rive-assets/stage-themes-v5/tennis-rally-hero.webp"
-                    width="1400"
-                    height="1400"
-                    loading="lazy"
-                    decoding="async"
-                    alt="Healshu tennis player serving a perturbation prediction while cell response balls return across the court">
-            </figure>
-            <div class="sport-analogy-copy">
-                <div class="analogy-label">🎾 Tennis analogy · Experiment stage</div>
-                <h2 id="tennis-analogy-title">Every prediction needs a return.</h2>
-                <p>
-                    Perturbation modeling is like a tennis rally. The model serves a prediction about how a cell
-                    will respond to a CRISPR edit or drug. The wet lab returns the ball with the observed cellular
-                    response. The difference between the predicted and measured return tells us how the model
-                    should improve.
-                </p>
-                <div class="analogy-steps">
-                    <div class="analogy-step">
-                        <span>1</span>
-                        <div><strong>Serve:</strong> choose a genetic or chemical perturbation and predict its effect.</div>
-                    </div>
-                    <div class="analogy-step">
-                        <span>2</span>
-                        <div><strong>Return:</strong> perform the experiment and measure the single-cell response.</div>
-                    </div>
-                    <div class="analogy-step">
-                        <span>3</span>
-                        <div><strong>Read the rally:</strong> compare prediction with observation across cell types and conditions.</div>
-                    </div>
-                    <div class="analogy-step">
-                        <span>4</span>
-                        <div><strong>Prepare the next shot:</strong> use the error and uncertainty to improve the model for the next loop.</div>
-                    </div>
-                </div>
+        <!-- CASEWORK BANNER (Readout · Tennis lens) -->
+        <section class="casework-banner" aria-label="Tennis inspired perturbation modeling casework">
+            <div class="casework-art">
+                <img src="../animations/rive-assets/stage-themes-v5/tennis-slams-four-courts.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Four Grand Slam mini-scenes of the Healshu tennis player: serving on a blue hard court in summer heat, sliding into a long rally on orange clay, reaching for a skidding low ball on grass, and reviewing a dotted clipboard under night floodlights">
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">Tennis lens · perturbation modeling</div>
+                <h2>发球出预测，回球见真章。</h2>
+                <p>Perturbation modeling is a rally between model and lab — played across four very different courts. The model serves a prediction, the wet lab returns the measured response, and the gap between them is the loss, the benchmark, and the next drill. 四大满贯，四种场地，同一个问题：your prediction only counts if it holds on every surface.</p>
             </div>
         </section>
 
-        <section class="readout-player-strip" aria-label="Healshu tennis rally readout poses">
-            <img
-                src="../animations/rive-assets/stage-themes-v5/tennis-rally-three-poses.webp"
-                width="1672"
-                height="941"
-                loading="lazy"
-                decoding="async"
-                alt="Healshu tennis player serving, reading the return, and preparing the next shot">
-            <div class="player-steps">
-                <div class="player-step">
-                    <strong>Serve</strong>
-                    <span>Choose perturbation and predict.</span>
+        <!-- STORY LINE: read the rally -->
+        <section class="content-section story-section" id="tennis-rally">
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/tennis-rally-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu tennis player at the center of a 2x2 quadrant of four court surfaces — blue hard, orange clay, green grass, and a night-lit hard court — with four balls trailing differently colored arcs toward each quadrant">
+            </figure>
+            <h2><i class="fas fa-table-tennis-paddle-ball"></i> Read the Rally.</h2>
+            <p class="story-quote">「读懂发球，才接得住回球。」</p>
+            <p class="story-intro">Every perturbation experiment is a rally: the model serves a predicted response, the cell returns the measured one. And the tour never stays on one surface — hard court, clay, grass, and night sessions each change how the ball behaves, the way new cell types, platforms, and conditions change how a perturbation reads out. Six moments from the practice courts, re-read as the concepts this module's methods and benchmarks formalize.</p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Scene 1 · 发球权在你手上</div>
+                    <h4>You choose the serve</h4>
+                    <p class="plot">On the practice court you pick the serve — flat, slice, topspin — and the drill is only as informative as the serves you bother to practice.</p>
+                    <p class="echo"><strong>Perturbation design.</strong> The intervention is the serve: gene knockout, drug, dose, combination. CRISPR screens are the cataloged serve drills — thousands of serves, one court. <a href="#foundations">See the task ↓</a></p>
                 </div>
-                <div class="player-step">
-                    <strong>Read the rally</strong>
-                    <span>Compare predicted and observed response.</span>
+                <div class="library-card">
+                    <div class="book-meta">Scene 2 · 出手前报落点</div>
+                    <h4>Call the landing spot</h4>
+                    <p class="plot">A rally player calls the return before the ball crosses the net — from the serve's spin, speed, and the opponent's stance, not from watching it land.</p>
+                    <p class="echo"><strong>Response prediction.</strong> Given control state + serve, call the perturbed state: control + Δ = perturbed. The whole task is calling the Δ before the experiment returns it. <a href="#foundations">See the formulation ↓</a></p>
                 </div>
-                <div class="player-step">
-                    <strong>Prepare the next shot</strong>
-                    <span>Use residual and uncertainty to update.</span>
+                <div class="library-card">
+                    <div class="book-meta">Scene 3 · 只会一招的对手</div>
+                    <h4>The one-play opponent</h4>
+                    <p class="plot">On clay at Roland Garros you meet the grinder: serves that look wild but all land in the same corner. Stand in that corner and you look like a genius predictor — until the tour moves to a different surface.</p>
+                    <p class="echo"><strong>Systematic variation &amp; the mean baseline.</strong> Any perturbation shifts the whole transcriptome in one direction, so predicting the perturbed-group mean scores like SOTA without learning anything per-gene. Always check what the corner-stander scores. <a href="#benchmarking">See the critique ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 4 · 没见过的旋转</div>
+                    <h4>The unseen spin</h4>
+                    <p class="plot">Drilling a hundred known serves on hard court is not the Championships. The first morning on grass, the ball skids through low and late — a serve you have never seen, and your read has to travel.</p>
+                    <p class="echo"><strong>Unseen-perturbation generalization.</strong> The hard split is not random cells but new genes, new combinations, new doses. Most methods' scores drop sharply here; this is the split that counts. <a href="#benchmarks">See benchmarks ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 5 · 名将输给基本功</div>
+                    <h4>The star loses to fundamentals</h4>
+                    <p class="plot">A highlight-reel champion with no footwork loses to the club player who simply returns every ball deep. Reputation is not a return game.</p>
+                    <p class="echo"><strong>Foundation models vs simple baselines.</strong> On standard perturbation benchmarks, large pretrained models often fail to beat train-mean or linear baselines. Scale is not mechanism; check the fundamentals first. <a href="#benchmarks">See the evidence ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 6 · 赛后复盘</div>
+                    <h4>The match debrief</h4>
+                    <p class="plot">Good players debrief every rally — which reads were wrong, by how much, on which serve — and choose tomorrow's drill from the errors, not from the highlight reel.</p>
+                    <p class="echo"><strong>Honest metrics + active learning.</strong> Debrief with centroid-referenced metrics (top-DEG Δ, E-distance), then spend the next experiment where the error is largest: optimal intervention design closes the loop. <a href="#hands-on">See the loop ↓</a></p>
                 </div>
             </div>
+            <figure class="content-figure comic-figure">
+                <img src="../animations/rive-assets/stage-themes-v5/tennis-rally-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel tennis comic across the four Grand Slams: calling the landing spot on a blue hard court; a ball machine firing every ball into the same corner on clay; a skidding low ball missed on grass; and a night-session debrief with a dotted clipboard and a starred ball">
+                <figcaption><strong>One player, four courts.</strong> Call it before it lands (hard-court prediction) · every ball in one corner (the clay grinder = the mean baseline) · a spin never seen (first time on grass = an unseen perturbation) · debrief, then drill (honest metrics under the lights).</figcaption>
+            </figure>
+            <p class="library-footnote">每一杆都是实验，每个回合都在校准 — every serve is a prediction, every return a measurement; the rally is the loop.</p>
         </section>
 
         <!-- Statistics Bar -->

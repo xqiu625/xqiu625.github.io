@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  GENE → PROGRAM → TRAIT  ·  THREE-TIER CAUSAL INTEGRATION</text>
+  <text x="60" y="96" class="h1">Human genetics and single-cell perturbations, finally on the same axis.</text>
+  <text x="60" y="124" class="h-sub">A LoF burden test names a gene. Perturb-seq names the programmes it disrupts. The biobank says which diseases follow.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="220" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <text x="80" y="208" class="tier-tag" fill="#6b4e8a">TIER 3  ·  HUMAN TRAIT  🩺</text>
+    <text x="80" y="236" class="tier-title">clinical phenotypes in UK Biobank</text>
+
+    <g transform="translate(80,260)">
+      <rect x="0" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+      <text x="140" y="34" text-anchor="middle" class="emoji">❤</text>
+      <text x="140" y="72" text-anchor="middle" class="node" fill="#6b4e8a">cardiomyopathy</text>
+      <text x="140" y="92" text-anchor="middle" class="annot" fill="#5c5c66">dilated / hypertrophic</text>
+
+      <rect x="300" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+      <text x="440" y="34" text-anchor="middle" class="emoji">🩸</text>
+      <text x="440" y="72" text-anchor="middle" class="node" fill="#6b4e8a">blood-cell counts</text>
+      <text x="440" y="92" text-anchor="middle" class="annot" fill="#5c5c66">HGB, RBC, WBC</text>
+
+      <rect x="600" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+      <text x="740" y="34" text-anchor="middle" class="emoji">🔬</text>
+      <text x="740" y="72" text-anchor="middle" class="node" fill="#6b4e8a">metabolic traits</text>
+      <text x="740" y="92" text-anchor="middle" class="annot" fill="#5c5c66">lipids, glucose, BMI</text>
+
+      <rect x="900" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+      <text x="1040" y="34" text-anchor="middle" class="emoji">🧠</text>
+      <text x="1040" y="72" text-anchor="middle" class="node" fill="#6b4e8a">neuro / cognitive</text>
+      <text x="1040" y="92" text-anchor="middle" class="annot" fill="#5c5c66">…</text>
+
+      <rect x="1200" y="0" width="600" height="110" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+      <text x="1500" y="34" text-anchor="middle" class="tier-tag" fill="#7a5b13">CROSS-COHORT VALIDATION  ✅</text>
+      <text x="1220" y="64" class="annot">programmes discovered in K562 Perturb-seq</text>
+      <text x="1220" y="84" class="annot">predict trait associations in UK Biobank</text>
+      <text x="1220" y="104" class="annot" font-style="italic" fill="#5c5c66">→  external validation, not in-sample</text>
+    </g>
+  </g>
+
+  
+  <g stroke="#5c5c66" stroke-width="2.5" fill="none">
+    <line x1="240" y1="568" x2="200" y2="408" marker-end="url(#ar)"></line>
+    <line x1="500" y1="568" x2="440" y2="408" marker-end="url(#ar)"></line>
+    <line x1="760" y1="568" x2="740" y2="408" marker-end="url(#ar)"></line>
+    <line x1="1020" y1="568" x2="1040" y2="408" marker-end="url(#ar)"></line>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="430" width="1880" height="220" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="80" y="458" class="tier-tag" fill="#c95a2a">TIER 2  ·  TRANSCRIPTIONAL PROGRAMMES  🧬  (PERTURB-SEQ K562)</text>
+    <text x="80" y="486" class="tier-title">latent factor decomposition of every gene&#39;s effect</text>
+
+    <g transform="translate(80,510)">
+      <rect x="0" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="140" y="32" text-anchor="middle" class="emoji">⚡</text>
+      <text x="140" y="68" text-anchor="middle" class="node" fill="#c95a2a">program 7</text>
+      <text x="140" y="88" text-anchor="middle" class="annot" fill="#5c5c66">mitochondrial respiration</text>
+
+      <rect x="300" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="440" y="32" text-anchor="middle" class="emoji">⏸</text>
+      <text x="440" y="68" text-anchor="middle" class="node" fill="#c95a2a">program 12</text>
+      <text x="440" y="88" text-anchor="middle" class="annot" fill="#5c5c66">cell-cycle arrest</text>
+
+      <rect x="600" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="740" y="32" text-anchor="middle" class="emoji">🧱</text>
+      <text x="740" y="68" text-anchor="middle" class="node" fill="#c95a2a">program 23</text>
+      <text x="740" y="88" text-anchor="middle" class="annot" fill="#5c5c66">cytoskeletal organisation</text>
+
+      <rect x="900" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="1040" y="32" text-anchor="middle" class="emoji">🔥</text>
+      <text x="1040" y="68" text-anchor="middle" class="node" fill="#c95a2a">program 41</text>
+      <text x="1040" y="88" text-anchor="middle" class="annot" fill="#5c5c66">stress response</text>
+
+      <rect x="1200" y="0" width="600" height="110" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="1500" y="32" text-anchor="middle" class="tier-tag" fill="#2c8a4f">HOW PROGRAMMES ARE BUILT</text>
+      <text x="1220" y="60" class="annot">factor-decompose K562 Perturb-seq matrix  →</text>
+      <text x="1220" y="80" class="annot">each gene KO  ↦  a vector of programme activations</text>
+      <text x="1220" y="100" class="annot" font-style="italic" fill="#5c5c66">a programme is a coherent module that many KOs can hit.</text>
+    </g>
+  </g>
+
+  
+  <g stroke="#5c5c66" stroke-width="2.5" fill="none">
+    <line x1="240" y1="818" x2="200" y2="658" marker-end="url(#ar)"></line>
+    <line x1="500" y1="818" x2="440" y2="658" marker-end="url(#ar)"></line>
+    <line x1="760" y1="818" x2="740" y2="658" marker-end="url(#ar)"></line>
+    <line x1="1020" y1="818" x2="1040" y2="658" marker-end="url(#ar)"></line>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="680" width="1880" height="220" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="80" y="708" class="tier-tag" fill="#2c8a4f">TIER 1  ·  GENE  🧪  (UK BIOBANK LOF BURDEN TESTS)</text>
+    <text x="80" y="736" class="tier-title">specific genes flagged by 454 K exomes</text>
+
+    <g transform="translate(80,760)">
+      <rect x="0" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="140" y="32" text-anchor="middle" class="emoji">🧬</text>
+      <text x="140" y="68" text-anchor="middle" class="node" fill="#2c8a4f">LMNA</text>
+      <text x="140" y="88" text-anchor="middle" class="annot" fill="#5c5c66">lamin A/C</text>
+
+      <rect x="300" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="440" y="32" text-anchor="middle" class="emoji">🧬</text>
+      <text x="440" y="68" text-anchor="middle" class="node" fill="#2c8a4f">TTN</text>
+      <text x="440" y="88" text-anchor="middle" class="annot" fill="#5c5c66">titin</text>
+
+      <rect x="600" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="740" y="32" text-anchor="middle" class="emoji">🧬</text>
+      <text x="740" y="68" text-anchor="middle" class="node" fill="#2c8a4f">MYH7</text>
+      <text x="740" y="88" text-anchor="middle" class="annot" fill="#5c5c66">cardiac myosin</text>
+
+      <rect x="900" y="0" width="280" height="110" rx="12" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="1040" y="32" text-anchor="middle" class="emoji">🧬</text>
+      <text x="1040" y="68" text-anchor="middle" class="node" fill="#2c8a4f">…  hundreds more</text>
+      <text x="1040" y="88" text-anchor="middle" class="annot" fill="#5c5c66">LoF burden &gt; threshold</text>
+
+      <rect x="1200" y="0" width="600" height="110" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+      <text x="1500" y="32" text-anchor="middle" class="tier-tag" fill="#7a5b13">EVIDENCE BASE</text>
+      <text x="1220" y="60" class="annot">UK Biobank whole-exome sequencing  ·  454 K samples</text>
+      <text x="1220" y="80" class="annot">rare LoF variants aggregated per gene → trait-association test</text>
+      <text x="1220" y="100" class="annot" font-style="italic" fill="#5c5c66">human genetics anchors the bottom tier.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="930" width="1880" height="140" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="960" class="tier-tag" fill="#7a5b13">THE FIRST OF ITS KIND</text>
+    <text x="80" y="994" class="key" fill="#7a5b13">systematic directional integration of human genetics with single-cell perturbation.</text>
+    <text x="80" y="1024" class="annot">Gene LoF  →  which programmes get disrupted  →  which diseases result.</text>
+    <text x="80" y="1054" class="annot" font-style="italic" fill="#5c5c66">target discovery now has a path from an exome variant to a mechanism to a phenotype  —  not just to a GWAS hit.</text>
+  </g>
+</svg>

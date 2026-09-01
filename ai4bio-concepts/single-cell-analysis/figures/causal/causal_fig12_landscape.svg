@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CAUSAL INFERENCE FOR SINGLE-CELL  ·  MODULE LANDSCAPE</text>
+  <text x="60" y="96" class="h1">From data sources to deliverables  —  the whole module on one page.</text>
+  <text x="60" y="124" class="h-sub">Three data inputs, five method families, three deliverables. Dimitrov&#39;s review sits over everything as the conceptual frame.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="80" rx="14" fill="#ffffff" stroke="#1a1a22" stroke-width="1.6"></rect>
+    <text x="80" y="208" class="col-tag" fill="#1a1a22">CONCEPTUAL FRAME  ·  DIMITROV ET AL.  📖</text>
+    <text x="80" y="242" class="col-title">five aims  ·  interpret 🔍  ·  extrapolate 🔮  ·  decompose 🧩  ·  trace 🕰  ·  intervene ✂</text>
+  </g>
+
+  
+
+  
+  <g>
+    <rect x="60" y="290" width="500" height="700" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="80" y="320" class="col-tag" fill="#4a6a8a">DATA  📥</text>
+    <text x="80" y="350" class="col-title">three input streams</text>
+
+    <g transform="translate(80,380)">
+      <rect x="0" y="0" width="440" height="170" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="emoji">🧫</text>
+      <text x="60" y="34" class="card-title" fill="#4a6a8a">① observational scRNA-seq</text>
+      <text x="20" y="68" class="card-body">millions of cells, no intervention</text>
+      <text x="20" y="88" class="card-body">&#34;who is here, doing what?&#34;</text>
+      <text x="20" y="128" class="card-body" font-style="italic" fill="#5c5c66">cheap and abundant</text>
+      <text x="20" y="150" class="card-body" font-style="italic" fill="#5c5c66">weakest causal signal alone</text>
+    </g>
+
+    <g transform="translate(80,570)">
+      <rect x="0" y="0" width="440" height="170" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="emoji">✂</text>
+      <text x="60" y="34" class="card-title" fill="#4a6a8a">② Perturb-seq / CRISPRi</text>
+      <text x="20" y="68" class="card-body">thousands of real interventions</text>
+      <text x="20" y="88" class="card-body">&#34;what happens when I knock out X?&#34;</text>
+      <text x="20" y="128" class="card-body" font-style="italic" fill="#5c5c66">expensive but interventional</text>
+      <text x="20" y="150" class="card-body" font-style="italic" fill="#5c5c66">the ground truth other methods estimate</text>
+    </g>
+
+    <g transform="translate(80,760)">
+      <rect x="0" y="0" width="440" height="180" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="emoji">🧬</text>
+      <text x="60" y="34" class="card-title" fill="#4a6a8a">③ population genetics</text>
+      <text x="20" y="68" class="card-body">genotyped cohorts + scRNA-seq</text>
+      <text x="20" y="88" class="card-body">eQTLs serve as natural instruments</text>
+      <text x="20" y="128" class="card-body" font-style="italic" fill="#5c5c66">orthogonal to perturbations</text>
+      <text x="20" y="150" class="card-body" font-style="italic" fill="#5c5c66">no CRISPR required</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="600" y="290" width="780" height="700" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="620" y="320" class="col-tag" fill="#2c8a4f">METHOD FAMILIES  🧰</text>
+    <text x="620" y="350" class="col-title">five families across the module</text>
+
+    <g transform="translate(620,380)">
+      <rect x="0" y="0" width="740" height="100" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="30" class="card-title" fill="#2c8a4f">① DAG DISCOVERY  📜</text>
+      <text x="20" y="56" class="card-body">NOTEARS family  ·  smooth acyclicity, continuous optimisation</text>
+      <text x="20" y="78" class="card-body" font-style="italic" fill="#5c5c66">input: observational only  →  output: directed graph</text>
+
+      <rect x="0" y="116" width="740" height="100" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="146" class="card-title" fill="#2c8a4f">② IDENTIFIABLE DISENTANGLEMENT  🧩</text>
+      <text x="20" y="172" class="card-body">FCR (context × treatment)  ·  SIMVI (intrinsic × niche)</text>
+      <text x="20" y="194" class="card-body" font-style="italic" fill="#5c5c66">input: perturbation or spatial  →  output: separable latent factors</text>
+
+      <rect x="0" y="232" width="740" height="100" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="262" class="card-title" fill="#2c8a4f">③ CAUSAL GRN + BENCHMARKING  🏁</text>
+      <text x="20" y="288" class="card-body">CausalBench  ·  scTenifoldKnk  ·  GRouNdGAN</text>
+      <text x="20" y="310" class="card-body" font-style="italic" fill="#5c5c66">validates inferred edges with real or synthetic ground truth</text>
+
+      <rect x="0" y="348" width="740" height="100" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="378" class="card-title" fill="#2c8a4f">④ GENETICS-ANCHORED  🧬</text>
+      <text x="20" y="404" class="card-body">Airqtl  ·  Gene → Program → Trait</text>
+      <text x="20" y="426" class="card-body" font-style="italic" fill="#5c5c66">uses SNPs as instruments for directional inference</text>
+
+      <rect x="0" y="464" width="740" height="100" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="494" class="card-title" fill="#2c8a4f">⑤ INTERVENTIONAL METHODS  ✂</text>
+      <text x="20" y="520" class="card-body">CPA  ·  GEARS  ·  DCDI  ·  ENCO</text>
+      <text x="20" y="542" class="card-body" font-style="italic" fill="#5c5c66">trained on real or simulated perturbation data; extrapolates to unseen</text>
+    </g>
+  </g>
+
+  
+  <g stroke="#5c5c66" stroke-width="2.5" fill="none">
+    <path d="M 560 462 C 580 462, 590 430, 600 430" marker-end="url(#ar)"></path>
+    <path d="M 560 652 C 580 652, 590 478, 600 478" marker-end="url(#ar)"></path>
+    <path d="M 560 842 C 580 842, 590 800, 600 800" marker-end="url(#ar)"></path>
+  </g>
+
+  
+  <g>
+    <rect x="1420" y="290" width="520" height="700" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1440" y="320" class="col-tag" fill="#7a5b13">DELIVERABLES  📦</text>
+    <text x="1440" y="350" class="col-title">three things this module produces</text>
+
+    <g transform="translate(1440,380)">
+      <rect x="0" y="0" width="460" height="170" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="emoji">➡</text>
+      <text x="60" y="34" class="card-title" fill="#7a5b13">① directional GRN edges</text>
+      <text x="20" y="68" class="card-body">A → B, not just A ↔ B</text>
+      <text x="20" y="88" class="card-body">cycles are explicit and resolved</text>
+      <text x="20" y="128" class="card-body" font-style="italic" fill="#5c5c66">drug target discovery uses these.</text>
+    </g>
+
+    <g transform="translate(1440,570)">
+      <rect x="0" y="0" width="460" height="170" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="emoji">🧩</text>
+      <text x="60" y="34" class="card-title" fill="#7a5b13">② disentangled latents</text>
+      <text x="20" y="68" class="card-body">treatment effect separated from context</text>
+      <text x="20" y="88" class="card-body">niche effect separated from identity</text>
+      <text x="20" y="128" class="card-body" font-style="italic" fill="#5c5c66">extrapolation to unseen perturbations.</text>
+    </g>
+
+    <g transform="translate(1440,760)">
+      <rect x="0" y="0" width="460" height="180" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="20" y="32" class="emoji">🪜</text>
+      <text x="60" y="34" class="card-title" fill="#7a5b13">③ gene → program → trait maps</text>
+      <text x="20" y="68" class="card-body">human-genetics-anchored target discovery</text>
+      <text x="20" y="88" class="card-body">mechanism through transcriptional programmes</text>
+      <text x="20" y="128" class="card-body" font-style="italic" fill="#5c5c66">enables systematic drug target proposals.</text>
+    </g>
+  </g>
+
+  
+  <g stroke="#5c5c66" stroke-width="2.5" fill="none">
+    <path d="M 1380 462 C 1400 462, 1410 462, 1420 462" marker-end="url(#ar)"></path>
+    <path d="M 1380 652 C 1400 652, 1410 652, 1420 652" marker-end="url(#ar)"></path>
+    <path d="M 1380 842 C 1400 842, 1410 842, 1420 842" marker-end="url(#ar)"></path>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="1010" width="1880" height="60" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="1036" class="col-tag" fill="#a14854">THROUGH-LINE</text>
+    <text x="80" y="1060" class="key" fill="#a14854">data + method + deliverable must match  —  no method turns observational data into Level-5 evidence.</text>
+  </g>
+</svg>

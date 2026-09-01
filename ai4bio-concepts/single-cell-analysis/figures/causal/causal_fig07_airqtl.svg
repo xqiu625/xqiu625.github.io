@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2c8a4f"></path>
+    </marker>
+    <marker id="ar-stop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a14854"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  AIRQTL  ·  MENDELIAN RANDOMISATION AT SINGLE-CELL SCALE</text>
+  <text x="60" y="96" class="h1">A SNP that affects one gene is a free instrument for the next.</text>
+  <text x="60" y="124" class="h-sub">Natural variation gives you direction — without ever running a perturbation.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1180" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+    <text x="80" y="208" class="layer-tag" fill="#7a5b13">LAYER 1  ·  GENOME  🧬  (THE INSTRUMENT)</text>
+    <text x="80" y="240" class="layer-title">SNP that is a cis-eQTL for Gene A</text>
+
+    <g transform="translate(80,260)">
+      <rect x="0" y="0" width="700" height="100" rx="8" fill="#ffffff" stroke="#b8902c" stroke-width="1"></rect>
+      <text x="20" y="36" class="mono" fill="#7a5b13">…  A  C  G  T  T  [ T → C ]  G  A  C  T  G  …</text>
+      <text x="20" y="68" class="annot">SNP at chr 17 : 7 676 154   ·   minor allele = C</text>
+      <text x="20" y="88" class="annot" fill="#5c5c66">cis-eQTL  →  C-allele carriers have higher Gene A expression</text>
+    </g>
+    <text x="1180" y="320" text-anchor="end" class="emoji">🧬</text>
+  </g>
+
+  
+  <g>
+    <rect x="1260" y="180" width="680" height="200" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="1280" y="208" class="layer-tag" fill="#8a5a4a">SCALE  ·  WHY THIS NOW</text>
+    <text x="1280" y="240" class="layer-title">50 K cells  ·  4 M SNPs  ·  &gt; 10⁸×  speedup  ⚡</text>
+    <text x="1280" y="274" class="annot">tensor-decomposed regression replaces the loops in prior sceQTL pipelines</text>
+    <text x="1280" y="298" class="annot">first method that makes population-scale sceQTL practical</text>
+    <text x="1280" y="332" class="annot" font-style="italic" fill="#5c5c66">completely orthogonal evidence to Perturb-seq:</text>
+    <text x="1280" y="354" class="annot" font-style="italic" fill="#5c5c66">natural variation, no CRISPR required.</text>
+  </g>
+
+  
+  <line x1="320" y1="392" x2="320" y2="424" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar)"></line>
+  <text x="340" y="412" class="annot" font-weight="700" fill="#2c8a4f">is the cis-eQTL of</text>
+
+  
+  <g>
+    <rect x="60" y="430" width="1880" height="220" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="80" y="458" class="layer-tag" fill="#2c8a4f">LAYER 2  ·  TRANSCRIPTOME  🧪  (THE EXPOSURE → OUTCOME)</text>
+    <text x="80" y="490" class="layer-title">does Gene A → Gene B causally?</text>
+
+    <g transform="translate(80,510)">
+      
+      <circle cx="120" cy="80" r="50" fill="#2c8a4f"></circle>
+      <text x="120" y="90" text-anchor="middle" class="layer-title" fill="#ffffff">Gene A</text>
+      <text x="120" y="156" text-anchor="middle" class="annot" fill="#5c5c66">exposure</text>
+
+      
+      <circle cx="500" cy="80" r="50" fill="#4a6a8a"></circle>
+      <text x="500" y="90" text-anchor="middle" class="layer-title" fill="#ffffff">Gene B</text>
+      <text x="500" y="156" text-anchor="middle" class="annot" fill="#5c5c66">outcome</text>
+
+      
+      <line x1="170" y1="80" x2="450" y2="80" stroke="#2c8a4f" stroke-width="4" marker-end="url(#ar)"></line>
+      <text x="310" y="62" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">A → B  ?</text>
+      <text x="310" y="108" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">causal or just correlated?</text>
+
+      
+      <ellipse cx="310" cy="220" rx="80" ry="22" fill="#fbe6e6" stroke="#a14854" stroke-width="1.4"></ellipse>
+      <text x="310" y="226" text-anchor="middle" class="annot" font-weight="700" fill="#a14854">hidden confounder</text>
+      <line x1="240" y1="220" x2="380" y2="220" stroke="#a14854" stroke-width="3" stroke-dasharray="4 3"></line>
+
+      <text x="700" y="40" class="annot" font-weight="700">the question</text>
+      <text x="700" y="62" class="annot">observational regression of B on A can&#39;t distinguish</text>
+      <text x="700" y="82" class="annot">causation from correlation — confounders look identical.</text>
+      <text x="700" y="120" class="annot" font-weight="700" fill="#2c8a4f">Mendelian randomisation gives us the missing direction.</text>
+    </g>
+  </g>
+
+  
+  <line x1="320" y1="662" x2="320" y2="694" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar)"></line>
+  <text x="340" y="682" class="annot" font-weight="700" fill="#2c8a4f">if SNP → B correlation is observed</text>
+
+  
+  <g>
+    <rect x="60" y="700" width="1880" height="240" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="80" y="728" class="layer-tag" fill="#4a6a8a">LAYER 3  ·  THE MENDELIAN-RANDOMISATION TRIANGLE  📐</text>
+    <text x="80" y="760" class="layer-title">if the SNP affects B at all, the path must go through Gene A — so A → B is causal</text>
+
+    <g transform="translate(80,776)">
+      
+      <rect x="0" y="40" width="200" height="80" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+      <text x="100" y="64" text-anchor="middle" class="annot" font-weight="700" fill="#7a5b13">SNP  (Instrument)  🧬</text>
+      <text x="100" y="88" text-anchor="middle" class="annot" fill="#5c5c66">affects Gene A only</text>
+      <text x="100" y="106" text-anchor="middle" class="annot" fill="#5c5c66">via cis-eQTL</text>
+
+      
+      <rect x="320" y="40" width="200" height="80" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="420" y="64" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">Gene A  (Exposure)  🧪</text>
+
+      
+      <rect x="640" y="40" width="200" height="80" rx="10" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+      <text x="740" y="64" text-anchor="middle" class="annot" font-weight="700" fill="#6b4e8a">Gene B  (Outcome)  📊</text>
+
+      
+      <line x1="200" y1="80" x2="320" y2="80" stroke="#5c5c66" stroke-width="3" marker-end="url(#ar)"></line>
+      <line x1="520" y1="80" x2="640" y2="80" stroke="#2c8a4f" stroke-width="3" marker-end="url(#ar)"></line>
+
+      
+      <path d="M 100 40 C 200 -10, 700 -10, 740 40" fill="none" stroke="#a14854" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar-stop)"></path>
+      <text x="420" y="6" text-anchor="middle" class="annot" font-weight="700" fill="#a14854">no other path  ❌</text>
+
+      
+      <text x="980" y="60" class="annot" font-weight="700">two MR assumptions that must hold:</text>
+      <text x="980" y="84" class="annot">①  the SNP <tspan font-weight="700">does</tspan> affect Gene A  (relevance)</text>
+      <text x="980" y="104" class="annot">②  the SNP has <tspan font-weight="700">no</tspan> other path to Gene B  (exclusion)</text>
+      <text x="980" y="140" class="annot" font-style="italic" fill="#5c5c66">if both hold, observed SNP-B correlation ⇒ A → B causal.</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="970" width="1880" height="100" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1000" class="layer-tag" fill="#7a5b13">WHY IT MATTERS</text>
+    <text x="80" y="1034" class="key" fill="#7a5b13">directional GRN inference from natural variation  ·  no CRISPR, no Perturb-seq  ·  completely orthogonal evidence.</text>
+    <text x="80" y="1056" class="annot" font-style="italic" fill="#5c5c66">use Airqtl alongside Perturb-seq:  when two independent lines of evidence agree on direction, your edge is solid.</text>
+  </g>
+</svg>

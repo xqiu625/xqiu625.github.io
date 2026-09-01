@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar-bad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a14854"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  SYNTHETIC SOTA ≠ REAL SOTA  ·  THE CAUSALBENCH LESSON</text>
+  <text x="60" y="96" class="h1">Same method, different ranking.</text>
+  <text x="60" y="124" class="h-sub">Methods that crush synthetic SEMs are often middling on real Perturb-seq. Validate on biology, not on simulations.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  <rect x="40" y="170" width="850" height="780" rx="14" fill="#a14854" fill-opacity="0.04"></rect>
+  <rect x="1150" y="170" width="810" height="780" rx="14" fill="#2c8a4f" fill-opacity="0.04"></rect>
+
+  
+  <text x="80" y="208" class="panel-tag" fill="#a14854">LEFT  ·  SYNTHETIC SEMs  🧮</text>
+  <text x="80" y="244" class="panel-title">simulated data, clean assumptions</text>
+  <text x="80" y="270" class="panel-sub">linear / nonlinear SEMs, Gaussian noise, no dropout, no batch effects</text>
+
+  <g>
+    <rect x="60" y="300" width="800" height="600" rx="14" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+    <text x="80" y="328" class="panel-tag" fill="#a14854">LEADERBOARD  🏆</text>
+
+    <g transform="translate(80,350)">
+      
+      <rect x="0" y="0" width="740" height="60" rx="8" fill="#fbe6e6" stroke="#a14854" stroke-width="1.4"></rect>
+      <text x="20" y="26" class="lb-row" fill="#a14854">①  NOTEARS  🥇</text>
+      <text x="20" y="46" class="lb-meta">smooth acyclicity assumption matches the simulator exactly</text>
+
+      <rect x="0" y="72" width="740" height="60" rx="8" fill="#fbe6e6" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="98" class="lb-row" fill="#a14854">②  DCDI  🥈</text>
+      <text x="20" y="118" class="lb-meta">interventional NOTEARS variant; SEMs feed it everything it needs</text>
+
+      <rect x="0" y="144" width="740" height="60" rx="8" fill="#fbe6e6" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="170" class="lb-row" fill="#a14854">③  ENCO  🥉</text>
+      <text x="20" y="190" class="lb-meta">unknown-target intervention version of the same family</text>
+
+      <rect x="0" y="216" width="740" height="60" rx="8" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="242" class="lb-row" fill="#5c5c66">④  GES / score-based</text>
+      <text x="20" y="262" class="lb-meta">classical search; respectable</text>
+
+      <rect x="0" y="288" width="740" height="60" rx="8" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="314" class="lb-row" fill="#5c5c66">⑤  GIES</text>
+      <text x="20" y="334" class="lb-meta">interventional GES; smaller advantage on clean data</text>
+
+      <rect x="0" y="360" width="740" height="60" rx="8" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="386" class="lb-row" fill="#5c5c66">⑥  PC algorithm</text>
+      <text x="20" y="406" class="lb-meta">constraint-based; loses ground on small n</text>
+
+      <rect x="0" y="432" width="740" height="60" rx="8" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="458" class="lb-row" fill="#5c5c66">⑦  random</text>
+      <text x="20" y="478" class="lb-meta">baseline; dead last where it should be</text>
+    </g>
+
+    <text x="80" y="880" class="annot" font-style="italic" fill="#a14854">clean, low-noise data  ·  exact SEM assumptions hold  ·  rankings agree with theory.</text>
+  </g>
+
+  
+  <g>
+    <line x1="900" y1="500" x2="1140" y2="500" stroke="#a14854" stroke-width="3" stroke-dasharray="8 5" marker-end="url(#ar-bad)"></line>
+    <text x="1020" y="478" text-anchor="middle" class="key" fill="#a14854">RANKINGS</text>
+    <text x="1020" y="498" text-anchor="middle" class="key" fill="#a14854">DO NOT</text>
+    <text x="1020" y="518" text-anchor="middle" class="key" fill="#a14854">TRANSFER</text>
+    <line x1="940" y1="540" x2="1100" y2="540" stroke="#a14854" stroke-width="3"></line>
+    <line x1="940" y1="540" x2="1100" y2="460" stroke="#a14854" stroke-width="3"></line>
+    <line x1="940" y1="460" x2="1100" y2="540" stroke="#a14854" stroke-width="3"></line>
+  </g>
+
+  
+  <text x="1170" y="208" class="panel-tag" fill="#2c8a4f">RIGHT  ·  REAL PERTURB-SEQ  🧫  (CausalBench)</text>
+  <text x="1170" y="244" class="panel-title">K562, RPE1  ·  ~ 325 K cells with real CRISPRi</text>
+  <text x="1170" y="270" class="panel-sub">dropout noise, batch effects, partial knockdown, unobserved confounders</text>
+
+  <g>
+    <rect x="1150" y="300" width="810" height="600" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1170" y="328" class="panel-tag" fill="#2c8a4f">RE-RANKED LEADERBOARD  📉</text>
+
+    <g transform="translate(1170,350)">
+      <rect x="0" y="0" width="770" height="60" rx="8" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="20" y="26" class="lb-row" fill="#2c8a4f">①  simple linear regression  🥇</text>
+      <text x="20" y="46" class="lb-meta">survives noise &amp; dropout where SEM-shaped scores fall apart</text>
+
+      <rect x="0" y="72" width="770" height="60" rx="8" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="20" y="98" class="lb-row" fill="#2c8a4f">②  GIES  🥈</text>
+      <text x="20" y="118" class="lb-meta">interventional info from CRISPRi actually pays off here</text>
+
+      <rect x="0" y="144" width="770" height="60" rx="8" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="20" y="170" class="lb-row" fill="#2c8a4f">③  PC algorithm  🥉</text>
+      <text x="20" y="190" class="lb-meta">conditional-independence tests robust to misspecification</text>
+
+      <rect x="0" y="216" width="770" height="60" rx="8" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="20" y="242" class="lb-row" fill="#5c5c66">④  DCDI</text>
+      <text x="20" y="262" class="lb-meta">drops on real data — partial KD breaks the intervention assumption</text>
+
+      <rect x="0" y="288" width="770" height="60" rx="8" fill="#ffffff" stroke="#5c5c66" stroke-width="1.2"></rect>
+      <text x="20" y="314" class="lb-row" fill="#a14854">⑤  NOTEARS  📉</text>
+      <text x="20" y="334" class="lb-meta">number-1 on synthetic, mid-tier here — assumptions don&#39;t match reality</text>
+
+      <rect x="0" y="360" width="770" height="60" rx="8" fill="#ffffff" stroke="#5c5c66" stroke-width="1.2"></rect>
+      <text x="20" y="386" class="lb-row" fill="#a14854">⑥  ENCO  📉</text>
+      <text x="20" y="406" class="lb-meta">similar collapse — gradient-based DAG search drowns in dropout</text>
+
+      <rect x="0" y="432" width="770" height="60" rx="8" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="20" y="458" class="lb-row" fill="#5c5c66">⑦  random</text>
+      <text x="20" y="478" class="lb-meta">still last — at least that part is stable</text>
+    </g>
+
+    <text x="1170" y="880" class="annot" font-style="italic" fill="#2c8a4f">unmodelled noise, batch effects, partial KD, unobserved confounders  ·  the bottleneck moves.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="970" width="1880" height="100" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1000" class="panel-tag" fill="#7a5b13">THE LESSON  ⚠</text>
+    <text x="80" y="1034" class="key" fill="#7a5b13">never validate a causal method only on simulated data.  CausalBench exists for exactly this reason  —  use it.</text>
+    <text x="80" y="1058" class="annot" font-style="italic" fill="#5c5c66">a method that does not survive real Perturb-seq cannot ship as a discovery tool.</text>
+  </g>
+</svg>

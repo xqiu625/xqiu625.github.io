@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar-bi" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8a8275"></path>
+    </marker>
+    <marker id="ar-dir" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2c8a4f"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CORRELATION vs CAUSATION IN SINGLE-CELL BIOLOGY</text>
+  <text x="60" y="96" class="h1">Why correlated genes do not pick drug targets.</text>
+  <text x="60" y="124" class="h-sub">A 50/50 chance is a coin flip. Drug development needs the direction of the arrow.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  <rect x="40" y="170" width="850" height="800" rx="14" fill="#a14854" fill-opacity="0.04"></rect>
+  <rect x="1150" y="170" width="810" height="800" rx="14" fill="#2c8a4f" fill-opacity="0.04"></rect>
+
+  
+  <text x="80" y="208" class="panel-tag" fill="#a14854">LEFT  ·  CORRELATION  📈</text>
+  <text x="80" y="244" class="panel-title">Observational scRNA-seq</text>
+  <text x="80" y="270" class="panel-sub">cells are observed, never perturbed  ·  no intervention</text>
+
+  
+  <g>
+    
+    <circle cx="240" cy="430" r="60" fill="#a14854"></circle>
+    <text x="240" y="442" text-anchor="middle" class="gene-label">Gene A</text>
+    <text x="240" y="520" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">&#34;co-expressed&#34;</text>
+
+    
+    <circle cx="540" cy="430" r="60" fill="#a14854"></circle>
+    <text x="540" y="442" text-anchor="middle" class="gene-label">Gene B</text>
+
+    
+    <line x1="304" y1="430" x2="476" y2="430" stroke="#8a8275" stroke-width="3" marker-start="url(#ar-bi)" marker-end="url(#ar-bi)"></line>
+
+    
+    <rect x="290" y="620" width="200" height="60" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <text x="390" y="650" text-anchor="middle" class="panel-title" fill="#a14854">phenotype  🩺</text>
+    <text x="390" y="670" text-anchor="middle" class="annot" fill="#5c5c66">disease state</text>
+
+    
+    <line x1="240" y1="490" x2="320" y2="620" stroke="#8a8275" stroke-width="2.5" stroke-dasharray="5 4"></line>
+    <line x1="540" y1="490" x2="460" y2="620" stroke="#8a8275" stroke-width="2.5" stroke-dasharray="5 4"></line>
+  </g>
+
+  
+  <g>
+    <rect x="80" y="730" width="780" height="230" rx="14" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+    <text x="100" y="758" class="icon-tag" fill="#a14854">CONSEQUENCE  ·  DRUG TARGET PICK  💊</text>
+    <text x="100" y="786" class="key" fill="#a14854">a developer targeting Gene A has a 50 / 50 chance of picking wrong.  🎲</text>
+    <text x="100" y="816" class="annot">Gene B might actually drive the phenotype;</text>
+    <text x="100" y="836" class="annot">Gene A might just be a passenger that rides along.</text>
+    <text x="100" y="876" class="panel-title" fill="#a14854">Biomarker  ·  associative  ⚠</text>
+    <text x="100" y="908" class="annot" font-style="italic" fill="#5c5c66">useful for diagnosis  ·  not enough for therapy.</text>
+    <text x="100" y="938" class="annot" font-style="italic" fill="#5c5c66">no directionality, no mechanism.</text>
+  </g>
+
+  
+  <g>
+    <rect x="910" y="200" width="220" height="770" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1020" y="232" text-anchor="middle" class="icon-tag" fill="#7a5b13">CAUSAL METHODS  🧪</text>
+    <text x="1020" y="258" text-anchor="middle" class="annot" fill="#7a5b13">unlock three things</text>
+
+    <g transform="translate(930,290)">
+      <rect x="0" y="0" width="180" height="200" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="90" y="32" text-anchor="middle" class="emoji">🔭</text>
+      <text x="90" y="62" text-anchor="middle" class="panel-title" fill="#7a5b13">①  EXTRAPOLATE</text>
+      <text x="90" y="92" text-anchor="middle" class="annot">to unseen</text>
+      <text x="90" y="112" text-anchor="middle" class="annot">perturbations</text>
+      <text x="90" y="148" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">predict effect of a drug</text>
+      <text x="90" y="168" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">never tested in this</text>
+      <text x="90" y="188" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">cell type before.</text>
+    </g>
+    <g transform="translate(930,500)">
+      <rect x="0" y="0" width="180" height="200" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="90" y="32" text-anchor="middle" class="emoji">🛠</text>
+      <text x="90" y="62" text-anchor="middle" class="panel-title" fill="#7a5b13">②  INTERPRET</text>
+      <text x="90" y="92" text-anchor="middle" class="annot">mechanistic</text>
+      <text x="90" y="112" text-anchor="middle" class="annot">interpretation</text>
+      <text x="90" y="148" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">&#34;because X regulates Y&#34;</text>
+      <text x="90" y="168" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">— not just &#34;X and Y</text>
+      <text x="90" y="188" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">correlate&#34;</text>
+    </g>
+    <g transform="translate(930,710)">
+      <rect x="0" y="0" width="180" height="240" rx="10" fill="#ffffff" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="90" y="32" text-anchor="middle" class="emoji">➡</text>
+      <text x="90" y="62" text-anchor="middle" class="panel-title" fill="#7a5b13">③  DIRECTIONALITY</text>
+      <text x="90" y="92" text-anchor="middle" class="annot">in regulatory</text>
+      <text x="90" y="112" text-anchor="middle" class="annot">edges</text>
+      <text x="90" y="148" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">A → B is a different</text>
+      <text x="90" y="168" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">claim from B → A.</text>
+      <text x="90" y="200" text-anchor="middle" class="annot" font-weight="700" fill="#b8902c">→ where to intervene</text>
+    </g>
+  </g>
+
+  
+  <text x="1170" y="208" class="panel-tag" fill="#2c8a4f">RIGHT  ·  CAUSATION  ➡</text>
+  <text x="1170" y="244" class="panel-title">Interventional  /  causal inference</text>
+  <text x="1170" y="270" class="panel-sub">perturbations or instruments give the arrow direction</text>
+
+  <g>
+    
+    <circle cx="1340" cy="430" r="60" fill="#2c8a4f"></circle>
+    <text x="1340" y="442" text-anchor="middle" class="gene-label">Gene B</text>
+    <text x="1340" y="520" text-anchor="middle" class="annot" fill="#2c8a4f" font-weight="700">driver  ✅</text>
+
+    
+    <circle cx="1700" cy="430" r="60" fill="#a14854"></circle>
+    <text x="1700" y="442" text-anchor="middle" class="gene-label">Gene A</text>
+    <text x="1700" y="520" text-anchor="middle" class="annot" fill="#a14854" font-style="italic">passenger</text>
+
+    
+    <line x1="1400" y1="430" x2="1640" y2="430" stroke="#2c8a4f" stroke-width="3.5" marker-end="url(#ar-dir)"></line>
+    <text x="1520" y="412" text-anchor="middle" class="icon-tag" fill="#2c8a4f">CAUSES</text>
+
+    
+    <rect x="1440" y="620" width="200" height="60" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <text x="1540" y="650" text-anchor="middle" class="panel-title" fill="#2c8a4f">phenotype  🩺</text>
+    <text x="1540" y="670" text-anchor="middle" class="annot" fill="#5c5c66">disease state</text>
+
+    
+    <line x1="1340" y1="490" x2="1450" y2="620" stroke="#2c8a4f" stroke-width="3.5" marker-end="url(#ar-dir)"></line>
+
+    
+    <line x1="1700" y1="490" x2="1620" y2="620" stroke="#a14854" stroke-width="2" stroke-dasharray="5 4"></line>
+    <line x1="1650" y1="540" x2="1670" y2="560" stroke="#a14854" stroke-width="3"></line>
+    <line x1="1650" y1="560" x2="1670" y2="540" stroke="#a14854" stroke-width="3"></line>
+    <text x="1696" y="566" class="annot" fill="#a14854" font-weight="700">no causal path</text>
+  </g>
+
+  
+  <g>
+    <rect x="1170" y="730" width="780" height="230" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1190" y="758" class="icon-tag" fill="#2c8a4f">CONSEQUENCE  ·  DRUG TARGET PICK  💊</text>
+    <text x="1190" y="786" class="key" fill="#2c8a4f">perturb Gene B  →  both Gene A expression  and  phenotype change.  ✅</text>
+    <text x="1190" y="816" class="annot">perturb Gene A  →  nothing downstream moves.</text>
+    <text x="1190" y="836" class="annot">developer now <tspan font-weight="700">knows</tspan> to target Gene B.</text>
+    <text x="1190" y="876" class="panel-title" fill="#2c8a4f">Drug target  ·  directional  🎯</text>
+    <text x="1190" y="908" class="annot" font-style="italic" fill="#5c5c66">the arrow tells you where the intervention belongs.</text>
+    <text x="1190" y="938" class="annot" font-style="italic" fill="#5c5c66">that&#39;s the difference correlation can&#39;t give you.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="990" width="1880" height="80" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1020" class="icon-tag" fill="#7a5b13">THE BOTTOM LINE</text>
+    <text x="80" y="1054" class="key" fill="#7a5b13">A biomarker is a flag. A drug target is a direction. Causal inference is how single-cell biology gets the second.</text>
+  </g>
+</svg>
