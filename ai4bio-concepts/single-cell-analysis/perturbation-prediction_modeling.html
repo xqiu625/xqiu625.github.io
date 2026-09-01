@@ -498,6 +498,16 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#methods">
+                        <i class="fas fa-flask"></i> Methods
+                    </a>
+                </li>
+                <li>
+                    <a href="#benchmarking">
+                        <i class="fas fa-chart-bar"></i> Benchmarks
+                    </a>
+                </li>
+                <li>
                     <a href="#hands-on">
                         <i class="fas fa-wrench"></i> Hands-on
                     </a>
@@ -900,7 +910,7 @@
                         <li><strong>NOTE:</strong> Released June 2025 - too recent for independent validation</li>
                     </ul>
                     <div class="paper-links">
-                        <a href="https://www.biorxiv.org/content/10.1101/2025.06.26.661135v1">
+                        <a href="https://www.biorxiv.org/content/10.1101/2025.06.26.661135v2">
                             <i class="fas fa-file-alt"></i> Paper
                         </a>
                         <a href="https://github.com/ArcInstitute/state">
@@ -932,6 +942,9 @@
                     <div class="paper-links">
                         <a href="https://doi.org/10.64898/2026.01.09.698608">
                             <i class="fas fa-file-alt"></i> Paper
+                        </a>
+                        <a href="https://github.com/ArcInstitute/stack">
+                            <i class="fab fa-github"></i> Code
                         </a>
                     </div>
                 </article>
@@ -1354,8 +1367,9 @@
                 <article class="timeline-item">
                     <h3>2025: Consolidation & New Directions</h3>
                     <p>
-                        100M+ cell datasets emerging. Physics-inspired methods (CIPHER) and biological
-                        priors (<a href="https://github.com/gefeiwang/scLAMBDA" target="_blank">scLAMBDA</a> with LLM embeddings) show up. Field recognizes need for
+                        100M+ cell datasets emerging — Tahoe-100M, X-Atlas/Orion, and Mixscale all
+                        released. Physics-inspired methods (CIPHER) and biological
+                        priors (<a href="https://doi.org/10.1101/2024.12.04.626878" target="_blank">scLAMBDA</a> with LLM embeddings, <a href="https://github.com/gefeiwang/scLAMBDA" target="_blank">code</a>) show up. Field recognizes need for
                         proper baselines and evaluation.
                     </p>
                 </article>
@@ -1412,7 +1426,7 @@
         </section>
 
         <!-- Method Comparison Table -->
-        <section class="content-section">
+        <section class="content-section" id="comparison">
             <h2>📚 Method Comparison</h2>
             <table class="comparison-table">
                 <thead>
@@ -1600,6 +1614,16 @@
                 <li><strong><a href="https://pertpy.readthedocs.io/" target="_blank">Pertpy</a>:</strong> Perturbation-specific analysis (<a href="https://pertpy.readthedocs.io/en/stable/tutorials/notebooks/mixscape.html" target="_blank">Mixscape</a>, <a href="https://github.com/neurorestore/Augur" target="_blank">Augur</a>)</li>
                 <li><strong>Method-specific repos:</strong> GEARS, SAMS-VAE, scGPT, CPA all on GitHub</li>
                 <li><strong><a href="https://github.com/altoslabs/perturbench" target="_blank">PerturBench</a>:</strong> Standardized benchmarking framework (altoslabs, 2024)</li>
+            </ul>
+        </section>
+
+        <!-- Related Modules -->
+        <section class="content-section" id="related">
+            <h2>🔗 Related Modules in This Hub</h2>
+            <ul>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/single-cell-analysis/causal-inference.html">Causal Inference</a> — the discovery counterpart to this module's prediction: "what regulates what" (DAG/GRN structure) vs. "what will happen" (perturbation response). CellOracle and CIPHER predict through a graph; the causal-inference module recovers that graph in the first place.</li>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/single-cell-analysis/optimal-transport-and-wasserstein-distance.html">Optimal Transport &amp; Wasserstein Distance</a> — the matching/distribution machinery behind CellOT and the Ahlmann-Eltze benchmark's Wasserstein-based metrics.</li>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/pretraining.html">Pretraining &amp; Foundation Models</a> — the training paradigms (masked pretraining, in-context learning, scaling laws) behind State, STACK, scGPT, and scFoundation.</li>
             </ul>
         </section>
 
