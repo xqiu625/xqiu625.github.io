@@ -708,9 +708,7 @@
                 <h2><i class="fas fa-cubes"></i> Split, Then Snap.</h2>
                 <p class="story-quote">「先分件，再拼装。」— Every LEGO build starts with sorting the bucket.</p>
                 <p class="story-intro">No builder dumps the bucket straight onto the table and hopes for a castle. You sort first: decide which units exist, in what order, at what size. Tokenization is exactly that sorting step for AI — six scenes from the workbench, re-read as tokenization strategies.</p>
-                <figure class="content-figure">
-                    <img src="figures/tokenization-divide-and-merge.webp" width="1600" height="900" loading="lazy" decoding="async" alt="Divide and merge token granularity: a sequence split into segments (genome into k-mer windows) on the left, characters merged into larger BPE units and codons on the right">
-                </figure>
+       
                 <div class="library-grid">
                     <div class="library-card">
                         <div class="book-meta">Scene 1 · 说明书第一页</div>
@@ -774,6 +772,29 @@
                 <p>Before diving into the details, let's understand the core concepts visually using our LEGO analogy.</p>
 
                 <div class="lego-concept-block">
+
+                    <!-- ===== DOMAIN OVERVIEW TABLE ===== -->
+                    <div style="background:#fff; border-left:4px solid #F7A254; border-radius:0 12px 12px 0; padding:22px 26px; margin:0 0 32px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                        <h4 style="color:#C05540; margin:0 0 8px; font-size:1.15em;"><i class="fas fa-map"></i> Navigation Map &mdash; 12 Strategies, 4 Biological Domains</h4>
+                        <p style="color:#555; margin:0 0 14px;">These strategies answer different questions depending on what type of data you're working with. The LEGO analogy stays the same &mdash; what changes is <em>which property of the brick matters</em>.</p>
+                        <table class="comparison-table" style="margin:0;">
+                            <thead><tr><th>Domain</th><th>Strategy</th><th>The core question</th><th>Models</th></tr></thead>
+                            <tbody>
+                            <tr style="background:rgba(99,202,183,0.06);"><td rowspan="5"><strong>scRNA-seq</strong><br><small style="color:#888;">Gene expression in single cells</small></td><td><a href="#concept-basics" style="color:#C05540;">The Basics</a></td><td>How do I combine gene identity + expression value into one token?</td><td>&mdash;</td></tr>
+                            <tr style="background:rgba(99,202,183,0.06);"><td><a href="#concept-ranking" style="color:#C05540;">Rank-Based</a></td><td>Which genes are <em>relatively</em> more active? (ignore absolute counts)</td><td>Geneformer, iSEEEK</td></tr>
+                            <tr style="background:rgba(99,202,183,0.06);"><td><a href="#concept-binning" style="color:#C05540;">Expression Binning</a></td><td>Which expression <em>level category</em> is this gene in?</td><td>scGPT, scBERT</td></tr>
+                            <tr style="background:rgba(99,202,183,0.06);"><td><a href="#concept-rda" style="color:#C05540;">Read-Depth-Aware</a></td><td>What would expression look like at <em>full sequencing depth</em>?</td><td>scFoundation, AIDO.Cell</td></tr>
+                            <tr style="background:rgba(99,202,183,0.06);"><td><a href="#concept-cell2sentence" style="color:#C05540;">Cell2Sentence</a></td><td>Can I turn cell data into a <em>plain text sentence</em> for a standard LLM?</td><td>C2S-Scale (27B)</td></tr>
+                            <tr style="background:rgba(147,112,219,0.06);"><td rowspan="4"><strong>DNA / Genomics</strong><br><small style="color:#888;">Nucleotide sequences</small></td><td><a href="#concept-kmer" style="color:#C05540;">K-mer</a></td><td>What are the <em>overlapping short motifs</em> in this sequence?</td><td>DNABERT, Nucleotide Transformer</td></tr>
+                            <tr style="background:rgba(147,112,219,0.06);"><td><a href="#concept-bpe-iupac" style="color:#C05540;">BPE + IUPAC</a></td><td>How do I encode <em>personal diploid variants</em> efficiently?</td><td>VariantFormer</td></tr>
+                            <tr style="background:rgba(147,112,219,0.06);"><td><a href="#concept-codon" style="color:#C05540;">Codon-Level</a></td><td>Does the <em>specific triplet</em> (not just the amino acid) matter?</td><td>CodonFM, EnCodon</td></tr>
+                            <tr style="background:rgba(147,112,219,0.06);"><td><a href="#concept-ssm" style="color:#C05540;">Single-Nucleotide + SSM</a></td><td>Can I skip k-mer vocabulary entirely and scan 1M+ bp in linear time?</td><td>HyenaDNA, Evo, Evo 2</td></tr>
+                            <tr style="background:rgba(245,158,11,0.06);"><td><strong>ATAC-seq / Chromatin</strong><br><small style="color:#888;">Open chromatin</small></td><td><a href="#concept-coordinates" style="color:#C05540;">Genome Coordinates</a></td><td>Where on the genome is this accessible region? (<em>location = identity</em>)</td><td>ChromFound</td></tr>
+                            <tr style="background:rgba(239,68,68,0.06);"><td><strong>Protein</strong><br><small style="color:#888;">Amino acid sequences</small></td><td><a href="#concept-aminoacid" style="color:#C05540;">Amino Acid</a></td><td>Which of the 20 building blocks is at each position?</td><td>ESM3, ProGen2</td></tr>
+                            <tr style="background:rgba(59,130,246,0.06);"><td><strong>Cross-species</strong><br><small style="color:#888;">Multi-organism integration</small></td><td><a href="#concept-macrogene" style="color:#C05540;">Macrogene</a></td><td>Can I group orthologous genes across species into <em>one shared token</em>?</td><td>SATURN</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <!-- Concept 1: The Basics -->
                     <div class="concept-pair" id="concept-basics">
@@ -980,6 +1001,23 @@
                             <div class="tags" style="margin-top: 15px;">
                                 <span class="tag strategy">Used in: iSEEEK, Geneformer</span>
                             </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Full rank</td>
+      <td style="padding:4px 8px;">All expressed genes ranked, sequence length = # genes expressed in that cell</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Top-N truncated</td>
+      <td style="padding:4px 8px;">Only top N genes kept (e.g. N&#8776;2,048) to fit a fixed context window &mdash; Geneformer default</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Many genes tie at zero counts &mdash; rank order among the unexpressed tail is arbitrary and adds noise, not signal.</td>
+    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
@@ -1080,6 +1118,23 @@
                             <p><strong>The Solution:</strong> We create buckets (bins) for different ranges of heights. Instead of saying "Height 45", we throw it into the "Medium Height Bucket". Now, the token isn't a number, it's a category: <code>[GeneID] + [MediumBin]</code>.</p>
                             <div class="tags" style="margin-top: 15px;">
                                 <span class="tag strategy">Used in: scGPT, scBERT</span>
+                            </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Equal-width bins</td>
+      <td style="padding:4px 8px;">Fixed count ranges (e.g. 0&ndash;20, 21&ndash;80, 81+) &mdash; simple, but bins can be very imbalanced in size</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Equal-frequency (quantile) bins</td>
+      <td style="padding:4px 8px;">Each bin holds the same number of genes &mdash; scGPT's default, ~51 bins</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Bin edges fit on one dataset don't transfer cleanly to a batch with a different expression distribution &mdash; genes get mis-binned under domain shift.</td>
+    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -1204,95 +1259,22 @@
                             <div class="tags" style="margin-top: 15px;">
                                 <span class="tag strategy">Used in: scFoundation, AIDO.Cell</span>
                             </div>
-                        </div>
-                    </div>
-
-                     <!-- Concept 5: Coordinates -->
-                     <div class="concept-pair" id="concept-coordinates">
-                        <div class="concept-visual">
-                            <!-- SVG 4: Genome Coordinates -->
-                            <svg class="lego-svg" viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg4-title svg4-desc">
-                                <title id="svg4-title">Genome Coordinate Tokenization Analogy</title>
-                                <desc id="svg4-desc">A long green LEGO baseplate acting as a ruler with numbers. Clusters of bricks are placed at specific coordinate ranges, representing open chromatin regions.</desc>
-                                <defs>
-                                    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.2"/>
-                                    </filter>
-                                    <linearGradient id="baseplateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#22c55e"/>
-                                        <stop offset="80%" stop-color="#16a34a"/>
-                                        <stop offset="100%" stop-color="#15803d"/>
-                                    </linearGradient>
-                                    <pattern id="baseplateStuds" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                                        <circle cx="10" cy="10" r="4" fill="#20b350"/>
-                                        <circle cx="10" cy="10" r="3" fill="url(#studGrad2)"/>
-                                    </pattern>
-                                    <g id="yellowRegion">
-                                        <rect width="28" height="14" rx="2" fill="#ffcd03"/>
-                                        <rect x="0" y="11" width="28" height="3" fill="#d4a300"/>
-                                        <ellipse cx="9" cy="3" rx="3" ry="1.5" fill="#e6b800"/>
-                                        <ellipse cx="9" cy="3" rx="2.5" ry="1.2" fill="url(#studGrad2)"/>
-                                        <ellipse cx="19" cy="3" rx="3" ry="1.5" fill="#e6b800"/>
-                                        <ellipse cx="19" cy="3" rx="2.5" ry="1.2" fill="url(#studGrad2)"/>
-                                    </g>
-                                </defs>
-                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Location as Identity (Chromatin/ATAC-seq)</text>
-                                <text x="40" y="130" font-family="system-ui, sans-serif" font-size="14" fill="#16a34a" font-weight="700" transform="rotate(-90 40 130)">Chr 1</text>
-                                <g transform="translate(55, 100)" filter="url(#shadow4)">
-                                    <rect x="0" y="0" width="440" height="50" rx="4" fill="url(#baseplateGrad)"/>
-                                    <rect x="2" y="2" width="436" height="46" rx="3" fill="url(#baseplateStuds)"/>
-                                    <g fill="#15803d" font-family="ui-monospace, monospace" font-size="10">
-                                        <line x1="0" y1="50" x2="0" y2="60" stroke="#15803d" stroke-width="2"/>
-                                        <text x="0" y="75" text-anchor="middle">0</text>
-                                        <line x1="88" y1="50" x2="88" y2="60" stroke="#15803d" stroke-width="2"/>
-                                        <text x="88" y="75" text-anchor="middle">200</text>
-                                        <line x1="176" y1="50" x2="176" y2="60" stroke="#15803d" stroke-width="2"/>
-                                        <text x="176" y="75" text-anchor="middle">400</text>
-                                        <line x1="264" y1="50" x2="264" y2="60" stroke="#15803d" stroke-width="2"/>
-                                        <text x="264" y="75" text-anchor="middle">600</text>
-                                        <line x1="352" y1="50" x2="352" y2="60" stroke="#15803d" stroke-width="2"/>
-                                        <text x="352" y="75" text-anchor="middle">800</text>
-                                        <line x1="440" y1="50" x2="440" y2="60" stroke="#15803d" stroke-width="2"/>
-                                        <text x="440" y="75" text-anchor="middle">1000</text>
-                                    </g>
-                                </g>
-                                <g transform="translate(99, 55)" filter="url(#shadow4)">
-                                    <use href="#yellowRegion" x="0" y="0"/>
-                                    <use href="#yellowRegion" x="0" y="13"/>
-                                    <use href="#yellowRegion" x="30" y="0"/>
-                                    <use href="#yellowRegion" x="30" y="13"/>
-                                    <use href="#yellowRegion" x="15" y="26"/>
-                                </g>
-                                <rect x="95" y="38" width="80" height="18" rx="4" fill="#fef08a" stroke="#fde047" stroke-width="1.5"/>
-                                <text x="135" y="51" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#854d0e" font-weight="600">Region A</text>
-                                <g transform="translate(363, 70)" filter="url(#shadow4)">
-                                    <use href="#yellowRegion" x="0" y="0"/>
-                                    <use href="#yellowRegion" x="0" y="13"/>
-                                    <use href="#yellowRegion" x="30" y="6"/>
-                                </g>
-                                <rect x="360" y="53" width="80" height="18" rx="4" fill="#fef08a" stroke="#fde047" stroke-width="1.5"/>
-                                <text x="400" y="66" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#854d0e" font-weight="600">Region B</text>
-                                <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#7c3aed">Resulting Tokens (Location-Based)</text>
-                                <g transform="translate(60, 225)" filter="url(#shadow4)">
-                                    <rect width="180" height="60" rx="10" fill="white" stroke="#fde047" stroke-width="2"/>
-                                    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#854d0e" font-weight="600">Token A:</text>
-                                    <text x="15" y="42" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b">[Chr1, 100, 180]</text>
-                                </g>
-                                <g transform="translate(280, 225)" filter="url(#shadow4)">
-                                    <rect width="180" height="60" rx="10" fill="white" stroke="#fde047" stroke-width="2"/>
-                                    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#854d0e" font-weight="600">Token B:</text>
-                                    <text x="15" y="42" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b">[Chr1, 700, 760]</text>
-                                </g>
-                                <rect x="80" y="300" width="360" height="30" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
-                                <text x="260" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#166534">No fixed gene vocabulary needed - regions can vary by cell type!</text>
-                            </svg>
-                        </div>
-                        <div class="concept-text">
-                            <h4>Strategy: Genome-Coordinate Tokenization</h4>
-                            <p><strong>The Problem:</strong> In chromatin data (ATAC-seq), we don't have predefined "genes". We just have regions on the genome that are "open" (accessible). These regions change depending on the cell type.</p>
-                            <p><strong>The Solution:</strong> Imagine the genome as a giant LEGO baseplate ruler. We don't define the brick type; we define <em>where</em> the bricks are placed. The token isn't a name, it's a set of coordinates: Chromosome number, Start position on the ruler, and End position.</p>
-                            <div class="tags" style="margin-top: 15px;">
-                                <span class="tag strategy">Used in: ChromFound</span>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">T token</td>
+      <td style="padding:4px 8px;">Target/original total UMI count the cell was meant to have</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">S token</td>
+      <td style="padding:4px 8px;">Sampled/observed total UMI count actually sequenced</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Sampled depth S is extremely low (heavy dropout) &mdash; the T/S ratio the model must invert becomes unreliable when there's almost nothing to scale up from.</td>
+    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -1374,142 +1356,125 @@
                             <div class="tags" style="margin-top: 15px;">
                                 <span class="tag strategy">Used in: C2S-Scale (27B params)</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Concept 6: Amino Acid Tokenization -->
-                    <div class="concept-pair" id="concept-aminoacid">
-                        <div class="concept-visual">
-                            <!-- SVG 6: Amino Acid Tokenization -->
-                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg6-title svg6-desc">
-                                <title id="svg6-title">Amino Acid Tokenization Analogy</title>
-                                <desc id="svg6-desc">20 different colored LEGO bricks representing the amino acid alphabet, chained together to form a protein sequence.</desc>
-                                <defs>
-                                    <filter id="shadow6" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
-                                    </filter>
-                                    <linearGradient id="aaGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/>
-                                    </linearGradient>
-                                    <linearGradient id="aaGrad7" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#db2777"/>
-                                    </linearGradient>
-                                </defs>
-                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Protein = Chain of 20 Amino Acid "Bricks"</text>
-                                <rect x="30" y="45" width="460" height="95" rx="12" fill="white" filter="url(#shadow6)"/>
-                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">The Vocabulary: 20 Amino Acid Types</text>
-                                <g transform="translate(45, 75)">
-                                    <rect width="38" height="24" rx="4" fill="url(#aaGrad1)"/><text x="19" y="17" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="white" font-weight="700">A</text>
-                                    <rect x="252" width="38" height="24" rx="4" fill="url(#aaGrad7)"/><text x="271" y="17" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="white" font-weight="700">H</text>
-                                    <!-- Simplified for brevity, imagine all 20 here -->
-                                    <text x="430" y="17" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">...</text>
-                                </g>
-                                <path d="M 260 150 L 260 175" stroke="#64748b" stroke-width="2" stroke-dasharray="4,2"/>
-                                <polygon points="260,180 255,172 265,172" fill="#64748b"/>
-                                <rect x="30" y="190" width="460" height="80" rx="12" fill="white" filter="url(#shadow6)"/>
-                                <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">A Protein Sequence (Chain of Bricks)</text>
-                                <g transform="translate(50, 225)" filter="url(#shadow6)">
-                                    <rect width="32" height="28" rx="4" fill="url(#aaGrad7)"/><text x="16" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">M</text>
-                                    <line x1="32" y1="14" x2="38" y2="14" stroke="#94a3b8" stroke-width="3"/>
-                                    <rect x="38" width="32" height="28" rx="4" fill="url(#aaGrad1)"/><text x="54" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">A</text>
-                                    <line x1="70" y1="14" x2="76" y2="14" stroke="#94a3b8" stroke-width="3"/>
-                                    <rect x="76" width="32" height="28" rx="4" fill="#15803d"/><text x="92" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">V</text>
-                                    <text x="355" y="20" font-family="system-ui" font-size="18" fill="#94a3b8">...</text>
-                                </g>
-                                <rect x="60" y="290" width="400" height="75" rx="12" fill="white" stroke="#93c5fd" stroke-width="2" filter="url(#shadow6)"/>
-                                <text x="260" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#1e40af">Simple but Powerful</text>
-                                <text x="260" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">Each amino acid = 1 token. The model learns which "bricks"</text>
-                                <text x="260" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">tend to appear together, like grammar in language.</text>
-                            </svg>
-                        </div>
-                        <div class="concept-text">
-                            <h4>Strategy: Amino Acid Tokenization</h4>
-                            <p><strong>The Idea:</strong> Proteins are chains of just 20 different building blocks (amino acids). Each amino acid is one token - like having 20 different LEGO brick types that snap together in a chain.</p>
-                            <p><strong>Why It Works:</strong> Just like language models learn word patterns ("the" often follows "in"), protein models learn amino acid patterns that determine protein function and structure.</p>
-                            <div class="tags" style="margin-top: 15px;">
-                                <span class="tag strategy">Used in: ESM3, ProGen2</span>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Repeat encoding</td>
+      <td style="padding:4px 8px;">Gene token repeated proportional to (rank-transformed) expression count</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Context cap</td>
+      <td style="padding:4px 8px;">Max repeats / sequence-length truncation &mdash; controls how much the "sentence" can grow</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">A handful of highly expressed housekeeping genes can dominate the token budget, crowding out rare but biologically important marker genes.</td>
+    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Concept 7: Codon-Level Tokenization -->
-                    <div class="concept-pair" id="concept-codon">
+                    <div style="background:#fff; border-left:4px solid #10b981; border-radius:0 12px 12px 0; padding:22px 26px; margin:8px 0 32px; box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                        <h4 style="color:#059669; margin:0 0 8px; font-size:1.15em;"><i class="fas fa-balance-scale"></i> Choosing Among the 4 scRNA Tokenization Strategies</h4>
+                        <p style="color:#555; margin:0 0 14px;">All four apply to scRNA-seq data. What they preserve &mdash; and sacrifice &mdash; is different.</p>
+                        <table class="comparison-table" style="margin:0;">
+                            <thead><tr><th>Strategy</th><th>Absolute counts preserved?</th><th>Batch / depth robust?</th><th>Sequence length</th><th>Works with standard LLMs?</th><th>Best when&hellip;</th></tr></thead>
+                            <tbody>
+                            <tr><td><strong>Rank-Based</strong></td><td>&#10007; (discarded)</td><td>&#10003;&#10003; (best)</td><td>= # expressed genes</td><td>&#10003; (integer position)</td><td>Cross-batch cell-type classification; depth varies wildly across batches</td></tr>
+                            <tr><td><strong>Binning</strong></td><td>Partial (quantized)</td><td>&#10003; (quantization absorbs depth noise)</td><td>= # expressed genes</td><td>&#10003; (categorical token)</td><td>Moderate depth variation; need to retain some expression magnitude</td></tr>
+                            <tr><td><strong>Read-Depth-Aware</strong></td><td>&#10003;&#10003; (continuous)</td><td>&#10003; (via depth tokens T, S)</td><td>= # expressed genes + 2</td><td>Needs custom embedding</td><td>Expression enhancement / denoising; want to predict full-depth values</td></tr>
+                            <tr><td><strong>Cell2Sentence</strong></td><td>&#10003; (repetition count)</td><td>&#10007; (absolute counts used)</td><td><strong>&#8811;</strong> (high-expression genes repeat many times)</td><td>&#10003;&#10003; (plain text, any LLM)</td><td>Natural language Q&amp;A about cells; leverage GPT/LLaMA directly</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin-top:10px;"><i class="fas fa-dna"></i> Genomic DNA Strategies</h3>
+                    <p style="color:#555; margin-bottom:20px;">DNA doesn't come pre-segmented into "genes" the way transcriptomes do &mdash; these four strategies address how to carve a continuous 4-letter sequence (or a diploid, ambiguity-coded one) into learnable units.</p>
+                    <!-- Concept 6: K-mer Tokenization -->
+                    <div class="concept-pair" id="concept-kmer">
                         <div class="concept-visual">
-                            <!-- SVG 7: Codon-Level Tokenization -->
-                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg7-title svg7-desc">
-                                <title id="svg7-title">Codon-Level Tokenization Analogy</title>
-                                <desc id="svg7-desc">Single nucleotide bricks grouped into triplets, showing how multiple triplet combinations can code for the same amino acid.</desc>
+                            <!-- SVG 9: K-mer Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg9-title svg9-desc">
+                                <title id="svg9-title">K-mer Tokenization Analogy</title>
+                                <desc id="svg9-desc">A sliding window of 6 DNA bricks moving along a sequence, treating each window as one compound token.</desc>
                                 <defs>
-                                    <filter id="shadow7" x="-20%" y="-20%" width="140%" height="140%">
+                                    <filter id="shadow9" x="-20%" y="-20%" width="140%" height="140%">
                                         <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
                                     </filter>
-                                    <linearGradient id="nucA" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#16a34a"/>
-                                    </linearGradient>
-                                    <linearGradient id="nucT" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/>
-                                    </linearGradient>
-                                    <linearGradient id="nucG" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/>
-                                    </linearGradient>
-                                    <linearGradient id="nucC" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/>
+                                    <linearGradient id="windowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="rgba(124, 58, 237, 0.3)"/>
+                                        <stop offset="100%" stop-color="rgba(124, 58, 237, 0.1)"/>
                                     </linearGradient>
                                 </defs>
-                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Codons: 3-Brick Combos (64 Possible)</text>
-                                <rect x="30" y="45" width="180" height="80" rx="12" fill="white" filter="url(#shadow7)"/>
-                                <text x="120" y="63" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">Single Nucleotides (4 types)</text>
-                                <g transform="translate(50, 78)">
-                                    <rect width="28" height="28" rx="4" fill="url(#nucA)"/><text x="14" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">A</text>
-                                    <rect x="35" width="28" height="28" rx="4" fill="url(#nucT)"/><text x="49" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">T</text>
-                                    <rect x="70" width="28" height="28" rx="4" fill="url(#nucG)"/><text x="84" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">G</text>
-                                    <rect x="105" width="28" height="28" rx="4" fill="url(#nucC)"/><text x="119" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">C</text>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">K-mer: Sliding Window of K Nucleotides</text>
+                                <rect x="20" y="45" width="480" height="100" rx="12" fill="white" filter="url(#shadow9)"/>
+                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">DNA Sequence (Single Nucleotides)</text>
+                                <g transform="translate(35, 80)">
+                                    <rect width="24" height="24" rx="3" fill="url(#nucA)"/><text x="12" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="28" width="24" height="24" rx="3" fill="url(#nucT)"/><text x="40" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="56" width="24" height="24" rx="3" fill="url(#nucG)"/><text x="68" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">G</text>
+                                    <rect x="84" width="24" height="24" rx="3" fill="url(#nucC)"/><text x="96" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">C</text>
+                                    <rect x="112" width="24" height="24" rx="3" fill="url(#nucA)"/><text x="124" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
+                                    <rect x="140" width="24" height="24" rx="3" fill="url(#nucT)"/><text x="152" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
+                                    <rect x="-4" y="-8" width="176" height="40" rx="6" fill="url(#windowGrad)" stroke="#7c3aed" stroke-width="3" stroke-dasharray="6,3"/>
+                                    <text x="84" y="-15" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="700">6-mer Window</text>
+                                    <text x="180" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="#64748b" font-weight="700">...</text>
                                 </g>
-                                <path d="M 220 85 L 260 85" stroke="#7c3aed" stroke-width="2"/>
-                                <polygon points="265,85 257,80 257,90" fill="#7c3aed"/>
-                                <text x="242" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7c3aed" font-weight="600">Group by 3</text>
-                                <rect x="280" y="45" width="220" height="80" rx="12" fill="white" filter="url(#shadow7)"/>
-                                <text x="390" y="63" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">Codon Tokens (4^3 = 64 types)</text>
-                                <g transform="translate(295, 78)">
-                                    <rect width="80" height="28" rx="6" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
-                                    <rect x="5" y="4" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="15" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">A</text>
-                                    <rect x="30" y="4" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="40" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">T</text>
-                                    <rect x="55" y="4" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="65" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">G</text>
+                                <path d="M 260 155 L 260 185" stroke="#7c3aed" stroke-width="3"/>
+                                <polygon points="260,190 255,182 265,182" fill="#7c3aed"/>
+                                <text x="285" y="175" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">Slide &amp; Extract</text>
+                                <rect x="40" y="200" width="440" height="85" rx="12" fill="white" filter="url(#shadow9)"/>
+                                <text x="260" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">6-mer Tokens (4^6 = 4,096 possible combinations)</text>
+                                <g transform="translate(55, 235)">
+                                    <rect width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <text x="42.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">ATGCAT</text>
+                                    <text x="95" y="22" font-size="16" fill="#94a3b8">-></text>
+                                    <rect x="105" width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <text x="147.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">TGCATG</text>
+                                    <text x="200" y="22" font-size="16" fill="#94a3b8">-></text>
+                                    <rect x="315" width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <text x="357.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">...</text>
                                 </g>
-                                <rect x="40" y="145" width="440" height="130" rx="12" fill="white" filter="url(#shadow7)"/>
-                                <text x="260" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e293b" font-weight="700">Key Insight: Multiple Codons -> Same Amino Acid</text>
-                                <g transform="translate(60, 180)">
-                                    <text x="0" y="15" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Leucine (L) can be coded by:</text>
-                                    <g transform="translate(0, 25)">
-                                        <rect width="55" height="24" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
-                                        <text x="27.5" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">UUA</text>
-                                        <rect x="62" width="55" height="24" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
-                                        <text x="89.5" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">UUG</text>
-                                        <!-- Simplified for brevity -->
-                                        <text x="365" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">...</text>
-                                    </g>
-                                    <text x="200" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">All produce Leucine, but choice matters for translation speed!</text>
-                                </g>
-                                <rect x="60" y="290" width="400" height="95" rx="12" fill="white" stroke="#e879f9" stroke-width="2" filter="url(#shadow7)"/>
-                                <text x="260" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#86198f">Why Codon Choice Matters</text>
-                                <text x="260" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#701a75">"Silent" mutations (same amino acid) can still cause disease!</text>
-                                <text x="260" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#86198f">Codon-level models capture translation efficiency &amp; mRNA stability</text>
+                                <rect x="60" y="300" width="400" height="70" rx="12" fill="white" stroke="#fca5a5" stroke-width="2" filter="url(#shadow9)"/>
+                                <text x="260" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#991b1b">Why Overlapping K-mers?</text>
+                                <text x="260" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7f1d1d">Captures local sequence context that single nucleotides miss.</text>
                             </svg>
                         </div>
                         <div class="concept-text">
-                            <h4>Strategy: Codon-Level Tokenization</h4>
-                            <p><strong>The Idea:</strong> Instead of tokenizing single DNA letters (A, T, G, C), group them into triplets called codons. There are 64 possible triplet combinations (4^3).</p>
-                            <p><strong>Why It Matters:</strong> Multiple codons can code for the same amino acid (synonymous codons), but the <em>choice</em> affects translation speed and mRNA stability. "Silent" mutations can still cause disease!</p>
+                            <h4>Strategy: K-mer Tokenization</h4>
+                            <p><strong>The Idea:</strong> Instead of reading DNA one letter at a time (A, T, G, C), slide a window of K letters along the sequence. Each window position becomes one token. For 6-mers, there are 4^6 = 4,096 possible tokens.</p>
+                            <p><strong>Why It Works:</strong> It's like reading words instead of individual letters. "ATGCAT" carries more biological meaning than six separate letters, capturing local motifs and regulatory elements.</p>
                             <div class="tags" style="margin-top: 15px;">
-                                <span class="tag strategy">Used in: CodonFM, EnCodon</span>
+                                <span class="tag strategy">Used in: Nucleotide Transformer, DNABERT</span>
+                            </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">k = 3</td>
+      <td style="padding:4px 8px;">64 tokens &mdash; codon-scale, loses local context</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">k = 6</td>
+      <td style="padding:4px 8px;">4,096 tokens &mdash; DNABERT default, good motif capture</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">k = 1</td>
+      <td style="padding:4px 8px;">4 tokens &mdash; byte-level baseline, max OOV safety, no context</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Vocabulary explodes with large k, and overlapping k-mers cause position confusion in non-causal attention.</td>
+    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Concept 8: BPE + IUPAC Tokenization -->
-                        <figure class="content-figure">
-                        <img src="figures/lego-sorting-tray-bpe.webp" width="1600" height="760" loading="lazy" decoding="async" alt="A four-color LEGO sorting tray with bricks organized by color, a hand picking one brick, and a finished larger piece assembled from frequent parts">
-                    </figure>
+                    <!-- Concept 7: BPE + IUPAC Tokenization -->
+      
                     <div class="concept-pair" id="concept-bpe-iupac">
                         <div class="concept-visual">
                             <!-- SVG 8: BPE + IUPAC Tokenization for Diploid Genomes -->
@@ -1605,75 +1570,407 @@
                             <div class="tags" style="margin-top: 15px;">
                                 <span class="tag strategy">Used in: VariantFormer</span>
                             </div>
-                        </div>
-                    </div>
-                    <figure class="content-figure comic-figure">
-                        <img src="figures/lego-bpe-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel LEGO comic of byte-pair encoding: a bucket of single bricks is dumped out, the pair that keeps recurring is spotted and clicked into one new piece, that merge is repeated until the tray holds a set of ready-made chunks, and a build is finished from far fewer pieces than it started with">
-                        <figcaption>BPE does not invent new bricks — it watches which pairs keep appearing and promotes them to single pieces, so the vocabulary grows out of the corpus instead of being designed up front.</figcaption>
-                    </figure>
-
-
-                    <!-- Concept 9: K-mer Tokenization -->
-                    <div class="concept-pair" id="concept-kmer">
-                        <div class="concept-visual">
-                            <!-- SVG 9: K-mer Tokenization -->
-                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg9-title svg9-desc">
-                                <title id="svg9-title">K-mer Tokenization Analogy</title>
-                                <desc id="svg9-desc">A sliding window of 6 DNA bricks moving along a sequence, treating each window as one compound token.</desc>
-                                <defs>
-                                    <filter id="shadow9" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
-                                    </filter>
-                                    <linearGradient id="windowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="rgba(124, 58, 237, 0.3)"/>
-                                        <stop offset="100%" stop-color="rgba(124, 58, 237, 0.1)"/>
-                                    </linearGradient>
-                                </defs>
-                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">K-mer: Sliding Window of K Nucleotides</text>
-                                <rect x="20" y="45" width="480" height="100" rx="12" fill="white" filter="url(#shadow9)"/>
-                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">DNA Sequence (Single Nucleotides)</text>
-                                <g transform="translate(35, 80)">
-                                    <rect width="24" height="24" rx="3" fill="url(#nucA)"/><text x="12" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
-                                    <rect x="28" width="24" height="24" rx="3" fill="url(#nucT)"/><text x="40" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
-                                    <rect x="56" width="24" height="24" rx="3" fill="url(#nucG)"/><text x="68" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">G</text>
-                                    <rect x="84" width="24" height="24" rx="3" fill="url(#nucC)"/><text x="96" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">C</text>
-                                    <rect x="112" width="24" height="24" rx="3" fill="url(#nucA)"/><text x="124" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">A</text>
-                                    <rect x="140" width="24" height="24" rx="3" fill="url(#nucT)"/><text x="152" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="white" font-weight="700">T</text>
-                                    <rect x="-4" y="-8" width="176" height="40" rx="6" fill="url(#windowGrad)" stroke="#7c3aed" stroke-width="3" stroke-dasharray="6,3"/>
-                                    <text x="84" y="-15" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="700">6-mer Window</text>
-                                    <text x="180" y="16" text-anchor="middle" font-family="ui-monospace" font-size="11" fill="#64748b" font-weight="700">...</text>
-                                </g>
-                                <path d="M 260 155 L 260 185" stroke="#7c3aed" stroke-width="3"/>
-                                <polygon points="260,190 255,182 265,182" fill="#7c3aed"/>
-                                <text x="285" y="175" font-family="system-ui, sans-serif" font-size="10" fill="#7c3aed" font-weight="600">Slide &amp; Extract</text>
-                                <rect x="40" y="200" width="440" height="85" rx="12" fill="white" filter="url(#shadow9)"/>
-                                <text x="260" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">6-mer Tokens (4^6 = 4,096 possible combinations)</text>
-                                <g transform="translate(55, 235)">
-                                    <rect width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
-                                    <text x="42.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">ATGCAT</text>
-                                    <text x="95" y="22" font-size="16" fill="#94a3b8">-></text>
-                                    <rect x="105" width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
-                                    <text x="147.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">TGCATG</text>
-                                    <text x="200" y="22" font-size="16" fill="#94a3b8">-></text>
-                                    <rect x="315" width="85" height="35" rx="8" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
-                                    <text x="357.5" y="23" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#7c3aed" font-weight="600">...</text>
-                                </g>
-                                <rect x="60" y="300" width="400" height="70" rx="12" fill="white" stroke="#fca5a5" stroke-width="2" filter="url(#shadow9)"/>
-                                <text x="260" y="325" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#991b1b">Why Overlapping K-mers?</text>
-                                <text x="260" y="348" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#7f1d1d">Captures local sequence context that single nucleotides miss.</text>
-                            </svg>
-                        </div>
-                        <div class="concept-text">
-                            <h4>Strategy: K-mer Tokenization</h4>
-                            <p><strong>The Idea:</strong> Instead of reading DNA one letter at a time (A, T, G, C), slide a window of K letters along the sequence. Each window position becomes one token. For 6-mers, there are 4^6 = 4,096 possible tokens.</p>
-                            <p><strong>Why It Works:</strong> It's like reading words instead of individual letters. "ATGCAT" carries more biological meaning than six separate letters, capturing local motifs and regulatory elements.</p>
-                            <div class="tags" style="margin-top: 15px;">
-                                <span class="tag strategy">Used in: Nucleotide Transformer, DNABERT</span>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Vocab size</td>
+      <td style="padding:4px 8px;">Learned BPE merges, typically 500&ndash;32k subword tokens</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">IUPAC coverage</td>
+      <td style="padding:4px 8px;">2-way ambiguity codes (Y, R, ...) capture biallelic heterozygous SNPs only</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Structural variants &mdash; indels, triallelic sites &mdash; aren't representable: IUPAC ambiguity codes only cover single-base substitutions.</td>
+    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Concept 10: Macrogene Tokenization -->
+                    <!-- Concept 8: Codon-Level Tokenization -->
+                    <div class="concept-pair" id="concept-codon">
+                        <div class="concept-visual">
+                            <!-- SVG 7: Codon-Level Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg7-title svg7-desc">
+                                <title id="svg7-title">Codon-Level Tokenization Analogy</title>
+                                <desc id="svg7-desc">Single nucleotide bricks grouped into triplets, showing how multiple triplet combinations can code for the same amino acid.</desc>
+                                <defs>
+                                    <filter id="shadow7" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="nucA" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#22c55e"/><stop offset="100%" stop-color="#16a34a"/>
+                                    </linearGradient>
+                                    <linearGradient id="nucT" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/>
+                                    </linearGradient>
+                                    <linearGradient id="nucG" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/>
+                                    </linearGradient>
+                                    <linearGradient id="nucC" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#3b82f6"/><stop offset="100%" stop-color="#2563eb"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Codons: 3-Brick Combos (64 Possible)</text>
+                                <rect x="30" y="45" width="180" height="80" rx="12" fill="white" filter="url(#shadow7)"/>
+                                <text x="120" y="63" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">Single Nucleotides (mRNA, 4 types)</text>
+                                <g transform="translate(50, 78)">
+                                    <rect width="28" height="28" rx="4" fill="url(#nucA)"/><text x="14" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">A</text>
+                                    <rect x="35" width="28" height="28" rx="4" fill="url(#nucT)"/><text x="49" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">U</text>
+                                    <rect x="70" width="28" height="28" rx="4" fill="url(#nucG)"/><text x="84" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">G</text>
+                                    <rect x="105" width="28" height="28" rx="4" fill="url(#nucC)"/><text x="119" y="19" text-anchor="middle" font-family="ui-monospace" font-size="14" fill="white" font-weight="700">C</text>
+                                </g>
+                                <path d="M 220 85 L 260 85" stroke="#7c3aed" stroke-width="2"/>
+                                <polygon points="265,85 257,80 257,90" fill="#7c3aed"/>
+                                <text x="242" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="9" fill="#7c3aed" font-weight="600">Group by 3</text>
+                                <rect x="280" y="45" width="220" height="80" rx="12" fill="white" filter="url(#shadow7)"/>
+                                <text x="390" y="63" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">Codon Tokens (4^3 = 64 types)</text>
+                                <g transform="translate(295, 78)">
+                                    <rect width="80" height="28" rx="6" fill="#f3e8ff" stroke="#c4b5fd" stroke-width="2"/>
+                                    <rect x="5" y="4" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="15" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">A</text>
+                                    <rect x="30" y="4" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="40" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">U</text>
+                                    <rect x="55" y="4" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="65" y="18" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="white" font-weight="700">G</text>
+                                </g>
+                                <rect x="40" y="145" width="440" height="130" rx="12" fill="white" filter="url(#shadow7)"/>
+                                <text x="260" y="165" text-anchor="middle" font-family="system-ui, sans-serif" font-size="12" fill="#1e293b" font-weight="700">Key Insight: Multiple Codons -> Same Amino Acid</text>
+                                <g transform="translate(60, 180)">
+                                    <text x="0" y="15" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">Leucine (L) can be coded by:</text>
+                                    <g transform="translate(0, 25)">
+                                        <rect width="55" height="24" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+                                        <text x="27.5" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">UUA</text>
+                                        <rect x="62" width="55" height="24" rx="5" fill="#fef3c7" stroke="#fbbf24" stroke-width="1.5"/>
+                                        <text x="89.5" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">UUG</text>
+                                        <!-- Simplified for brevity -->
+                                        <text x="365" y="16" text-anchor="middle" font-family="ui-monospace" font-size="10" fill="#92400e" font-weight="600">...</text>
+                                    </g>
+                                    <text x="200" y="75" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#78350f">All produce Leucine, but choice matters for translation speed!</text>
+                                </g>
+                                <rect x="60" y="290" width="400" height="95" rx="12" fill="white" stroke="#e879f9" stroke-width="2" filter="url(#shadow7)"/>
+                                <text x="260" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#86198f">Why Codon Choice Matters</text>
+                                <text x="260" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#701a75">"Silent" mutations (same amino acid) can still cause disease!</text>
+                                <text x="260" y="358" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#86198f">Codon-level models capture translation efficiency &amp; mRNA stability</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Codon-Level Tokenization</h4>
+                            <p><strong>The Idea:</strong> Instead of tokenizing single mRNA letters (A, U, G, C), group them into triplets called codons. There are 64 possible triplet combinations (4^3).</p>
+                            <p><strong>Why It Matters:</strong> Multiple codons can code for the same amino acid (synonymous codons), but the <em>choice</em> affects translation speed and mRNA stability. "Silent" mutations can still cause disease!</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: CodonFM, EnCodon</span>
+                            </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Reading frame</td>
+      <td style="padding:4px 8px;">Codon identity shifts entirely if the frame is off by even 1 base</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Vocabulary</td>
+      <td style="padding:4px 8px;">64 codon tokens; sequence is 3&times; shorter than single-nucleotide tokenization</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Non-coding regions (introns, UTRs) &mdash; codon framing only applies inside an open reading frame.</td>
+    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Concept 9: Single-Nucleotide + SSM Tokenization -->
+                    <div class="concept-pair" id="concept-ssm">
+                        <div class="concept-visual">
+                            <!-- SVG 11: Single-Nucleotide + SSM Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg11-title svg11-desc">
+                                <title id="svg11-title">Single-Nucleotide + State-Space-Model Tokenization Analogy</title>
+                                <desc id="svg11-desc">A long unbroken line of single-nucleotide bricks scanned one at a time by a moving state-space model, which carries a fixed-size summary forward instead of attending back over every prior brick.</desc>
+                                <defs>
+                                    <filter id="shadow11" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="stateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="rgba(16, 185, 129, 0.35)"/>
+                                        <stop offset="100%" stop-color="rgba(16, 185, 129, 0.12)"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#1e293b">Single Nucleotide: One Brick, One Token (No Merging)</text>
+                                <rect x="20" y="42" width="480" height="70" rx="12" fill="white" filter="url(#shadow11)"/>
+                                <text x="260" y="60" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#64748b" font-weight="600">1M+ bp genome, scanned one base at a time — vocabulary = {A, T, G, C} only</text>
+                                <g transform="translate(30, 72)">
+                                    <rect width="20" height="20" rx="3" fill="url(#nucA)"/><text x="10" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
+                                    <rect x="24" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="34" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">T</text>
+                                    <rect x="48" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="58" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">G</text>
+                                    <rect x="72" width="20" height="20" rx="3" fill="url(#nucC)"/><text x="82" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">C</text>
+                                    <rect x="96" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="106" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
+                                    <rect x="120" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="130" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
+                                    <rect x="144" width="20" height="20" rx="3" fill="url(#nucC)"/><text x="154" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">C</text>
+                                    <rect x="168" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="178" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">T</text>
+                                    <rect x="192" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="202" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">G</text>
+                                    <text x="230" y="14" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">...</text>
+                                    <text x="330" y="14" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">... 1,000,000 more bricks ...</text>
+                                </g>
+                                <path d="M 260 122 L 260 150" stroke="#059669" stroke-width="3"/>
+                                <polygon points="260,155 255,147 265,147" fill="#059669"/>
+                                <text x="330" y="140" font-family="system-ui, sans-serif" font-size="10" fill="#059669" font-weight="600">Scan left to right, no lookback</text>
+                                <rect x="40" y="165" width="440" height="105" rx="12" fill="white" filter="url(#shadow11)"/>
+                                <text x="260" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">State-Space Model (Hyena / Mamba): a moving tape-measure, not a rear-view mirror</text>
+                                <rect x="70" y="200" width="120" height="45" rx="8" fill="url(#stateGrad)" stroke="#059669" stroke-width="2"/>
+                                <text x="130" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">fixed-size</text>
+                                <text x="130" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">state vector</text>
+                                <path d="M 195 222 L 235 222" stroke="#059669" stroke-width="2.5"/>
+                                <polygon points="240,222 232,217 232,227" fill="#059669"/>
+                                <rect x="245" y="200" width="120" height="45" rx="8" fill="url(#stateGrad)" stroke="#059669" stroke-width="2"/>
+                                <text x="305" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">updated</text>
+                                <text x="305" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">state vector</text>
+                                <path d="M 370 222 L 400 222" stroke="#059669" stroke-width="2.5" stroke-dasharray="4,3"/>
+                                <text x="435" y="226" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">...</text>
+                                <text x="260" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">O(1) memory per step vs. attention's O(n) lookback over every prior brick</text>
+                                <rect x="60" y="285" width="400" height="95" rx="12" fill="white" stroke="#10b981" stroke-width="2" filter="url(#shadow11)"/>
+                                <text x="260" y="308" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#059669">Why This Beats K-mer at Genome Scale</text>
+                                <text x="260" y="328" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">4 tokens total (A/T/G/C), zero OOV — vs. 4^6 = 4,096 for 6-mers</text>
+                                <text x="260" y="346" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">Linear-time scan handles 1M+ bp context; attention cannot afford that lookback</text>
+                                <text x="260" y="364" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">Trade-off: needs an SSM backend (Hyena/Mamba), not a plain Transformer</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Single-Nucleotide + State-Space-Model Tokenization</h4>
+                            <p><strong>The Idea:</strong> Stop compressing bases into k-mers or codons at all — tokenize every single nucleotide (vocabulary = 4). What used to make this impractical was the transformer: single-base tokens over a megabase context means millions of positions, and full attention over that is quadratically unaffordable. Swap the attention operator for a state-space model (Hyena/Mamba), and the sequence is scanned once, left to right, carrying a fixed-size "state" forward instead of looking back at everything.</p>
+                            <p><strong>Why It Works:</strong> No k-mer vocabulary to size (no 4^6 = 4,096 explosion), no out-of-vocabulary sequences, and near-linear compute in sequence length — the combination that finally makes million-base-pair genomic context tractable in a single forward pass.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: HyenaDNA, Evo, Evo 2</span>
+                            </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">HyenaDNA</td>
+      <td style="padding:4px 8px;">Up to ~450kb context, single-nucleotide vocabulary</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Evo / Evo 2</td>
+      <td style="padding:4px 8px;">Up to ~1Mb context, adds generative genome design on top</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">A task needs precise, content-based attention between two specific far-apart positions &mdash; the SSM's fixed-size state can dilute a signal from very far back.</td>
+    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:10px;"><i class="fas fa-layer-group"></i> Chromatin / ATAC-seq Strategies</h3>
+                    <p style="color:#555; margin-bottom:20px;">Open-chromatin data has no fixed vocabulary at all &mdash; accessible regions vary by cell type, so a token's identity has to come from <em>where</em> it sits on the genome, not from a gene name.</p>
+                     <!-- Concept 10: Genome Coordinates -->
+                     <div class="concept-pair" id="concept-coordinates">
+                        <div class="concept-visual">
+                            <!-- SVG 4: Genome Coordinates -->
+                            <svg class="lego-svg" viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg4-title svg4-desc">
+                                <title id="svg4-title">Genome Coordinate Tokenization Analogy</title>
+                                <desc id="svg4-desc">A long green LEGO baseplate acting as a ruler with numbers. Clusters of bricks are placed at specific coordinate ranges, representing open chromatin regions.</desc>
+                                <defs>
+                                    <filter id="shadow4" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="3" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="baseplateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#22c55e"/>
+                                        <stop offset="80%" stop-color="#16a34a"/>
+                                        <stop offset="100%" stop-color="#15803d"/>
+                                    </linearGradient>
+                                    <pattern id="baseplateStuds" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+                                        <circle cx="10" cy="10" r="4" fill="#20b350"/>
+                                        <circle cx="10" cy="10" r="3" fill="url(#studGrad2)"/>
+                                    </pattern>
+                                    <g id="yellowRegion">
+                                        <rect width="28" height="14" rx="2" fill="#ffcd03"/>
+                                        <rect x="0" y="11" width="28" height="3" fill="#d4a300"/>
+                                        <ellipse cx="9" cy="3" rx="3" ry="1.5" fill="#e6b800"/>
+                                        <ellipse cx="9" cy="3" rx="2.5" ry="1.2" fill="url(#studGrad2)"/>
+                                        <ellipse cx="19" cy="3" rx="3" ry="1.5" fill="#e6b800"/>
+                                        <ellipse cx="19" cy="3" rx="2.5" ry="1.2" fill="url(#studGrad2)"/>
+                                    </g>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Location as Identity (Chromatin/ATAC-seq)</text>
+                                <text x="40" y="130" font-family="system-ui, sans-serif" font-size="14" fill="#16a34a" font-weight="700" transform="rotate(-90 40 130)">Chr 1</text>
+                                <g transform="translate(55, 100)" filter="url(#shadow4)">
+                                    <rect x="0" y="0" width="440" height="50" rx="4" fill="url(#baseplateGrad)"/>
+                                    <rect x="2" y="2" width="436" height="46" rx="3" fill="url(#baseplateStuds)"/>
+                                    <g fill="#15803d" font-family="ui-monospace, monospace" font-size="10">
+                                        <line x1="0" y1="50" x2="0" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="0" y="75" text-anchor="middle">0</text>
+                                        <line x1="88" y1="50" x2="88" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="88" y="75" text-anchor="middle">200</text>
+                                        <line x1="176" y1="50" x2="176" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="176" y="75" text-anchor="middle">400</text>
+                                        <line x1="264" y1="50" x2="264" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="264" y="75" text-anchor="middle">600</text>
+                                        <line x1="352" y1="50" x2="352" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="352" y="75" text-anchor="middle">800</text>
+                                        <line x1="440" y1="50" x2="440" y2="60" stroke="#15803d" stroke-width="2"/>
+                                        <text x="440" y="75" text-anchor="middle">1000</text>
+                                    </g>
+                                </g>
+                                <g transform="translate(99, 55)" filter="url(#shadow4)">
+                                    <use href="#yellowRegion" x="0" y="0"/>
+                                    <use href="#yellowRegion" x="0" y="13"/>
+                                    <use href="#yellowRegion" x="30" y="0"/>
+                                    <use href="#yellowRegion" x="30" y="13"/>
+                                    <use href="#yellowRegion" x="15" y="26"/>
+                                </g>
+                                <rect x="95" y="38" width="80" height="18" rx="4" fill="#fef08a" stroke="#fde047" stroke-width="1.5"/>
+                                <text x="135" y="51" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#854d0e" font-weight="600">Region A</text>
+                                <g transform="translate(363, 70)" filter="url(#shadow4)">
+                                    <use href="#yellowRegion" x="0" y="0"/>
+                                    <use href="#yellowRegion" x="0" y="13"/>
+                                    <use href="#yellowRegion" x="30" y="6"/>
+                                </g>
+                                <rect x="360" y="53" width="80" height="18" rx="4" fill="#fef08a" stroke="#fde047" stroke-width="1.5"/>
+                                <text x="400" y="66" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#854d0e" font-weight="600">Region B</text>
+                                <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#7c3aed">Resulting Tokens (Location-Based)</text>
+                                <g transform="translate(60, 225)" filter="url(#shadow4)">
+                                    <rect width="180" height="60" rx="10" fill="white" stroke="#fde047" stroke-width="2"/>
+                                    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#854d0e" font-weight="600">Token A:</text>
+                                    <text x="15" y="42" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b">[Chr1, 100, 180]</text>
+                                </g>
+                                <g transform="translate(280, 225)" filter="url(#shadow4)">
+                                    <rect width="180" height="60" rx="10" fill="white" stroke="#fde047" stroke-width="2"/>
+                                    <text x="15" y="22" font-family="system-ui, sans-serif" font-size="11" fill="#854d0e" font-weight="600">Token B:</text>
+                                    <text x="15" y="42" font-family="ui-monospace, monospace" font-size="12" fill="#1e293b">[Chr1, 700, 760]</text>
+                                </g>
+                                <rect x="80" y="300" width="360" height="30" rx="8" fill="#f0fdf4" stroke="#86efac" stroke-width="1"/>
+                                <text x="260" y="320" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#166534">No fixed gene vocabulary needed - regions can vary by cell type!</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Genome-Coordinate Tokenization</h4>
+                            <p><strong>The Problem:</strong> In chromatin data (ATAC-seq), we don't have predefined "genes". We just have regions on the genome that are "open" (accessible). These regions change depending on the cell type.</p>
+                            <p><strong>The Solution:</strong> Imagine the genome as a giant LEGO baseplate ruler. We don't define the brick type; we define <em>where</em> the bricks are placed. The token isn't a name, it's a set of coordinates: Chromosome number, Start position on the ruler, and End position.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: ChromFound</span>
+                            </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Fixed-bin tiling</td>
+      <td style="padding:4px 8px;">Genome chopped into equal-size bins (e.g. 500bp&ndash;5kb) regardless of activity</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Peak-called regions</td>
+      <td style="padding:4px 8px;">Variable-width regions from accessibility peak calling &mdash; matches biology, uneven token size</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Coordinates come from different genome builds (hg19 vs hg38) without liftover &mdash; the same token no longer points at the same base pairs.</td>
+    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:10px;"><i class="fas fa-shapes"></i> Protein Strategies</h3>
+                    <p style="color:#555; margin-bottom:20px;">Proteins are built from a small, fixed alphabet of 20 amino acids &mdash; a far smaller vocabulary problem than DNA or expression data, but one where chemical similarity between residues still matters.</p>
+                    <!-- Concept 11: Amino Acid Tokenization -->
+                    <div class="concept-pair" id="concept-aminoacid">
+                        <div class="concept-visual">
+                            <!-- SVG 6: Amino Acid Tokenization -->
+                            <svg class="lego-svg" viewBox="0 0 520 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg6-title svg6-desc">
+                                <title id="svg6-title">Amino Acid Tokenization Analogy</title>
+                                <desc id="svg6-desc">20 different colored LEGO bricks representing the amino acid alphabet, chained together to form a protein sequence.</desc>
+                                <defs>
+                                    <filter id="shadow6" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
+                                    </filter>
+                                    <linearGradient id="aaGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#ef4444"/><stop offset="100%" stop-color="#dc2626"/>
+                                    </linearGradient>
+                                    <linearGradient id="aaGrad7" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#db2777"/>
+                                    </linearGradient>
+                                    <linearGradient id="aaGradNonpolar" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#94a3b8"/><stop offset="100%" stop-color="#64748b"/>
+                                    </linearGradient>
+                                    <linearGradient id="aaGradPolar" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#4ade80"/><stop offset="100%" stop-color="#16a34a"/>
+                                    </linearGradient>
+                                    <linearGradient id="aaGradPos" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#60a5fa"/><stop offset="100%" stop-color="#2563eb"/>
+                                    </linearGradient>
+                                    <linearGradient id="aaGradNeg" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#f87171"/><stop offset="100%" stop-color="#dc2626"/>
+                                    </linearGradient>
+                                </defs>
+                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="15" fill="#1e293b">Protein = Chain of 20 Amino Acid "Bricks"</text>
+                                <rect x="30" y="45" width="460" height="95" rx="12" fill="white" filter="url(#shadow6)"/>
+                                <text x="260" y="65" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">The Vocabulary: 20 Amino Acid Types (8 shown, grouped by chemistry)</text>
+                                <g transform="translate(52, 76)" font-family="ui-monospace" font-size="12" font-weight="700" fill="white">
+                                    <rect width="36" height="24" rx="4" fill="url(#aaGradNonpolar)"/><text x="18" y="17" text-anchor="middle">A</text>
+                                    <rect x="42" width="36" height="24" rx="4" fill="url(#aaGradNonpolar)"/><text x="60" y="17" text-anchor="middle">L</text>
+                                    <rect x="104" width="36" height="24" rx="4" fill="url(#aaGradPolar)"/><text x="122" y="17" text-anchor="middle">S</text>
+                                    <rect x="146" width="36" height="24" rx="4" fill="url(#aaGradPolar)"/><text x="164" y="17" text-anchor="middle">N</text>
+                                    <rect x="208" width="36" height="24" rx="4" fill="url(#aaGradPos)"/><text x="226" y="17" text-anchor="middle">K</text>
+                                    <rect x="250" width="36" height="24" rx="4" fill="url(#aaGradPos)"/><text x="268" y="17" text-anchor="middle">R</text>
+                                    <rect x="312" width="36" height="24" rx="4" fill="url(#aaGradNeg)"/><text x="330" y="17" text-anchor="middle">D</text>
+                                    <rect x="354" width="36" height="24" rx="4" fill="url(#aaGradNeg)"/><text x="372" y="17" text-anchor="middle">E</text>
+                                </g>
+                                <g font-family="system-ui, sans-serif" font-size="9" font-weight="600">
+                                    <circle cx="57" cy="114" r="4" fill="url(#aaGradNonpolar)"/><text x="66" y="117" fill="#64748b">Nonpolar</text>
+                                    <circle cx="147" cy="114" r="4" fill="url(#aaGradPolar)"/><text x="156" y="117" fill="#16a34a">Polar</text>
+                                    <circle cx="223" cy="114" r="4" fill="url(#aaGradPos)"/><text x="232" y="117" fill="#2563eb">Positive</text>
+                                    <circle cx="327" cy="114" r="4" fill="url(#aaGradNeg)"/><text x="336" y="117" fill="#dc2626">Negative</text>
+                                </g>
+                                <path d="M 260 150 L 260 175" stroke="#64748b" stroke-width="2" stroke-dasharray="4,2"/>
+                                <polygon points="260,180 255,172 265,172" fill="#64748b"/>
+                                <rect x="30" y="190" width="460" height="80" rx="12" fill="white" filter="url(#shadow6)"/>
+                                <text x="260" y="210" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">A Protein Sequence (Chain of Bricks)</text>
+                                <g transform="translate(50, 225)" filter="url(#shadow6)">
+                                    <rect width="32" height="28" rx="4" fill="url(#aaGrad7)"/><text x="16" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">M</text>
+                                    <line x1="32" y1="14" x2="38" y2="14" stroke="#94a3b8" stroke-width="3"/>
+                                    <rect x="38" width="32" height="28" rx="4" fill="url(#aaGrad1)"/><text x="54" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">A</text>
+                                    <line x1="70" y1="14" x2="76" y2="14" stroke="#94a3b8" stroke-width="3"/>
+                                    <rect x="76" width="32" height="28" rx="4" fill="#15803d"/><text x="92" y="19" text-anchor="middle" font-family="ui-monospace" font-size="13" fill="white" font-weight="700">V</text>
+                                    <text x="355" y="20" font-family="system-ui" font-size="18" fill="#94a3b8">...</text>
+                                </g>
+                                <rect x="60" y="290" width="400" height="75" rx="12" fill="white" stroke="#93c5fd" stroke-width="2" filter="url(#shadow6)"/>
+                                <text x="260" y="315" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="13" fill="#1e40af">Simple but Powerful</text>
+                                <text x="260" y="338" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">Each amino acid = 1 token. The model learns which "bricks"</text>
+                                <text x="260" y="355" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#1e3a8a">tend to appear together, like grammar in language.</text>
+                            </svg>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Strategy: Amino Acid Tokenization</h4>
+                            <p><strong>The Idea:</strong> Proteins are chains of just 20 different building blocks (amino acids). Each amino acid is one token - like having 20 different LEGO brick types that snap together in a chain. The 20 types cluster into chemistry groups - nonpolar, polar, positively charged, negatively charged - and substitutions within a group are usually less disruptive to protein function than substitutions across groups.</p>
+                            <p><strong>Why It Works:</strong> Just like language models learn word patterns ("the" often follows "in"), protein models learn amino acid patterns that determine protein function and structure.</p>
+                            <div class="tags" style="margin-top: 15px;">
+                                <span class="tag strategy">Used in: ESM3, ProGen2</span>
+                            </div>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Standard 20</td>
+      <td style="padding:4px 8px;">One token per canonical amino acid &mdash; ESM3, ProGen2 default</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">20 + special tokens</td>
+      <td style="padding:4px 8px;">Adds X (unknown) / gap tokens for MSA-based and alignment-aware models</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">Post-translational modifications (phosphorylation, glycosylation, ...) aren't representable &mdash; the 20-letter vocabulary has no token for a modified residue.</td>
+    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top:10px;"><i class="fas fa-globe"></i> Cross-Species Strategies</h3>
+                    <p style="color:#555; margin-bottom:20px;">Integrating cells or genes across species hits the vocabulary problem in yet another way: gene names and IDs simply don't align across hundreds of millions of years of divergence.</p>
+                    <!-- Concept 12: Macrogene Tokenization -->
                     <div class="concept-pair" id="concept-macrogene">
                         <div class="concept-visual">
                             <!-- SVG 10: Macrogene Tokenization -->
@@ -1768,73 +2065,30 @@
                             <div class="tags" style="margin-top: 15px;">
                                 <span class="tag strategy">Used in: SATURN</span>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Concept 11: Single-Nucleotide + SSM Tokenization -->
-                    <div class="concept-pair" id="concept-ssm">
-                        <div class="concept-visual">
-                            <!-- SVG 11: Single-Nucleotide + SSM Tokenization -->
-                            <svg class="lego-svg" viewBox="0 0 520 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg11-title svg11-desc">
-                                <title id="svg11-title">Single-Nucleotide + State-Space-Model Tokenization Analogy</title>
-                                <desc id="svg11-desc">A long unbroken line of single-nucleotide bricks scanned one at a time by a moving state-space model, which carries a fixed-size summary forward instead of attending back over every prior brick.</desc>
-                                <defs>
-                                    <filter id="shadow11" x="-20%" y="-20%" width="140%" height="140%">
-                                        <feDropShadow dx="2" dy="3" stdDeviation="2" flood-opacity="0.2"/>
-                                    </filter>
-                                    <linearGradient id="stateGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                                        <stop offset="0%" stop-color="rgba(16, 185, 129, 0.35)"/>
-                                        <stop offset="100%" stop-color="rgba(16, 185, 129, 0.12)"/>
-                                    </linearGradient>
-                                </defs>
-                                <text x="260" y="25" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="14" fill="#1e293b">Single Nucleotide: One Brick, One Token (No Merging)</text>
-                                <rect x="20" y="42" width="480" height="70" rx="12" fill="white" filter="url(#shadow11)"/>
-                                <text x="260" y="60" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#64748b" font-weight="600">1M+ bp genome, scanned one base at a time — vocabulary = {A, T, G, C} only</text>
-                                <g transform="translate(30, 72)">
-                                    <rect width="20" height="20" rx="3" fill="url(#nucA)"/><text x="10" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
-                                    <rect x="24" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="34" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">T</text>
-                                    <rect x="48" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="58" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">G</text>
-                                    <rect x="72" width="20" height="20" rx="3" fill="url(#nucC)"/><text x="82" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">C</text>
-                                    <rect x="96" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="106" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
-                                    <rect x="120" width="20" height="20" rx="3" fill="url(#nucA)"/><text x="130" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">A</text>
-                                    <rect x="144" width="20" height="20" rx="3" fill="url(#nucC)"/><text x="154" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">C</text>
-                                    <rect x="168" width="20" height="20" rx="3" fill="url(#nucT)"/><text x="178" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">T</text>
-                                    <rect x="192" width="20" height="20" rx="3" fill="url(#nucG)"/><text x="202" y="14" text-anchor="middle" font-family="ui-monospace" font-size="9" fill="white" font-weight="700">G</text>
-                                    <text x="230" y="14" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">...</text>
-                                    <text x="330" y="14" text-anchor="middle" font-family="ui-monospace" font-size="12" fill="#64748b" font-weight="700">... 1,000,000 more bricks ...</text>
-                                </g>
-                                <path d="M 260 122 L 260 150" stroke="#059669" stroke-width="3"/>
-                                <polygon points="260,155 255,147 265,147" fill="#059669"/>
-                                <text x="330" y="140" font-family="system-ui, sans-serif" font-size="10" fill="#059669" font-weight="600">Scan left to right, no lookback</text>
-                                <rect x="40" y="165" width="440" height="105" rx="12" fill="white" filter="url(#shadow11)"/>
-                                <text x="260" y="185" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" font-weight="600">State-Space Model (Hyena / Mamba): a moving tape-measure, not a rear-view mirror</text>
-                                <rect x="70" y="200" width="120" height="45" rx="8" fill="url(#stateGrad)" stroke="#059669" stroke-width="2"/>
-                                <text x="130" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">fixed-size</text>
-                                <text x="130" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">state vector</text>
-                                <path d="M 195 222 L 235 222" stroke="#059669" stroke-width="2.5"/>
-                                <polygon points="240,222 232,217 232,227" fill="#059669"/>
-                                <rect x="245" y="200" width="120" height="45" rx="8" fill="url(#stateGrad)" stroke="#059669" stroke-width="2"/>
-                                <text x="305" y="220" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">updated</text>
-                                <text x="305" y="234" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#065f46" font-weight="700">state vector</text>
-                                <path d="M 370 222 L 400 222" stroke="#059669" stroke-width="2.5" stroke-dasharray="4,3"/>
-                                <text x="435" y="226" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" font-weight="600">...</text>
-                                <text x="260" y="262" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">O(1) memory per step vs. attention's O(n) lookback over every prior brick</text>
-                                <rect x="60" y="285" width="400" height="95" rx="12" fill="white" stroke="#10b981" stroke-width="2" filter="url(#shadow11)"/>
-                                <text x="260" y="308" text-anchor="middle" font-family="system-ui, sans-serif" font-weight="700" font-size="12" fill="#059669">Why This Beats K-mer at Genome Scale</text>
-                                <text x="260" y="328" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">4 tokens total (A/T/G/C), zero OOV — vs. 4^6 = 4,096 for 6-mers</text>
-                                <text x="260" y="346" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">Linear-time scan handles 1M+ bp context; attention cannot afford that lookback</text>
-                                <text x="260" y="364" text-anchor="middle" font-family="system-ui, sans-serif" font-size="10.5" fill="#047857">Trade-off: needs an SSM backend (Hyena/Mamba), not a plain Transformer</text>
-                            </svg>
-                        </div>
-                        <div class="concept-text">
-                            <h4>Strategy: Single-Nucleotide + State-Space-Model Tokenization</h4>
-                            <p><strong>The Idea:</strong> Stop compressing bases into k-mers or codons at all — tokenize every single nucleotide (vocabulary = 4). What used to make this impractical was the transformer: single-base tokens over a megabase context means millions of positions, and full attention over that is quadratically unaffordable. Swap the attention operator for a state-space model (Hyena/Mamba), and the sequence is scanned once, left to right, carrying a fixed-size "state" forward instead of looking back at everything.</p>
-                            <p><strong>Why It Works:</strong> No k-mer vocabulary to size (no 4^6 = 4,096 explosion), no out-of-vocabulary sequences, and near-linear compute in sequence length — the combination that finally makes million-base-pair genomic context tractable in a single forward pass.</p>
-                            <div class="tags" style="margin-top: 15px;">
-                                <span class="tag strategy">Used in: HyenaDNA, Evo, Evo 2</span>
+                        
+                            <div style="margin-top:16px; background:#f8f5ff; border-radius:8px; padding:12px;">
+                                <table style="width:100%; font-size:.88em; border-collapse:collapse;">
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Protein-similarity clustering</td>
+      <td style="padding:4px 8px;">K-means over ESM2 embeddings &mdash; SATURN's approach, no homolog table needed</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Ortholog-table grouping</td>
+      <td style="padding:4px 8px;">Pre-computed 1:1 orthology mapping &mdash; precise but fails for genes without a clean ortholog</td>
+    </tr>
+    <tr>
+      <td style="padding:4px 8px; color:#7c3aed; font-weight:700; width:34%;">Macrogene count (k)</td>
+      <td style="padding:4px 8px;">Number of clusters trades resolution against how well cross-species structure generalizes</td>
+    </tr>
+    <tr style="background:rgba(124,58,237,.06);">
+      <td style="padding:4px 8px; color:#ef4444; font-weight:700;">Fails when:</td>
+      <td style="padding:4px 8px;">A gene is a species-specific innovation with no protein-similarity match elsewhere &mdash; it either sits alone in a singleton macrogene or gets force-merged with unrelated genes.</td>
+    </tr>
+                                </table>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
