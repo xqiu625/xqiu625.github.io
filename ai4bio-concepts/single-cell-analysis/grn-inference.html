@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gene regulatory network inference — from SCENIC co-expression to NOTEARS/DCDI causal discovery and perturbation-era benchmarks that map TFs to targets in single cells.">
+    <title>GRN Inference — AI4Bio Learning Hub</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
+        /* ===== BLUE THEME (#0F4C81) — matched to "De Novo Protein Design" visual language ===== */
+        :root {
+            --blue-darkest:#0a3258; --blue-dark:#0d3f6b; --blue:#0F4C81; --blue-2:#2a6296; --blue-soft:#5a82a8;
+            --sans:'Lato', sans-serif; --serif:'Newsreader', Georgia, serif; --mono:'IBM Plex Mono', ui-monospace, monospace;
+            --accent:#0F4C81; --accent-2:#2a6296; --accent-tint:#e2ecf5;
+            --bg:#eef2f7; --paper:#ffffff; --paper-2:#f2f6fb;
+            --ink:#1f2e3b; --ink-2:#3c5066; --ink-3:#647889; --ink-4:#94a6b5;
+            --rule:#cdddec; --rule-soft:#e0eaf3;
+            --warn:#b5791f; --warn-tint:#fff5e6; --selection-fg:#ffffff;
+        }
+        * { box-sizing:border-box; }
+        body {
+            font-family:'Lato', sans-serif;
+            background:linear-gradient(135deg, #eef2f7 0%, #d7e3ef 50%, #c4d8ea 100%);
+            line-height:1.7; color:#1f2e3b; margin:0; padding:0; min-height:100vh;
+        }
+        ::selection { background:#0F4C81; color:#fff; }
+        .container { max-width:1180px; margin:0 auto; padding:20px; }
+
+        /* NAV */
+        .navbar { background:#fff; border-bottom:1px solid #e0eaf3; padding:10px 0; position:sticky; top:0; z-index:1000; box-shadow:0 2px 5px rgba(10,50,88,0.1); }
+        .navbar-nav { list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; }
+        .navbar-nav li { margin:5px 15px; }
+        .navbar-nav a { color:#647889; text-decoration:none; font-weight:bold; font-size:15px; display:inline-flex; align-items:center; gap:7px; transition:color .25s; }
+        .navbar-nav a:hover { color:#0F4C81; }
+        .home-link { color:#0a3258 !important; }
+        .theme-toggle, li:has(> .theme-toggle) { display:none !important; }
+
+        /* HEADER */
+        .header { background:linear-gradient(135deg,#0a3258 0%,#0d3f6b 50%,#0F4C81 100%); color:#fff; padding:60px 40px; border-radius:20px; margin:20px 0; text-align:center; box-shadow:0 8px 30px rgba(15,76,129,0.4); position:relative; overflow:hidden; }
+        .header:before { content:""; }
+        .header .kicker { font-size:0.8em; letter-spacing:0.18em; text-transform:uppercase; opacity:0.82; margin:0 0 14px; position:relative; font-weight:700; }
+        .header h1 { margin:0 0 15px 0; font-size:2.8em; font-weight:300; letter-spacing:1px; position:relative; line-height:1.15; }
+        .header .subtitle { font-size:1.25em; opacity:0.95; margin-bottom:15px; font-weight:300; letter-spacing:0.3px; position:relative; }
+        .header .description { font-size:1.03em; max-width:900px; margin:0 auto; line-height:1.8; font-weight:300; position:relative; }
+
+        /* STATS */
+        .stats-bar { background:linear-gradient(135deg,#fff 0%,#f2f6fb 100%); padding:30px; border-radius:15px; margin:25px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:25px; box-shadow:0 4px 20px rgba(10,50,88,0.15); border:1px solid rgba(15,76,129,0.2); }
+        .stat-item { text-align:center; padding:20px; border-left:4px solid #0F4C81; background:#fff; border-radius:8px; transition:transform .3s,box-shadow .3s; }
+        .stat-item:hover { transform:translateY(-5px); box-shadow:0 6px 20px rgba(15,76,129,0.2); }
+        .stat-number { font-size:2.8em; font-weight:300; color:#0a3258; display:block; letter-spacing:-1px; }
+        .stat-label { color:#0F4C81; font-size:0.92em; margin-top:8px; font-weight:500; }
+
+        /* CONTENT */
+        .content-section { background:#fff; padding:40px; border-radius:15px; margin:25px 0; box-shadow:0 4px 15px rgba(0,0,0,0.1); border-top:4px solid #0F4C81; }
+        .content-section h2 { color:#0a3258; border-bottom:2px solid #0F4C81; padding-bottom:15px; margin-bottom:30px; font-size:1.9em; font-weight:400; letter-spacing:0.3px; position:relative; }
+        .content-section h2:before { content:"\25B8"; position:absolute; left:-25px; color:#0F4C81; font-size:1.2em; }
+        .content-section h3 { color:#0d3f6b; margin-top:35px; margin-bottom:20px; font-size:1.45em; font-weight:500; border-left:4px solid #0F4C81; padding-left:15px; }
+        .content-section ul { line-height:2; }
+        .content-section a, a { color:#0F4C81; }
+        .content-section a { font-weight:600; text-decoration:none; }
+        .content-section a:hover { text-decoration:underline; }
+        code { font-family:var(--mono); background:#e8f0f7; color:#0d3f6b; padding:2px 6px; border-radius:4px; font-size:0.9em; }
+
+        /* BOXES */
+        .highlight-box, .theorem-box, .method-category { background:linear-gradient(135deg,#f2f6fb 0%,#e3edf6 100%); border:2px solid #0F4C81; border-left:6px solid #0F4C81; padding:30px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(15,76,129,0.1); }
+        .method-category { padding:22px 26px; }
+        .highlight-box h4, .method-category h4 { color:#0a3258; margin-top:0; font-size:1.3em; font-weight:600; border-bottom:2px solid #cdddec; padding-bottom:10px; margin-bottom:16px; }
+        .method-category p { margin:6px 0; max-width:80ch; }
+        .theorem-box { font-family:var(--serif); }
+        .theorem-box h4 { color:#0a3258; margin-top:0; font-size:1.2em; font-weight:600; }
+        .warning-box { background:linear-gradient(135deg,#fffaf0 0%,#fff5e6 100%); border:2px solid #d39a3c; border-left:6px solid #b9772a; padding:25px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(185,119,42,0.1); }
+        .warning-box h4 { color:#8a5a1c; margin-top:0; font-size:1.25em; display:flex; align-items:center; gap:10px; }
+        .warning-box h4:before { content:"\26A0"; font-size:1.2em; }
+        .checklist { background:#fff; border:1px solid #cdddec; padding:22px 28px 18px; margin:18px 0; border-radius:10px; }
+
+        /* PAPER CARDS */
+        .paper-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:25px; margin:30px 0; }
+        .paper-card { border:1px solid #d6e2ee; border-radius:12px; padding:25px; transition:all .3s; background:linear-gradient(135deg,#fff 0%,#f7fafd 100%); position:relative; border-top:4px solid #0F4C81; }
+        .paper-card:hover { border-color:#0F4C81; box-shadow:0 8px 25px rgba(15,76,129,0.25); transform:translateY(-5px); background:linear-gradient(135deg,#fff 0%,#eef5fb 100%); }
+        .paper-card h4 { color:#0a3258; margin-top:0; font-size:1.13em; line-height:1.5; font-weight:600; }
+        .paper-meta { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        .meta-badge, .modality-badge { display:inline-block; padding:4px 10px; border-radius:12px; font-size:0.74em; font-weight:bold; }
+        .year-badge { background:#0F4C81; color:#fff; }
+        .journal-badge { background:#dde7f2; color:#234a72; }
+        .type-badge, .modality-badge { background:#2a6296; color:#fff; }
+        .paper-description { color:#41505d; line-height:1.6; margin:12px 0; font-size:0.94em; }
+        .key-contributions, .paper-highlights ul { list-style:none; padding:0; margin:15px 0; }
+        .key-contributions li, .paper-highlights li { padding-left:22px; position:relative; margin:8px 0; font-size:0.9em; color:#647889; }
+        .key-contributions li:before, .paper-highlights li:before { content:"\2713"; position:absolute; left:0; color:#0F4C81; font-weight:bold; }
+        .paper-highlights { margin:14px 0; font-size:0.9em; }
+        .paper-highlights > strong { color:#0d3f6b; }
+        .paper-links { margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; }
+        .paper-links a, .paper-link { padding:6px 14px; background:linear-gradient(135deg,#0F4C81,#2a6296); color:#fff !important; text-decoration:none; border-radius:6px; font-size:0.85em; transition:all .3s; display:inline-flex; align-items:center; gap:6px; }
+        .paper-links a:hover, .paper-link:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(15,76,129,0.3); text-decoration:none; }
+
+        /* KG CARDS */
+        .kg-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:0; margin:24px 0 0; border-top:1px solid #cdddec; border-left:1px solid #cdddec; border-radius:0; }
+        .kg-card { background:#fff; padding:24px 24px 22px; border-right:1px solid #cdddec; border-bottom:1px solid #cdddec; }
+        .kg-card h4 { margin:0 0 6px; color:#0a3258; font-size:1.05em; }
+        .kg-card p { font-size:14.5px; line-height:1.55; margin:6px 0; }
+        .kg-card .kg-tag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; background:#e2ecf5; color:#0F4C81; padding:2px 8px; margin-bottom:10px; border-radius:2px; }
+        .kg-stat { display:block; margin-top:10px; padding-top:10px; border-top:1px dashed #cdddec; font-family:var(--mono); font-size:12px; color:#647889; }
+
+        /* METHOD LIST (multi-omics) */
+        .method-list { display:flex; flex-direction:column; gap:6px; margin:12px 0 0; }
+        .method-item { font-size:13.5px; color:#41505d; padding:7px 12px; background:#f2f6fb; border-left:3px solid #2a6296; border-radius:4px; }
+        .method-item a { font-weight:600; }
+
+        /* TIMELINE */
+        .timeline { position:relative; margin:30px 0; padding-left:34px; }
+        .timeline:before { content:""; position:absolute; left:9px; top:6px; bottom:6px; width:3px; background:linear-gradient(#0F4C81,#cdddec); border-radius:2px; }
+        .timeline-item { position:relative; margin:0 0 26px; padding:18px 24px; background:linear-gradient(135deg,#f7fafd 0%,#eef5fb 100%); border:1px solid #d6e2ee; border-left:4px solid #0F4C81; border-radius:10px; }
+        .timeline-item:before { content:""; position:absolute; left:-30px; top:24px; width:13px; height:13px; border-radius:50%; background:#0F4C81; border:3px solid #fff; box-shadow:0 0 0 2px #0F4C81; }
+        .timeline-item h3 { margin:0 0 8px; border:none; padding:0; color:#0a3258; font-size:1.2em; font-weight:600; }
+        .timeline-item p { margin:0; color:#41505d; }
+        .timeline-marker { display:none; }
+        .timeline-year { font-family:var(--mono); font-weight:600; color:#0F4C81; font-size:0.95em; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:10px; }
+        .timeline-content { color:#41505d; }
+        .timeline-content p { margin:0 0 10px; font-size:14.5px; color:#3c5066; }
+        .timeline-content ul { margin:8px 0; }
+
+        /* TABLES */
+        .comparison-table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.94em; }
+        .comparison-table th, .comparison-table td { padding:14px; text-align:left; border-bottom:1px solid #e0eaf3; }
+        .comparison-table th { background:linear-gradient(135deg,#0F4C81,#2a6296); color:#fff; font-weight:bold; position:sticky; top:0; }
+        .comparison-table tr:hover { background:#f2f6fb; }
+        .comparison-table td:first-child { font-weight:bold; color:#0F4C81; }
+
+        /* IMAGE / MODULE FIGURES */
+        .module-figure { margin:36px 0 28px; padding:0; }
+        .module-figure img { display:block; width:100%; height:auto; border:1px solid #cdddec; border-radius:8px; background:#fff; }
+        .fig-title { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#0F4C81; margin:10px 0 0; }
+
+        /* INLINE SVG FIGURES (knowledge-graphs etc.) */
+        .figure { margin:32px 0; padding:28px 32px 22px; background:#fff; border:1px solid #cdddec; border-radius:12px; }
+        .figure-wide { max-width:none; }
+        .figure svg { width:100%; height:auto; display:block; overflow:visible; }
+        .figure .fig-label { font-family:var(--mono); font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#0F4C81; margin:0 0 16px; }
+        .figure .fig-caption { font-family:var(--serif); font-style:italic; font-size:14px; color:#647889; margin:14px 0 0; line-height:1.5; }
+        .figure .fig-caption b { color:#3c5066; font-style:normal; font-weight:600; }
+        .figure svg .ink { stroke:var(--ink); fill:var(--ink); }
+        .figure svg .ink-2 { stroke:var(--ink-2); fill:var(--ink-2); }
+        .figure svg .ink-3 { stroke:var(--ink-3); fill:var(--ink-3); }
+        .figure svg .rule { stroke:var(--rule); fill:none; }
+        .figure svg .accent { stroke:var(--accent); fill:none; }
+        .figure svg .accent-fill { fill:var(--accent); stroke:none; }
+        .figure svg .accent-tint { fill:var(--accent-tint); stroke:var(--accent); }
+        .figure svg .paper { fill:var(--paper); stroke:var(--rule); }
+        .figure svg .paper-2 { fill:var(--paper-2); stroke:var(--rule); }
+        .figure svg .warn { stroke:var(--warn); fill:none; }
+        .figure svg text { font-family:var(--sans); font-size:12px; fill:var(--ink); }
+        .figure svg text.mono { font-family:var(--mono); font-size:10.5px; fill:var(--ink-3); letter-spacing:0.06em; }
+        .figure svg text.label { font-family:var(--mono); font-size:10px; fill:var(--ink-2); text-transform:uppercase; letter-spacing:0.08em; }
+        .figure svg text.serif { font-family:var(--serif); font-style:italic; fill:var(--ink-2); }
+        .figure svg text.node-label { font-family:var(--sans); font-size:11.5px; font-weight:500; fill:var(--ink); }
+        .figure svg text.edge-label { font-family:var(--mono); font-size:10px; fill:var(--accent); letter-spacing:0.04em; }
+
+        /* FOOTER */
+        footer { text-align:center; padding:30px; color:#647889; background:#fff; margin-top:40px; border-radius:15px; }
+        footer p { margin:10px 0; }
+        footer a { color:#0F4C81; text-decoration:none; font-weight:bold; }
+        footer a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .paper-grid { grid-template-columns:1fr; }
+            .stats-bar { grid-template-columns:1fr; }
+            .kg-grid { grid-template-columns:1fr; }
+            .comparison-table { font-size:0.82em; }
+            .comparison-table th, .comparison-table td { padding:10px 8px; }
+            .header h1 { font-size:2em; }
+            .header .subtitle { font-size:1.05em; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
+                <li><a href="#core-concepts"><i class="fas fa-bookmark"></i> Concepts</a></li>
+                <li><a href="#timeline"><i class="fas fa-timeline"></i> Timeline</a></li>
+                <li><a href="#compare"><i class="fas fa-code-compare"></i> Compare</a></li>
+                <li><a href="#families"><i class="fas fa-layer-group"></i> Method families</a></li>
+                <li><a href="#table"><i class="fas fa-table"></i> Selection</a></li>
+                <li><a href="#reading-order"><i class="fas fa-list-ol"></i> Reading order</a></li>
+                <li><a href="#practical"><i class="fas fa-wrench"></i> Practical</a></li>
+                <li><a href="#hands-on"><i class="fas fa-laptop-code"></i> Hands-on</a></li>
+                <li style="margin-left:auto;">
+                    <button class="theme-toggle" type="button" aria-label="Toggle theme" onclick="toggleTheme()">
+                        <span class="sun"><i class="fas fa-sun"></i> Light</span>
+                        <span class="moon"><i class="fas fa-moon"></i> Dark</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <script>
+        (function(){try{var s=localStorage.getItem('theme');if(s==='light'||s==='dark')document.documentElement.setAttribute('data-theme',s);}catch(e){}})();
+        function toggleTheme(){var r=document.documentElement,c=r.getAttribute('data-theme'),p=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches,n=c==='dark'?'light':c==='light'?'dark':p?'light':'dark';r.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}}
+    </script>
+
+    <main class="container">
+        <header class="header">
+            <h1>Gene Regulatory<br>Network Inference</h1>
+            <div class="subtitle">From statistical co-expression to causal discovery &mdash; methods that map transcription factors to their targets from single-cell data, with the perturbation-era benchmarks that separate hype from reality.</div>
+            <p class="description">
+                22 curated papers on gene regulatory network inference. Covers the classical TF&ndash;target pipeline (SCENIC, SCENIC+, scMINER, dGCNA), the continuous-optimisation causal-discovery stack (NOTEARS, NOTEARS-MLP, DCDI, ENCO, AnalyticDAG), multi-omic neural-network GRNs (LINGER, scMTNI, CellOracle), virtual-knockout and Mendelian-randomisation tools (scTenifoldKnk, Airqtl), the new generation of deep-learning driver-gene predictors (CellNavi), the Gene&rarr;Program&rarr;Trait causal integration framework, and the benchmarking lineage (BEELINE, GRouNdGAN, CausalBench, genome-scale CD4&plus; T-cell Perturb-seq) that has reshaped the field.
+            </p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-item"><span class="stat-number">22</span><div class="stat-label">Curated Papers</div></div>
+            <div class="stat-item"><span class="stat-number">6</span><div class="stat-label">Method Families</div></div>
+            <div class="stat-item"><span class="stat-number">10</span><div class="stat-label">Years Covered (2017&ndash;2026)</div></div>
+            <div class="stat-item"><span class="stat-number">4</span><div class="stat-label">Benchmarks &amp; Simulators</div></div>
+        </div>
+
+        <section class="content-section" id="core-concepts">
+            <h2>Core Concepts</h2>
+            <h3>What GRN inference is</h3>
+            <p>
+                A gene regulatory network (GRN) is a directed graph whose nodes are genes and whose edges represent the causal regulatory action of a <em>regulator</em> (typically a transcription factor) on a <em>target</em>. Inferring a GRN means estimating that directed graph from data &mdash; usually bulk or single-cell RNA-seq, optionally augmented by chromatin accessibility (scATAC-seq), TF-binding motifs, ChIP-seq, perturbation screens, and population genetics.
+            </p>
+            <p>
+                There are two fundamentally different ways to do this. The <strong>statistical</strong> route (SCENIC, GENIE3, GRNBoost, WGCNA-style methods) scores co-expression or motif-anchored TF&ndash;target relations and produces a confidence ranking. The <strong>causal</strong> route (NOTEARS family, DCDI, ENCO, MR via Airqtl) tries to recover an underlying directed acyclic graph that explains the joint distribution of expressions under interventions. The two approaches answer different questions: statistical methods say "which TFs explain this gene's expression", causal methods say "which edges, if reversed, would change downstream behaviour". For drug target nomination, you want the causal answer; for cell-type characterisation, the statistical one is often enough.
+            </p>
+            <h3>Why it matters for biology and target identification</h3>
+            <ul>
+                <li><strong>Upstream regulators are candidate drug targets.</strong> If gene <em>X</em> consistently sits upstream of a disease-relevant program (e.g., the sepsis exhaustion signature, the T2D beta-cell dysfunction module), modulating <em>X</em> is the rational intervention. Geneformer&rsquo;s cardiomyocyte demonstration (PLN, GSN), CellOracle&rsquo;s Lhx1a discovery in zebrafish, and Ota et al. 2025&rsquo;s identification of SUPT5H as the MCH master regulator all follow this logic.</li>
+                <li><strong>Cell-type-specific GRNs reveal context-dependent biology.</strong> 84% of CD4&plus; T-cell regulatory edges differ between flu and mock conditions (Airqtl); same TF, different targets across cell states (scMTNI, SCENIC+). Static "tissue-level" GRNs miss this entirely.</li>
+                <li><strong>Virtual knockout enables cheap hypothesis triage.</strong> scTenifoldKnk runs a whole-transcriptome KO in 4&ndash;5 days on a desktop; CellOracle simulates TF perturbation along a developmental trajectory; CellNavi predicts driver genes directly from a learned manifold. The bottleneck in target discovery is not data &mdash; it is testable hypotheses, and GRN-based KO is the cheapest hypothesis generator in biology.</li>
+                <li><strong>The 2025 benchmarks have moved the goalposts.</strong> CausalBench (Replogle Perturb-seq, ~163K interventional cells) showed that most "interventional" causal-discovery methods do not in fact beat their observational counterparts on real CRISPRi data, and that acyclicity-enforcing methods are <em>worse</em> than feedback-permitting ones. The genome-scale CD4&plus; T-cell Perturb-seq (Zhu et al. 2025, 22M cells, 12,748 genes) makes this even sharper.</li>
+            </ul>
+            <h3>Why causality is hard</h3>
+            <ul>
+                <li><strong>Observational identifiability ceiling.</strong> From expression data alone, you can recover the underlying DAG only up to its Markov equivalence class &mdash; many directions remain ambiguous (Sachs benchmark; NOTEARS-MLP recovers 3 reversed edges out of 13). Interventions (CRISPR-KO, CRISPRi, drug perturbation) break the symmetry.</li>
+                <li><strong>Acyclicity is a lie.</strong> Real GRNs have feedback loops (NF-&kappa;B autoregulation, STAT1/IFN, p53/MDM2). Every DAG-enforcing method (NOTEARS, NOTEARS-MLP, DCDI, AnalyticDAG) starts by assuming this away. ENCO and CausalBench's top methods do not enforce acyclicity, and they win on real data.</li>
+                <li><strong>Hidden confounders.</strong> Cell cycle, donor effects, batch effects, dropout patterns &mdash; all create non-causal correlations that look like edges. Mendelian-randomisation methods (Airqtl) use genetic instruments to dodge this; LINGER bakes manifold regularisation in; the Gene&rarr;Program&rarr;Trait paper uses LoF burden tests as an orthogonal directional signal.</li>
+                <li><strong>Scale.</strong> NOTEARS is O(d&sup3;) per iteration &mdash; usable for d &lt; ~500 genes. ENCO scales to 1,000 nodes in 9 hours. Whole-transcriptome (d &asymp; 20K) causal discovery is still an open problem; current practice is to pre-filter to a candidate panel.</li>
+            </ul>
+        </section>
+
+        <section class="content-section" id="timeline">
+            <h2>Evolution Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>2017 &mdash; SCENIC and the statistical era</h3>
+                    <p>SCENIC (Nat Methods) lays down the canonical TF&ndash;regulon pipeline: GENIE3/GRNBoost co-expression &rarr; RcisTarget motif filtering &rarr; AUCell regulon scoring. ARI &gt; 0.80 for cell-type identification, 151 regulons from mouse brain, NFATC2 nominated as a melanoma invasion repressor.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2018&ndash;2020 &mdash; Continuous-optimisation DAG learning</h3>
+                    <p>NOTEARS (NeurIPS 2018) replaces combinatorial DAG search with a single smooth acyclicity constraint h(W) = tr(e^{W&compfn;W}) &minus; d = 0. NOTEARS-MLP (AISTATS 2020) extends to nonparametric SEMs via partial-derivative norms. DCDI (NeurIPS 2020) adds interventional data and normalising flows. The "causal discovery as gradient descent" paradigm is born.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2022 &mdash; ENCO and virtual knockouts</h3>
+                    <p>ENCO (ICLR) factors each edge into existence (&gamma;) and orientation (&theta;), drops the acyclicity constraint, and scales to 1,000-node graphs in 9 hours &mdash; the first interventional causal-discovery method that runs at near-transcriptome scale. scTenifoldKnk (Patterns) shows you can do whole-genome in-silico KO on WT scRNA-seq alone, in ~1 minute per gene.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2023 &mdash; Multi-omic GRN: CellOracle, SCENIC+, scMTNI, LINGER</h3>
+                    <p>scATAC-seq + scRNA-seq integration becomes standard. CellOracle (Nature) couples a chromatin-derived base GRN with cluster-specific regression and signal-propagation simulation. SCENIC+ (Nat Methods) introduces 34,524 motifs, enhancer-driven GRNs, ARI = 1.00 on ENCODE cell lines. scMTNI adds multi-task learning over cell lineages. LINGER claims 4&ndash;7&times; accuracy gains via lifelong-learning regularisation. The 2023 Nat Rev Genet review synthesises 27+ methods.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2024&ndash;2025 &mdash; Benchmarks reset the field</h3>
+                    <p>GRouNdGAN (Nat Commun 2024) finally aligns simulator-benchmark rankings with experimental rankings. CausalBench (Commun Biol 2025, K562/RPE1 Perturb-seq) reveals that most "interventional" methods barely beat observational ones, and that acyclicity-enforcing methods underperform. AnalyticDAG (ICLR 2025) unifies NOTEARS/DAGMA/polynomial constraints. scMINER, dGCNA, and CellNavi push the frontier in different directions: MI-based clustering with hidden-driver inference, differential coordination networks, and deep-learning driver-gene prediction (AUROC 0.874 vs SCENIC 0.596).</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2025 &mdash; Causal integration and population scale</h3>
+                    <p>Airqtl (Nat Commun) achieves &gt;10&#8312; speedup for single-cell eQTL mapping, enabling Mendelian-randomisation cGRNs validated against CRISPR at Pearson r = 0.82. The Gene&rarr;Program&rarr;Trait paper (Nature) integrates LoF burden tests (UKB n = 454,787) with K562 Perturb-seq, predicting MCH direction for 43/59 top genes. Genome-scale CD4&plus; T-cell Perturb-seq (22M cells, 12,748 genes, 3 stim conditions) becomes the new gold-standard substrate for causal GRN inference in primary cells.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="compare">
+    <h2>Side-by-Side: Co-Expression + Motif vs Chromatin-Anchored + Perturbation Simulation</h2>
+    <p>SCENIC (2017) and CellOracle (2023) are the two most-cited GRN pipelines in single-cell biology. They separate on the single most important design axis: <strong>what evidence defines a TF&rarr;target edge</strong> &mdash; co-expression importance ranking (statistical) versus open-chromatin TF-binding + ridge regression + signal propagation (causal-simulatable).</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">Same starting point &mdash; a log-normalised scRNA-seq count matrix &mdash; becomes a very different GRN depending on what type of evidence anchors each edge:</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — SCENIC -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">SCENIC / GRNBoost2</div>
+                    <div style="color:#9fc7bb;font-size:12px;">co-expression + motif filter (2017)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">GRNBoost2 co-expression</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">random-forest importance score for every TF&#8594;gene pair across all cells; no directionality assumed</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">RcisTarget motif enrichment</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">filter to TF pairs whose targets are enriched for the TF&#8217;s binding motif in gene promoters (NES &gt; 3.0); ~7% pass</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">regulon list</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">AUCell scores</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">observational &middot; no chromatin &middot; motif-filtered &middot; cell-state scoring</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — CellOracle -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">CellOracle</div>
+                    <div style="color:#c7a877;font-size:12px;">chromatin base-GRN + regression + simulation (2023)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">scATAC-seq base GRN</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">TF-motif scan on accessible chromatin peaks &#8594; binary TF&#8594;gene prior; edges only where the TF can physically bind</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Bayesian-ridge regression + signal propagation</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">cluster-specific regression fits edge weights; KO simulated by zeroing TF row and propagating delta expression through the GRN</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">in-silico KO vector field</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">fate-shift prediction</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">chromatin-anchored &middot; simulatable &middot; cluster-specific &middot; perturbation-ready</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision &mdash; <em>what counts as evidence for an edge</em>: SCENIC trusts gene-expression co-variation (with a motif plausibility filter), so it works on scRNA-seq alone and outputs regulon activity scores useful for clustering; CellOracle demands open chromatin as a structural prerequisite, so it requires paired scATAC-seq, but in return it can simulate the transcriptome-wide effect of knocking out any TF, enabling causal hypothesis generation that SCENIC cannot support.</p>
+    </div>
+</section>
+
+        <section class="content-section" id="families">
+            <h2>Method Families</h2>
+            <p>Grouped by the kind of inference being made. Within each family, papers are listed chronologically.</p>
+
+            <h3>Classical TF&ndash;Target Inference (5)</h3>
+            <p>Statistical methods that rank TF&ndash;target relationships from co-expression, mutual information, or differential coordination &mdash; usually with a motif-enrichment filter to remove indirect edges.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>SCENIC: single-cell regulatory network inference and clustering</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2017</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Co-expression + motif</span>
+                    </div>
+                    <p class="paper-description">SCENIC is the canonical scRNA-seq GRN pipeline. It chains GENIE3/GRNBoost random-forest co-expression with RcisTarget motif enrichment (NES &gt; 3.0) and AUCell regulon scoring, identifying robust cell-state regulons even with high dropout, transcriptional bursting, and across batches.</p>
+                    <ul class="key-contributions">
+                        <li>Cell-type identification ARI &gt; 0.80, sensitivity 0.88, specificity 0.99 on mouse brain</li>
+                        <li>151 regulons retained from 1,046 GENIE3 co-expression modules (7% pass motif filter)</li>
+                        <li>Identifies rare populations with 2&ndash;6 cells; cross-species DLX1/2 regulon conserved in mouse and human brain</li>
+                        <li>Nominates NFATC2 (114 targets) and NFIB as melanoma invasion repressors &mdash; validated by IHC and KD</li>
+                        <li>Scales via GRNBoost to 1.3M cells (mouse embryonic brain, 10X Chromium)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/nmeth.4463" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="http://scenic.aertslab.org" target="_blank"><i class="fas fa-external-link-alt"></i> Project</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>SCENIC&plus;: single-cell multiomic inference of enhancers and gene regulatory networks</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Enhancer-driven GRN</span>
+                    </div>
+                    <p class="paper-description">SCENIC+ extends SCENIC to paired scRNA + scATAC. It uses pycisTopic for unsupervised enhancer discovery, pycisTarget with the largest motif collection to date (34,524 motifs in 1,986 clusters), and GRNBoost2 + GSEA-based eRegulon refinement to produce TF&ndash;enhancer&ndash;gene triplets with cell-state resolution.</p>
+                    <ul class="key-contributions">
+                        <li>ARI = 1.00 separating 8 ENCODE cell lines on eRegulon scores; competitors mix lines</li>
+                        <li>178 TFs identified on ENCODE; highest F1 vs CellOracle, Pando, FigR, GRaNIE, SCENIC</li>
+                        <li>402,838 region&ndash;gene links; correlation r = 0.25 with Hi-C (best among methods); predicted expression r = 0.61</li>
+                        <li>SOX10-knockdown simulation matches experimental MEL&rarr;MES transition RNA-seq in melanoma</li>
+                        <li>Cross-species cortex: 60 conserved TFs, 28% conserved targets, 6% conserved regions &mdash; TF lexicon is preserved while enhancers turn over</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-023-01938-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/aertslab/scenicplus" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>scMINER: a mutual-information framework for clustering and hidden driver inference</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">MI clustering + SJARACNe</span>
+                    </div>
+                    <p class="paper-description">scMINER unifies mutual-information cell clustering (MICA) with MI-based network inference (SJARACNe, an scRNA-tuned ARACNe variant) and activity estimation for both ~1,500 TFs and ~5,500 signalling proteins. It is the first scRNA framework to systematically infer signalling-protein networks in addition to TF regulons.</p>
+                    <ul class="key-contributions">
+                        <li>Average clustering ARI 0.84 vs 0.69&ndash;0.78 for Seurat, Scanpy, SC3s, scVI, scDeepCluster</li>
+                        <li>Network inference AUROC 0.69&ndash;0.77 on CROP-seq validation; 94% TF-driver agreement with SCENIC</li>
+                        <li>Distinguishes CD4 Treg vs CD4 TCM where linear-correlation methods fail</li>
+                        <li>Inference scales from hundreds to 650K&plus; cells; ATAC/CROP/CITE validation across 5 datasets</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-59620-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/jyyulab/scMINER" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Single-cell mRNA-regulation analysis reveals cell type-specific mechanisms of type 2 diabetes (dGCNA)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">Differential coordination network</span>
+                    </div>
+                    <p class="paper-description">dGCNA (differential Gene Coordination Network Analysis) builds gene&ndash;gene correlation networks separately for disease vs healthy single cells, then extracts modules of differentially coordinated genes via bootstrap thresholding (512 permutations) and WGCNA-style TOMdist clustering. Applied to T2D pancreatic islets, it uncovers 11 beta-cell modules even where DESeq2 fails.</p>
+                    <ul class="key-contributions">
+                        <li>26% gene overlap between independent T2D datasets vs near-zero for DESeq2 &mdash; reproducibility advantage</li>
+                        <li>Identifies CEBPG and TMEM176A/B as novel beta-cell dysfunction regulators</li>
+                        <li>T2D-GWAS enrichment in the "Insulin Secretion" module: odds ratio 129 (p-adj = 6.08e-8)</li>
+                        <li>Detects genes with unchanged expression but altered coordination &mdash; an axis DE misses</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-65060-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/Hjerling-Leffler-Lab/dGCNA_Networks" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Scoring gene importance by interpreting single-cell foundation models (SIGnature)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Biotechnol</span> <span class="meta-badge type-badge">Attribution-based TF ranking</span>
+                    </div>
+                    <p class="paper-description">SIGnature applies gradient-based attribution methods from explainable AI (Integrated Gradients, Input&times;Gradient, DeepLIFT via Captum) to scRNA-seq foundation models, quantifying each gene's contribution to a cell's position in the FM's latent embedding. Crucially, attributions rank transcription factors and marker genes significantly higher than log-normalised expression does &mdash; and demote ribosomal/mitochondrial artefacts &mdash; recovering lineage TFs that expression-level analysis systematically misses.</p>
+                    <ul class="key-contributions">
+                        <li>Lineage TFs GATA3/RORC/FOXP3 rank significantly higher by attribution in the correct T-cell subsets (Th2/Th17/Treg) vs expression (two-sided Wilcoxon P &lt; 0.01)</li>
+                        <li>Attribution-based NMF yields a Treg regulatory program consistent across 3 studies; FOXP3 is a top gene in 98% of attribution configs vs only 4% for expression</li>
+                        <li>Attributions correlate far less with per-cell UMI counts than expression; top genes 93% stable under 50% dropout &mdash; robust to technical artefacts that confound co-expression networks</li>
+                        <li>Attribution-based signature scoring tops F1 in 23 of 32 tasks, beating ANS, Scanpy, UCell, JASMINE, and mean expression across studies</li>
+                        <li>MS1 monocyte signature queried across ~22 million cells / 412 studies in minutes; identifies MS1 activation in Kawasaki disease, SFTS, and HLH &mdash; validated in vitro (KD serum induces MS1; IVIG reduces it)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-026-03112-5" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Causal Discovery / DAG-based (5)</h3>
+            <p>Continuous-optimisation methods that recover a directed acyclic graph from observational and/or interventional data via smooth acyclicity constraints. Theoretically appealing, but the 2025 CausalBench results show feedback-permitting methods often beat them on real Perturb-seq.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>DAGs with NO TEARS: Continuous Optimization for Structure Learning</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2018</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Smooth DAG constraint</span>
+                    </div>
+                    <p class="paper-description">NOTEARS reformulates the NP-hard combinatorial DAG-learning problem as a smooth equality-constrained continuous program by introducing the algebraic identity h(W) = tr(e^{W&compfn;W}) &minus; d = 0 &harr; W is acyclic. Combined with an &ell;&sub1;-penalised least-squares loss, structure learning becomes a black-box optimisation solvable in ~50 lines of Python via augmented Lagrangian + L-BFGS.</p>
+                    <ul class="key-contributions">
+                        <li>First fully continuous DAG-learning formulation &mdash; replaces combinatorial parent-set search</li>
+                        <li>Lower SHD than FGS on dense/scale-free graphs; within ~2 score units of GOBNILP exact ILP at d=10</li>
+                        <li>~50-line reference implementation in PyTorch; recovers structure AND edge weights</li>
+                        <li>Linear SEM only; O(d&sup3;) matrix-exponential cost limits to ~few hundred nodes</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.48550/arXiv.1803.01422" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/xunzheng/notears" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Learning Sparse Nonparametric DAGs (NOTEARS-MLP)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2020</span> <span class="meta-badge journal-badge">AISTATS</span> <span class="meta-badge type-badge">Nonparametric DAG</span>
+                    </div>
+                    <p class="paper-description">NOTEARS-MLP generalises the trace-exponential acyclicity constraint from linear SEMs to arbitrary differentiable models via partial-derivative norms: [W(f)]_kj = &lVert;&part;_k f_j&rVert;_L&sup2;. Proposition 1 proves that for an MLP, this reduces to first-layer input-column norms regardless of depth &mdash; a clean, depth-independent encoding of functional dependency.</p>
+                    <ul class="key-contributions">
+                        <li>Best SHD across MLP / index / additive-GP nonlinear settings on ER and SF graphs (d up to 40)</li>
+                        <li>Sachs flow-cytometry (n=7466, d=11): SHD = 16 vs NOTEARS-linear 22, GNN 19, GSGES infeasible</li>
+                        <li>NOTEARS-Sob (Sobolev basis) wins on additive-GP data; ++ pre/post-processing variants match CAM</li>
+                        <li>Generic &mdash; any differentiable f_j works; avoids O(n&sup3;) kernel costs of GSGES</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="http://proceedings.mlr.press/v108/zheng20a.html" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/xunzheng/notears" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Differentiable Causal Discovery from Interventional Data (DCDI)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2020</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">Interventional + flows</span>
+                    </div>
+                    <p class="paper-description">DCDI is the first general continuous-constrained framework that leverages observational + interventional data with normalising-flow density models. It jointly learns a binary adjacency mask, per-variable conditional densities (Gaussian or deep sigmoidal flow), and optionally the intervention-target matrix &mdash; with formal identifiability guarantees for known and unknown intervention targets.</p>
+                    <ul class="key-contributions">
+                        <li>Outperforms GIES, CAM, IGSP, UT-IGSP on dense 20-node graphs across linear/ANM/NN mechanisms</li>
+                        <li>Only nonlinear method scaling via SGD to 100 nodes &times; 1M samples</li>
+                        <li>Theorem 2: identifiability with unknown intervention targets given an &ell;&sub1; penalty on the intervention set</li>
+                        <li>DCDI-DSF (deep sigmoidal flows) handles multi-modal noise where DCDI-G fails</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.48550/arXiv.2007.01754" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/slachapelle/dcdi" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Efficient Neural Causal Discovery without Acyclicity Constraints (ENCO)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">ICLR</span> <span class="meta-badge type-badge">Edge existence + orientation</span>
+                    </div>
+                    <p class="paper-description">ENCO factors each potential edge into two independent sigmoid probabilities &mdash; &gamma;_ij for existence (updated from obs + intervention) and &theta;_ij for orientation (&theta;_ij = &minus;&theta;_ji, updated only under interventions on X_i or X_j). The orientation parameter automatically prevents 2-cycles, so no acyclicity regulariser is needed &mdash; enabling near-transcriptome-scale convergence.</p>
+                    <ul class="key-contributions">
+                        <li>Scales to 1,000-node graphs in 9h with 1 missing edge out of 1M possible &mdash; DCDI OOM at this scale</li>
+                        <li>SHD &le; 0.2 on 25-node bidiag/chain/random where DCDI and SDI sit at 5&ndash;17</li>
+                        <li>96.8% confounder recall, 100% confounder precision on latent-confounder detection via Eq. 8 split-&gamma; score</li>
+                        <li>Low-variance gradient estimator: difference of two MC estimates, ~10&times; lower std-dev than Bengio 2020</li>
+                        <li>Recovers BnLearn cancer / asia / sachs / child / pigs with zero errors</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.48550/arXiv.2107.10483" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/phlippe/ENCO" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Analytic DAG Constraints for Differentiable DAG Learning</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">ICLR</span> <span class="meta-badge type-badge">Unified DAG framework</span>
+                    </div>
+                    <p class="paper-description">AnalyticDAG proves that any analytic f in the class F = {c&sub0; + &Sigma;c_i x^i | c_i &gt; 0, lim c_i/c_{i&plus;1} &gt; 0} evaluated on a non-negative weighted adjacency yields a valid DAG constraint tr[f(B&tilde;)] = c&sub0;d. F is closed under differentiation/addition/multiplication, so NOTEARS, DAGMA, and Zhang 2022 all become special cases, and higher-order constraints with stronger gradients can be derived systematically.</p>
+                    <ul class="key-contributions">
+                        <li>Unifies matrix-exponential (NOTEARS), log-det (DAGMA), and polynomial (Zhang 2022) DAG constraints</li>
+                        <li>Higher-order constraints have gradients that GROW with order, mitigating gradient vanishing</li>
+                        <li>Geometric power-series structure permits O(log t) evaluation via repeated squaring</li>
+                        <li>ER1-Gaussian d=1000: Order-4 SHD 389.4 vs DAGMA 588.8, NOTEARS-exp 488.6, PC 563.9</li>
+                        <li>Sachs: SHD/CPDAG = 13/9 across Order-1..4 vs Original GraN-DAG 15/10</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://openreview.net/forum?id=5464" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/zzhang1987/AnalyticDAGLearning" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Multi-omic Neural-Network GRN Inference (4)</h3>
+            <p>Methods that jointly use scRNA-seq + scATAC-seq (and external bulk atlases) to infer cell-state-specific GRNs with neural-network or probabilistic-graphical-model backbones. The current default for "build me a usable, cell-type-specific GRN".</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Dissecting cell identity via network inference and in silico gene perturbation (CellOracle)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nature</span> <span class="meta-badge type-badge">Base-GRN + simulation</span>
+                    </div>
+                    <p class="paper-description">CellOracle integrates scATAC-seq-derived base GRNs (TF-motif scans on accessible chromatin) with cluster-specific Bayesian-ridge regression on scRNA-seq, then simulates TF perturbations via iterative signal propagation. The result is a vector-field representation that predicts cell-fate changes from a TF knockdown without requiring perturbation training data.</p>
+                    <ul class="key-contributions">
+                        <li>GRN inference AUROC 0.73&ndash;0.91 (scATAC base) vs ChIP-seq ground truth in haematopoiesis</li>
+                        <li>Correctly predicts 12/12 known TF-KO phenotypes in mouse haematopoiesis</li>
+                        <li>Zebrafish noto KO: predicted +38.6% prechordal plate expansion (P = 1.07&times;10&#8315;&#8308;), validated experimentally</li>
+                        <li>Lhx1a discovery: previously unreported axial mesoderm regulator validated by crispants with quantitative cluster shifts</li>
+                        <li>Captures stage-specific Tal1 function: essential early, dispensable late in erythroid differentiation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41586-022-05688-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/morris-lab/CellOracle" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Inference of cell type-specific gene regulatory networks on cell lineages (scMTNI)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">Multi-task lineage GRN</span>
+                    </div>
+                    <p class="paper-description">scMTNI is a probabilistic graphical model that jointly infers cell-type-specific GRNs along a cell-lineage tree by sharing information across related cell types. It combines scRNA-seq + scATAC-seq priors with a lineage-tree prior modelling edge gain/loss dynamics, applicable to both linear and branching topologies and to regulators without known motifs (e.g., signalling proteins).</p>
+                    <ul class="key-contributions">
+                        <li>AUPR ~0.23&ndash;0.27 and F-score 0.2&ndash;0.3 on simulated data &mdash; best among multi-task methods</li>
+                        <li>Multi-task learning consistently outperforms single-task algorithms across cell numbers 200&ndash;2000</li>
+                        <li>MEF&rarr;iPSC reprogramming: identifies Esrrb-centered network in pluripotency-committed cells</li>
+                        <li>Detects MEF-specific regulons (Aebp1, Loxl2) that persist in stalled (non-reprogrammed) cells</li>
+                        <li>Edge clustering + topic modelling reveal subnetwork rewiring across lineage</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-023-38637-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/Roy-lab/scMTNI" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Inferring gene regulatory networks from single-cell multiome data using atlas-scale external data (LINGER)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Biotechnol</span> <span class="meta-badge type-badge">Lifelong-learning NN</span>
+                    </div>
+                    <p class="paper-description">LINGER is a lifelong-learning neural network that pre-trains on 201 ENCODE bulk RNA-ATAC samples, then refines on single-cell multiome via elastic weight consolidation (Fisher-information regularisation) and TF&ndash;RE motif Laplacian regularisation. GRN edges are extracted via Shapley-value attribution for interpretability.</p>
+                    <ul class="key-contributions">
+                        <li>4&ndash;7&times; relative AUC and AUPR-ratio improvement over SCENIC+, GENIE3, PIDC on trans-regulation (20 ChIP-seq sets)</li>
+                        <li>Higher cis-regulation AUC vs scNN across all distance bins (0&ndash;3kb to 100&ndash;200kb)</li>
+                        <li>Two-round lifelong pre-training (ENCODE1+ENCODE2+sc) beats single-round on 85.5% of ChIP-seq datasets</li>
+                        <li>Robust across metacell aggregation methods (SEACells vs original, P = 0.89)</li>
+                        <li>Shapley-based interpretation enables disease-variant attribution</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-024-02182-7" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/Durenlab/LINGER" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>CellNavi predicts genes directing cellular transitions by learning a gene graph-enhanced cell state manifold</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Cell Biol</span> <span class="meta-badge type-badge">GeneGraph transformer</span>
+                    </div>
+                    <p class="paper-description">CellNavi is a two-component deep-learning framework: a Cell Manifold Model (6-layer transformer with custom GeneGraph attention) pretrained on 20M Human Cell Atlas single cells with 20M NicheNet-derived directional gene graphs, and a Driver Gene Predictor (2-layer MLP) fine-tuned on CRISPR screens. Identifies driver genes even when the perturbed gene's expression is masked from input.</p>
+                    <ul class="key-contributions">
+                        <li>Schmidt primary T-cell dataset: AUROC 0.874 vs SCENIC 0.596, GEARS 0.511, DGE 0.617</li>
+                        <li>Norman K562 dataset: AUROC 0.888; Top-1 accuracy 0.621, Top-5 accuracy 0.733</li>
+                        <li>Double perturbations: ranks 1st and 2nd perturbed genes at avg 7.9 / 31.2 out of 105 candidates</li>
+                        <li>GeneGraph attention uses centrality (in/out-degree) and shortest-path-distance encodings</li>
+                        <li>SCENIC fails on single-cell driver prediction: 61.6% of samples have no regulon found, 58.3% candidates excluded</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41556-025-01755-1" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/DLS5-Omics/CellNavi" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Perturbation Benchmarks &amp; Simulators (4)</h3>
+            <p>The empirical foundation of modern GRN inference. BEELINE established the modern benchmarking framework and its real-vs-synthetic ranking mismatch; GRouNdGAN is the one simulator later shown to resolve that mismatch; CausalBench and the Zhu 2025 CD4&plus; Perturb-seq atlas are the real-data benchmarks that reset expectations for interventional methods.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Benchmarking algorithms for gene regulatory network inference from single-cell transcriptomic data (BEELINE)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2020</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Benchmarking framework</span>
+                    </div>
+                    <p class="paper-description">BEELINE is the paper that defined how GRN-inference methods should be benchmarked: it evaluates a dozen algorithms (including GENIE3, GRNBoost2, SCODE, PIDC, SINCERITIES, and PPCOR) on both synthetic data generated from curated Boolean models of known regulatory circuits and real scRNA-seq datasets with literature-curated ground-truth networks (ChIP-seq, STRING, non-specific). Its central, field-shaping finding is that method rankings on synthetic data do not transfer to real data &mdash; no single method is consistently best across both regimes, and even the strongest performers barely beat random on real datasets by AUPRC. This real-vs-synthetic ranking mismatch is the exact problem GRouNdGAN was later built to solve, and the BEELINE curated ground-truth networks remain the standard evaluation substrate cited throughout this module.</p>
+                    <ul class="key-contributions">
+                        <li>First systematic, reproducible benchmarking pipeline comparing GRN-inference algorithms on matched synthetic and real datasets</li>
+                        <li>Shows synthetic-data method rankings (from Boolean-model simulators) do not predict real-data rankings &mdash; the core motivation for GRouNdGAN's causal-GAN approach</li>
+                        <li>All evaluated methods perform close to random by AUPRC against literature-curated ground truth on real scRNA-seq, exposing how weak the field's ground-truth signal actually is</li>
+                        <li>Establishes the curated Boolean-model synthetic networks and literature ground-truth networks still used as reference benchmarks by later work (GRouNdGAN, CausalBench)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-019-0690-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/Murali-group/Beeline" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>GRouNdGAN: GRN-guided simulation of single-cell RNA-seq data using causal generative adversarial networks</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">Causal GAN simulator</span>
+                    </div>
+                    <p class="paper-description">GRouNdGAN is a causal Wasserstein-GAN that imposes a user-specified GRN as an architectural constraint: a pretrained "causal controller" generates realistic TF expression, then per-target generators receive only their regulating TFs (per GRN adjacency). The output is statistically indistinguishable from real cells and faithful to the encoded regulatory graph &mdash; enabling gold-standard GRN-inference benchmarks and in-silico KO via interventional sampling.</p>
+                    <ul class="key-contributions">
+                        <li>First simulator whose GRN-inference method ranking matches BEELINE experimental benchmarks</li>
+                        <li>PBMC-CTL: best across cosine (0.00057), MMD (0.026), RF AUROC (0.54), miLISI (1.89)</li>
+                        <li>In-silico TF KO produces significant DEG changes in 66.5% of GRN-encoded edges</li>
+                        <li>GRNBoost2/PIDC/GENIE3 achieve AUPRC 0.68 on imposed edges vs 0.12 on unimposed (near-random)</li>
+                        <li>Preserves trajectories: PAGA topology matches real BoneMarrow data</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-024-48516-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/Emad-COMBINE-lab/GRouNdGAN" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>A large-scale benchmark for network inference from single-cell perturbation data (CausalBench)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Commun Biol</span> <span class="meta-badge type-badge">Real-data benchmark</span>
+                    </div>
+                    <p class="paper-description">CausalBench is the first large-scale real-data interventional benchmark for causal GRN inference. It evaluates 17+ methods on Replogle 2022 genome-wide Perturb-seq (K562 and RPE1, ~163K cells each, 622/383 perturbations) using both biological precision/recall against cell-line-filtered CORUM/STRING/ChIP-seq and statistical Wasserstein + False Omission Rate metrics.</p>
+                    <ul class="key-contributions">
+                        <li>Top F1: Guanlab 0.223/0.257, Mean Difference 0.168/0.240, GRNBoost 0.175/0.069 on K562/RPE1</li>
+                        <li>Most "interventional" methods barely beat their observational counterparts &mdash; even GIES &le; GES</li>
+                        <li>DAG-enforcing methods (NOTEARS-MLP F1 0.121/0.068) underperform feedback-permitting methods</li>
+                        <li>Only SparseRC satisfies graph + sample + intervention scaling axes simultaneously (lower absolute performance)</li>
+                        <li>Methods plateau in performance at ~50% of available samples &mdash; opens room for sample-efficient methods</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s42003-025-07764-y" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/causalbench/causalbench" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Genome-scale Perturb-seq in primary human CD4&plus; T cells maps context-specific regulators</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Primary-cell Perturb-seq</span>
+                    </div>
+                    <p class="paper-description">A genome-scale CRISPRi Perturb-seq screen across 22M primary human CD4&plus; T cells from 4 donors and 3 stimulation conditions (Rest, Stim8hr, Stim48hr). Targets all 12,748 expressed genes with 26,504 gRNAs, profiled via 10x Flex probe-based scRNA-seq (~10,000 UMIs/cell). The first genome-scale perturbation atlas in primary cells &mdash; the new GRN-benchmark substrate.</p>
+                    <ul class="key-contributions">
+                        <li>33.4M high-quality transcriptomes; 21.99M cells with single-guide assignment (65.8%); 73% on-target KD</li>
+                        <li>2,035,311 significant regulator&rarr;gene effects across 4 donors and 3 conditions</li>
+                        <li>~1/3 of regulator clusters show condition-specific effects &mdash; same regulator, different targets across states</li>
+                        <li>1,556 perturbations affect &ge; 1 of 30 cytokines; identifies NFKB2, KDM1A as divergent IL10/IL21 regulators</li>
+                        <li>Links T-cell aging signature (TSC1/2, GATOR, UBA2/UBE2I) to OneK1K population-scale variation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.64898/2025.12.23.696273" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/emdann/GWT_perturbseq_analysis_2025" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Virtual Knockout &amp; Genetics-Anchored GRN (3)</h3>
+            <p>Methods that exploit external causal signal &mdash; a hand-built KO ablation, natural genetic variation (Mendelian randomisation), or loss-of-function burden tests &mdash; to anchor GRN inference in something stronger than co-expression.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>scTenifoldKnk: an efficient virtual knockout tool for gene function predictions</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">Patterns</span> <span class="meta-badge type-badge">In-silico KO</span>
+                    </div>
+                    <p class="paper-description">scTenifoldKnk builds a denoised WT GRN via PC-regression + CP tensor decomposition, generates a pseudo-KO GRN by zeroing the outgoing-edge row of the target gene, then compares the two via quasi-manifold alignment with a chi-squared test for significant differential regulation. Whole-transcriptome KO at ~1 minute per gene on a desktop CPU.</p>
+                    <ul class="key-contributions">
+                        <li>Recapitulates real-animal Nkx2-1, Trem2, Hnf4a/g, Cftr, Dmd, Mecp2 KO findings using WT scRNA-seq only</li>
+                        <li>Trem2 KO microglia: 128 DR genes enriched for Alzheimer disease, lysosome, TYROBP, LDL/HDL/TG metabolism</li>
+                        <li>Mecp2 KO neurons: 211 shared DR genes (p &lt; 10&#8315;&#8309;) across replicates, &rho; = 0.68 ranking concordance</li>
+                        <li>~1 min/gene; 6,000-gene genome-wide KO in 4&ndash;5 days on a single i7 + 16 GB RAM</li>
+                        <li>Cell-type-specific KO: MYDGF KO yields different profiles across 45 cell types</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1016/j.patter.2022.100434" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/cailab-tamu/scTenifoldKnk" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Airqtl dissects cell state-specific causal GRNs with efficient single-cell eQTL mapping</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">MR / sceQTL cGRN</span>
+                    </div>
+                    <p class="paper-description">Airqtl introduces the Array of Interleaved Repeats (AIR) compressed data structure that exploits the donor&rarr;cell hierarchy in population-scale scRNA-seq, reducing GRM factorisation from O(n_cell&sup2;&middot;n_donor) to O(n_donor&sup3;). Mendelian randomisation via two-stage least squares on cis/trans sceQTLs then yields directional causal GRN edges grounded in genetic instruments.</p>
+                    <ul class="key-contributions">
+                        <li>&gt;10&#8312;&times; speedup vs CellRegMap; full-dataset cost $0.60 vs projected $1M</li>
+                        <li>Maps 4M SNPs &times; 5K genes &times; 50K cells in ~10 minutes</li>
+                        <li>84% of CD4&plus; T cell regulations in flu condition absent from mock &mdash; context-specificity is the rule</li>
+                        <li>10 master flu-response regulators identified (TRIM38, STAT1, RBCK1, ...); 7/10 targets enriched for "defense response to virus"</li>
+                        <li>STAT1 inferred effects correlate r = 0.82 (P = 5&times;10&#8315;&#8311;) with published CRISPR data &mdash; external causal validation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-66214-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/grnlab/airqtl" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Causal modelling of gene effects from regulators to programs to traits</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nature</span> <span class="meta-badge type-badge">LoF burden + Perturb-seq</span>
+                    </div>
+                    <p class="paper-description">Integrates LoF burden-test effect sizes (UKB, n = 454,787) with genome-wide Perturb-seq regulatory effects in K562 to build gene&rarr;program&rarr;trait causal graphs. cNMF identifies K=60 programs; trait associations are decomposed into program-burden effects (program gene LoFs) and regulator-burden correlations (regulator perturbation effects). The two can diverge &mdash; revealing complex regulatory architectures.</p>
+                    <ul class="key-contributions">
+                        <li>43/59 (73%) top genes correctly predicted for MCH direction (P = 5&times;10&#8315;&#8309;)</li>
+                        <li>LoF top hits 6.3&times; enriched among top 200 HBA1 regulators vs 2.1&times; for GWAS hits &mdash; LoF wins for regulator ID</li>
+                        <li>SUPT5H identified as MCH master regulator, consistent with the thalassaemia phenotype of LoF</li>
+                        <li>Explains MCH/RDW negative correlation mechanistically via opposite autophagy / cell-cycle program effects</li>
+                        <li>GeneBayes empirical-Bayes shrinkage gives reproducible &gamma; estimates across UKB and All of Us cohorts</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41586-025-09866-3" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://doi.org/10.5281/zenodo.14751877" target="_blank"><i class="fas fa-database"></i> Data</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>Reviews &amp; Field Perspective (1)</h3>
+            <p>The field-synthesis counterpart to the method families above: a single comprehensive review of single-cell multi-omic GRN inference from the Saez-Rodriguez group, Nature Reviews Genetics, November 2023.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Gene regulatory network inference in the era of single-cell multi-omics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nat Rev Genet</span> <span class="meta-badge type-badge">Review</span>
+                    </div>
+                    <p class="paper-description">Comprehensive review of 30&plus; multimodal GRN methods (SCENIC+, CellOracle, FigR, GRaNIE, ANANSE, Pando, scMEGA, IReNA, Dictys, scMTNI, etc.), organised around a three-step modelling decomposition &mdash; (1) gene-expression prediction from TF expression, (2) TF&ndash;CRE assignment via motif scanning on accessible peaks, (3) CRE&ndash;gene linkage via distance or Hi-C &mdash; plus a group/trajectory/hybrid/contrast taxonomy for capturing dynamic and condition-specific regulatory rewiring. Reinforces the chromatin-first design principle: filtering TF&ndash;gene candidates by chromatin accessibility removes biologically implausible edges where the regulator cannot physically bind.</p>
+                    <ul class="key-contributions">
+                        <li>27+ tools tabulated by data-type requirements, statistical framework (frequentist vs Bayesian), and CRE&ndash;gene distance cutoffs (10kb&ndash;1Mb) &mdash; validated edges concentrate &lt; 100 kb</li>
+                        <li>Disease applications: Alzheimer's (ZEB1/MAFB), COVID-19 fibroblasts, immunotherapy resistance in T cells; Brachyury/mouse organogenesis case study links GRN priming to developmental fate</li>
+                        <li>Documents that chromatin accessibility significantly reduces false-positive TF&ndash;gene edges; motif-database choice (JASPAR/HOCOMOCO/CIS-BP) and matcher (MOODs/FIMO/HOMER) introduce substantial heterogeneity</li>
+                        <li>Frames TF activity inference as the downstream layer (GSEA, AUCell, VIPER) and the missing-benchmark problem that CausalBench and GRouNdGAN later solve</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41576-023-00618-5" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="content-section" id="table">
+            <h2>Selection at a Glance</h2>
+            <p>Quick reference: which GRN-inference method to reach for given your data, scale, and downstream goal. Numbers are headline metrics from each paper &mdash; treat as orientation, not as cross-paper comparisons.</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Method</th><th>Family</th><th>Scale / data</th><th>Best for</th><th>Key detail</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>SCENIC</td><td>Co-expression + motif</td><td>scRNA-seq, up to 1.3M cells</td><td>Robust regulons, cell-state ID</td><td>GENIE3 &rarr; RcisTarget &rarr; AUCell</td></tr>
+                    <tr><td>SCENIC+</td><td>Enhancer-driven GRN</td><td>scRNA + scATAC paired</td><td>TF&ndash;enhancer&ndash;gene triplets</td><td>34,524 motifs; ARI = 1.00 ENCODE</td></tr>
+                    <tr><td>scMINER</td><td>MI clustering + network</td><td>scRNA, up to 650K cells</td><td>Hidden drivers, signalling networks</td><td>~5,500 signalling proteins (SJARACNe)</td></tr>
+                    <tr><td>dGCNA</td><td>Differential coordination</td><td>Disease vs control scRNA</td><td>Reproducible disease modules</td><td>26% gene overlap across T2D datasets</td></tr>
+                    <tr><td>NOTEARS / NOTEARS-MLP</td><td>Continuous DAG</td><td>Tabular, d &le; ~few hundred</td><td>Theoretical baseline</td><td>tr(e^W&compfn;W)&minus;d = 0 acyclicity</td></tr>
+                    <tr><td>DCDI</td><td>Interventional DAG + flows</td><td>Obs+intervention up to 100 nodes &times; 1M samples</td><td>Mixed obs/interventional data</td><td>Normalising flows, unknown targets ok</td></tr>
+                    <tr><td>ENCO</td><td>Edge existence + orientation</td><td>1,000 nodes in 9h</td><td>Large interventional graphs</td><td>No acyclicity constraint</td></tr>
+                    <tr><td>AnalyticDAG</td><td>Higher-order DAG constraint</td><td>d up to 2,000</td><td>NOTEARS replacement for ER/SF graphs</td><td>Gradients grow with order, O(log t)</td></tr>
+                    <tr><td>CellOracle</td><td>Multi-omic + simulation</td><td>scRNA + scATAC</td><td>In-silico TF KO, fate prediction</td><td>Bayesian-ridge + signal propagation</td></tr>
+                    <tr><td>scMTNI</td><td>Multi-task lineage GRN</td><td>scRNA + scATAC + lineage tree</td><td>Cell-fate transitions</td><td>Probabilistic lineage prior</td></tr>
+                    <tr><td>LINGER</td><td>Multi-omic lifelong NN</td><td>Multiome + 201 ENCODE bulk</td><td>Atlas-anchored cell-type GRNs</td><td>EWC + Laplacian motif reg.; Shapley</td></tr>
+                    <tr><td>CellNavi</td><td>GeneGraph transformer</td><td>20M HCA cells</td><td>Driver-gene prediction from CRISPR</td><td>AUROC 0.874 vs SCENIC 0.596</td></tr>
+                    <tr><td>scTenifoldKnk</td><td>Virtual KO</td><td>WT scRNA only</td><td>Whole-genome in-silico KO</td><td>PC reg. + CP tensor + manifold</td></tr>
+                    <tr><td>Airqtl</td><td>MR / sceQTL</td><td>Population-scale + genotype</td><td>Causal cGRNs anchored in genetics</td><td>STAT1 r = 0.82 vs CRISPR validation</td></tr>
+                    <tr><td>Gene&rarr;Program&rarr;Trait</td><td>LoF + Perturb-seq</td><td>UKB 454K &times; K562 Perturb-seq</td><td>Trait-mechanism causal graphs</td><td>43/59 MCH direction correct</td></tr>
+                    <tr><td>BEELINE</td><td>Benchmarking framework</td><td>Synthetic Boolean models + curated real networks</td><td>Establishing evaluation ground truth</td><td>Synthetic rankings don't transfer to real data</td></tr>
+                    <tr><td>GRouNdGAN</td><td>Causal GAN simulator</td><td>Reference scRNA + user GRN</td><td>Benchmarking GRN methods</td><td>Method ranking matches BEELINE</td></tr>
+                    <tr><td>CausalBench</td><td>Real-data benchmark</td><td>K562/RPE1 Perturb-seq, ~163K cells</td><td>Method evaluation on real CRISPRi</td><td>17+ methods; F1 + Wasserstein + FOR</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="content-section" id="reading-order">
+            <h2>Reading Order for Newcomers</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>1. SCENIC (2017, Nat Methods)</h3>
+                    <p>The pipeline every GRN paper compares to. GENIE3 + RcisTarget + AUCell. Understand this and you understand the statistical-GRN era.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2. Nat Rev Genet 2023 review</h3>
+                    <p>Field synthesis covering 30&plus; multimodal methods. Read before deciding which tool to run &mdash; it will save you from rebuilding a GRaNIE-style pipeline that already exists in SCENIC+.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>3. NOTEARS (2018, NeurIPS) &rarr; ENCO (2022, ICLR)</h3>
+                    <p>The arc from combinatorial &rarr; continuous &rarr; constraint-free DAG learning. Read NOTEARS to understand the acyclicity trick; read ENCO to understand why you should not enforce it.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>4. CellOracle (2023, Nature)</h3>
+                    <p>The canonical "multi-omic GRN &rarr; in-silico perturbation" pipeline. The Lhx1a zebrafish discovery is the cleanest published example of a useful target-ID hypothesis from a GRN.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>5. CausalBench (2025, Commun Biol)</h3>
+                    <p>The reality check. Most "interventional" methods barely beat observational ones on real CRISPRi data; DAG enforcement hurts; only Mean Difference / Guanlab / SparseRC are SOTA. Read before believing any new causal-discovery paper's headline.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>6. Gene&rarr;Program&rarr;Trait (2025, Nature) + Airqtl (2025, Nat Commun)</h3>
+                    <p>Where the field is heading: integrate Perturb-seq with orthogonal causal signals (LoF burden, MR via sceQTLs). The 6.3&times; LoF-enrichment for HBA1 regulators and Airqtl's STAT1 r = 0.82 vs CRISPR are the two cleanest demonstrations that genetic anchoring works.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="practical">
+            <h2>Practical Implementation Guide</h2>
+            <div class="highlight-box">
+                <h4>If you have observational scRNA-seq only (no perturbation, no ATAC)</h4>
+                <p>Run <strong>SCENIC</strong> (or pySCENIC + GRNBoost) for a fast TF-regulon baseline and use AUCell scores for downstream clustering / pseudo-bulk. Add <strong>scMINER</strong> if you also need signalling-protein activity inference. Use <strong>scTenifoldKnk</strong> for cheap whole-transcriptome in-silico KO &mdash; it requires only WT scRNA-seq and runs in ~1 minute per gene. For disease-vs-control comparisons, <strong>dGCNA</strong> is more reproducible than DESeq2-style DE on single cells.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If you have paired scRNA + scATAC multiome</h4>
+                <p>This is now the default. <strong>SCENIC+</strong> for enhancer-driven GRNs with the largest motif collection (34,524 motifs), <strong>CellOracle</strong> if you specifically want in-silico TF perturbation simulation along a developmental trajectory, <strong>scMTNI</strong> if your data has a clear lineage tree, and <strong>LINGER</strong> if you have an external bulk atlas (ENCODE-like) you want to pre-train on for 4&ndash;7&times; accuracy gain. All four read the same paired-multiome inputs &mdash; run multiple and intersect.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If you have Perturb-seq or other interventional data</h4>
+                <p>This is the only data type where causal discovery actually delivers. Start with the <strong>CausalBench</strong> top performers (Mean Difference, Guanlab, SparseRC) &mdash; per the 2025 benchmark, they substantially outperform classical methods including NOTEARS-MLP and SCENIC on K562/RPE1. For driver-gene ID at the single-perturbation level, <strong>CellNavi</strong> reaches AUROC 0.874 vs SCENIC 0.596. Use <strong>GRouNdGAN</strong>-simulated data with a known imposed GRN as your gold-standard benchmark before reporting on real data &mdash; it is the only simulator whose method ranking matches BEELINE.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If you want to integrate GRN with foundation models / population genetics</h4>
+                <p>This is where the leverage is for drug-target discovery. <strong>CellNavi</strong>'s GeneGraph attention is a clean recipe for injecting GRN structure into a transformer cell-state model. For trait-anchored targets, follow the <strong>Gene&rarr;Program&rarr;Trait</strong> recipe: cNMF programs &rarr; LoF burden tests &rarr; regulator&ndash;burden correlation. If you have population-scale scRNA-seq with genotypes, <strong>Airqtl</strong>'s MR framework gives genetic-instrument-validated cGRN edges in ~10 minutes per dataset, with external CRISPR validation at r = 0.82.</p>
+            </div>
+            <div class="warning-box">
+                <h4>Common Pitfalls</h4>
+                <ul>
+                    <li><strong>Co-expression &ne; regulation.</strong> Co-expression networks (GENIE3, GRNBoost, ARACNe, WGCNA) confound direct TF&rarr;target effects with downstream co-regulation, batch effects, cell-cycle confounding, and reverse causation. Always layer in either a motif-anchored filter (RcisTarget, SCENIC+) or an interventional anchor (Airqtl MR, CRISPR perturbation) before nominating a target.</li>
+                    <li><strong>Acyclicity is a modelling lie.</strong> Real GRNs have feedback loops (NF-&kappa;B autoregulation, p53/MDM2, STAT/IFN). NOTEARS, NOTEARS-MLP, DCDI, AnalyticDAG all assume this away. CausalBench shows acyclicity-enforcing methods underperform feedback-permitting methods on real Perturb-seq. Use DAG methods on small candidate subnetworks; never on whole-transcriptome biological data without a feedback-tolerant alternative.</li>
+                    <li><strong>"Interventional" does not mean better.</strong> CausalBench shows that GIES, DCDI-G, DCDI-DSF, DCDFG-MLP, Catran often do not beat their observational counterparts on Replogle Perturb-seq. Only Mean Difference, Guanlab, SparseRC, and Betterboost show meaningful uplift from interventional data. Demand a CausalBench-style evaluation, not a synthetic-data win.</li>
+                    <li><strong>Synthetic-data benchmarks lie systematically.</strong> SERGIO, BoolODE, scDESIGN2-style simulators produce method rankings that do not match experimental rankings &mdash; with one exception, GRouNdGAN. If your evaluation rests on a single simulator, you probably picked the one your method wins on.</li>
+                    <li><strong>Foundation-model GRNs are not free.</strong> Geneformer, scGPT, and other scFMs claim implicit GRN knowledge via attention heads, but the 2024 SSL benchmark and CausalBench together show linear baselines often match them on real perturbation prediction. Use GRNs as an interpretable structural prior on top of foundation embeddings, not as a substitute for them.</li>
+                    <li><strong>Tissue-level GRNs are misleading.</strong> 84% of CD4&plus; T-cell edges differ between flu and mock condition (Airqtl); 60% of melanoma regulators are state-specific (SCENIC+). A single static GRN per "tissue" hides exactly the biology you care about for therapeutic targets. Always infer per cell-type, per condition.</li>
+                </ul>
+            </div>
+        </section>
+        <section class="content-section" id="hands-on">
+            <h2>Hands-On Practice</h2>
+            <p>The fastest path from raw count matrix to an interpretable GRN is the pySCENIC / arboreto stack: run GRNBoost2 to score all TF&ndash;target pairs by co-expression importance, then layer on cisTarget motif enrichment to filter indirect edges. The walkthrough below follows that exact path so you can reproduce the core SCENIC step on any scRNA-seq dataset in under an hour.</p>
+            <h3>Environment &amp; packages</h3>
+            <p>Install into a dedicated conda environment; arboreto pulls in dask for distributed GRNBoost2, and pyscenic brings its own pinned loom/anndata stack that can conflict with a general scanpy environment.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>conda create -n grn_env python=3.10 -y
+conda activate grn_env
+
+# Core GRN stack
+pip install pyscenic            # pySCENIC: RcisTarget + AUCell wrappers
+pip install scenicplus           # SCENIC+ for paired scRNA + scATAC
+pip install arboreto             # GRNBoost2 / GENIE3 co-expression inference
+pip install celloracle           # in-silico TF perturbation + fate simulation
+pip install dask[distributed]    # parallel GRNBoost2 via LocalCluster
+
+# Single-cell data handling
+pip install scanpy anndata loompy
+
+# Optional: fetch cisTarget motif-ranking databases (.feather)
+# wget https://resources.aertslab.org/cistarget/databases/homo_sapiens/hg38/refseq_r80/mc9nr/gene_based/hg38_500bp_up_100bp_down_full_tx_v10_clust.genes_vs_motifs.rankings.feather</code></pre>
+            <p><strong>Hardware.</strong> GRNBoost2 with dask scales linearly with cores; a 16-core workstation handles ~5,000 cells × 2,000 TFs in ~15 minutes. For datasets &gt; 50,000 cells or full TF lists (~1,500 TFs), request an HPC node with 32+ cores and 128 GB RAM — GRNBoost2 is memory-bound, not GPU-bound.</p>
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><code>AnnData</code> (scanpy): primary container — <code>adata.X</code> holds the log-normalised count matrix (cells × genes); <code>adata.var_names</code> must be gene symbols matching the TF list.</li>
+                <li><strong>TF list</strong>: a plain Python <code>list</code> of gene symbols (e.g., <code>allTFs_hg38.txt</code> from the pySCENIC resources page); used to restrict GRNBoost2 regulators.</li>
+                <li><strong>Adjacency table</strong>: a pandas <code>DataFrame</code> with columns <code>TF</code>, <code>target</code>, <code>importance</code> — the raw GRNBoost2 output before motif filtering.</li>
+                <li><strong>Regulons</strong>: pySCENIC <code>Regulon</code> objects — a TF plus its motif-enriched target set and NES score; stored as JSON or directly in <code>AnnData.uns</code>.</li>
+                <li><strong>cisTarget motif-ranking databases</strong> (<code>.feather</code>): precomputed rankings of 20,000+ motifs over all human/mouse gene promoters; downloaded once (~3–10 GB) from the aertslab resource server.</li>
+                <li><strong>Base GRN</strong> (CellOracle): a binary <code>pd.DataFrame</code> (TF × gene) derived from scATAC-seq peak&ndash;motif scanning; used as the structural prior before ridge-regression fitting.</li>
+            </ul>
+            <h3>Minimal code walkthrough</h3>
+            <p>Load a preprocessed AnnData, run GRNBoost2 via arboreto with a human TF list to obtain an importance-ranked adjacency dataframe, then threshold and inspect the top edges.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import pandas as pd
+from arboreto.algo import grnboost2
+from arboreto.utils import load_tf_names
+from distributed import Client, LocalCluster
+
+# 1. Load preprocessed single-cell data (log-normalised, HVGs selected)
+adata = sc.read_h5ad("pbmc_3k_processed.h5ad")
+
+# 2. Load TF list (download from: resources.aertslab.org/cistarget/tf_lists/)
+tf_names = load_tf_names("allTFs_hg38.txt")
+# Keep only TFs that are actually expressed in this dataset
+tf_names = [tf for tf in tf_names if tf in adata.var_names]
+print(f"Using {len(tf_names)} TFs out of {adata.n_vars} genes")
+
+# 3. Build expression matrix (cells x genes) as a DataFrame
+ex_matrix = pd.DataFrame(
+    adata.X.toarray() if hasattr(adata.X, "toarray") else adata.X,
+    index=adata.obs_names,
+    columns=adata.var_names,
+)
+
+# 4. Run GRNBoost2 with a local dask cluster (adjust n_workers to your CPU count)
+cluster = LocalCluster(n_workers=8, threads_per_worker=1)
+client = Client(cluster)
+
+adjacencies = grnboost2(
+    expression_data=ex_matrix,
+    tf_names=tf_names,
+    client_or_address=client,
+    seed=42,
+)
+client.close(); cluster.close()
+
+# 5. Inspect top edges
+adjacencies = adjacencies.sort_values("importance", ascending=False)
+print(adjacencies.head(20))
+
+# 6. Threshold: keep edges above the 95th-percentile importance score
+threshold = adjacencies["importance"].quantile(0.95)
+top_edges = adjacencies[adjacencies["importance"] &gt;= threshold]
+print(f"Top-5% edges: {len(top_edges)} TF&ndash;target pairs retained")
+
+# Next step: feed `adjacencies` into pyscenic.prune.prune2df()
+# with your downloaded .feather cisTarget rankings to filter by motif enrichment</code></pre>
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>GRN inference is correlational, not causal.</strong> GRNBoost2 ranks pairs by co-expression importance; high importance means the TF's expression predicts the target's, not that it drives it. Always layer on motif filtering (RcisTarget / pySCENIC) or an external causal anchor (Airqtl MR, CRISPR data) before nominating a target for follow-up.</li>
+                <li><strong>Cell number matters.</strong> SCENIC and GRNBoost2 need enough cells to estimate robust co-expression; &lt; 500 cells per cell type typically yields noisy, low-recall regulons. Aggregate rare cell types across samples or use scMTNI's lineage sharing before running per-cluster inference.</li>
+                <li><strong>Dropout inflates false negatives.</strong> Highly sparse genes will appear uncorrelated even when regulated. Use log-normalised counts (not raw UMIs) and consider imputation (MAGIC, ALRA) for the expression input — but benchmark the effect on your validation set first.</li>
+                <li><strong>TF list quality is a hidden confounder.</strong> TFs not in your list are silently omitted from all edges; TFs in the list but not expressed add noise. Always intersect the canonical TF list with expressed genes (&gt; 5% cells) before passing to GRNBoost2.</li>
+                <li><strong>Motif-database genome version must match your reference.</strong> A hg19 cisTarget database used with hg38-mapped counts will miss or mis-map thousands of promoter regions. Check the filename for the genome build (e.g., <code>hg38_500bp_up_100bp_down</code>) and confirm it matches your alignment.</li>
+                <li><strong>Validate against ChIP-seq or perturbation ground truth.</strong> AUROC on random held-out edges is uninformative — any method can score well. Use a cell-line-matched ChIP-seq compendium (ENCODE, ReMap) or a CRISPRi/KO experiment as your positive-edge set, as done in LINGER, CausalBench, and scMINER.</li>
+                <li><strong>Runtime: use a dask cluster.</strong> GRNBoost2 on a full TF list (~1,500 TFs) × ~20,000 targets × 10,000 cells takes ~2 hours single-threaded. A <code>LocalCluster(n_workers=16)</code> brings this to ~10 minutes. For HPCC jobs, request a full node and set <code>n_workers</code> to the core count minus 2 for the scheduler overhead.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>Gene Regulatory Network Inference &middot; AI4Bio Learning Hub</p>
+        <p>Curated by Xinru Qiu &middot; 22 unique papers spanning 2017&ndash;2026: 21 sourced from the 29 .md files in <code>papers/grn-inference/</code> (7 are "summary-" companion files condensing a main entry, and LINGER and the Nat Rev Genet review each have two duplicate source files collapsed into one card here), plus BEELINE added directly as the field's foundational benchmark.</p>
+        <p><a href="../index.html">&larr; Back to Learning Hub</a> &middot; <a href="../../">Homepage</a></p>
+    </footer>
+</body>
+</html>

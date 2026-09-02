@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE RESOLUTION LADDER  ·  H&amp;E → MOLECULAR PREDICTION</text>
+  <text x="60" y="96" class="h1">From 100 µm spots to single proteins, 2020 → 2026.</text>
+  <text x="60" y="124" class="h-sub">Each rung raises resolution and clinical relevance. Visium-scale recipes do NOT transfer to single-cell resolution.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g transform="translate(110,200)">
+    <line x1="0" y1="0" x2="0" y2="730" stroke="#5c5c66" stroke-width="2"></line>
+    <polygon points="-8,0 8,0 0,-12" fill="#5c5c66"></polygon>
+    <text x="-30" y="0" text-anchor="end" class="rung-tag" fill="#5c5c66">finer  ↑</text>
+    <text x="-30" y="730" text-anchor="end" class="rung-tag" fill="#5c5c66">coarser  ↓</text>
+    <text x="0" y="0" transform="rotate(-90) translate(-400,-44)" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">increasing resolution, clinical relevance, ground-truth quality</text>
+  </g>
+
+  
+  
+
+  
+  <g>
+    <rect x="150" y="200" width="1790" height="140" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="170" y="228" class="rung-tag" fill="#2c8a4f">RUNG 5  ·  2026  ·  HEX  🥇</text>
+    <text x="170" y="258" class="rung-title">MUSK pathology FM  →  40 individual proteins at single-cell resolution</text>
+    <text x="170" y="288" class="annot">Pearson r = 0.73 – 0.79 per protein  ·  trained against same-section H&amp;E + CODEX</text>
+    <text x="170" y="312" class="annot">beats PD-L1 CPS and TMB for immunotherapy response prediction</text>
+    <text x="1900" y="304" text-anchor="end" class="emoji">🧬🔬</text>
+  </g>
+
+  
+  <g>
+    <rect x="180" y="360" width="1740" height="140" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+    <text x="200" y="388" class="rung-tag" fill="#7a5b13">RUNG 4  ·  2025  ·  GHIST</text>
+    <text x="200" y="418" class="rung-title">multi-task UNet 3+  →  single-cell SGE</text>
+    <text x="200" y="448" class="annot">Pearson 0.7 – 0.84  ·  matched ST tissue only</text>
+    <text x="200" y="472" class="annot" font-style="italic" fill="#5c5c66">first method to break single-cell resolution from H&amp;E.</text>
+    <text x="1880" y="466" text-anchor="end" class="emoji">🧫</text>
+  </g>
+
+  
+  <g>
+    <rect x="210" y="520" width="1690" height="140" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="230" y="548" class="rung-tag" fill="#c95a2a">RUNG 3  ·  2025  ·  OMICLIP  +  LOKI</text>
+    <text x="230" y="578" class="rung-title">CLIP-style joint embedding  ·  2.2 M paired image–omic pairs, 32 organs</text>
+    <text x="230" y="608" class="annot">zero-shot cross-organ transfer via shared 768-d space</text>
+    <text x="230" y="632" class="annot">still spot-level resolution; 5 downstream tasks via the Loki platform</text>
+    <text x="1860" y="626" text-anchor="end" class="emoji">🌐</text>
+  </g>
+
+  
+  <g>
+    <rect x="240" y="680" width="1640" height="140" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="260" y="708" class="rung-tag" fill="#4a6a8a">RUNG 2  ·  2022  ·  HIST2ST</text>
+    <text x="260" y="738" class="rung-title">Convmixer + Transformer + GNN  ·  same Visium spots</text>
+    <text x="260" y="768" class="annot">+9 % PCC over ST-Net via spatial-aware architecture</text>
+    <text x="260" y="792" class="annot" font-style="italic" fill="#5c5c66">architecture matters within a resolution tier, but doesn&#39;t change the tier.</text>
+    <text x="1840" y="786" text-anchor="end" class="emoji">🧩</text>
+  </g>
+
+  
+  <g>
+    <rect x="270" y="840" width="1590" height="140" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <text x="290" y="868" class="rung-tag" fill="#a14854">RUNG 1  ·  2020  ·  ST-NET  📜</text>
+    <text x="290" y="898" class="rung-title">DenseNet-121  →  250 genes per 100 µm Visium spot  (~ 30 cells per spot)</text>
+    <text x="290" y="928" class="annot">resolution = niche composition  ·  RMSE 0.31</text>
+    <text x="290" y="952" class="annot" font-style="italic" fill="#5c5c66">the proof-of-concept that started the resolution ladder.</text>
+    <text x="1820" y="946" text-anchor="end" class="emoji">🗺</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="1000" width="1880" height="70" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="1028" class="rung-tag" fill="#a14854">⚠  PITFALL</text>
+    <text x="80" y="1058" class="key" fill="#a14854">Visium-scale recipes (ST-Net, Hist2ST) do NOT transfer to single-cell  —  prior H&amp;E → ST methods reached only Pearson ~ 0.2 on protein prediction.</text>
+  </g>
+</svg>

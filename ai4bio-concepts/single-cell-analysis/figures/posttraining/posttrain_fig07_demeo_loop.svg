@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  DEMEO  ·  ACTIVE LEARNING WITH THE WET-LAB IN THE LOOP</text>
+  <text x="60" y="96" class="h1">A drug-discovery foundation model that gets better every round.</text>
+  <text x="60" y="124" class="h-sub">First post-training of an FM via real experimental feedback — model and target signature both update.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g transform="translate(700,540)">
+
+    
+    <g>
+      <rect x="-180" y="-380" width="360" height="120" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="2"></rect>
+      <text x="0" y="-352" text-anchor="middle" class="step-tag" fill="#4a6a8a">START  ·  DRUGREFLECTOR</text>
+      <text x="0" y="-326" text-anchor="middle" class="step-title">ensemble of 3 MLPs</text>
+      <text x="0" y="-306" text-anchor="middle" class="step-sub">trained on CMap L1000 (9 597 compounds × 52 cell lines)</text>
+      <text x="0" y="-282" text-anchor="middle" class="step-sub">predicts compound-vs-target signature similarity</text>
+    </g>
+
+    
+    <line x1="0" y1="-260" x2="0" y2="-230" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+    
+    <g>
+      <circle cx="0" cy="-130" r="100" fill="#fbe6d8" stroke="#c95a2a" stroke-width="2"></circle>
+      <circle cx="-72" cy="-130" r="20" fill="#c95a2a"></circle>
+      <text x="-72" y="-124" text-anchor="middle" class="step-num">1</text>
+      <text x="0" y="-148" text-anchor="middle" class="step-tag" fill="#c95a2a">PREDICT</text>
+      <text x="0" y="-124" text-anchor="middle" class="step-title">rank compounds</text>
+      <text x="0" y="-104" text-anchor="middle" class="step-sub">by similarity to the</text>
+      <text x="0" y="-86" text-anchor="middle" class="step-sub">target phenotype signature</text>
+    </g>
+
+    
+    <path d="M 90 -85 C 200 -50, 230 80, 110 130" fill="none" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></path>
+
+    
+    <g>
+      <circle cx="200" cy="80" r="100" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></circle>
+      <circle cx="200" cy="0" r="20" fill="#b8902c"></circle>
+      <text x="200" y="6" text-anchor="middle" class="step-num">2</text>
+      <text x="200" y="60" text-anchor="middle" class="step-tag" fill="#b8902c">SELECT TOP-K</text>
+      <text x="200" y="86" text-anchor="middle" class="step-title">pick highest-scoring</text>
+      <text x="200" y="106" text-anchor="middle" class="step-sub">compounds for wet-lab</text>
+    </g>
+
+    
+    <path d="M 145 165 C 80 240, -80 240, -145 165" fill="none" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></path>
+
+    
+    <g>
+      <circle cx="0" cy="190" r="100" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></circle>
+      <circle cx="0" cy="110" r="20" fill="#2c8a4f"></circle>
+      <text x="0" y="116" text-anchor="middle" class="step-num">3</text>
+      <text x="0" y="170" text-anchor="middle" class="step-tag" fill="#2c8a4f">WET-LAB ASSAY</text>
+      <text x="0" y="196" text-anchor="middle" class="step-title">flow-cytometry readout</text>
+      <text x="0" y="216" text-anchor="middle" class="step-sub">actual differentiation measured</text>
+
+      
+      <g transform="translate(-50,232)">
+        <circle cx="6" cy="6" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="14" cy="10" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="22" cy="4" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="30" cy="14" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="40" cy="8" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="48" cy="18" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="60" cy="6" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="68" cy="16" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="78" cy="12" r="1.5" fill="#2c8a4f"></circle>
+        <circle cx="90" cy="22" r="1.5" fill="#2c8a4f"></circle>
+      </g>
+    </g>
+
+    
+    <path d="M -110 130 C -230 80, -200 -50, -90 -85" fill="none" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></path>
+
+    
+    <g>
+      <circle cx="-200" cy="80" r="100" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="2"></circle>
+      <circle cx="-200" cy="0" r="20" fill="#6b4e8a"></circle>
+      <text x="-200" y="6" text-anchor="middle" class="step-num">4</text>
+      <text x="-200" y="60" text-anchor="middle" class="step-tag" fill="#6b4e8a">REFINE SIGNATURE</text>
+      <text x="-200" y="86" text-anchor="middle" class="step-title">interpolate target</text>
+      <text x="-200" y="106" text-anchor="middle" class="step-sub">+  experiment embedding</text>
+      <text x="-200" y="124" text-anchor="middle" class="step-sub">step size α (tunable)</text>
+    </g>
+
+    
+    <text x="0" y="40" text-anchor="middle" class="step-tag" fill="#8a5a4a">CLOSED LOOP</text>
+    <text x="0" y="64" text-anchor="middle" class="annot" fill="#5c5c66" font-style="italic">model + target signature both update each round</text>
+  </g>
+
+  
+  <g>
+    <rect x="1380" y="180" width="560" height="380" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="1400" y="208" class="step-tag" fill="#8a5a4a">PERFORMANCE  ·  PER-ROUND HIT RATE</text>
+    <text x="1400" y="244" class="step-title">Megakaryocyte differentiation screen</text>
+
+    <g transform="translate(1400,270)">
+      
+      <text x="0" y="20" class="annot" font-weight="700">random baseline</text>
+      <rect x="200" y="6" width="38" height="22" fill="#8a8275" opacity="0.55"></rect>
+      <text x="246" y="22" class="annot" font-weight="700">1.1 %</text>
+
+      
+      <text x="0" y="62" class="annot" font-weight="700">round 1  ·  DrugReflector</text>
+      <rect x="200" y="48" width="320" height="22" fill="#2c8a4f" opacity="0.55"></rect>
+      <text x="528" y="64" class="annot" font-weight="700" fill="#2c8a4f">19.6 %</text>
+
+      
+      <text x="0" y="104" class="annot" font-weight="700">round N  ·  + signature refinement</text>
+      <rect x="200" y="90" width="500" height="22" fill="#2c8a4f" opacity="0.85"></rect>
+      <text x="708" y="106" class="annot" font-weight="700" fill="#2c8a4f">~ 40 %</text>
+    </g>
+
+    <line x1="1400" y1="408" x2="1920" y2="408" stroke="#e5dfcf" stroke-width="1"></line>
+
+    <text x="1400" y="436" class="step-tag" fill="#7a5b13">SUMMARY</text>
+    <text x="1400" y="468" class="stat-num" fill="#7a5b13">17 ×</text>
+    <text x="1450" y="468" class="key" fill="#7a5b13">hit rate over random</text>
+    <text x="1400" y="496" class="annot">signature refinement adds another 2× on top</text>
+    <text x="1400" y="528" class="annot" font-style="italic" fill="#5c5c66">each wet-lab round teaches the model what &#34;megakaryocyte differentiation&#34;</text>
+    <text x="1400" y="548" class="annot" font-style="italic" fill="#5c5c66">actually looks like — not just what the screen labels say.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="940" width="1880" height="140" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="970" class="step-tag" fill="#7a5b13">THE NOVELTY</text>
+    <text x="80" y="1004" class="key" fill="#7a5b13">First post-training of a drug-discovery FM via experimental feedback.</text>
+    <text x="80" y="1034" class="annot">The model is not just predicting against a fixed signature — it is updating both itself and the signature it is targeting with each new wet-lab round.</text>
+    <text x="80" y="1062" class="annot" font-style="italic" fill="#5c5c66">a real-world reward signal beats any in-silico proxy when wet-lab cycles are cheap enough to run.</text>
+  </g>
+</svg>

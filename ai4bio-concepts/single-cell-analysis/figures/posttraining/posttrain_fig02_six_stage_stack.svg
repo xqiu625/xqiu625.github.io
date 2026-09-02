@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE 6-STAGE POST-TRAINING STACK</text>
+  <text x="60" y="96" class="h1">Six layers. You compose them — not run them in order.</text>
+  <text x="60" y="124" class="h-sub">Each layer changes one thing: weights, parameters touched, reward signal, verification, memory, or precision.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="130" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.8"></rect>
+    <circle cx="100" cy="222" r="20" fill="#b8902c"></circle>
+    <text x="100" y="228" text-anchor="middle" class="layer-num">6</text>
+    <text x="132" y="212" class="layer-tag" fill="#b8902c">LAYER 6  ·  QUANTIZATION  /  COMPRESSION</text>
+    <text x="132" y="240" class="layer-title">Trade precision for speed</text>
+    <text x="132" y="260" class="layer-sub">4-bit / 8-bit weights, LoRA on top — same checkpoint, smaller footprint</text>
+    <g transform="translate(132,278)">
+      <rect x="0" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#b8902c"></rect>
+      <text x="140" y="16" text-anchor="middle" class="pill" fill="#b8902c">Geneformer-Scaling  ·  r = 0.998</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="324" width="1880" height="130" rx="12" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="366" r="20" fill="#6b4e8a"></circle>
+    <text x="100" y="372" text-anchor="middle" class="layer-num">5</text>
+    <text x="132" y="356" class="layer-tag" fill="#6b4e8a">LAYER 5  ·  MEMORY  &amp;  ACTIVE LEARNING</text>
+    <text x="132" y="384" class="layer-title">Persistent state + experimental feedback</text>
+    <text x="132" y="404" class="layer-sub">consolidated facts across sessions; wet-lab rounds refine the model</text>
+    <g transform="translate(132,422)">
+      <rect x="0" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="140" y="16" text-anchor="middle" class="pill" fill="#6b4e8a">Mem0  ·  ADD / UPDATE / DELETE</text>
+      <rect x="296" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="436" y="16" text-anchor="middle" class="pill" fill="#6b4e8a">DeMeo  ·  closed-loop wet-lab</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="468" width="1880" height="130" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="510" r="20" fill="#c95a2a"></circle>
+    <text x="100" y="516" text-anchor="middle" class="layer-num">4</text>
+    <text x="132" y="500" class="layer-tag" fill="#c95a2a">LAYER 4  ·  MULTI-AGENT VERIFICATION</text>
+    <text x="132" y="528" class="layer-title">Wrap the model in structured agent loops</text>
+    <text x="132" y="548" class="layer-sub">database lookups, calibrated scores, generate-code-verify funnels</text>
+    <g transform="translate(132,566)">
+      <rect x="0" y="0" width="200" height="24" rx="4" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="100" y="16" text-anchor="middle" class="pill" fill="#c95a2a">GeneAgent  ·  18 DBs</text>
+      <rect x="216" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="356" y="16" text-anchor="middle" class="pill" fill="#c95a2a">CASSIA  ·  5 agents + quality score</text>
+      <rect x="512" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="652" y="16" text-anchor="middle" class="pill" fill="#c95a2a">SPARK  ·  generate-code-verify</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="612" width="1880" height="130" rx="12" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <circle cx="100" cy="654" r="20" fill="#a14854"></circle>
+    <text x="100" y="660" text-anchor="middle" class="layer-num">3</text>
+    <text x="132" y="644" class="layer-tag" fill="#a14854">LAYER 3  ·  RL ELICITATION</text>
+    <text x="132" y="672" class="layer-title">Reward verifiable reasoning</text>
+    <text x="132" y="692" class="layer-sub">rule-based rewards (batch match, MedCPT, pLDDT)  ·  GRPO without a critic</text>
+    <g transform="translate(132,710)">
+      <rect x="0" y="0" width="240" height="24" rx="4" fill="#ffffff" stroke="#a14854"></rect>
+      <text x="120" y="16" text-anchor="middle" class="pill" fill="#a14854">Cell-o1  ·  batch matching</text>
+      <rect x="256" y="0" width="260" height="24" rx="4" fill="#ffffff" stroke="#a14854"></rect>
+      <text x="386" y="16" text-anchor="middle" class="pill" fill="#a14854">Gene-R1  ·  MedCPT + format</text>
+      <rect x="532" y="0" width="260" height="24" rx="4" fill="#ffffff" stroke="#a14854"></rect>
+      <text x="662" y="16" text-anchor="middle" class="pill" fill="#a14854">ProteinRL  ·  charge / pLDDT</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="756" width="1880" height="130" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <circle cx="100" cy="798" r="20" fill="#2c8a4f"></circle>
+    <text x="100" y="804" text-anchor="middle" class="layer-num">2</text>
+    <text x="132" y="788" class="layer-tag" fill="#2c8a4f">LAYER 2  ·  PEFT</text>
+    <text x="132" y="816" class="layer-title">Freeze the backbone, train &lt; 5 % of params</text>
+    <text x="132" y="836" class="layer-sub">LoRA  ·  prefix  ·  adapters  ·  preserves the pretrained prior</text>
+    <g transform="translate(132,854)">
+      <rect x="0" y="0" width="260" height="24" rx="4" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="130" y="16" text-anchor="middle" class="pill" fill="#2c8a4f">scPEFT  ·  4 adapter types</text>
+      <rect x="276" y="0" width="240" height="24" rx="4" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="396" y="16" text-anchor="middle" class="pill" fill="#2c8a4f">PEFT-PLM  ·  ESM2 LoRA</text>
+      <rect x="532" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="672" y="16" text-anchor="middle" class="pill" fill="#2c8a4f">ColabSaprot  ·  community hub</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="900" width="1880" height="130" rx="12" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <circle cx="100" cy="942" r="20" fill="#4a6a8a"></circle>
+    <text x="100" y="948" text-anchor="middle" class="layer-num">1</text>
+    <text x="132" y="932" class="layer-tag" fill="#4a6a8a">LAYER 1  ·  SFT  /  DOMAIN ADAPTATION  (FOUNDATION)</text>
+    <text x="132" y="960" class="layer-title">Update weights on labeled task data</text>
+    <text x="132" y="980" class="layer-sub">full fine-tune or continued pretraining — highest task ceiling, biggest forgetting risk</text>
+    <g transform="translate(132,998)">
+      <rect x="0" y="0" width="280" height="24" rx="4" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="140" y="16" text-anchor="middle" class="pill" fill="#4a6a8a">scGPT-Protocol  ·  2.9M retina</text>
+      <rect x="296" y="0" width="220" height="24" rx="4" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="406" y="16" text-anchor="middle" class="pill" fill="#4a6a8a">DANCE  ·  RNA ↔ ATAC</text>
+      <rect x="532" y="0" width="240" height="24" rx="4" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="652" y="16" text-anchor="middle" class="pill" fill="#4a6a8a">TIME-LLM  ·  input head</text>
+      <rect x="788" y="0" width="240" height="24" rx="4" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="908" y="16" text-anchor="middle" class="pill" fill="#4a6a8a">CodonFM  ·  continued pretraining</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(1280,180)">
+    <rect x="0" y="0" width="640" height="500" rx="12" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <text x="20" y="28" class="layer-tag" fill="#8a5a4a">HOW TO READ THIS STACK</text>
+    <text x="20" y="60" class="layer-title">Layers are independent, not sequential.</text>
+    <text x="20" y="92" class="annot">Most projects use 2 – 4 of the six layers; almost no project uses</text>
+    <text x="20" y="112" class="annot">all six. You compose the stack to fit your data and your budget.</text>
+
+    <line x1="20" y1="138" x2="620" y2="138" stroke="#e5dfcf" stroke-width="1"></line>
+
+    <text x="20" y="166" class="key">Common compositions</text>
+    <text x="20" y="194" class="annot"><tspan font-weight="700">budget single-cell labelling</tspan>  ·  PEFT + multi-agent verify</text>
+    <text x="20" y="216" class="annot"><tspan font-weight="700">protein design</tspan>  ·  RL elicitation + anti-forgetting prior</text>
+    <text x="20" y="238" class="annot"><tspan font-weight="700">drug discovery loop</tspan>  ·  PEFT + active learning (DeMeo)</text>
+    <text x="20" y="260" class="annot"><tspan font-weight="700">clinical assistant</tspan>  ·  multi-agent verify + memory (no FT)</text>
+    <text x="20" y="282" class="annot"><tspan font-weight="700">consumer GPU</tspan>  ·  layer-6 quantization underneath everything else</text>
+
+    <line x1="20" y1="310" x2="620" y2="310" stroke="#e5dfcf" stroke-width="1"></line>
+
+    <text x="20" y="338" class="key" fill="#c95a2a">When to escalate up the stack</text>
+    <text x="20" y="364" class="annot">accuracy plateau on PEFT  →  add RL elicitation</text>
+    <text x="20" y="384" class="annot">hallucination on RL outputs  →  add multi-agent verification</text>
+    <text x="20" y="404" class="annot">cross-session continuity needed  →  add memory</text>
+    <text x="20" y="424" class="annot">GPU memory shortage  →  add quantization underneath</text>
+
+    <line x1="20" y1="450" x2="620" y2="450" stroke="#e5dfcf" stroke-width="1"></line>
+    <text x="20" y="478" class="annot" font-style="italic" fill="#5c5c66">Each layer above changes one thing; pick the right &#34;one thing.&#34;</text>
+  </g>
+</svg>

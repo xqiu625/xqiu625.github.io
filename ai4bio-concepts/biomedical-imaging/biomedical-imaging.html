@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Biomedical imaging and computer vision for biology — Cellpose/StarDist segmentation, H&E to spatial expression, multiplexed tissue imaging, pathology foundation models, and agentic cancer pathology.">
+    <title>Biomedical Imaging &amp; Computer Vision — AI4Bio Learning Hub</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700');
+        /* ===== BLUE THEME (#0F4C81) — matched to "De Novo Protein Design" visual language ===== */
+        :root {
+            --blue-darkest:var(--sport-dark, #003B68); --blue-dark:var(--sport-dark, #003B68); --blue:var(--sport-primary, #005A9C); --blue-2:#2a6296; --blue-soft:#5a82a8;
+            --sans:'Lato', sans-serif; --serif:'Newsreader', Georgia, serif; --mono:'IBM Plex Mono', ui-monospace, monospace;
+            --accent:var(--sport-primary, #005A9C); --accent-2:#2a6296; --accent-tint:var(--sport-pale, #e8f3fa);
+            --bg:#eef2f7; --paper:#ffffff; --paper-2:#f2f6fb;
+            --ink:#1f2e3b; --ink-2:#3c5066; --ink-3:#647889; --ink-4:#94a6b5;
+            --rule:#cdddec; --rule-soft:#e0eaf3;
+            --warn:#b5791f; --warn-tint:#fff5e6; --selection-fg:#ffffff;
+        }
+        * { box-sizing:border-box; }
+        body {
+            font-family:'Lato', sans-serif;
+            background:linear-gradient(135deg, #eef2f7 0%, #d7e3ef 50%, #c4d8ea 100%);
+            line-height:1.7; color:#1f2e3b; margin:0; padding:0; min-height:100vh;
+        }
+        ::selection { background:#0F4C81; color:#fff; }
+        .container { max-width:1180px; margin:0 auto; padding:20px; }
+
+        /* NAV */
+        .navbar { background:#fff; border-bottom:1px solid #e0eaf3; padding:10px 0; position:sticky; top:0; z-index:1000; box-shadow:0 2px 5px rgba(10,50,88,0.1); }
+        .navbar-nav { list-style:none; padding:0; margin:0; display:flex; justify-content:center; align-items:center; flex-wrap:wrap; }
+        .navbar-nav li { margin:5px 15px; }
+        .navbar-nav a { color:#647889; text-decoration:none; font-weight:bold; font-size:15px; display:inline-flex; align-items:center; gap:7px; transition:color .25s; }
+        .navbar-nav a:hover { color:#0F4C81; }
+        .home-link { color:#0a3258 !important; }
+        .theme-toggle, li:has(> .theme-toggle) { display:none !important; }
+        /* ===== CASEWORK BANNER + STORY (ABC Murders, 01 Measure) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#0d2137 0%,#005a9c 60%,#1c496e 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(0,59,104,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #cfe5f5; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #dcebf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: #f4f9fd; border: 1.5px solid #dcebf7; }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #003B68); border-left: 4px solid var(--sport-primary, #005A9C); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid #dcebf7; border-left: 5px solid var(--sport-primary, #005A9C); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(0,59,104,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(0,59,104,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #005A9C); }
+        .library-card h4 { color: var(--sport-dark, #003B68); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #003B68); background: #e8f3fa; border: 1px dashed #9ec5e5; border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #005A9C); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #005A9C); font-size: .95em; clear: both; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid #dcebf7; box-shadow: 0 10px 28px rgba(0,59,104,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #7fb3e0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #9ec5e5; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(0,90,156,.15); border-color: rgba(127,179,224,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #7fb3e0; }
+        [data-theme="dark"] .library-footnote { color: #7fb3e0; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid #dcebf7; }
+        .content-figure figcaption { margin-top: 10px; font-size: 0.9em; line-height: 1.55; color: #5a6b7c; text-align: center; }
+        [data-theme="dark"] .content-figure figcaption { color: #9fb3a7; }
+
+        /* HEADER */
+        .header { background:linear-gradient(135deg,#0a3258 0%,#0d3f6b 50%,#0F4C81 100%); color:#fff; padding:60px 40px; border-radius:20px; margin:20px 0; text-align:center; box-shadow:0 8px 30px rgba(15,76,129,0.4); position:relative; overflow:hidden; }
+        .header:before { content:""; }
+        .header .kicker { font-size:0.8em; letter-spacing:0.18em; text-transform:uppercase; opacity:0.82; margin:0 0 14px; position:relative; font-weight:700; }
+        .header h1 { margin:0 0 15px 0; font-size:2.8em; font-weight:300; letter-spacing:1px; position:relative; line-height:1.15; }
+        .header .subtitle { font-size:1.25em; opacity:0.95; margin-bottom:15px; font-weight:300; letter-spacing:0.3px; position:relative; }
+        .header .description { font-size:1.03em; max-width:900px; margin:0 auto; line-height:1.8; font-weight:300; position:relative; }
+
+        /* STATS */
+        .stats-bar { background:linear-gradient(135deg,#fff 0%,#f2f6fb 100%); padding:30px; border-radius:15px; margin:25px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:25px; box-shadow:0 4px 20px rgba(10,50,88,0.15); border:1px solid rgba(15,76,129,0.2); }
+        .stat-item { text-align:center; padding:20px; border-left:4px solid #0F4C81; background:#fff; border-radius:8px; transition:transform .3s,box-shadow .3s; }
+        .stat-item:hover { transform:translateY(-5px); box-shadow:0 6px 20px rgba(15,76,129,0.2); }
+        .stat-number { font-size:2.8em; font-weight:300; color:#0a3258; display:block; letter-spacing:-1px; }
+        .stat-label { color:#0F4C81; font-size:0.92em; margin-top:8px; font-weight:500; }
+
+        /* CONTENT */
+        .content-section { background:#fff; padding:40px; border-radius:15px; margin:25px 0; box-shadow:0 4px 15px rgba(0,0,0,0.1); border-top:4px solid #0F4C81; }
+        .content-section h2 { color:#0a3258; border-bottom:2px solid #0F4C81; padding-bottom:15px; margin-bottom:30px; font-size:1.9em; font-weight:400; letter-spacing:0.3px; position:relative; }
+        .content-section h2:before { content:"\25B8"; position:absolute; left:-25px; color:#0F4C81; font-size:1.2em; }
+        .content-section h3 { color:#0d3f6b; margin-top:35px; margin-bottom:20px; font-size:1.45em; font-weight:500; border-left:4px solid #0F4C81; padding-left:15px; }
+        .content-section ul { line-height:2; }
+        .content-section a, a { color:#0F4C81; }
+        .content-section a { font-weight:600; text-decoration:none; }
+        .content-section a:hover { text-decoration:underline; }
+        code { font-family:var(--mono); background:#e8f0f7; color:#0d3f6b; padding:2px 6px; border-radius:4px; font-size:0.9em; }
+
+        /* BOXES */
+        .highlight-box, .theorem-box, .method-category { background:linear-gradient(135deg,#f2f6fb 0%,#e3edf6 100%); border:2px solid #0F4C81; border-left:6px solid #0F4C81; padding:30px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(15,76,129,0.1); }
+        .method-category { padding:22px 26px; }
+        .highlight-box h4, .method-category h4 { color:#0a3258; margin-top:0; font-size:1.3em; font-weight:600; border-bottom:2px solid #cdddec; padding-bottom:10px; margin-bottom:16px; }
+        .method-category p { margin:6px 0; max-width:80ch; }
+        .theorem-box { font-family:var(--serif); }
+        .theorem-box h4 { color:#0a3258; margin-top:0; font-size:1.2em; font-weight:600; }
+        .warning-box { background:linear-gradient(135deg,#fffaf0 0%,#fff5e6 100%); border:2px solid #d39a3c; border-left:6px solid #b9772a; padding:25px; margin:25px 0; border-radius:10px; box-shadow:0 2px 10px rgba(185,119,42,0.1); }
+        .warning-box h4 { color:#8a5a1c; margin-top:0; font-size:1.25em; display:flex; align-items:center; gap:10px; }
+        .warning-box h4:before { content:"\26A0"; font-size:1.2em; }
+        .checklist { background:#fff; border:1px solid #cdddec; padding:22px 28px 18px; margin:18px 0; border-radius:10px; }
+
+        /* PAPER CARDS */
+        .paper-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(360px,1fr)); gap:25px; margin:30px 0; }
+        .paper-card { border:1px solid #d6e2ee; border-radius:12px; padding:25px; transition:all .3s; background:linear-gradient(135deg,#fff 0%,#f7fafd 100%); position:relative; border-top:4px solid #0F4C81; }
+        .paper-card:hover { border-color:#0F4C81; box-shadow:0 8px 25px rgba(15,76,129,0.25); transform:translateY(-5px); background:linear-gradient(135deg,#fff 0%,#eef5fb 100%); }
+        .paper-card h4 { color:#0a3258; margin-top:0; font-size:1.13em; line-height:1.5; font-weight:600; }
+        .paper-meta { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+        .meta-badge, .modality-badge { display:inline-block; padding:4px 10px; border-radius:12px; font-size:0.74em; font-weight:bold; }
+        .year-badge { background:#0F4C81; color:#fff; }
+        .journal-badge { background:#dde7f2; color:#234a72; }
+        .type-badge, .modality-badge { background:#2a6296; color:#fff; }
+        .paper-description { color:#41505d; line-height:1.6; margin:12px 0; font-size:0.94em; }
+        .key-contributions, .paper-highlights ul { list-style:none; padding:0; margin:15px 0; }
+        .key-contributions li, .paper-highlights li { padding-left:22px; position:relative; margin:8px 0; font-size:0.9em; color:#647889; }
+        .key-contributions li:before, .paper-highlights li:before { content:"\2713"; position:absolute; left:0; color:#0F4C81; font-weight:bold; }
+        .paper-highlights { margin:14px 0; font-size:0.9em; }
+        .paper-highlights > strong { color:#0d3f6b; }
+        .paper-links { margin-top:15px; display:flex; gap:10px; flex-wrap:wrap; }
+        .paper-links a, .paper-link { padding:6px 14px; background:linear-gradient(135deg,#0F4C81,#2a6296); color:#fff !important; text-decoration:none; border-radius:6px; font-size:0.85em; transition:all .3s; display:inline-flex; align-items:center; gap:6px; }
+        .paper-links a:hover, .paper-link:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(15,76,129,0.3); text-decoration:none; }
+
+        /* KG CARDS */
+        .kg-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:0; margin:24px 0 0; border-top:1px solid #cdddec; border-left:1px solid #cdddec; border-radius:0; }
+        .kg-card { background:#fff; padding:24px 24px 22px; border-right:1px solid #cdddec; border-bottom:1px solid #cdddec; }
+        .kg-card h4 { margin:0 0 6px; color:#0a3258; font-size:1.05em; }
+        .kg-card p { font-size:14.5px; line-height:1.55; margin:6px 0; }
+        .kg-card .kg-tag { display:inline-block; font-family:var(--mono); font-size:10px; letter-spacing:0.08em; text-transform:uppercase; background:#e2ecf5; color:#0F4C81; padding:2px 8px; margin-bottom:10px; border-radius:2px; }
+        .kg-stat { display:block; margin-top:10px; padding-top:10px; border-top:1px dashed #cdddec; font-family:var(--mono); font-size:12px; color:#647889; }
+
+        /* METHOD LIST (multi-omics) */
+        .method-list { display:flex; flex-direction:column; gap:6px; margin:12px 0 0; }
+        .method-item { font-size:13.5px; color:#41505d; padding:7px 12px; background:#f2f6fb; border-left:3px solid #2a6296; border-radius:4px; }
+        .method-item a { font-weight:600; }
+
+        /* TIMELINE */
+        .timeline { position:relative; margin:30px 0; padding-left:34px; }
+        .timeline:before { content:""; position:absolute; left:9px; top:6px; bottom:6px; width:3px; background:linear-gradient(#0F4C81,#cdddec); border-radius:2px; }
+        .timeline-item { position:relative; margin:0 0 26px; padding:18px 24px; background:linear-gradient(135deg,#f7fafd 0%,#eef5fb 100%); border:1px solid #d6e2ee; border-left:4px solid #0F4C81; border-radius:10px; }
+        .timeline-item:before { content:""; position:absolute; left:-30px; top:24px; width:13px; height:13px; border-radius:50%; background:#0F4C81; border:3px solid #fff; box-shadow:0 0 0 2px #0F4C81; }
+        .timeline-item h3 { margin:0 0 8px; border:none; padding:0; color:#0a3258; font-size:1.2em; font-weight:600; }
+        .timeline-item p { margin:0; color:#41505d; }
+        .timeline-marker { display:none; }
+        .timeline-year { font-family:var(--mono); font-weight:600; color:#0F4C81; font-size:0.95em; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:10px; }
+        .timeline-content { color:#41505d; }
+        .timeline-content p { margin:0 0 10px; font-size:14.5px; color:#3c5066; }
+        .timeline-content ul { margin:8px 0; }
+
+        /* TABLES */
+        .comparison-table { width:100%; border-collapse:collapse; margin:20px 0; font-size:0.94em; }
+        .comparison-table th, .comparison-table td { padding:14px; text-align:left; border-bottom:1px solid #e0eaf3; }
+        .comparison-table th { background:linear-gradient(135deg,#0F4C81,#2a6296); color:#fff; font-weight:bold; position:sticky; top:0; }
+        .comparison-table tr:hover { background:#f2f6fb; }
+        .comparison-table td:first-child { font-weight:bold; color:#0F4C81; }
+
+        /* IMAGE / MODULE FIGURES */
+        .module-figure { margin:36px 0 28px; padding:0; }
+        .module-figure img { display:block; width:100%; height:auto; border:1px solid #cdddec; border-radius:8px; background:#fff; }
+        .fig-title { font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#0F4C81; margin:10px 0 0; }
+
+        /* INLINE SVG FIGURES (knowledge-graphs etc.) */
+        .figure { margin:32px 0; padding:28px 32px 22px; background:#fff; border:1px solid #cdddec; border-radius:12px; }
+        .figure-wide { max-width:none; }
+        .figure svg { width:100%; height:auto; display:block; overflow:visible; }
+        .figure .fig-label { font-family:var(--mono); font-size:10.5px; letter-spacing:0.12em; text-transform:uppercase; color:#0F4C81; margin:0 0 16px; }
+        .figure .fig-caption { font-family:var(--serif); font-style:italic; font-size:14px; color:#647889; margin:14px 0 0; line-height:1.5; }
+        .figure .fig-caption b { color:#3c5066; font-style:normal; font-weight:600; }
+        .figure svg .ink { stroke:var(--ink); fill:var(--ink); }
+        .figure svg .ink-2 { stroke:var(--ink-2); fill:var(--ink-2); }
+        .figure svg .ink-3 { stroke:var(--ink-3); fill:var(--ink-3); }
+        .figure svg .rule { stroke:var(--rule); fill:none; }
+        .figure svg .accent { stroke:var(--accent); fill:none; }
+        .figure svg .accent-fill { fill:var(--accent); stroke:none; }
+        .figure svg .accent-tint { fill:var(--accent-tint); stroke:var(--accent); }
+        .figure svg .paper { fill:var(--paper); stroke:var(--rule); }
+        .figure svg .paper-2 { fill:var(--paper-2); stroke:var(--rule); }
+        .figure svg .warn { stroke:var(--warn); fill:none; }
+        .figure svg text { font-family:var(--sans); font-size:12px; fill:var(--ink); }
+        .figure svg text.mono { font-family:var(--mono); font-size:10.5px; fill:var(--ink-3); letter-spacing:0.06em; }
+        .figure svg text.label { font-family:var(--mono); font-size:10px; fill:var(--ink-2); text-transform:uppercase; letter-spacing:0.08em; }
+        .figure svg text.serif { font-family:var(--serif); font-style:italic; fill:var(--ink-2); }
+        .figure svg text.node-label { font-family:var(--sans); font-size:11.5px; font-weight:500; fill:var(--ink); }
+        .figure svg text.edge-label { font-family:var(--mono); font-size:10px; fill:var(--accent); letter-spacing:0.04em; }
+
+        /* FOOTER */
+        footer { text-align:center; padding:30px; color:#647889; background:#fff; margin-top:40px; border-radius:15px; }
+        footer p { margin:10px 0; }
+        footer a { color:#0F4C81; text-decoration:none; font-weight:bold; }
+        footer a:hover { text-decoration:underline; }
+
+        @media (max-width:768px) {
+            .paper-grid { grid-template-columns:1fr; }
+            .stats-bar { grid-template-columns:1fr; }
+            .kg-grid { grid-template-columns:1fr; }
+            .comparison-table { font-size:0.82em; }
+            .comparison-table th, .comparison-table td { padding:10px 8px; }
+            .header h1 { font-size:2em; }
+            .header .subtitle { font-size:1.05em; }
+        }
+    </style>
+    <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
+    <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
+</head>
+<body data-sport="measure">
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="../index.html" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
+                <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
+                <li><a href="#abc-murders">🔍 Story</a></li>
+                <li><a href="#core-concepts"><i class="fas fa-bookmark"></i> Concepts</a></li>
+                <li><a href="#timeline"><i class="fas fa-timeline"></i> Timeline</a></li>
+                <li><a href="#compare"><i class="fas fa-code-compare"></i> Compare</a></li>
+                <li><a href="#families"><i class="fas fa-layer-group"></i> Method families</a></li>
+                <li><a href="#table"><i class="fas fa-table"></i> Selection</a></li>
+                <li><a href="#reading-order"><i class="fas fa-list-ol"></i> Reading order</a></li>
+                <li><a href="#practical"><i class="fas fa-wrench"></i> Practical</a></li>
+                <li><a href="#hands-on"><i class="fas fa-laptop-code"></i> Hands-on</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <header class="header">
+            <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 18px;">AI4Bio Learning Hub · Field Guide</div>
+            <h1>Biomedical Imaging &amp;<br>Computer Vision</h1>
+            <div class="subtitle">From Cellpose and StarDist cell segmentation to H&amp;E&rarr;spatial expression prediction, multiplexed tissue imaging, pathology foundation models, and agentic cancer pathology &mdash; how AI is reading tissues, cells, and CT scans at scale.</div>
+            <p class="description">
+                31 curated papers spanning 2020&ndash;2026 on biological computer vision. Covers per-pixel cell and organelle segmentation (Cellpose, StarDist, Baysor, CellSAM, ESPRESSO, cellAdmix, Classpose), H&amp;E&rarr;spatial molecular bridges (ST-Net, Hist2ST, GHIST, OmiCLIP, SpatialEx, HEX), multiplexed tissue platforms and software (DSP, CosMx, DBiTplus, Squidpy, BANKSY, CellNEST, Xenium-Visium-scFFPE), pathology &amp; spatial foundation models (UNI, CONCH, GigaPath, PLIP, Novae, plus CellSAM and OmiCLIP elsewhere), cell-painting and high-content screening (CellPaint-POSH, MolPhenix, IMPA), whole-slide-imaging MIL (PaSCient), and multimodal/agentic diagnosis (MedMPT chest CT, SPARK agentic pathology). The full pipeline from raw pixel to clinical inference.
+            </p>
+        </header>
+
+        <div class="stats-bar">
+            <div class="stat-item"><span class="stat-number">31</span><div class="stat-label">Curated Papers</div></div>
+            <div class="stat-item"><span class="stat-number">7</span><div class="stat-label">Method Families</div></div>
+            <div class="stat-item"><span class="stat-number">7</span><div class="stat-label">Years Covered (2020&ndash;2026)</div></div>
+            <div class="stat-item"><span class="stat-number">5</span><div class="stat-label">Imaging Modalities</div></div>
+        </div>
+
+        <!-- CASEWORK BANNER (Measure · Agatha Christie lens) -->
+        <section class="casework-banner" aria-label="Agatha Christie ABC Murders inspired biomedical imaging casework">
+            <div class="casework-art">
+                <!-- TODO: IP asset pending — insert ../animations/rive-assets/stage-themes-v5/abc-murders-three-poses.webp (1672x941) once generated (brief: AI4Bio-Concepts-Handbook/briefs/abc-murders-biomedical-imaging.md) -->
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">Agatha Christie lens · The ABC Murders</div>
+                <h2>每个现场都看，但只信重复出现的线索。</h2>
+                <p>A killer leaves the same guidebook at every scene; Poirot wins by comparing scenes systematically, not by staring at any single one. 整张病理切片的读法一样：每一块 tile 都是一个现场，大多数是无辜的——找的是跨现场重复出现的那条线索，而不是最显眼的那条。</p>
+            </div>
+        </section>
+
+        <!-- STORY LINE: The ABC Murders -->
+        <section class="content-section story-section" id="abc-murders">
+            <!-- TODO: IP asset pending — uncomment and insert ../animations/rive-assets/stage-themes-v5/abc-murders-hero.webp (1400x1400) once generated
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/abc-murders-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu as a traveling detective in a wool coat and bowler hat, studying a railway map of England with three pinned scene photographs, each showing the same thin guidebook on the table">
+            </figure>
+            -->
+            <h2>🔍 The ABC Murders: Reading Tissues in Six Scenes</h2>
+            <p class="story-quote">「每个现场都看，但只信重复出现的线索。」</p>
+            <p class="story-intro">In <em>The ABC Murders</em> (1936), Poirot faces a killer who signs every scene with the same guidebook — and a trail of surface resemblances that mislead everyone else. Reading a whole-slide image is the same discipline: thousands of tiles, most of them innocent, a few carrying the repeating signature. Six scenes from the casebook, re-read as biomedical imaging. <em>(Classic-novel spoilers inside.)</em></p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Scene 1 · 每个现场都留一本指南</div>
+                    <h4>The repeating signature</h4>
+                    <p class="plot">Churston, Bexhill, Andover — different towns, different victims, but the same thin book on every table. That repetition is the case.</p>
+                    <p class="echo"><strong>Biomarkers.</strong> The signature that repeats across slides, cohorts, and scanners is the finding; everything else is scenery. H&amp;E→expression models (GHIST, Hist2ST) hunt exactly this: which tile-level patterns predict molecular state everywhere. <a href="#families">See the bridge family ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 2 · 全国地图到街道</div>
+                    <h4>The magnification pyramid</h4>
+                    <p class="plot">Poirot starts with the railway map of England, narrows to one county, then walks one street. You cannot solve it at any single scale.</p>
+                    <p class="echo"><strong>WSI pyramids.</strong> 0.25× for tissue architecture, 40× for nuclear morphology — MIL and multi-resolution models (PaSCient, GigaPath) read a gigapixel slide the same way: map first, street last. <a href="#families">See MIL ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 3 · 表面相似全是误导</div>
+                    <h4>Artifacts as red herrings</h4>
+                    <p class="plot">Every scene offers an obvious suspect — the stranger on the train, the arguing relative — and every obvious suspect is wrong. The trail that looks loudest is the decoy.</p>
+                    <p class="echo"><strong>Artifacts.</strong> Tissue folds, pen marks, stain variation, batch hue: the loudest features in a slide are often the decoys. Stain normalization and artifact-aware training are the detective work of not being fooled. <a href="#practical">Pitfalls ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 4 · 逐块走访每块街区</div>
+                    <h4>Tiles as scenes (MIL)</h4>
+                    <p class="plot">The squad interviews hundreds of witnesses knowing most have nothing to offer. You knock on every door anyway — the one useful statement is worth the thousand useless ones.</p>
+                    <p class="echo"><strong>Multiple instance learning.</strong> A gigapixel slide becomes thousands of tiles; most are innocent. MIL pools tile-level evidence into a slide-level verdict without needing every tile labelled. <a href="#families">See WSI MIL ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 5 · 连环案的共性才作数</div>
+                    <h4>Generalization</h4>
+                    <p class="plot">A pattern that appears at one scene is gossip; the same pattern at three scenes is evidence. The case breaks when the common thread survives every town.</p>
+                    <p class="echo"><strong>Cross-cohort robustness.</strong> A feature that works at one hospital is gossip; validated across scanners, sites, and cohorts, it becomes evidence. External validation is the "third town" test for imaging models. <a href="#practical">Guide ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Scene 6 · 真凶不是最显眼的</div>
+                    <h4>Saliency vs truth</h4>
+                    <p class="plot">The arrest lands on the person nobody watched — never the one the newspapers circled. Poirot's verdict survives because it is built from the pattern, not from prominence.</p>
+                    <p class="echo"><strong>Saliency ≠ truth.</strong> Attention maps highlight what's loud, not what's causal. Interpretable imaging (concept-level SPARK-style parameters, validated H&amp;E→expression bridges) is the difference between a story and a conviction. <a href="#families">See agentic pathology ↓</a></p>
+                </div>
+            </div>
+            <figure class="content-figure comic-figure">
+                <!-- TODO: IP asset pending — insert figures/abc-murders-four-panel-comic.webp (1600x1600) once generated (brief: AI4Bio-Concepts-Handbook/briefs/abc-murders-biomedical-imaging.md)
+                <img src="figures/abc-murders-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel ABC Murders comic: three scene tables each with the same thin guidebook; a detective studying a big railway map then zooming a magnifier onto one street; a flashy glowing decoy clue beside a plain small book; and three town photographs pinned with the same pattern marked on each">
+                <figcaption><strong>The casebook in four scenes.</strong> A guidebook at every scene (the repeating signature) · map first, street last (the magnification pyramid) · the loud clue is the decoy (artifacts) · same pattern, third town (cross-cohort validation).</figcaption>
+                -->
+            </figure>
+            <p class="library-footnote">「热闹的线索多是误导，重复的线索才是证据。」</p>
+        </section>
+
+        <section class="content-section" id="core-concepts">
+            <h2>Core Concepts</h2>
+            <h3>What "biomedical imaging" covers (microscopy &rarr; histology &rarr; CT &rarr; MRI)</h3>
+            <p>
+                "Biomedical imaging" in this module spans five physical modalities that share almost nothing except that the input is pixels and the output is biology. Fluorescence microscopy of cultured cells (Cellpose, Cell Painting), confocal hyperspectral live imaging (ESPRESSO), H&amp;E-stained tissue sections at 20&ndash;40&times; magnification (ST-Net, GHIST, HEX, PaSCient, SPARK), multiplexed in&nbsp;situ imaging of RNA and protein at subcellular resolution (CosMx, Xenium, DBiTplus, CODEX), and volumetric clinical scans (MedMPT chest CT). Each modality has its own physics, its own typical image size (224<sup>2</sup> patches up to 100,000<sup>2</sup>-pixel whole-slide images), and its own labelling regime.
+            </p>
+            <p>
+                What unifies them is the AI task pipeline: <strong>segment</strong> objects (cells, nuclei, organelles, lesions) &rarr; <strong>classify</strong> them (cell type, disease state, grade) &rarr; <strong>predict</strong> something molecular or clinical that the image alone doesn't directly measure (gene expression, protein level, survival, drug response). Cross-link to spatial-transcriptomics.html and <a href="../single-cell-analysis/spatial-transcriptomics-technologies.html">spatial-transcriptomics-technologies.html</a> for the molecular substrate that many of these models predict or consume.
+            </p>
+
+            <h3>The five image-AI sub-tasks (segment / classify / predict modality / generate / multi-agent diagnose)</h3>
+            <ul>
+                <li><strong>Segment.</strong> Per-pixel labelling. Cellpose (gradient flows, AP<sub>0.5</sub> = 0.91), StarDist (star-convex polygons, mPQ = 0.5013 on CoNIC), CellSAM (SAM + CellFinder, F1-error 0.40 zero-shot on LIVECell), Baysor (Bayesian + MRF over transcripts, 2&times; more cells than DAPI-based), ESPRESSO (organelle-level with hyperspectral phasor unmixing). The substrate every other task builds on.</li>
+                <li><strong>Classify.</strong> Single-cell or whole-slide labelling. StarDist with classification head (6 cell types, 1st place CoNIC 2022), Classpose (8% PQ improvement over Semantic CP-SAM across 6 datasets), PaSCient (135 disease states from 24.3M cells &times; 5,000 patients, weighted F1 = 0.70).</li>
+                <li><strong>Predict modality.</strong> Map H&amp;E pixels &rarr; molecular readout. ST-Net (DenseNet-121 &rarr; 250 genes, RMSE 0.31), Hist2ST (Convmixer + Transformer + GNN, +9% PCC vs HisToGene), GHIST (multi-task UNet 3+ &rarr; single-cell SGE, PCC 0.7&ndash;0.84), OmiCLIP (CLIP-style, 2.2M H&amp;E&ndash;ST pairs), SpatialEx (UNI + hypergraph), HEX (MUSK foundation model &rarr; 40 proteins at Pearson r 0.73&ndash;0.79).</li>
+                <li><strong>Generate.</strong> Synthesise perturbed cells or modality-translated images. IMPA (StarGAN-style perturbation prediction, FID +17% over StarGANv2), MolPhenix (CLIP-style retrieval of molecule given image, top-1% recall 77.3% vs 5.1% for CLOOME). See perturbation-modeling.html.</li>
+                <li><strong>Multi-agent diagnose.</strong> LLM agents that orchestrate analytical pipelines over images. SPARK (1,115 verified parameters from H&amp;E across 5 cancer types and 5,400+ patients, MSI AUROC 0.933). See ai-agents.html.</li>
+            </ul>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig01_pipeline.svg" alt="Five-stage biomedical imaging pipeline drawn as a left-to-right flow. Stage 1 (Segment): per-pixel labelling — Cellpose, StarDist, CellSAM, Baysor. Stage 2 (Classify): single-cell or WSI labelling using segmented masks — StarDist+classification head, Classpose, PaSCient. Stage 3 (Predict modality): map pixels to molecular readouts — ST-Net, Hist2ST, GHIST, OmiCLIP, HEX. Stage 4 (Generate): synthesise perturbed cells or translate modalities — IMPA, MolPhenix. Stage 5 (Multi-agent diagnose): LLM agents orchestrate analytical pipelines — SPARK, MedMPT. Arrows show error inheritance: a 5% segmentation error at stage 1 becomes a wrong DE call at stage 3 and a wrong drug-target hypothesis at stage 5.">
+                <figcaption><strong>Figure 1</strong><span class="fig-title">The biomedical imaging pipeline — raw pixels to clinical inference.</span> Five sub-tasks. Each one inherits the errors of the one before it. Segmentation feeds classification feeds modality prediction feeds generation feeds multi-agent diagnosis. The most important consequence: if you don't audit stage 1, every downstream metric is contaminated. This is why cellAdmix exists.</figcaption>
+            </figure>
+
+            <h3>Why biological images are harder than ImageNet (resolution, batch effects, low labels)</h3>
+            <ul>
+                <li><strong>Resolution mismatch.</strong> ImageNet is 224&times;224 of a single object. A whole-slide H&amp;E image is 100,000&times;100,000 pixels with 50,000+ cells; a Xenium FOV may contain ~700K transcripts. Patch-based pipelines are mandatory, which means downstream models inherit the patch's locality bias (ST-Net's 100&micro;m spots average over tens of cells; HEX uses 224&times;224 tiles for 40 protein channels).</li>
+                <li><strong>Batch effects dominate.</strong> Cell painting plates, microscope channels, scanner colour profiles, and staining protocols all leak signal that swamps biology if not controlled. Spatial transcriptomics across slides has the same problem (Novae explicitly bakes optimal-transport batch correction into pretraining). CellPaint-POSH's CP-DINO needed defocus + coarse-dropout augmentation to handle this; cross-link to sc_batch_correction_integration.html.</li>
+                <li><strong>Labels are weak.</strong> Pixel-level masks are expensive (Cellpose's 70K+ annotations were a community effort over years). WSI labels are patient-level, not patch-level &mdash; that's why PaSCient uses MIL. Spatial-transcriptomics ground truth has only ~3,400 counts per spot in the original ST data; ST-Net trains on 23 patients total. The signal-to-noise is closer to medical imaging than to web data.</li>
+                <li><strong>Segmentation errors compound.</strong> cellAdmix (Nat&nbsp;Genet 2026) showed every state-of-the-art segmenter (Baysor, BIDCell, ProSeg, 10x Multimodal) leaves cells contaminated with foreign transcripts, and that this contamination drives ~25% of published DIALOGUE/scITD factors and inflated ligand-receptor calls. A 5% segmentation error becomes a fundamentally wrong biological conclusion downstream.</li>
+            </ul>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig02_imagenet_vs_bio.svg" alt="Three-axis comparison of ImageNet vs biomedical images. Axis 1 (Size): ImageNet 224×224 of a single object; biomedical 100,000² WSIs, ~700K transcripts per Xenium FOV — patch-based pipelines mandatory. Axis 2 (Noise): ImageNet uses curated web photos; biomedical pixels carry plate effects, scanner colour profiles, staining variability, microscope channel differences — batch effects dominate. Axis 3 (Labels): ImageNet 1.2M class labels from MTurk; biomedical pixel-level masks need expert annotation (Cellpose's 70K+ took years), WSI labels are patient-level (PaSCient uses MIL), ST ground truth has only ~3,400 counts per spot. Three reasons general-purpose vision models fail on biology without domain adaptation.">
+                <figcaption><strong>Figure 2</strong><span class="fig-title">ImageNet vs biomedical images — three axes of difficulty.</span> Different size, different noise, different labels. General-purpose vision models fail on biology without domain adaptation — and these are the reasons why. Every method in this module is doing something to handle at least one of these three axes; the strongest methods (Cellpose, CellSAM, Novae) handle all three.</figcaption>
+            </figure>
+        </section>
+
+        <section class="content-section" id="timeline">
+            <h2>Evolution Timeline</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>2020 &mdash; The two foundations: spatial profiling + H&amp;E&rarr;ST</h3>
+                    <p>NanoString DSP (Nat Biotech) launches photocleavable-oligo digital spatial profiling on FFPE &mdash; 44 proteins or 1,412+ genes per ROI. ST-Net (Nat Biomed Eng) is the first paper to predict spatially resolved gene expression directly from H&amp;E images via DenseNet-121, RMSE 0.31 on 250 genes, generalising zero-shot to 10x Visium and TCGA.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2021 &mdash; Generalist cell segmentation</h3>
+                    <p>Cellpose (Nat Methods) reframes segmentation as a vector-flow problem learned from simulated heat diffusion. AP<sub>0.5</sub> = 0.91 across cytoplasm, brightfield, membrane, and even non-microscopy images &mdash; the first model that doesn't need retraining per dataset.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2022 &mdash; Subcellular spatial omics + tissue analysis frameworks</h3>
+                    <p>CosMx SMI (Nat Biotech) achieves 980 RNAs + 108 proteins at subcellular resolution in FFPE, with 0.0092 false calls per cell. Baysor (Nat Biotech) finds 2&times; more cells than DAPI-based segmentation by jointly modelling transcript composition and morphology. Squidpy (Nat Methods) ships the technology-agnostic spatial-omics framework. StarDist gets a classification head and wins CoNIC 2022 (mPQ 0.5013). Hist2ST adds Convmixer + Transformer + GNN to the H&amp;E&rarr;ST recipe.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2023 &mdash; Multi-modal Xenium-Visium-scFFPE integration</h3>
+                    <p>10x's serial-section study (Nat Commun) combines scFFPE-seq + Visium CytAssist + Xenium on the same breast cancer tissue, discovering rare "boundary cells" and a triple-positive region only detectable when 86% of Xenium cells are matched to scFFPE cell types.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2024 &mdash; Spatial clustering at scale + cell-painting goes contrastive + patient-level WSI</h3>
+                    <p>BANKSY (Nat Genet) unifies cell typing and tissue-domain segmentation by augmenting expression with neighborhood features and Gabor filters; processes 2M cells, 10&ndash;1000&times; faster than competitors. MolPhenix (NeurIPS) introduces contrastive PhenoMolecular Retrieval (top-1% recall 77.3%, 8.1&times; over CLOOME). PaSCient (bioRxiv) shows patient-level disease classification from 24.3M cells across 135 disease states.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2025 &mdash; Foundation models, generative perturbation, agentic platforms</h3>
+                    <p>CellSAM (Nat Methods) brings SAM + CellFinder to human-level segmentation across tissue, yeast, bacteria. OmiCLIP (Nat Methods) is the first CLIP-style visual-omics foundation model on 2.2M H&amp;E&ndash;ST pairs. GHIST (Nat Methods) predicts single-cell SGE from H&amp;E. ESPRESSO (Nat Methods) is the first organelle-level spatiotemporal omics (3,328 features/cell, 24h live). CellNEST (Nat Methods) detects multi-hop relay LR networks with GAT+DGI. Novae (Nat Methods) pretrains a graph-FM on 29M cells across 18 tissues. CellPaint-POSH (Nat Commun) marries 5-channel Cell Painting with pooled CRISPR + ISS + DINO-ViT (1,640-gene druggable genome). MedMPT (Nat Biomed Eng) builds a chest-CT vision-language model. IMPA (Nat Commun) generates perturbed cell images via style transfer. Classpose extends Cellpose-SAM to H&amp;E phenotyping. SpatialEx anchors multi-omics integration on H&amp;E + UNI foundation features.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2026 &mdash; Virtual proteomics, segmentation-error correction, agentic discovery</h3>
+                    <p>HEX (Nat Med) predicts 40 protein biomarkers from H&amp;E at Pearson r 0.73&ndash;0.79, beating cGAN by 46%; +22% prognosis, +24&ndash;39% immunotherapy response prediction in NSCLC. cellAdmix (Nat Genet) quantifies and corrects segmentation-error admixture, showing ~25% of published spatial DIALOGUE/scITD factors are admixture artifacts. DBiTplus (Nat Methods) integrates spatial transcriptomics with CODEX/CellScape protein imaging on the same tissue via RNase&nbsp;H cDNA retrieval. SPARK (Nat Med) is the first multi-agent LLM "pathology brain" &mdash; 1,115 verified concepts, 5 cancer types, 5,400+ patients, MSI AUROC 0.933, reconstructs tumor-evolution chains from static H&amp;E.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="compare">
+    <h2>Side-by-Side: Supervised Regression vs Contrastive Pretraining for H&amp;E → Gene Expression</h2>
+    <p>ST-Net and OmiCLIP both map the same H&amp;E tile to a molecular readout, but they diverge on every key design axis: label representation (continuous per-gene counts vs ranked gene-sentence tokens), training objective (MSE regression vs contrastive image–text alignment), and scale (23 patients vs 1,007 samples across 32 organs).</p>
+
+    <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">Same input — a 224&times;224 H&amp;E tile from a Visium slide — becomes very different model inputs and outputs:</p>
+        <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
+            <!-- COLUMN A (teal) — ST-Net -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #2f6f5e;background:#10231d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#5ec2a8;font-weight:600;font-size:15px;">ST-Net (2020, Nat Biomed Eng)</div>
+                    <div style="color:#9fc7bb;font-size:12px;">DenseNet-121 supervised regression</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Patch → DenseNet-121 encoder</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">224&times;224 tile; ImageNet pre-training; 1,024-dim shared representation</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Per-gene FC heads + MSE loss</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">250 genes &times; one head; trained on log-normalised spot counts; 23 breast cancer patients</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">250 gene scores</span>
+                    <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">RMSE 0.31</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">patch-local &middot; fully supervised &middot; fixed gene set &middot; spot-averaged counts</div>
+            </div>
+            <!-- divider -->
+            <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
+            <!-- COLUMN B (amber) — OmiCLIP -->
+            <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
+                <div style="width:100%;box-sizing:border-box;border:1.5px solid #8a5a1c;background:#271c0d;border-radius:10px;padding:11px 8px;text-align:center;margin-bottom:8px;">
+                    <div style="color:#d6a44f;font-weight:600;font-size:15px;">OmiCLIP (2025, Nat Methods)</div>
+                    <div style="color:#c7a877;font-size:12px;">CoCa CLIP-style dual-encoder pretraining</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Patch → ViT image encoder &amp; gene-sentence → text encoder</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">224&times;224 tile; causal-masking text encoder on top-50-expressed gene names per spot; 768-d shared space</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Contrastive alignment loss (image &#8596; gene-sentence)</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">2.2M H&amp;E–ST paired tiles; 32 organs; 1,007 samples; panel-agnostic (any genes)</div>
+                </div>
+                <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
+                <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">768-d joint embedding</span>
+                    <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">F1 up to 0.96</span>
+                    <span style="color:#7a7f86;">&#8230;</span>
+                </div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">multi-scale global &middot; contrastive self-supervised &middot; panel-agnostic &middot; gene-sentence tokens</div>
+            </div>
+        </div>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision — <em>what is the label?</em> ST-Net treats the molecular readout as 250 continuous regression targets and pays the price of a fixed gene panel and spot-averaged resolution. OmiCLIP reframes the same data as a language-vision alignment problem: the top-50 expressed gene names become a "sentence," and contrastive learning forces the image embedding and gene-sentence embedding to agree — unlocking panel-agnostic transfer across 32 organs, retrieval, annotation, and decomposition without retraining.</p>
+    </div>
+</section>
+
+        <section class="content-section" id="families">
+            <h2>Method Families</h2>
+            <p>Grouped by the AI task and substrate. Within each family, papers are ordered chronologically. Several papers span families (e.g., CellSAM is both segmentation and foundation model); they are placed in the better-fitting family and cross-referenced.</p>
+
+            <h3>1. Cell &amp; Organelle Segmentation (7)</h3>
+            <p>Per-pixel labelling. The substrate every downstream task depends on. From U-Net + gradient flows (Cellpose) to star-convex polygons (StarDist) to Bayesian transcript-aware models (Baysor) to foundation-model promptable segmentation (CellSAM, Classpose) to organelle-resolution hyperspectral imaging (ESPRESSO) to post-segmentation cleanup (cellAdmix).</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Cellpose: a generalist algorithm for cellular segmentation</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2021</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">U-Net + gradient flow</span>
+                    </div>
+                    <p class="paper-description">Cellpose reframes instance segmentation as a "follow-the-flow" problem: a modified U-Net predicts simulated-diffusion gradient fields plus inside/outside probability, then test-time pixels are clustered by tracking gradients to common fixed points. Trained on 608 mixed fluorescent, brightfield, membrane and non-microscopy images. Style-vector conditioning enables one model to generalise across modalities without retraining; 2D model extends to 3D by averaging xy/xz/yz gradients.</p>
+                    <ul class="key-contributions">
+                        <li>AP<sub>0.5</sub> = 0.91 specialised, 0.77 generalised &mdash; vs StarDist 0.76/0.61 and Mask R-CNN 0.80/0.61</li>
+                        <li>485/521 ground-truth ROIs correctly matched with only 18 false positives on specialised data</li>
+                        <li>3D segmentation of 190&micro;m<sup>3</sup> mouse cortex: 172 cells predicted vs 183 ground truth, 17 FPs at IoU=0.5</li>
+                        <li>Adding non-biological images (rocks, jellyfish, fruits) to training improves generalisation &mdash; the model learns object-ness, not cell-ness</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-020-01018-x" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/mouseland/cellpose" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig03_cellpose.svg" alt="Cellpose gradient-flow segmentation trick. Top: training — for every pixel inside a cell, the ground-truth label is a 2D vector pointing toward that cell's centre (computed by simulated diffusion from the cell centroid). The U-Net is trained to regress these gradient vectors plus an inside/outside probability map. Bottom: inference — for every pixel, follow the predicted gradient vector to its convergence point; every pixel that converges to the same fixed point is assigned to the same cell. This sidesteps the boundary-prediction problem (boundaries are thin and rare) by predicting flows, which exist everywhere a cell exists. Style-vector conditioning lets one model handle fluorescent, brightfield, membrane, and H&E modalities.">
+                <figcaption><strong>Figure 3</strong><span class="fig-title">Cellpose — the gradient-flow trick.</span> Predict flows, not boundaries. Inside every cell, point at its centre. Then trace the arrows back: every pixel that converges is one cell. The trick is that gradient fields are dense (every interior pixel has a target vector) where boundaries are sparse (only thin contours have positive labels), so the supervision signal is much richer. This is what lets Cellpose generalise across modalities a boundary-supervised method couldn't.</figcaption>
+            </figure>
+
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Cell segmentation in imaging-based spatial transcriptomics (Baysor)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">Nat Biotech</span> <span class="meta-badge type-badge">Bayesian + MRF</span>
+                    </div>
+                    <p class="paper-description">Baysor is a Bayesian mixture model that segments cells in MERFISH, smFISH, ISS, STARmap directly from transcript positions, with optional auxiliary membrane stain. Each cell is modelled as 2D/3D Gaussian over positions plus a Categorical over gene identity, with a Potts MRF prior for spatial coherence. The Neighborhood Composition Vector (NCV) trick enables segmentation-free visualization before committing to boundaries.</p>
+                    <ul class="key-contributions">
+                        <li>Up to 2&times; more cells than DAPI-based segmentation (osmFISH); 42% more endothelial cells in hypothalamus MERFISH (long morphology &rarr; nuclei often outside imaging plane)</li>
+                        <li>Higher fraction of molecules assigned to cells than Watershed or pciSeq across 5 protocols</li>
+                        <li>51 min for 3.7M molecules (MERFISH), 40.4&nbsp;GB memory for 1,020-gene STARmap</li>
+                        <li>Recovers vascular and astrocytic cells missed by nuclei-only methods (only 10% captured in original osmFISH segmentation)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-021-01044-w" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/kharchenkolab/Baysor" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Nuclei Instance Segmentation and Classification in Histopathology with StarDist</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">ISBI</span> <span class="meta-badge type-badge">Star-convex polygons</span>
+                    </div>
+                    <p class="paper-description">StarDist is extended for histopathology by adding a semantic segmentation head to the existing star-convex polygon predictor: a U-Net backbone predicts per-pixel object probability, 64 radial distances per pixel, and 6 class probabilities. Per-instance class is the majority vote of pixel-level predictions. Wins CoNIC 2022 first place for joint nuclei segmentation and 6-class colon-cell classification.</p>
+                    <ul class="key-contributions">
+                        <li>1st place CoNIC 2022 final test: mPQ 0.5013, PQ 0.6607 across 6 cell types (neutrophil, epithelial, lymphocyte, plasma, eosinophil, connective)</li>
+                        <li>Simple oversampling improves mPQ from 0.39 (no balancing) to 0.59 &mdash; beats focal loss (0.45) and class weights (0.51)</li>
+                        <li>H&amp;E-specific staining augmentation boosts external test mPQ from 0.36 to 0.43</li>
+                        <li>Shape refinement via aggregated suppressed polygons improves segmentation quality beyond standard NMS</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1109/ISBI56247.2022.9854534" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/stardist/stardist" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>ESPRESSO: spatiotemporal omics based on organelle phenotyping</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Hyperspectral + CNN</span>
+                    </div>
+                    <p class="paper-description">ESPRESSO is the first spatiotemporally resolved omics technique: 4-color live-cell hyperspectral confocal imaging (lysosome, mitochondria, lipid droplets, DNA) with phasor unmixing, CARE-denoised acquisition, Cellpose segmentation, and 3,328 morphological + functional features per cell. Tracks single-cell phenotype transitions for 24+ hours at 30-min resolution. Connects organelle landscape to cell state without genetic manipulation, applicable to 2D cultures, 3D spheroids, and across cell types.</p>
+                    <ul class="key-contributions">
+                        <li>3,328 features/cell: 128-bin ICS auto-correlations &times; 4 organelles + 128-bin ICCS cross-correlations &times; 6 pairs + 512-bin log-intensity distributions &times; 4 organelles</li>
+                        <li>Throughput: 8,838 cells (4 lines), 73,430 cells (differentiation 24h), 375,964 cells (3D spheroids)</li>
+                        <li>CARE denoising &rarr; 16&times; faster acquisition with maintained quality, trained on 128 image pairs</li>
+                        <li>Discriminates 4 cell lines and 7 stress treatments (CoCl<sub>2</sub>, simvastatin, bafilomycin, FCCP) from organelle profiles alone; M1 macrophage phenotypes correlate with 14&times; NOS2 upregulation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02863-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/yl-jia/ESPRESSO" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>CellSAM: a foundation model for cell segmentation</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">SAM + CellFinder</span>
+                    </div>
+                    <p class="paper-description">CellSAM extends Segment Anything Model (SAM) with CellFinder &mdash; an Anchor-DETR transformer object detector with 3,500 queries and NMS-free design &mdash; that auto-generates bounding-box prompts for SAM's mask decoder. Two-stage training: first CellFinder + ViT-B backbone on detection, then freeze ViT and fine-tune SAM neck. Trained on ~2M cell annotations across 10 datasets (tissue 975K, cell culture, H&amp;E, bacteria, yeast, nuclear) including TissueNet, DeepBacs, BriFiSeg, Cellpose, Omnipose, YeastNet, YeaZ, DSB, H&amp;E collections, Phase400.</p>
+                    <ul class="key-contributions">
+                        <li>Human-level accuracy: no significant difference between CellSAM/human and human/human (P = 0.18 tissue, 0.49 cell culture, 0.11 yeast, 0.90 bacteria)</li>
+                        <li>Zero-shot LIVECell F1-error 0.40 vs Cellpose 0.60</li>
+                        <li>First generalist that doesn't degrade when trained on more diverse data (Cellpose does)</li>
+                        <li>Few-shot learning: performance improves with as few as 10 FOVs (~10<sup>2</sup>&ndash;10<sup>3</sup> cells) per new cell line; integrates with Polaris for MERFISH/seqFISH</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02879-w" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/vanvalenlab/cellsam" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig06_cellsam.svg" alt="CellSAM two-stage promptable segmentation. Stage 1 (CellFinder): an Anchor-DETR transformer object detector with 3,500 queries and NMS-free design auto-generates per-cell bounding-box prompts from the input image — replacing the human click that vanilla SAM requires. Stage 2 (SAM mask decoder): SAM consumes the auto-generated prompts and emits per-cell instance masks. Training: first CellFinder + ViT-B backbone are trained on detection (~2M cell annotations across 10 datasets — tissue, cell culture, H&E, bacteria, yeast, nuclear), then the ViT is frozen and the SAM neck is fine-tuned. One model handles tissue, yeast, bacteria, H&E at human-level accuracy.">
+                <figcaption><strong>Figure 4</strong><span class="fig-title">CellSAM — promptable segmentation for biology.</span> Generate the prompts, then let SAM do the segmenting. A bio-specific detector replaces the human click. One model handles tissue, yeast, bacteria, H&E. The trick that makes SAM useful for biology: SAM was trained to <em>respond to</em> prompts, not to <em>generate</em> them. CellFinder fills the gap with a domain-specific detector trained on cells specifically.</figcaption>
+            </figure>
+
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Classpose: foundation-model-driven WSI-scale cell phenotyping in H&amp;E</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Cellpose-SAM + multi-task</span>
+                    </div>
+                    <p class="paper-description">Classpose adds semantic cell-type classification to Cellpose-SAM via a "bag of tricks" approach: full-network fine-tuning, class-weighted sampling, hybrid losses (BCE + MSE for segmentation, multi-class CE + Focal Tversky for classification), learnable-sigma uncertainty-based loss weighting, extended H&amp;E/HED augmentations, and sparse-annotation support. Tested on 6 datasets (CoNIC, ConSep, GlySAC, MoNuSAC, NuCLS, PUMA) for joint instance segmentation + cell-type classification at whole-slide scale.</p>
+                    <ul class="key-contributions">
+                        <li>Panoptic Quality +0.08 vs Semantic CP-SAM, +0.14 vs StarDist, +0.16 vs CellViT++ (P&lt;0.0001) across 6 benchmarks</li>
+                        <li>Full-network fine-tuning improves PQ from 0.134 (class head only) to 0.515</li>
+                        <li>bf16 inference: 45% speedup with no performance loss</li>
+                        <li>Ships CLI tool + QuPath extension; lymphocytes/inflammatory cells transfer best across datasets (consistent H&amp;E morphology)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.64898/2025.12.18.695211" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/sohmandal/classpose" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Impact and correction of segmentation errors in spatial transcriptomics (cellAdmix)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Genet</span> <span class="meta-badge type-badge">NMF + CRF cleanup</span>
+                    </div>
+                    <p class="paper-description">cellAdmix is the first post-segmentation cleanup analogous to scRNA-seq doublet filtering for imaging-based spatial transcriptomics. Builds molecule-level subcellular Neighborhood Composition Vectors (sNCVs), factorises them with weighted NMF, then a Conditional Random Field over the molecular k-NN graph assigns each transcript to a factor. A novel reference-free cell-bridging test identifies which factors are "foreign" to the host cell and strips those transcripts. Quantifies segmentation-error damage across 6 datasets and 4 segmenters (Baysor, BIDCell, ProSeg, 10x Xenium Multimodal).</p>
+                    <ul class="key-contributions">
+                        <li>~25% of top DIALOGUE/scITD multicellular factors are admixture-driven artifacts</li>
+                        <li>NSCLC fibroblast DE: 11/36 top upregulated genes were malignant markers (KRT19, KRT8) &mdash; lose significance after cleaning</li>
+                        <li>Giotto-predicted macrophage&rarr;fibroblast LR pairs enriched for fibroblast marker ligands (COL6A3, BGN, DCN; hypergeometric P = 7.7&times;10<sup>&minus;5</sup>) &mdash; large share of published spatial cell-cell communication calls likely artifactual</li>
+                        <li>P_admix significantly reduced (P&lt;10<sup>&minus;3</sup>) for all 12 NSCLC cell types; 98% of cells lose &lt;10% of native transcripts</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41588-025-02497-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/kharchenkolab/cellAdmix" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig04_celladmix.svg" alt="The segmentation-error compounding problem and the cellAdmix correction. Top row: a 5% segmentation error at the boundary mis-assigns transcripts from a tumour cell into a neighbouring fibroblast. Downstream pipelines amplify the mistake: differential expression on the fibroblast cluster picks up KRT19 and KRT8 (tumour markers) as 'fibroblast-upregulated'; DIALOGUE/scITD identifies a multicellular factor that's actually contamination; Giotto reports cell-cell communication pairs that are really self-leakage. Bottom row: cellAdmix runs sub-cellular Neighborhood Composition Vectors → weighted NMF → CRF on the k-NN graph → reference-free cell-bridging test, and strips the foreign transcripts before any DE/LR/factor analysis. ~25% of published DIALOGUE/scITD factors are admixture-driven artifacts.">
+                <figcaption><strong>Figure 5</strong><span class="fig-title">The segmentation-error compounding problem — why you need cellAdmix.</span> A few mis-assigned transcripts become a published "discovery". Run cellAdmix (or equivalent) BEFORE any spatial DE, LR, or multicellular-program analysis. This is the single most important pitfall in the module — every method downstream of segmentation can amplify a small boundary error into a wrong biological conclusion.</figcaption>
+            </figure>
+
+            <h3>2. H&amp;E &rarr; Spatial Expression Prediction (6)</h3>
+            <p>Learn the H&amp;E&harr;molecular bridge. From the seminal CNN ST-Net (250 genes from 100&micro;m spots) through transformer + GNN hybrids (Hist2ST) to single-cell-resolution multi-task UNet 3+ (GHIST), CLIP-style 2.2M-pair foundation models (OmiCLIP), hypergraph H&amp;E-anchored multi-omics (SpatialEx), and virtual proteomics for clinical biomarkers (HEX).</p>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig05_resolution_ladder.svg" alt="The resolution ladder from H&E to molecular prediction, 2020 → 2026. Rung 1 (2020): ST-Net — 100µm Visium spots, ~250 genes, DenseNet-121 backbone. Rung 2 (2022): Hist2ST — same 100µm spots, Convmixer + Transformer + GNN hybrid raises Pearson r ~9%. Rung 3 (2024–2025): GHIST — single-cell-resolution multi-task UNet 3+ predicting single-cell SGE at PCC 0.7–0.84. Rung 4 (2025): OmiCLIP — CLIP-style dual-encoder trained on 2.2M paired image–transcriptome samples, joint embedding enables retrieval + alignment. Rung 5 (2026): HEX — MUSK foundation-model embeddings predicting 40 proteins at Pearson r 0.73–0.79 for clinical biomarkers in lung cancer. Each rung raises resolution and clinical relevance. Visium-scale recipes do NOT transfer to single-cell resolution — GHIST had to redesign the whole pipeline.">
+                <figcaption><strong>Figure 6</strong><span class="fig-title">The resolution ladder — H&E → molecular prediction, 2020 → 2026.</span> From 100µm spots to single proteins. Each rung raises resolution and clinical relevance. Visium-scale recipes do NOT transfer to single-cell resolution — moving up the ladder is not a hyperparameter change but a pipeline redesign.</figcaption>
+            </figure>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Integrating spatial gene expression and breast tumour morphology via deep learning (ST-Net)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2020</span> <span class="meta-badge journal-badge">Nat Biomed Eng</span> <span class="meta-badge type-badge">DenseNet-121 multi-task</span>
+                    </div>
+                    <p class="paper-description">The original H&amp;E&rarr;spatial expression paper. ST-Net is a DenseNet-121 with ImageNet pre-training that takes 224&times;224-pixel (~150&times;150&micro;m<sup>2</sup>) H&amp;E patches centred on Spatial Transcriptomics spots and predicts log-normalised expression of 250 target genes via a shared 1,024-dim representation + per-gene fully-connected head. Trained on 23 breast cancer patients (3 sections each) with leave-one-patient-out CV. Generalises zero-shot to 10x Visium and 1,550 TCGA bulk samples.</p>
+                    <ul class="key-contributions">
+                        <li>RMSE 0.31, AUROC 0.73 average across 234 genes on independent 10x Visium</li>
+                        <li>102/250 genes predicted with positive correlation in &gt;=20/23 patients (FDR 0.05); top genes are cancer biomarkers (GNAS, FASN, DDX5, XBP1, ACTG1)</li>
+                        <li>207/234 genes positive correlation on 10x; 177/249 on TCGA bulk</li>
+                        <li>Tumour vs immune co-localization reduced (P&lt;0.001) &mdash; consistent with 75% of breast cancer patients having low TILs</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41551-020-0578-x" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/bryanhe/ST-Net" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Hist2ST: Spatial transcriptomics prediction from histology via Transformer and GNN</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">Brief Bioinform</span> <span class="meta-badge type-badge">Convmixer + Transformer + GNN</span>
+                    </div>
+                    <p class="paper-description">Hist2ST is a three-module architecture: Convmixer (depthwise + pointwise convolutions, kernel=7, stride=7) for 2D vision features within each H&amp;E patch, an 8-layer 16-head Transformer for global spot-to-spot dependencies (with 2D coordinate encoding), and a 4-layer GraphSAGE GNN with LSTM aggregation for local 4-neighbor relationships. Output is a ZINB layer predicting zero-inflated counts. Self-distillation handles limited ST training data.</p>
+                    <ul class="key-contributions">
+                        <li>+9% mean PCC vs HisToGene on HER2+ breast cancer; +11% on cSCC</li>
+                        <li>+7.6&ndash;19% PCC across Alzheimer's, mouse brain, olfactory bulb datasets</li>
+                        <li>Spatial-region detection ARI +7% vs HisToGene, +5% vs observed gene expression &mdash; predictions add information beyond ground truth</li>
+                        <li>Works across 10x Visium, ST-seq, Space-TREX, Stereo-seq platforms; identifies disease-relevant FN1, GNAS, SCD, MYL12B</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1093/bib/bbac297" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/biomed-AI/Hist2ST" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>OmiCLIP: A visual-omics foundation model bridging histopathology and spatial transcriptomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">CLIP-style 2.2M pairs</span>
+                    </div>
+                    <p class="paper-description">OmiCLIP is the first CLIP-style foundation model trained on 2,185,571 H&amp;E&ndash;transcriptomics paired tiles from 113 public 10x Visium studies across 32 organs. Treats spatial transcriptomics as "sentences" of top-50-expressed genes per spot, aligned with 224&times;224 H&amp;E tiles via a CoCa-based dual encoder (ViT image encoder + causal-masking text encoder, 768-d shared space, 20 epochs, batch 64). Ships the Loki platform with 5 modules (Align, Annotate, Decompose, Retrieve, PredEx) for downstream use.</p>
+                    <ul class="key-contributions">
+                        <li>2.2M image-transcriptomics paired tiles; 32 organs, 1,007 samples</li>
+                        <li>Tissue alignment median PCC 0.67&ndash;0.88 vs baselines 0.26&ndash;0.71 (PASTE, GPSA, CAST)</li>
+                        <li>Annotation F1 0.59&ndash;0.96 vs OpenAI CLIP 0.03&ndash;0.34</li>
+                        <li>Beats 22 SOTA methods across alignment, annotation, decomposition, prediction; benchmarked on 28 datasets across organ types</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02707-1" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/GuangyuWangLab2021/Loki/" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>GHIST: Spatial gene expression at single-cell resolution from histology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">UNet 3+ multi-task</span>
+                    </div>
+                    <p class="paper-description">GHIST is the first method to predict <em>single-cell</em> spatial gene expression from H&amp;E (not spot-level). UNet 3+ backbone (5 feature scales, full-scale skip connections) jointly learns nuclei segmentation/classification, cell type, neighborhood composition, and gene expression via cross-attention (8 heads). Trained on subcellular spatial transcriptomics (Xenium-style) to capture interdependencies between morphology, cell type, niche, and expression.</p>
+                    <ul class="key-contributions">
+                        <li>Cell-type accuracy 0.75 (BreastCancer1) and 0.66 (BreastCancer2) across 8 cell types</li>
+                        <li>Top-20 SVGs median PCC 0.7; FOXA1 r=0.80, EPCAM r=0.84, FASN r=0.77</li>
+                        <li>HER2ST spot benchmark: highest PCC (0.16) and SSIM (0.10) vs 8 existing methods; SVG PCC 0.27 vs next best</li>
+                        <li>Applied to 553 TCGA-BRCA samples for spatial-feature survival stratification (P=0.017)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02795-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/SydneyBioX/GHIST/" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>SpatialEx: High-parameter spatial multi-omics through histology-anchored integration</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">UNI + hypergraph</span>
+                    </div>
+                    <p class="paper-description">SpatialEx and SpatialEx+ use H&amp;E as a universal anchor for spatial diagonal integration: Cellpose segments cells, the UNI pathology foundation model embeds each cell's H&amp;E patch, a hypergraph encoder (k=7 nearest neighbors per hyperedge, two-stage node&harr;hyperedge message passing) captures group-level interactions, and contrastive learning with a corrupted hypergraph captures global context. SpatialEx+ adds an Omics Cycle Module to integrate different single-omics measurements from serial sections without requiring simultaneous coprofiling.</p>
+                    <ul class="key-contributions">
+                        <li>CMD 0.206 vs DeepPT 0.302 vs CNN_Reg 0.271 (lower better) for H&amp;E&rarr;omics prediction</li>
+                        <li>+28&ndash;66% NMI for spatial domain identification vs DeepPT</li>
+                        <li>Scales to &gt;1M cells; works at spot and single-cell resolution without modification</li>
+                        <li>Demonstrates panel diagonal integration (Xenium 313 genes split 150 + 163 across sections) and omics diagonal (metabolomics + transcriptomics on Parkinson's mouse brain)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02926-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/KEAML-JLU/SpatialEx" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>HEX: AI-enabled virtual spatial proteomics from histopathology for lung cancer</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Med</span> <span class="meta-badge type-badge">MUSK FM + regression</span>
+                    </div>
+                    <p class="paper-description">HEX generates virtual 40-protein CODEX from standard H&amp;E using the MUSK pathology foundation model (pretrained on 50M images + 1B text tokens, multi-scale 10x/20x/40x) followed by a 3-layer regression head (embedding&rarr;256&rarr;128&rarr;40) with Feature Distribution Smoothing and Adaptive Loss Function. Same-section H&amp;E + CODEX co-staining gives pixel-level ground truth; 224&times;224 tiles at 40x. Validated on NLST training (414), TCGA, PLCO, Stanford-TMA, TA-TMA, and Stanford-IO immunotherapy cohort (2,150 patients total).</p>
+                    <ul class="key-contributions">
+                        <li>Pearson r 0.790 cross-validation, 0.731&ndash;0.738 independent validation; SSIM 0.949 / 0.875</li>
+                        <li>+46% Pearson r over cGAN baseline; &minus;80% MSE vs second-best</li>
+                        <li>Prognosis (early-stage NSCLC): C-index 0.68&ndash;0.80, HR 2.43&ndash;6.41 (+22% over stage/grade)</li>
+                        <li>Immunotherapy response: AUC 0.82 (vs PD-L1 0.66, TMB 0.59); reveals granzyme B+/CD8+ + TCF-1+/CD4+ co-localization in responders, CD163+/MMP9+ M2 macrophages in non-responders</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-025-04060-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/lilab-stanford/HEX" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>3. Multiplexed Tissue Imaging Technologies &amp; Tools (7)</h3>
+            <p>The platforms that produce multiplexed tissue data and the software that processes them. DSP (44 proteins or 1,412 genes from FFPE ROIs), CosMx SMI (980 RNAs + 108 proteins at subcellular resolution), DBiTplus (sequencing + multiplexed imaging on same section), and the integration ecosystem: Squidpy (technology-agnostic analysis), BANKSY (spatial clustering at scale), CellNEST (GAT-based multi-hop relay LR networks), and the Xenium-Visium-scFFPE breast cancer reference study.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>Multiplex digital spatial profiling of proteins and RNA in fixed tissue (DSP)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2020</span> <span class="meta-badge journal-badge">Nat Biotech</span> <span class="meta-badge type-badge">Photocleavable DSP</span>
+                    </div>
+                    <p class="paper-description">NanoString GeoMx Digital Spatial Profiling uses photocleavable oligonucleotide tags + DMD (digital micromirror device) UV projection at 365 or 385 nm to release indexing oligos from user-selected ROIs on standard FFPE tissues. Read out via nCounter (direct fluorescent barcode counting) or NGS with i5&times;i7 indexing. ROIs can be any shape from single cells to ~5,000 cells, even non-contiguous. Single-cell sensitivity for protein, ~600-transcript sensitivity for RNA.</p>
+                    <ul class="key-contributions">
+                        <li>44 proteins or 96 genes (nCounter); 1,412 genes / 4,998 probes (NGS); LOD 1.3&ndash;3.7 cells for high-expressors</li>
+                        <li>Works directly on FFPE archival samples (no fresh-frozen required); ~1 &micro;m<sup>2</sup> per micromirror</li>
+                        <li>Cross-platform R<sup>2</sup> 0.93&ndash;0.98 vs RNAscope; R<sup>2</sup>&gt;0.8 nCounter vs NGS</li>
+                        <li>~384 ROIs per 48h workflow; demonstrated immune contexture mapping in CRC and IBD</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-020-0472-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Squidpy: a scalable framework for spatial omics analysis</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Python analysis FW</span>
+                    </div>
+                    <p class="paper-description">Squidpy is the Python framework that unifies spatial omics analysis across Visium, seqFISH, MERFISH, SlideseqV2, IMC, 4i, MIBI-TOF. Two main data structures: a spatial neighborhood graph from coordinates (grid/generic, KNN/radius/Delaunay) and an ImageContainer with on-disk/in-memory switching for very large microscopy images. Numba JIT compilation gives ~10&times; speedup over Giotto. Integrates with Scanpy/AnnData ecosystem and napari for interactive visualization.</p>
+                    <ul class="key-contributions">
+                        <li>~10&times; faster neighborhood enrichment than Giotto; scales to ~270K subcellular observations</li>
+                        <li>Spatial statistics: Moran's I, Ripley's L/F/G, co-occurrence, neighborhood enrichment z-scores</li>
+                        <li>Re-implements CellPhoneDB ligand-receptor with Omnipath; image features include Haralick texture, summary, histogram, deep-learning extraction</li>
+                        <li>Backends for StarDist and Cellpose segmentation; works across spot-based, single-cell, and subcellular (4i) resolution data</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-021-01358-2" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/theislab/squidpy" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>CosMx SMI: High-plex imaging of RNA and proteins at subcellular resolution in FFPE</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2022</span> <span class="meta-badge journal-badge">Nat Biotech</span> <span class="meta-badge type-badge">Cyclic FISH platform</span>
+                    </div>
+                    <p class="paper-description">NanoString CosMx Spatial Molecular Imaging is an enzyme-free, hybridization-based single-molecule barcode system. Each ISH probe has 35-50nt target-binding + 60-80nt readout domain; 5 tiles per gene tolerate fragmented FFPE RNA. 64-bit barcode encoding (Hamming distance 4, weight 4) gives 1,210 possible codes (980 targets + 20 ERCC controls + 108 proteins). Readout via 16 cycles &times; 4 colors with photocleavable dye linkers. Achieves true subcellular resolution (~50 nm localization, 3D mapping) on standard FFPE.</p>
+                    <ul class="key-contributions">
+                        <li>1&ndash;2 copies/cell sensitivity; 0.0092 false calls per cell per target; &lt;3% cell dropout in cell lines</li>
+                        <li>98.7% of mitochondrial transcripts correctly localised to mitochondria; 96.9% of nuclear genes within nuclei</li>
+                        <li>769,114 analyzable cells from 800K total across 5 NSCLC tumors; 18+ distinct cell types in TME</li>
+                        <li>1.51&times; stronger signal than scRNA-seq for low-expressing genes; identifies 16 LR pairs enriched at tumor&ndash;T cell interface</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-022-01483-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>High-resolution mapping of the TME using integrated single-cell, spatial and in situ analysis (Xenium-Visium-scFFPE)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">Tri-platform integration</span>
+                    </div>
+                    <p class="paper-description">10x Genomics' reference study integrating three FFPE technologies on serial breast cancer sections: Chromium scFFPE-seq (18,536 genes, median 1,480 genes/cell), Visium CytAssist (whole-transcriptome spots), and Xenium In Situ (313-gene panel, subcellular resolution, 167,885 cells, median 166 transcripts/cell). All three share the same probe set, enabling "spot interpolation" &mdash; using Xenium to derive whole-transcriptome info for spatially-identified rare cell populations.</p>
+                    <ul class="key-contributions">
+                        <li>86% of Xenium cells unambiguously matched to scFFPE-seq cell types; r<sup>2</sup>=0.99 serial-section correlation</li>
+                        <li>Xenium 8.4&times; higher median gene sensitivity than Visium in shared capture area</li>
+                        <li>Discovers rare boundary cells (~1%) coexpressing ERBB2/ABCC11 (tumor) + MYLK/DST (myoepithelial) with oncogenic cytokines</li>
+                        <li>Identifies triple-positive (ER+/PR+/HER2+) DCIS region of ~5&ndash;6 Visium spots in sample annotated as PR&minus; &mdash; could alter clinical classification</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-023-43458-x" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/10XGenomics/janesick_nature_comms_2023_companion" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>BANKSY: unifies cell typing and tissue domain segmentation for spatial omics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Genet</span> <span class="meta-badge type-badge">Spatial clustering</span>
+                    </div>
+                    <p class="paper-description">BANKSY augments each cell's gene expression vector with two neighborhood features: mean weighted neighborhood expression and an azimuthal Gabor filter (AGF) capturing expression gradients. The augmented matrix B = [&radic;(1&minus;&lambda;)&middot;C; &radic;(&lambda;/&mu;)&middot;M; &radic;(&lambda;/2&mu;)&middot;G] is reduced via PCA (20 PCs) and clustered with Leiden. A single &lambda; parameter switches between cell typing (&lambda;&approx;0.2) and tissue-domain segmentation (&lambda;&approx;0.8). Cross-link to <a href="../single-cell-analysis/cell-annotation_type-identification.html">cell-annotation_type-identification.html</a>.</p>
+                    <ul class="key-contributions">
+                        <li>10&ndash;1000&times; faster than existing spatial clustering; 2&ndash;60&times; more scalable (processes 2M cells; competitors fail at 250&ndash;500K)</li>
+                        <li>DLPFC ARI 0.518 across 12 samples (tied best with GraphST, STAGATE); STARmap ARI 0.720 (highest)</li>
+                        <li>Discovers niche-dependent oligodendrocyte subtypes (white vs gray matter, Mbp/Lpar1 vs Mlc1/Gad1) and cycling epithelial cells in CRC missed by non-spatial methods</li>
+                        <li>Works across MERFISH/MERSCOPE (RNA imaging), Slide-seq/Visium (RNA seq), CODEX (protein imaging); median ARI IQR 0.015 across 65 parameter combinations</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41588-024-01664-3" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/prabhakarlab/Banksy" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig07_banksy.svg" alt="BANKSY's single λ parameter sliding between three clustering tasks. λ ≈ 0 (left): only the cell's own gene-expression vector is used; clustering recovers pure cell types but ignores tissue context — finds the same five cell types regardless of where they sit in the tissue. λ ≈ 1 (right): only the neighborhood mean and azimuthal Gabor gradient are used; the cell's own expression is ignored; clustering recovers tissue domains (white matter vs gray matter, tumor core vs invasive front) but blurs within-domain cell identity. λ ≈ 0.2–0.8 (middle): the sweet spot — different λ values surface niche-dependent cell-type subdivisions (oligodendrocyte white vs gray matter Mbp/Lpar1 vs Mlc1/Gad1) and cycling epithelial cells missed by non-spatial methods.">
+                <figcaption><strong>Figure 7</strong><span class="fig-title">BANKSY — λ turns cell typing into domain segmentation.</span> One slider. Three different clustering tasks. λ controls the cell-vs-neighbourhood balance. λ = 0 ignores tissue context; λ = 1 ignores cell identity; in-between is the sweet spot. Sweeping λ on the same dataset is a cheap way to ask "is this a cell-type signal, a niche signal, or both?"</figcaption>
+            </figure>
+
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>CellNEST: cell-cell relay networks using attention on spatial transcriptomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">GAT + Deep Graph Infomax</span>
+                    </div>
+                    <p class="paper-description">CellNEST is the first deep learning method to detect single-cell-resolution multi-hop relay LR networks (Cell A &rarr; ligand &rarr; Cell B receptor &rarr; ligand &rarr; Cell C) in spatial transcriptomics. Multi-edge graph where edges encode [distance, L-R coexpression, L-R pair ID]; GAT encoder with Tanh activation; Deep Graph Infomax contrastive learning (Jensen-Shannon divergence) overcomes lack of CCC ground truth; 5-run ensemble with rank-product aggregation. Cross-link to sc_cell_cell_communication_methods.html.</p>
+                    <ul class="key-contributions">
+                        <li>Balanced accuracy 0.8&ndash;1.0 across 21 synthetic benchmarks vs 0.2&ndash;0.6 for 6 competitors (NICHES, COMMOT, CellChat, Giotto, CytoSignal, NicheCompass, TWCOM)</li>
+                        <li>CCL19&ndash;CCR7 T-cell homing in human lymph nodes: Fisher's P = 9.16&times;10<sup>&minus;224</sup>; detects relay to CCL21&ndash;CXCR4</li>
+                        <li>Only method to systematically validate relay networks against STRING + NicheNet + DoRothEA databases</li>
+                        <li>Works on Visium (55&micro;m), Visium HD (2&micro;m), MERFISH (single-cell), 3D MERFISH; PDAC subtype-specific signals (PLXNB2&ndash;MET in classical, ANXA1&ndash;EGFR in basal-like, P=4.02&times;10<sup>&minus;25</sup>)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02721-3" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/schwartzlab-methods/CellNEST" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>DBiTplus: imaging-based + sequencing-based spatial omics on the same tissue section</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">RNase H cDNA retrieval</span>
+                    </div>
+                    <p class="paper-description">DBiTplus runs DBiT-seq spatial barcoding (50 channels &times; 50 channels, 25&ndash;50 &micro;m resolution), then uses thermostable RNase H at 55&deg;C to enzymatically release cDNA &mdash; preserving tissue morphology for subsequent CODEX or CellScape multiplexed protein imaging on the same section. Computational integration via MaxFuse + RCTD-like imaging-guided spot splitting into pure cell-type sub-spots. Compatible with OCT-frozen and FFPE archival samples.</p>
+                    <ul class="key-contributions">
+                        <li>20,973&ndash;27,884 genes detected per experiment; ~1,200 genes and 3,300 UMIs per spot (E11 mouse embryo)</li>
+                        <li>R=0.99 vs standard DBiT-seq; RNase H preserves 14/25 CODEX markers vs poor staining with NaOH/DMSO</li>
+                        <li>TACCO deconvolution: &gt;0.6 Pearson correlation in 50% of spots vs ground truth</li>
+                        <li>Applied to mouse embryo (26-marker CODEX), human lymph node (35-plex), and lymphoma progression (MZL, Richter's transformation) revealing IL6ST/CLU/NFKBIA, ROR2/SMOC2 programs</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02948-0" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/Janezjz/DBiT-plus/" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>4. Pathology &amp; Spatial Foundation Models (5)</h3>
+            <p>Pretrained encoders trained on massive paired image-omics or image-only datasets that transfer zero-shot to new tissues, panels, and cancer types. CellSAM (Family 1), OmiCLIP (Family 2) are also foundation models; this section features the general-purpose histopathology encoders (UNI, CONCH, GigaPath, PLIP) that most 2024&ndash;2026 downstream work &mdash; including SpatialEx and HEX elsewhere in this module &mdash; builds on, plus Novae, the graph-based spatial-transcriptomics FM. Cross-link to sc-foundation-models.html and <a href="../foundation-models-deep-learning/pretraining.html">pretraining.html</a>.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>UNI: a general-purpose self-supervised model for pathology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Med</span> <span class="meta-badge type-badge">DINOv2 ViT-L</span>
+                    </div>
+                    <p class="paper-description">UNI is a ViT-L/16 encoder pretrained with DINOv2 self-supervision on Mass-100K, a de-identified corpus of &gt;100,000 diagnostic H&amp;E whole-slide images (&gt;100M tissue patches) spanning 20 major tissue types from Massachusetts General Brigham. It is the reference general-purpose tile encoder cited by SpatialEx elsewhere in this module ("UNI + hypergraph") and by many pathology FM downstream pipelines that need frozen patch embeddings rather than a vision-language joint space.</p>
+                    <ul class="key-contributions">
+                        <li>Evaluated zero-shot/few-shot and via linear probing on 34 clinical tasks: tissue classification, cancer subtyping, and slide-level retrieval</li>
+                        <li>Outperforms prior supervised (ImageNet) and self-supervised (CTransPath, REMEDIS) pathology encoders on the majority of benchmarked tasks, including several rare cancer subtypes</li>
+                        <li>Ships as a frozen feature extractor &mdash; most downstream work (MIL classifiers, hypergraph encoders like SpatialEx) treats UNI embeddings as fixed input rather than fine-tuning end-to-end</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-024-02857-3" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/mahmoodlab/UNI" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>CONCH: a visual-language foundation model for computational pathology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Med</span> <span class="meta-badge type-badge">CoCa vision-language</span>
+                    </div>
+                    <p class="paper-description">CONCH is a CoCa-style vision-language foundation model pretrained on &gt;1.17M histopathology image&ndash;caption pairs sourced from educational material (textbook figures, PubMed Open Access articles) rather than clinical WSIs directly, avoiding the patient-data-sharing constraints that limit purely image-only corpora. It jointly learns an image encoder and a text encoder in a shared embedding space, enabling zero-shot classification and text-to-image/image-to-text retrieval &mdash; the capability Novae elsewhere in this module optionally uses for H&amp;E fusion ("Optional H&amp;E fusion via CONCH embeddings").</p>
+                    <ul class="key-contributions">
+                        <li>State-of-the-art zero-shot and few-shot performance across 14 downstream tasks spanning tissue classification, tumor detection, and cross-modal retrieval</li>
+                        <li>Zero-shot classification without any task-specific fine-tuning, by prompting with class-name text rather than training a linear probe</li>
+                        <li>Vision-language joint space makes CONCH embeddings usable both as image features and for text-guided retrieval, unlike image-only encoders like UNI</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-024-02856-4" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/mahmoodlab/CONCH" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Prov-GigaPath: a whole-slide foundation model for digital pathology from real-world data</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nature</span> <span class="meta-badge type-badge">ViT + LongNet, 1.1B params</span>
+                    </div>
+                    <p class="paper-description">GigaPath is the first foundation model to pretrain on true whole-slide images rather than independently sampled tiles: a tile-level ViT encoder (DINOv2) first embeds 256&times;256 patches from 171,189 WSIs (&gt;1.3B patches) across 30,000+ patients and 31 tissue types from the Providence health network, then a slide-level LongNet transformer with dilated attention aggregates all of a slide's tile embeddings &mdash; up to tens of thousands of tiles &mdash; into a single whole-slide representation, capturing long-range spatial dependencies that tile-only encoders (UNI, CONCH) discard.</p>
+                    <ul class="key-contributions">
+                        <li>Outperforms prior slide-level MIL/foundation-model baselines across 25+ downstream tasks including cancer subtyping, mutation prediction, and treatment response</li>
+                        <li>First large-scale demonstration that whole-slide (not just tile-level) self-supervised pretraining transfers to real-world clinical cohorts, not just curated benchmark sets</li>
+                        <li>LongNet's dilated attention makes slide-level self-attention computationally tractable at the tens-of-thousands-of-tiles scale a full WSI produces</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41586-024-07441-w" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/prov-gigapath/prov-gigapath" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>PLIP: a visual-language foundation model for pathology image analysis using medical Twitter</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span> <span class="meta-badge journal-badge">Nat Med</span> <span class="meta-badge type-badge">CLIP fine-tune</span>
+                    </div>
+                    <p class="paper-description">PLIP (Pathology Language and Image Pre-training) fine-tunes CLIP on OpenPath, &gt;200,000 pathology image&ndash;text pairs mined from medical-education Twitter/X accounts and public pathology forums &mdash; the first demonstration that social-media-scale (not institutional-WSI-scale) paired data could train a usable pathology vision-language model. PLIP is the direct architectural predecessor to CONCH, and remains a widely used baseline for zero-shot pathology image retrieval and classification in the downstream literature.</p>
+                    <ul class="key-contributions">
+                        <li>Zero-shot classification competitive with, and in some tasks exceeding, models trained on much larger proprietary WSI corpora, at a fraction of the data-curation cost</li>
+                        <li>Cross-modal retrieval: given a pathology image, retrieve semantically matching text descriptions and vice versa, without task-specific training</li>
+                        <li>Demonstrated that social-media pathology discourse (case discussions, teaching images) is a viable, low-cost alternative data source to institutional WSI archives &mdash; a data-sourcing strategy later scaled up by CONCH's curated educational corpus</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-023-02504-3" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/PathologyFoundation/plip" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Novae: a graph-based foundation model for spatial transcriptomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Graph FM + SwAV</span>
+                    </div>
+                    <p class="paper-description">Novae is a self-supervised graph attention network for spatial transcriptomics, pretrained on ~29M cells across 78 slides, 18 tissues, 3 technologies (Xenium, MERSCOPE, CosMx). Delaunay graph (edges &gt;80&micro;m truncated), 2&ndash;3-edge local subgraphs, panel-invariant gene embeddings (L<sub>2</sub>-normalized weighted sum initialized from scGPT) so the same model works across different gene panels. SwAV-style swapped-prediction loss with K trainable prototypes (elementary spatial domains) and optimal-transport batch correction baked in &mdash; no external Harmony needed. Optional H&amp;E fusion via CONCH embeddings.</p>
+                    <ul class="key-contributions">
+                        <li>Highest FIDE (domain continuity) and JSD (cross-slide homogeneity) on breast, colon, synthetic datasets; ARI 0.8+ on synthetic vs &lt;0.6 for STAGATE/GraphST/SpaceFlow/SEDR</li>
+                        <li>Processes 6.4M cells in ~10 seconds for batch correction + domain assignment (vs days for Harmony + Leiden)</li>
+                        <li>Zero-shot mode beats trained competitors on real datasets; pretrained model on Hugging Face Hub</li>
+                        <li>Reveals shared domains across lymph node + tonsil, cancer-related domains shared between lung and breast tumors; H&amp;E integration identifies bronchus-specific domain (D2032) missed by single modalities</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02899-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/MICS-Lab/novae" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <h3>5. Cell Painting &amp; High-Content Screening (3)</h3>
+            <p>Image-based phenotypic profiling at compound or genetic-perturbation scale. CellPaint-POSH (DINO-ViT on 5-channel + ISS-based CRISPR readout, 1,640-gene druggable genome), MolPhenix (CLIP-style molecule&harr;image retrieval), IMPA (generative perturbation imagery via StarGAN). Cross-link to perturbation-modeling.html and <a href="../foundation-models-deep-learning/contrastive-learning.html">contrastive-learning.html</a>.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>How Molecules Impact Cells: Contrastive PhenoMolecular Retrieval (MolPhenix)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">NeurIPS</span> <span class="meta-badge type-badge">CLIP-style retrieval</span>
+                    </div>
+                    <p class="paper-description">MolPhenix introduces zero-shot Contrastive PhenoMolecular Retrieval: given a Cell Painting phenomic image, retrieve the correct molecular structure. Embeds both modalities in a joint latent space using Phenom1 (masked autoencoder for phenomics) + MolGPS (GNN for molecules), with a novel Soft-weighted Sigmoid Locked (S2L) loss combining SigLIP label-noise robustness and CWCL inter-sample similarity. Explicit (log/sigmoid/one-hot) and implicit concentration encoding handle dosage-dependent effects.</p>
+                    <ul class="key-contributions">
+                        <li>Top-1% retrieval recall 77.33% on active molecules vs CLOOME 5.06% &mdash; 8.1&times; improvement</li>
+                        <li>Unseen dataset (RXRX3) recall: MolPhenix 58.6% vs CLOOME 2.07%</li>
+                        <li>S2L loss outperforms CLIP, InfoLOOB, CWCL, SigLIP across all cumulative and held-out tasks</li>
+                        <li>Zero-shot perturbation matching infers gene knockout&harr;drug relationships; KNN on embeddings beats standalone fingerprints on TDC and Polaris property prediction</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2406.08075" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>IMPA: Predicting cell morphological responses to perturbations via generative modeling</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">StarGAN-style cGAN</span>
+                    </div>
+                    <p class="paper-description">IMPA is a conditional GAN with content encoder, style encoder, condition encoder, and multi-task discriminator (separate classification head per condition). AdaIN style conditioning with adversarial + style consistency + cycle consistency + style diversification losses. Unified perturbation embedding handles chemical (Morgan Fingerprints, 1024d), CRISPR (Gene2Vec + HyenaDNA, 328d), and ORF overexpression (456d) within one framework, plus learnable batch embeddings for batch correction.</p>
+                    <ul class="key-contributions">
+                        <li>FID +17% improvement over StarGANv2; +45% average improvement on batch correction metrics</li>
+                        <li>Validated on BBBC021 (112 compounds, MCF-7, 118K images), RxRx1 (1,138 siRNAs, U2OS, 170K images), JUMP-cpg0000 (296 compounds + 296 CRISPR + 155 ORF, 435K images)</li>
+                        <li>Chemical-space interpolation enables unseen-compound prediction via Tanimoto similarity; perturbation space clusters drugs by functional similarity despite chemical distance</li>
+                        <li>Single model performs both perturbation prediction and technical-variation correction</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-024-55707-8" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/theislab/IMPA" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>CellPaint-POSH: pooled Cell Painting CRISPR + self-supervised DL</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Commun</span> <span class="meta-badge type-badge">DINO-ViT + ISS</span>
+                    </div>
+                    <p class="paper-description">CellPaint-POSH combines pooled CRISPR knockout (A549 cells, CROPseq-like vector), a 5-stain Cell Painting panel (Hoechst, ConA, WGA, Phalloidin, Mitoprobe-Cy5 RNA-FISH) that is compatible with 4-color in situ sequencing for sgRNA barcode decoding, and CP-DINO (DINO-v1 ViT-Small, 21.86M params, 384-dim CLS, patch=8) trained self-supervised on 1.59M single-cell tiles. Replaces stress-inducing MitoTracker with Mitoprobe (mt-rRNA FISH) for ISS compatibility. Druggable-genome scale demonstrated at 1,640 genes.</p>
+                    <ul class="key-contributions">
+                        <li>Druggable genome (1,640 genes): 113 genes with KO-vs-intergenic AUC&gt;0.6 (CP-DINO 1640) vs 95 (CP-DINO 300); ~5.6M cells imaged</li>
+                        <li>Held-out 124-gene POC StringDB TPR @ 5% FPR: CP-DINO 1640 = 0.70 &gt; CP-DINO 300 = 0.67 &gt; ImageNet-DINO 0.56 &gt; CellStats 0.55</li>
+                        <li>Zero-shot on PERISCOPE: detects 2,812 perturbations at 5% FDR &mdash; 2.5&times; more than standard CellProfiler features</li>
+                        <li>FCN base-caller recovers 78.8% of cells (vs 66.6% baseline); CP-DINO captures lipogenesis cluster (ACLY, ACACA, FASN) without explicit lipid stain</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-66778-6" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/insitro/cp-posh" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig11_cp_dino.svg" alt="Cell Painting pipeline from raw image to gene function via CP-DINO. Input: 5 fluorescent channels per well (Hoechst nuclei, ConA endoplasmic reticulum, WGA Golgi/membrane, Phalloidin actin, Mitoprobe-Cy5 mt-rRNA FISH). Augmentation block (the key step): defocus + coarse-dropout augmentations on top of standard rotations/crops — these are what make the embeddings beat hand-crafted CellProfiler features. Self-supervised training: DINO-v1 ViT-Small (21.86M params, 384-dim CLS, patch=8) trained on 1.59M single-cell tiles, no labels. Output: 768-d per-cell embeddings that cluster CRISPR knockouts by gene function. Druggable-genome scale: 1,640 genes, 113 with KO-vs-intergenic AUC > 0.6; lipogenesis cluster (ACLY, ACACA, FASN) emerges without any explicit lipid stain.">
+                <figcaption><strong>Figure 8</strong><span class="fig-title">Cell Painting pipeline — image to gene function.</span> 5 fluorescent channels per well. Learned features beat hand-crafted ones. CP-DINO's defocus + coarse-dropout augmentation is what makes 768-d embeddings beat CellProfiler. The augmentation choice is doing real biological work — it teaches the encoder to be invariant to optical artifacts (defocus) and partial-cell occlusion (coarse-dropout), both of which plague Cell Painting plates.</figcaption>
+            </figure>
+
+            <h3>6. Histopathology &amp; Whole-Slide Imaging (1)</h3>
+            <p>WSI-scale analysis. Patient-level disease state from millions of cells across 5,000+ patients via Multi-Instance Learning. HEX (Family 2) and Classpose (Family 1) are also WSI methods; SPARK (Family 7) operates at WSI scale via agents. Cross-link to transfer-learning.html and embedding-strategies.html.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>PaSCient: Multi-cellular representations for patient-level disease states</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Multi-Instance Learning</span>
+                    </div>
+                    <p class="paper-description">PaSCient is a DeepSet-inspired patient-level model with a cell embedder (R<sup>d_g</sup> &rarr; R<sup>d_h</sup>), attention aggregator (w_i = softmax(a_&theta;(Z_i)), e_i = w_i<sup>T</sup>Z_i), and disease classifier MLP. Trained end-to-end on 24.3M cells from CELLxGENE across 135 unique disease states, 5,000+ patients, 189 tissues, 413 studies, with disease + tissue oversampling for class balance. Multi-level splits ensure no study leakage between train/val/test. Integrated gradients enable cell, gene, and cell-type-specific interpretability.</p>
+                    <ul class="key-contributions">
+                        <li>Weighted F1 = 0.70 for 135-class disease classification (vs 0.60 for best baseline)</li>
+                        <li>COVID-19 severity: 88% accuracy vs 79% for pseudo-bulk; beats CellPLM, SCimilarity, ScRAT</li>
+                        <li>Non-linear attention +16.6% over mean pooling; transformer overparameterized for this task</li>
+                        <li>Gene-prioritization significantly overlaps with ToppCell DEGs (P&lt;2.1&times;10<sup>&minus;22</sup>); generalizes out-of-study on 4 independent COVID severity cohorts</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2024.11.18.624166" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/genentech/pascient" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig10_pascient_mil.svg" alt="Why Multiple Instance Learning (MIL) for whole-slide images. Top row: a WSI is labelled 'cancer' at the patient level — but only ~20% of patches actually contain tumour; the other 80% are normal stroma, fat, or muscle. Bottom row: a naive per-patch CNN trained to predict the patient label on every patch teaches the model to recognise stains, scanner colour profiles, and slide-prep artifacts (which are uniform across the slide) — not disease (which is in 20% of patches). The MIL solution: attention-pooled bag-of-patches with bag-level loss. Each WSI is a bag; per-patch attention weights (w_i = softmax(a_θ(Z_i))) are learned to focus on tumour-containing patches; the bag-level prediction is computed only after aggregation. PaSCient applies this to 24.3M cells × 5,000 patients × 135 disease states.">
+                <figcaption><strong>Figure 9</strong><span class="fig-title">Why MIL — patient-level labels, patch-level data.</span> A WSI is labelled "cancer", but only 20% of patches contain tumour. Training a CNN to predict the patient label per patch teaches it the stains, not the disease. MIL with attention pooling is the load-bearing architecture for any patient-level prediction from WSIs — PaSCient is the cell-level version; classic Camelyon17-style WSI work is the patch-level version. The general lesson: align label granularity with prediction granularity, or pay an interpretability tax forever.</figcaption>
+            </figure>
+
+            <h3>7. Multimodal &amp; Agentic Diagnosis (2)</h3>
+            <p>Image + text + workflow. From paired chest-CT-report vision-language pretraining at clinical scale (MedMPT) to multi-agent LLM systems that autonomously generate, code, and verify analytical hypotheses across cancer cohorts (SPARK). The clinical-deployment edge of biomedical imaging. Cross-link to ai-agents.html, <a href="../foundation-models-deep-learning/attention-mechanisms.html">attention-mechanisms.html</a>, retrieval-augmented-generation-bio.html, and reasoning-llms-biology.html.</p>
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>MedMPT: vision-language pretrained transformer for respiratory disease</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">Nat Biomed Eng</span> <span class="meta-badge type-badge">Chest-CT VLM</span>
+                    </div>
+                    <p class="paper-description">MedMPT pretrains on 154,274 chest-CT&ndash;radiology-report pairs via four complementary self-supervised objectives: intramodal contrastive (slice + scan, momentum encoder m=0.996), intermodal contrastive (CT &harr; report), masked image reconstruction (20% mask), and cross-modal generation. Vision encoder is a ViT-based slice encoder + self-attention slice-fusion that treats the CT as a unified 3D volume rather than independent 2D slices. Downstream: disease diagnosis, zero-shot report generation, and prescription recommendation augmented with a medication co-occurrence graph attention network.</p>
+                    <ul class="key-contributions">
+                        <li>Lung cancer screening AUROC 0.9269; COVID-19 diagnosis AUROC 0.9391; severity grading AUROC 0.8521</li>
+                        <li>Linear probe with only 1,500 tunable params reaches AUROC 0.8238 for lung cancer (comparable to end-to-end tuned competitors)</li>
+                        <li>Human-AI study: reporting time 334.47s &rarr; 228.28s (&minus;31.75%); critical-error rate junior 6% &rarr; 2%; clinical acceptance junior 67% &rarr; 75%</li>
+                        <li>Modality ablation: full multimodal F1 0.4576 vs single-modal 0.3711 (P&lt;0.0001) &mdash; 154K curated pairs beat BiomedCLIP's 15M+ web pairs on clinical tasks</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41551-025-01544-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/maliangdi/MedMPT" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig08_medmpt.svg" alt="MedMPT four-objective self-supervised pretraining on 154K curated CT-report pairs. Objective 1 (intra-modal contrastive, image side): two augmented slices from the same CT scan are positive pairs; slices from different CTs are negatives. Slice + scan momentum encoder (m=0.996). Objective 2 (intra-modal contrastive, text side): same recipe on the radiology reports. Objective 3 (inter-modal contrastive): CT ↔ matched report are positive pairs; CT ↔ wrong report are negatives. Objective 4 (masked image reconstruction): 20% of image patches are masked; the model predicts them, enforcing a generative pixel-level signal alongside the contrastive ones. The four objectives are trained simultaneously. 154 K curated pairs beat BiomedCLIP's 15 M+ web pairs on clinical tasks — curation quality dominates corpus size when labels are clinical and noise is structured.">
+                <figcaption><strong>Figure 10</strong><span class="fig-title">MedMPT — four self-supervised objectives, trained simultaneously.</span> Two intra-modal + two inter-modal. 154 K curated CT–report pairs. Quality beats BiomedCLIP's 15 M+ web pairs. This is the same MedMPT lesson that appears in the pretraining module's "curated vs massive" pitfall — when labels are clinical and noise is structured, curated data wins.</figcaption>
+            </figure>
+
+            <div class="paper-grid">
+                <article class="paper-card">
+                    <h4>SPARK: agentic framework for autonomous discovery in cancer pathology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span> <span class="meta-badge journal-badge">Nat Med</span> <span class="meta-badge type-badge">Multi-agent LLM</span>
+                    </div>
+                    <p class="paper-description">SPARK is a multi-agent LLM "pathology brain" built on crewAI. Specialized agents (OpenAI o1 for ideation, o3-mini for review/dedup, Claude Sonnet 3.5 for coding) generate biologically motivated H&amp;E hypotheses, refine them into executable specs, write Python that operates on a preprocessed WSI object (GrandQC tissue detection + UNet++/EfficientNet organ-specific segmentation + HoverNeXt single-cell classification into 7&ndash;8 cell types), and verify across cohorts. Outputs concept-level interpretable parameters &mdash; not embeddings &mdash; that map back to specific cells and spatial relationships. Zero task-specific model retraining required.</p>
+                    <ul class="key-contributions">
+                        <li>1,115 verified parameters from 475 ideas across 5 cancer types and 5,400+ patients in 18 cohorts; full development cost ~&euro;4,000</li>
+                        <li>CRC MSI status AUROC 0.933; BRCA subtype 0.898; ER status 0.863; HNSC HPV/p16 status 0.828 &mdash; matches or exceeds SOTA</li>
+                        <li>Discovers cross-tumor "active tumor front" signature (neutrophils + eosinophils + fibroblasts at tumor&ndash;stroma interface) shared across LUAD/LUSC/COAD</li>
+                        <li>Reconstructs tumor evolution from static H&amp;E: 40,721 directional pairs in LUAD &rarr; 641 aggressiveness chains; first cohort-scale static-image temporal-dynamics inference</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-026-04357-y" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/cpath-ukk/SPARK" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+            </div>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig09_spark.svg" alt="SPARK agentic pipeline on whole-slide images. Preprocessing: GrandQC tissue detection + UNet++/EfficientNet organ-specific segmentation + HoverNeXt single-cell classification into 7-8 cell types yields a structured WSI object. crewAI agent pipeline: (1) Idea generation (OpenAI o1) proposes biologically motivated H&E hypotheses; (2) Idea refinement (o3-mini) reviews and deduplicates into executable specs; (3) Coding (Claude Sonnet 3.5) writes Python that operates on the structured WSI object; (4) Code review (o3-mini) repairs failures up to 3 attempts; (5) Cohort verification executes across 5,400+ patients in 18 cohorts. Output: 1,115 verified concept-level parameters that map back to specific cells and spatial relationships — interpretable, not embedding-based. €4,000 total. Zero task-specific model retraining.">
+                <figcaption><strong>Figure 11</strong><span class="fig-title">SPARK — agentic pipeline on whole-slide images.</span> From idea to validated biomarker — without task-specific training. €4 000 total. Zero fine-tuning. Interpretable concepts, not black-box embeddings. The deliverable shape (concept-level parameters that map back to specific cells) is what makes SPARK's output usable clinically; an end-to-end embedding model would have produced the same AUROCs but no mechanistic story.</figcaption>
+            </figure>
+        </section>
+
+        <section class="content-section" id="table">
+            <h2>Selection at a Glance</h2>
+            <p>Quick reference: which imaging recipe to reach for given your task, modality, and label budget.</p>
+
+            <figure class="module-figure">
+                <img src="figures/biomed-image/image_fig12_decision_tree.svg" alt="Top-down decision tree for picking a biomedical imaging method by what's on the slide. Root: what's the input? Branch A (fluorescence microscopy, cultured cells): Cellpose for general segmentation, CellSAM for promptable / mixed-modality, ESPRESSO for organelle-level. Branch B (H&E histology): StarDist for nuclei + classification, Classpose for WSI phenotyping, ST-Net or GHIST for H&E → gene expression, HEX for H&E → protein, PaSCient for patient-level disease classification, SPARK for autonomous biomarker discovery. Branch C (multiplexed in-situ / spatial transcriptomics): Baysor for transcript-based segmentation, cellAdmix for post-segmentation cleanup (always), BANKSY for spatial clustering, CellNEST for relay LR networks. Branch D (cell painting / high-content screening): CP-DINO embeddings, IMPA for perturbation generation, MolPhenix for molecule→image retrieval. Branch E (clinical volumetric scans): MedMPT for CT VLM. Pick branch by modality; pick leaf by goal.">
+                <figcaption><strong>Figure 12</strong><span class="fig-title">Which imaging method for which question?</span> Top-down by what's on the slide. Pick the branch by your input modality; pick the leaf by your goal. The most common mistake in this literature is reaching for the trendiest method (CellSAM, OmiCLIP, SPARK) before checking whether the leaf-level method for your specific task already exists and works.</figcaption>
+            </figure>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Recipe</th><th>Task</th><th>Substrate</th><th>Representative method</th><th>Key detail</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>U-Net + gradient flow</td><td>Instance segmentation</td><td>Fluorescence, brightfield</td><td>Cellpose</td><td>AP<sub>0.5</sub> = 0.91 across modalities</td></tr>
+                    <tr><td>Star-convex polygon CNN</td><td>Nuclei seg + classification</td><td>H&amp;E histopathology</td><td>StarDist</td><td>mPQ 0.5013, CoNIC 2022 1st place</td></tr>
+                    <tr><td>Bayesian + MRF over transcripts</td><td>Spatial transcriptomics seg</td><td>MERFISH, Xenium, CosMx</td><td>Baysor</td><td>2&times; more cells than DAPI-only</td></tr>
+                    <tr><td>SAM + custom detector</td><td>Universal cell seg</td><td>Tissue, yeast, bacteria</td><td>CellSAM</td><td>Human-level F1; 2M-cell training set</td></tr>
+                    <tr><td>DenseNet regression</td><td>H&amp;E &rarr; spot-level expression</td><td>H&amp;E + Visium/ST</td><td>ST-Net</td><td>RMSE 0.31 on 250 genes; 100&micro;m spots</td></tr>
+                    <tr><td>UNet 3+ multi-task</td><td>H&amp;E &rarr; single-cell expression</td><td>H&amp;E + Xenium</td><td>GHIST</td><td>Top-20 SVG PCC 0.7; FOXA1 r=0.80</td></tr>
+                    <tr><td>CLIP dual-encoder</td><td>Image&harr;omics retrieval</td><td>H&amp;E + ST sentences</td><td>OmiCLIP</td><td>2.2M pairs, 32 organs, F1 up to 0.96</td></tr>
+                    <tr><td>Foundation-model regression</td><td>H&amp;E &rarr; virtual proteomics</td><td>H&amp;E + CODEX</td><td>HEX</td><td>40 proteins at Pearson r 0.73&ndash;0.79</td></tr>
+                    <tr><td>StarGAN cGAN</td><td>Image generation for perturbations</td><td>Cell Painting</td><td>IMPA</td><td>FID +17% vs StarGANv2; chemical interpolation</td></tr>
+                    <tr><td>CLIP-style retrieval</td><td>Phenotype&harr;molecule</td><td>Cell Painting + SMILES</td><td>MolPhenix</td><td>Top-1% recall 77.3% (8.1&times; over CLOOME)</td></tr>
+                    <tr><td>DINO ViT on Cell Painting</td><td>Image-based CRISPR screening</td><td>5-channel + ISS barcodes</td><td>CellPaint-POSH</td><td>1,640 genes; StringDB TPR 0.70 on POC held-out</td></tr>
+                    <tr><td>Attention-based MIL</td><td>WSI patient-level classification</td><td>scRNA-seq cell bags</td><td>PaSCient</td><td>F1 0.70 across 135 diseases, 5K patients</td></tr>
+                    <tr><td>Graph FM + SwAV</td><td>Zero-shot spatial domain ID</td><td>Xenium, MERSCOPE, CosMx</td><td>Novae</td><td>29M cells, native OT batch correction</td></tr>
+                    <tr><td>DINOv2 ViT-L</td><td>General-purpose tile embedding</td><td>H&amp;E WSI</td><td>UNI</td><td>Mass-100K, 34 downstream tasks</td></tr>
+                    <tr><td>CoCa vision-language</td><td>Zero-shot classification + retrieval</td><td>H&amp;E + captions</td><td>CONCH</td><td>1.17M image&ndash;caption pairs, 14 tasks</td></tr>
+                    <tr><td>ViT + LongNet (dilated attn)</td><td>Whole-slide-level embedding</td><td>H&amp;E WSI (full slide)</td><td>Prov-GigaPath</td><td>1.3B patches, 171K WSIs, 30K+ patients</td></tr>
+                    <tr><td>CLIP fine-tune</td><td>Zero-shot classification + retrieval</td><td>H&amp;E + social-media captions</td><td>PLIP</td><td>200K+ OpenPath pairs from medical Twitter</td></tr>
+                    <tr><td>Spatial clustering with neighborhood Gabor</td><td>Cell typing + domain seg</td><td>Any spatial omics</td><td>BANKSY</td><td>Single &lambda; switches mode; scales to 2M cells</td></tr>
+                    <tr><td>GAT + Deep Graph Infomax</td><td>Multi-hop relay LR networks</td><td>Visium, MERFISH</td><td>CellNEST</td><td>Balanced acc 0.8&ndash;1.0 vs 0.2&ndash;0.6 competitors</td></tr>
+                    <tr><td>VLM with 4 SSL objectives</td><td>CT diagnosis + report + Rx</td><td>Chest CT + reports</td><td>MedMPT</td><td>Lung cancer AUROC 0.93; &minus;32% report time</td></tr>
+                    <tr><td>Multi-agent LLM</td><td>Autonomous concept discovery</td><td>H&amp;E whole-slide</td><td>SPARK</td><td>1,115 concepts; MSI AUROC 0.933; tumor evolution chains</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="content-section" id="reading-order">
+            <h2>Reading Order for Newcomers</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>1. Cellpose (2021, Nat Methods)</h3>
+                    <p>Start here. The clearest demonstration of how a single deep-learning model can generalise across diverse microscopy. The gradient-flow trick is intuitive; the dataset construction philosophy (include non-cell objects for object-ness) shapes every later foundation model.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2. ST-Net (2020, Nat Biomed Eng)</h3>
+                    <p>The original H&amp;E&rarr;spatial expression paper. Read it before any later H&amp;E&rarr;ST work to understand what 250 genes / 100&micro;m / RMSE 0.31 actually looks like, and why DenseNet-121 + multi-task learning was the right starting point.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>3. Squidpy (2022, Nat Methods)</h3>
+                    <p>The framework that makes everything in this module composable. Understand the spatial neighborhood graph + ImageContainer abstraction; almost every later paper assumes one of these.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>4. Baysor + cellAdmix (2022 Nat Biotech + 2026 Nat Genet)</h3>
+                    <p>Read these as a pair. Baysor is the "right" way to segment imaging-based ST; cellAdmix is the reality check: even the best segmenter leaves cells contaminated enough to drive ~25% of downstream multicellular-factor findings. This is the most important pitfall in the whole module.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>5. CellSAM + OmiCLIP (2025, Nat Methods)</h3>
+                    <p>The two foundation-model shifts. CellSAM brings SAM-style promptable segmentation to bio; OmiCLIP brings CLIP-style joint embedding to H&amp;E + ST at 2.2M scale. Read together to see how vision-foundation-model patterns map onto biology.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>6. HEX (2026, Nat Med) and SPARK (2026, Nat Med)</h3>
+                    <p>Where the field is going clinically. HEX shows that virtual molecular readouts from routine H&amp;E can beat established biomarkers (PD-L1, TMB) for immunotherapy response. SPARK shows that LLM agents can do interpretable cohort-scale biomarker discovery autonomously. Both are this year; both will reshape pathology.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section" id="practical">
+            <h2>Practical Implementation Guide</h2>
+            <div class="highlight-box">
+                <h4>If your goal is single-cell segmentation in microscopy</h4>
+                <p>Start with <strong>Cellpose</strong> (use the GUI, set the diameter, done). If the model fails, try fine-tuning with Cellpose 2.0 human-in-the-loop, or escalate to <strong>CellSAM</strong> for very diverse modalities (tissue/yeast/bacteria/H&amp;E in one). For dense histopathology nuclei with cell-type classification, use <strong>StarDist with classification head</strong> or <strong>Classpose</strong>. For dense imaging-based spatial transcriptomics, use <strong>Baysor</strong> (transcripts alone) or Baysor + membrane stain &mdash; and <strong>always run cellAdmix afterwards</strong> to remove molecular admixture artifacts.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is WSI classification or biomarker prediction</h4>
+                <p>For patient-level disease state from scRNA-seq cell bags, use <strong>PaSCient</strong>'s attention-based MIL. For direct H&amp;E&rarr;molecular prediction, the choice depends on resolution: <strong>ST-Net / Hist2ST</strong> for spot-level (100&micro;m), <strong>GHIST</strong> for single-cell, <strong>HEX</strong> for protein readouts. For zero-shot use across organs, <strong>OmiCLIP</strong>'s Loki platform. For agentic discovery across multi-cohort H&amp;E, <strong>SPARK</strong> &mdash; but budget the LLM API costs (~&euro;4,000 for full development) and remember the outputs are interpretable concepts, not embeddings.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is multiplexed tissue analysis</h4>
+                <p>Pick a platform: <strong>DSP</strong> for archival FFPE with whole-transcriptome ROIs, <strong>CosMx SMI</strong> or <strong>Xenium</strong> for subcellular RNA + protein, <strong>DBiTplus</strong> if you need spatial transcriptomics + multiplexed protein on the same section. For analysis, use <strong>Squidpy</strong> as the spine, <strong>BANKSY</strong> for cell typing + domain segmentation at scale (millions of cells), <strong>Novae</strong> for zero-shot domain identification across slides/panels, and <strong>CellNEST</strong> for ligand-receptor relay networks. Always validate against the Xenium-Visium-scFFPE breast cancer benchmark study before trusting cell-type assignments. Cross-link to spatial-transcriptomics.html.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is high-content / cell-painting screening</h4>
+                <p>For pure morphology readout, use <strong>CellPaint-POSH</strong>'s 5-channel panel with <strong>CP-DINO</strong> embeddings &mdash; the self-supervised DINO-ViT beats hand-crafted CellProfiler features (StringDB TPR 0.70 vs 0.55 on held-out 124-gene POC) and detects 2.5&times; more perturbations than CellProfiler on external PERISCOPE data. For predicting perturbed cell images (in-silico screening), use <strong>IMPA</strong>'s StarGAN-style generation &mdash; chemical-space interpolation enables unseen-compound prediction. For phenotype-to-molecule retrieval, use <strong>MolPhenix</strong>'s contrastive approach (top-1% recall 77.3%). For organelle-resolved temporal profiling without genetic engineering, <strong>ESPRESSO</strong>'s 4-color hyperspectral + 3,328 features per cell.</p>
+            </div>
+
+            <div class="warning-box">
+                <h4>Common Pitfalls</h4>
+                <ul>
+                    <li><strong>Cell painting batch effects dominate biological signal.</strong> Microscope, plate, well position, and stain lot effects routinely swamp gene-knockout signals in Cell Painting. CellPaint-POSH needed defocus + coarse-dropout + dropout augmentation in DINO training to make CP-DINO work; IMPA needed an explicit batch-correction module. Always check that PCA on your control wells separates by batch before you trust any gene-level signal.</li>
+                    <li><strong>WSI labels are weak &mdash; patient-level, not patch-level.</strong> A diagnosis label applies to the entire slide, but only some patches contain the diagnostic feature. Standard patch-level training will memorise noise. Use Multi-Instance Learning (PaSCient-style attention aggregation) or hierarchical foundation models; never train a patch-level classifier on patient-level labels and then evaluate at the patient level &mdash; you will hide the leakage.</li>
+                    <li><strong>H&amp;E&rarr;spatial expression only works at low-resolution Visium scale.</strong> ST-Net and Hist2ST work because 100&micro;m spots contain tens of cells &mdash; the model is really predicting niche composition. At true single-cell Xenium resolution, only GHIST and HEX (which leverages a pathology foundation model and the same-section CODEX ground truth) work, and HEX explicitly notes that prior H&amp;E&rarr;ST methods reached Pearson ~0.2 on protein prediction while HEX reaches 0.73&ndash;0.79. Don't expect Visium-scale recipes to transfer.</li>
+                    <li><strong>Pathology FMs trained on TCGA fail on rare cancers.</strong> Foundation models inherit pretraining-corpus bias. MUSK, CONCH, UNI are all heavy on common cancers (BRCA, LUAD, CRC, prostate). On rare entities (NUT carcinoma, mesothelioma subtypes), zero-shot performance drops sharply. Always validate on a held-out cohort containing your target tumor type before deploying clinically; this is one reason SPARK explicitly verifies parameters per cancer type.</li>
+                    <li><strong>Segmentation errors compound through downstream pipelines.</strong> The cellAdmix paper is the single most important caveat in this module: even state-of-the-art segmenters (Baysor, BIDCell, ProSeg, 10x Multimodal) leave cells contaminated. Tumor-zone fibroblast DE picks up malignant markers (KRT19, KRT8) that are just neighbor admixture. ~25% of top DIALOGUE/scITD multicellular factors are admixture artifacts. Run cellAdmix or an equivalent post-segmentation cleanup before any spatial DE, ligand-receptor, or multicellular-program analysis.</li>
+                    <li><strong>"Foundation model" does not mean "no fine-tuning needed".</strong> CellSAM still needs few-shot adaptation (~10 FOVs) per new cell line. OmiCLIP needs domain-specific fine-tuning for performance ceilings on rare organs. HEX needed fine-tuning on colorectal cancer to improve prediction for 57 markers. Plan for a small labelled validation set and a fine-tune budget even when using "zero-shot" foundation models.</li>
+                    <li><strong>Curated clinical pairs beat web scale.</strong> MedMPT showed 154K expert-curated chest-CT/report pairs beat BiomedCLIP's 15M+ web pairs on clinical tasks. The same pattern recurs: high-quality paired data (HEX's same-section H&amp;E + CODEX, OmiCLIP's curated 2.2M Visium pairs) beat naive scaling. Budget for curation, not scraping, when your target task is clinical.</li>
+                    <li><strong>Don't trust a single platform's cell-type assignment.</strong> The 2023 Xenium-Visium-scFFPE study found ~14% of Xenium cells could not be unambiguously matched to scFFPE-seq cell types &mdash; and ~1% were "boundary cells" coexpressing tumor and myoepithelial markers that mattered biologically. Always cross-validate spatial cell-type calls against dissociated scRNA-seq (or vice versa) on the same patient.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="content-section" id="hands-on">
+            <h2>Hands-On Practice</h2>
+            <p>This walkthrough takes you from a raw biomedical image (fluorescence microscopy or H&amp;E) to a segmented, classified result using the core libraries in the field. All snippets are self-contained and can be adapted to DICOM clinical images, NIfTI MRI/CT volumes, or whole-slide SVS files by swapping the loader shown in the Data Structures section.</p>
+
+            <h3>Environment &amp; packages</h3>
+            <p>Install into a fresh Python 3.10 environment. MONAI covers clinical volumetric imaging; <code>cellpose</code> handles fluorescence/H&amp;E cell segmentation; <code>tiatoolbox</code> is the recommended WSI pipeline; <code>SimpleITK</code> and <code>nibabel</code> cover DICOM and NIfTI I/O respectively.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda create -n bioimaging python=3.10 && conda activate bioimaging
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install monai cellpose stardist scikit-image nibabel SimpleITK pydicom
+pip install tiatoolbox openslide-python          # WSI (Homebrew: brew install openslide)
+pip install numpy matplotlib tqdm</code></pre>
+            <p><strong>Hardware.</strong> Cellpose and StarDist run comfortably on CPU for small images (&lt;1024&times;1024). For MONAI 3-D models or WSI tile inference, a GPU with &ge;8 GB VRAM is strongly recommended; use <code>torch.cuda.is_available()</code> to verify before starting.</p>
+
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><strong>NumPy arrays <code>(H, W, C)</code> or <code>(C, H, W)</code></strong> — the universal in-memory format; channel order matters (scikit-image uses HWC, PyTorch uses CHW).</li>
+                <li><strong>DICOM (<code>.dcm</code>)</strong> — clinical CT/MRI scans stored slice-by-slice; load with <code>pydicom.dcmread()</code> or <code>SimpleITK.ReadImage()</code>; always read <code>PixelSpacing</code> and <code>SliceThickness</code> metadata — physical voxel size drives all morphology measurements.</li>
+                <li><strong>NIfTI (<code>.nii</code> / <code>.nii.gz</code>)</strong> — standard for MRI/CT volumes after DICOM conversion; load with <code>nibabel.load()</code>; affine matrix encodes voxel-to-world-space mapping — never ignore it.</li>
+                <li><strong>OME-TIFF / SVS (whole-slide images)</strong> — multi-resolution pyramidal tiles up to ~100,000&times;100,000 px; access with <code>tiatoolbox.wsicore.WSIReader</code> or <code>openslide.OpenSlide</code>; always specify the magnification level (e.g., 20&times;) rather than a pixel level index, as level 0 differs between scanners.</li>
+                <li><strong>PNG/TIFF fluorescence stacks</strong> — 2-D or 3-D multichannel microscopy; load with <code>skimage.io.imread()</code> (TIFF) or <code>tifffile.imread()</code> for multi-page/hyperstack files.</li>
+                <li><strong>Segmentation masks</strong> — integer-labelled arrays where 0 = background and each positive integer is a unique cell/instance ID; distinct from semantic masks (class IDs only, no instance distinction).</li>
+            </ul>
+
+            <h3>Minimal code walkthrough</h3>
+            <p>Load a fluorescence image, normalise it, run Cellpose instance segmentation, then measure per-cell mean intensity — a typical starting point for any cell-biology screen.</p>
+            <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import numpy as np
+from skimage import io, exposure
+from skimage.measure import regionprops_table
+from cellpose import models
+import pandas as pd
+
+# 1. Load — shape (H, W) grayscale or (H, W, C) multichannel
+img = io.imread("cells_DAPI.tif")          # uint16 or uint8 fluorescence TIFF
+
+# 2. Normalise to [0, 1] using 1st–99th percentile clip (avoid outlier saturation)
+p1, p99 = np.percentile(img, (1, 99))
+img_norm = exposure.rescale_intensity(img, in_range=(p1, p99))
+
+# 3. Cellpose segmentation — "nuclei" model for DAPI; set diameter to measured nucleus size in px
+model = models.Cellpose(gpu=True, model_type="nuclei")
+masks, flows, styles, diams = model.eval(
+    img_norm,
+    diameter=30,        # estimate from scale bar or CellProfiler "MeasureObjectSizeShape"
+    channels=[0, 0],    # grayscale: [chan_of_interest, chan_for_nucleus_or_0]
+    flow_threshold=0.4,
+    cellprob_threshold=0.0,
+)
+
+# 4. Measure per-cell features using regionprops
+props = regionprops_table(
+    masks,
+    intensity_image=img_norm,
+    properties=["label", "area", "mean_intensity", "eccentricity", "bbox"],
+)
+df = pd.DataFrame(props)
+print(df.head())
+
+# 5. Quick QC — remove cells touching the image border and very small debris
+border_labels = set(np.unique(masks[0, :])) | set(np.unique(masks[-1, :])) \
+              | set(np.unique(masks[:, 0])) | set(np.unique(masks[:, -1]))
+df = df[~df["label"].isin(border_labels) &amp; (df["area"] &gt; 100)]
+print(f"Cells passing QC: {len(df)}")</code></pre>
+
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>Always read pixel spacing / voxel size metadata.</strong> DICOM <code>PixelSpacing</code> and NIfTI affine matrices encode physical scale. Skipping them means your area, diameter, and volume measurements are in pixel units — meaningless across scanners or magnifications. Use <code>SimpleITK.GetSpacing()</code> or <code>nibabel.load().header.get_zooms()</code> to extract it before any morphology measurement.</li>
+                <li><strong>Set Cellpose <code>diameter</code> correctly or let it estimate.</strong> Leaving <code>diameter=None</code> triggers auto-estimation but adds ~20 s per image; too-small values over-segment, too-large values merge nuclei. Measure 10–20 representative cells with ImageJ/FIJI first, then fix the diameter for reproducibility across a batch.</li>
+                <li><strong>Tile WSIs at the right magnification and with overlap.</strong> In <code>tiatoolbox</code>, always request tiles at a named magnification (e.g., <code>power=20</code>) rather than a pyramid level. Use at least 64 px overlap on each edge and stitch predictions with weighted blending or Gaussian feathering — hard-edge tiling produces grid artefacts in both segmentation masks and feature maps.</li>
+                <li><strong>Normalise H&amp;E stain before deep models.</strong> Macenko or Vahadane stain normalisation (available in <code>tiatoolbox.tools.stainnorm</code>) reduces scanner-to-scanner colour variation by ~40% on CoNIC-style benchmarks; without it, a model trained on one scanner fails on another. Apply normalisation before any patch extraction step.</li>
+                <li><strong>Patient-level data leakage is the most common evaluation error.</strong> If a patient has 50 WSI tiles and you randomly split tiles into train/test, the model memorises patient appearance. Always split at the <em>patient</em> (or slide) level; use stratified splits to balance disease class across folds.</li>
+                <li><strong>Class imbalance in histology is severe.</strong> In CoNIC, neutrophils are &lt;2% of nuclei; in PaSCient, rare disease classes have &lt;50 patients. Use class-weighted sampling, Focal loss, or Focal Tversky loss (as in Classpose) rather than standard cross-entropy, and always report per-class F1 rather than macro accuracy — a model predicting "lymphocyte" for every nucleus can look 70% accurate while being useless.</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer style="text-align: center;">
+        <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+        <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
+        <p style="font-size: 0.85em; margin-top: 12px; opacity: 0.7;">Created 2026 · Updated September 2026</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">&#x1F512; Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>&copy; 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome &mdash; see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
+    </footer>
+</body>
+</html>

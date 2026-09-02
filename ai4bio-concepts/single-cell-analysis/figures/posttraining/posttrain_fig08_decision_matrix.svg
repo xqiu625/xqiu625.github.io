@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  POST-TRAINING DECISION MATRIX</text>
+  <text x="60" y="96" class="h1">Which recipe — by data regime × reward verifiability.</text>
+  <text x="60" y="124" class="h-sub">The master selection guide. Locate your task in the grid; the cell tells you what to build.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+
+  
+  <text x="1140" y="210" text-anchor="middle" class="axis-title">DATA REGIME  →</text>
+  <text x="620" y="234" text-anchor="middle" class="axis-label">&lt; 1 K labels  (few-shot)</text>
+  <text x="1160" y="234" text-anchor="middle" class="axis-label">1 K – 100 K labels  (typical bio)</text>
+  <text x="1700" y="234" text-anchor="middle" class="axis-label">&gt; 100 K labels  (atlas-scale)</text>
+
+  <text x="0" y="0" transform="translate(208,580) rotate(-90)" text-anchor="middle" class="axis-title">REWARD VERIFIABILITY  →</text>
+  <text x="0" y="0" transform="translate(232,350) rotate(-90)" text-anchor="middle" class="axis-label">Computable</text>
+  <text x="0" y="0" transform="translate(252,350) rotate(-90)" text-anchor="middle" class="axis-sub">charge · exact match</text>
+  <text x="0" y="0" transform="translate(232,590) rotate(-90)" text-anchor="middle" class="axis-label">Proxy</text>
+  <text x="0" y="0" transform="translate(252,590) rotate(-90)" text-anchor="middle" class="axis-sub">MedCPT · BERTScore</text>
+  <text x="0" y="0" transform="translate(232,830) rotate(-90)" text-anchor="middle" class="axis-label">Unverifiable</text>
+  <text x="0" y="0" transform="translate(252,830) rotate(-90)" text-anchor="middle" class="axis-sub">novel hypothesis</text>
+
+  
+  <g>
+    <rect x="360" y="250" width="520" height="220" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="380" y="278" class="cell-tag" fill="#c95a2a">FEW-SHOT  ×  COMPUTABLE</text>
+    <text x="380" y="306" class="cell-title">Frozen head  +  RL</text>
+    <text x="380" y="328" class="cell-body">freeze the backbone; train a small head with policy-gradient updates</text>
+    <text x="380" y="360" class="cell-body" font-weight="700" fill="#c95a2a">recipe  ·  ProteinRL</text>
+    <text x="380" y="382" class="cell-body" fill="#5c5c66">small parameter footprint, exact reward, frozen Prior for anti-forgetting</text>
+    <text x="380" y="430" class="cell-body" font-style="italic" fill="#5c5c66">&#34;least RL infrastructure to get something useful out&#34;</text>
+  </g>
+  <g>
+    <rect x="900" y="250" width="520" height="220" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="920" y="278" class="cell-tag" fill="#2c8a4f">TYPICAL  ×  COMPUTABLE  ·  SWEET SPOT</text>
+    <text x="920" y="306" class="cell-title">PEFT  +  GRPO</text>
+    <text x="920" y="328" class="cell-body">LoRA on the backbone, GRPO on the verifiable reward</text>
+    <text x="920" y="360" class="cell-body" font-weight="700" fill="#2c8a4f">recipes  ·  Cell-o1  ·  Gene-R1</text>
+    <text x="920" y="382" class="cell-body" fill="#5c5c66">batch-binary or dual-reward GRPO; preserves the pretrained prior</text>
+    <text x="920" y="430" class="cell-body" font-style="italic" fill="#5c5c66">the modal cell — most modern bio RL recipes live here</text>
+  </g>
+  <g>
+    <rect x="1440" y="250" width="500" height="220" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+    <text x="1460" y="278" class="cell-tag" fill="#b8902c">ATLAS  ×  COMPUTABLE</text>
+    <text x="1460" y="306" class="cell-title">Full SFT  +  GRPO</text>
+    <text x="1460" y="328" class="cell-body">enough data to refine every layer; reward to tune the head</text>
+    <text x="1460" y="360" class="cell-body" font-weight="700" fill="#b8902c">recipe  ·  C2S-Scale</text>
+    <text x="1460" y="382" class="cell-body" fill="#5c5c66">monitor rare classes; the ceiling is highest but so is forgetting risk</text>
+    <text x="1460" y="430" class="cell-body" font-style="italic" fill="#5c5c66">only worth it when the labelled set is genuinely huge</text>
+  </g>
+
+  
+  <g>
+    <rect x="360" y="490" width="520" height="220" rx="12" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <text x="380" y="518" class="cell-tag" fill="#4a6a8a">FEW-SHOT  ×  PROXY</text>
+    <text x="380" y="546" class="cell-title">PEFT only</text>
+    <text x="380" y="568" class="cell-body">no RL — let supervised PEFT do the heavy lifting</text>
+    <text x="380" y="600" class="cell-body" font-weight="700" fill="#4a6a8a">recipe  ·  scPEFT</text>
+    <text x="380" y="622" class="cell-body" fill="#5c5c66">Encoder adapter for cell-type tasks, LoRA elsewhere</text>
+    <text x="380" y="670" class="cell-body" font-style="italic" fill="#5c5c66">don&#39;t run RL against a proxy on too little data — it will overfit</text>
+  </g>
+  <g>
+    <rect x="900" y="490" width="520" height="220" rx="12" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <text x="920" y="518" class="cell-tag" fill="#6b4e8a">TYPICAL  ×  PROXY</text>
+    <text x="920" y="546" class="cell-title">PEFT  +  multi-agent verify</text>
+    <text x="920" y="568" class="cell-body">PEFT for the head; verification loop in the prompt path</text>
+    <text x="920" y="600" class="cell-body" font-weight="700" fill="#6b4e8a">recipe  ·  GeneAgent  (or PEFT + RAG)</text>
+    <text x="920" y="622" class="cell-body" fill="#5c5c66">claims grounded by DBs — proxy reward never enters training</text>
+    <text x="920" y="670" class="cell-body" font-style="italic" fill="#5c5c66">leave the proxy out of the reward; bring it in as a verifier</text>
+  </g>
+  <g>
+    <rect x="1440" y="490" width="500" height="220" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <text x="1460" y="518" class="cell-tag" fill="#c95a2a">ATLAS  ×  PROXY</text>
+    <text x="1460" y="546" class="cell-title">Full SFT  +  multi-agent verify</text>
+    <text x="1460" y="568" class="cell-body">scale up SFT, add CASSIA-style verification for calibration</text>
+    <text x="1460" y="600" class="cell-body" font-weight="700" fill="#c95a2a">recipe  ·  CASSIA</text>
+    <text x="1460" y="622" class="cell-body" fill="#5c5c66">SFT-trained backbone + 5-agent loop + 0–100 quality score</text>
+    <text x="1460" y="670" class="cell-body" font-style="italic" fill="#5c5c66">heaviest cell in the matrix; the rest of the row is cheaper</text>
+  </g>
+
+  
+  <g>
+    <rect x="360" y="730" width="520" height="220" rx="12" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <text x="380" y="758" class="cell-tag" fill="#6b4e8a">FEW-SHOT  ×  UNVERIFIABLE</text>
+    <text x="380" y="786" class="cell-title">Multi-agent verify only</text>
+    <text x="380" y="808" class="cell-body">no training — wrap a strong LLM in a structured verification pipeline</text>
+    <text x="380" y="840" class="cell-body" font-weight="700" fill="#6b4e8a">recipe  ·  CyteType</text>
+    <text x="380" y="862" class="cell-body" fill="#5c5c66">5 agents test competing hypotheses against external evidence</text>
+    <text x="380" y="910" class="cell-body" font-style="italic" fill="#5c5c66">the only sensible recipe when you can&#39;t define a reward</text>
+  </g>
+  <g>
+    <rect x="900" y="730" width="520" height="220" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="920" y="758" class="cell-tag" fill="#2c8a4f">TYPICAL  ×  UNVERIFIABLE  ·  CLOSED LOOP</text>
+    <text x="920" y="786" class="cell-title">Active learning loop</text>
+    <text x="920" y="808" class="cell-body">close the loop with wet-lab feedback — let experiments be the reward</text>
+    <text x="920" y="840" class="cell-body" font-weight="700" fill="#2c8a4f">recipe  ·  DeMeo  ·  DrugReflector</text>
+    <text x="920" y="862" class="cell-body" fill="#5c5c66">each round refines model + target signature jointly</text>
+    <text x="920" y="910" class="cell-body" font-style="italic" fill="#5c5c66">replace &#34;verifier function&#34; with &#34;wet-lab assay&#34;</text>
+  </g>
+  <g>
+    <rect x="1440" y="730" width="500" height="220" rx="12" fill="#fff7d9" stroke="#b8902c" stroke-width="1.6"></rect>
+    <text x="1460" y="758" class="cell-tag" fill="#b8902c">ATLAS  ×  UNVERIFIABLE</text>
+    <text x="1460" y="786" class="cell-title">Agentic discovery</text>
+    <text x="1460" y="808" class="cell-body">generate-code-verify funnel; let agents propose, run, decorrelate</text>
+    <text x="1460" y="840" class="cell-body" font-weight="700" fill="#b8902c">recipe  ·  SPARK</text>
+    <text x="1460" y="862" class="cell-body" fill="#5c5c66">500 ideas → 379 verified parameters across 5 400 patients</text>
+    <text x="1460" y="910" class="cell-body" font-style="italic" fill="#5c5c66">discovery, not optimisation — agents look for what humans haven&#39;t named</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="970" width="1880" height="110" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <text x="80" y="1000" class="legend-tag" fill="#8a5a4a">HOW TO USE THIS MATRIX</text>
+    <text x="80" y="1030" class="key">First find your cell on the grid. Then build the recipe in that cell.</text>
+    <text x="80" y="1056" class="annot">Most failed bio post-training projects skipped this step — they picked a recipe by familiarity rather than by where their data and reward actually sat.</text>
+    <text x="80" y="1076" class="annot" font-style="italic" fill="#5c5c66">If two cells look plausible, pick the cheaper one and only escalate when the metric forces you to.</text>
+  </g>
+</svg>

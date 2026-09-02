@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CELL PAINTING PIPELINE  ·  IMAGE → GENE FUNCTION</text>
+  <text x="60" y="96" class="h1">5 fluorescent channels per well. Learned features beat hand-crafted ones.</text>
+  <text x="60" y="124" class="h-sub">CP-DINO&#39;s defocus + coarse-dropout augmentation is what makes 768-d embeddings beat CellProfiler.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="540" height="780" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <circle cx="100" cy="222" r="22" fill="#4a6a8a"></circle>
+    <text x="100" y="230" text-anchor="middle" class="step-num">1</text>
+    <text x="132" y="212" class="step-tag" fill="#4a6a8a">STEP 1  ·  IMAGE ACQUISITION  🔬</text>
+    <text x="132" y="240" class="step-title">5-channel stain  ·  CellPaint-POSH panel</text>
+
+    
+    <g transform="translate(80,270)">
+      <rect x="0" y="0" width="480" height="200" rx="10" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="20" y="32" class="annot" font-weight="700" fill="#4a6a8a">well plate  ·  each well = one CRISPR KO</text>
+      
+      <g transform="translate(20,50)">
+        <circle cx="35" cy="35" r="14" fill="#4a6a8a" opacity="0.8"></circle>
+        <circle cx="105" cy="35" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="175" cy="35" r="14" fill="#4a6a8a" opacity="0.85"></circle>
+        <circle cx="245" cy="35" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="315" cy="35" r="14" fill="#4a6a8a" opacity="0.4"></circle>
+        <circle cx="385" cy="35" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+
+        <circle cx="35" cy="85" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="105" cy="85" r="14" fill="#4a6a8a" opacity="0.4"></circle>
+        <circle cx="175" cy="85" r="14" fill="#4a6a8a" opacity="0.85"></circle>
+        <circle cx="245" cy="85" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="315" cy="85" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="385" cy="85" r="14" fill="#4a6a8a" opacity="0.85"></circle>
+
+        <circle cx="35" cy="135" r="14" fill="#4a6a8a" opacity="0.85"></circle>
+        <circle cx="105" cy="135" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="175" cy="135" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="245" cy="135" r="14" fill="#4a6a8a" opacity="0.4"></circle>
+        <circle cx="315" cy="135" r="14" fill="#4a6a8a" opacity="0.6"></circle>
+        <circle cx="385" cy="135" r="14" fill="#4a6a8a" opacity="0.85"></circle>
+      </g>
+    </g>
+
+    
+    <text x="80" y="500" class="annot" font-weight="700">5 fluorescent channels per well</text>
+    <g transform="translate(80,524)">
+      <rect x="0" y="0" width="92" height="56" rx="6" fill="#4a6a8a" opacity="0.85"></rect>
+      <text x="46" y="20" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">DNA</text>
+      <text x="46" y="40" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">nucleus</text>
+
+      <rect x="96" y="0" width="92" height="56" rx="6" fill="#c95a2a" opacity="0.85"></rect>
+      <text x="142" y="20" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">RNA</text>
+      <text x="142" y="40" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">nucleoli</text>
+
+      <rect x="192" y="0" width="92" height="56" rx="6" fill="#b8902c" opacity="0.85"></rect>
+      <text x="238" y="20" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">ER</text>
+      <text x="238" y="40" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">reticulum</text>
+
+      <rect x="288" y="0" width="92" height="56" rx="6" fill="#2c8a4f" opacity="0.85"></rect>
+      <text x="334" y="20" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">AGP</text>
+      <text x="334" y="40" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">actin-golgi</text>
+
+      <rect x="384" y="0" width="92" height="56" rx="6" fill="#6b4e8a" opacity="0.85"></rect>
+      <text x="430" y="20" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">Mito</text>
+      <text x="430" y="40" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">mitochondria</text>
+    </g>
+
+    <text x="80" y="630" class="annot" font-style="italic" fill="#5c5c66">cells in each well receive a different CRISPR perturbation;</text>
+    <text x="80" y="650" class="annot" font-style="italic" fill="#5c5c66">image 5 channels per well, multiple FOVs.</text>
+
+    <text x="80" y="710" class="key" fill="#a14854">⚠  batch effects dominate</text>
+    <text x="80" y="734" class="annot">microscope · plate position · stain lot</text>
+    <text x="80" y="758" class="annot">often swamp the biological signal</text>
+
+    <text x="80" y="800" class="emoji">🧪</text>
+  </g>
+
+  
+  <line x1="610" y1="550" x2="640" y2="550" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="650" y="180" width="700" height="780" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.8"></rect>
+    <circle cx="690" cy="222" r="22" fill="#b8902c"></circle>
+    <text x="690" y="230" text-anchor="middle" class="step-num">2</text>
+    <text x="722" y="212" class="step-tag" fill="#7a5b13">STEP 2  ·  FEATURE EXTRACTION  🧮</text>
+    <text x="722" y="240" class="step-title">two approaches  ·  same input</text>
+
+    
+    <g transform="translate(670,280)">
+      <rect x="0" y="0" width="320" height="340" rx="10" fill="#ffffff" stroke="#b8902c"></rect>
+      <text x="20" y="30" class="step-tag" fill="#7a5b13">CELLPROFILER  📐  (classical)</text>
+      <text x="20" y="58" class="step-title">hand-engineered features</text>
+
+      <text x="20" y="98" class="annot">cell shape  ·  area, eccentricity</text>
+      <text x="20" y="120" class="annot">intensity  ·  mean, std per channel</text>
+      <text x="20" y="142" class="annot">texture  ·  Haralick, LBP</text>
+
+      <text x="20" y="184" class="annot" font-weight="700">~ 1 000 features per cell</text>
+
+      <line x1="20" y1="206" x2="300" y2="206" stroke="#e5dfcf"></line>
+      <text x="20" y="234" class="annot" font-weight="700" fill="#7a5b13">benchmarks</text>
+      <text x="20" y="256" class="annot">CRISPR-detect  ·  baseline</text>
+      <text x="20" y="276" class="annot">StringDB TPR  ·  0.55</text>
+
+      <text x="20" y="316" class="annot" font-style="italic" fill="#5c5c66">interpretable, robust, but capped.</text>
+    </g>
+
+    
+    <g transform="translate(990,280)">
+      <rect x="0" y="0" width="340" height="340" rx="10" fill="#dfeede" stroke="#2c8a4f"></rect>
+      <text x="20" y="30" class="step-tag" fill="#2c8a4f">CP-DINO  🌀  (learned)</text>
+      <text x="20" y="58" class="step-title">self-supervised DINO-ViT</text>
+
+      <text x="20" y="98" class="annot">defocus augmentation  🔭</text>
+      <text x="20" y="120" class="annot">coarse-dropout augmentation  🪟</text>
+      <text x="20" y="142" class="annot">student-teacher EMA</text>
+
+      <text x="20" y="184" class="annot" font-weight="700">768-d embeddings per cell</text>
+
+      <line x1="20" y1="206" x2="320" y2="206" stroke="#bcd6bc"></line>
+      <text x="20" y="234" class="annot" font-weight="700" fill="#2c8a4f">benchmarks  ✅</text>
+      <text x="20" y="256" class="annot">CRISPR-detect  ·  2.5× more perturbations</text>
+      <text x="20" y="276" class="annot">StringDB TPR  ·  0.70</text>
+
+      <text x="20" y="316" class="annot" font-style="italic" fill="#5c5c66">augmentation strategy is the key.</text>
+    </g>
+
+    
+    <text x="670" y="660" class="annot" font-weight="700">why CP-DINO wins</text>
+    <text x="670" y="684" class="annot">defocus + coarse-dropout simulate batch perturbations  →</text>
+    <text x="670" y="704" class="annot">representations become invariant to plate / microscope drift.</text>
+    <text x="670" y="734" class="annot" font-style="italic" fill="#5c5c66">augmentation IS the prior. Pick one that mimics your nuisance variation.</text>
+
+    <text x="670" y="784" class="annot" font-weight="700">comparison numbers</text>
+    <text x="670" y="808" class="annot">2.5×  perturbations detected over CellProfiler</text>
+    <text x="670" y="828" class="annot">StringDB TPR  ·  +0.15 absolute (0.70 vs 0.55)</text>
+
+    <text x="670" y="876" class="key" fill="#2c8a4f">learned features beat hand-crafted ones  →</text>
+    <text x="670" y="900" class="annot">but only with augmentation aligned to batch effects.</text>
+  </g>
+
+  
+  <line x1="1360" y1="550" x2="1390" y2="550" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="1400" y="180" width="540" height="780" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <circle cx="1440" cy="222" r="22" fill="#2c8a4f"></circle>
+    <text x="1440" y="230" text-anchor="middle" class="step-num">3</text>
+    <text x="1472" y="212" class="step-tag" fill="#2c8a4f">STEP 3  ·  GENE FUNCTION  🧬</text>
+    <text x="1472" y="240" class="step-title">cell-level → gene-level → cluster</text>
+
+    <text x="1420" y="290" class="annot" font-weight="700">aggregate per gene</text>
+    <text x="1420" y="312" class="annot">median embedding across cells for each KO</text>
+    <text x="1420" y="334" class="annot">→  one 768-d profile per gene</text>
+
+    <text x="1420" y="378" class="annot" font-weight="700">cluster genes by phenotype</text>
+    <text x="1420" y="400" class="annot">UMAP / Leiden on the gene-profile matrix</text>
+
+    
+    <g transform="translate(1420,430)">
+      <rect x="0" y="0" width="500" height="280" rx="10" fill="#ffffff" stroke="#2c8a4f"></rect>
+      
+      <ellipse cx="120" cy="90" rx="70" ry="40" fill="#2c8a4f" opacity="0.20" stroke="#2c8a4f"></ellipse>
+      <circle cx="100" cy="80" r="6" fill="#2c8a4f"></circle>
+      <circle cx="120" cy="100" r="6" fill="#2c8a4f"></circle>
+      <circle cx="140" cy="80" r="6" fill="#2c8a4f"></circle>
+      <text x="120" y="146" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">mitotic spindle</text>
+
+      
+      <ellipse cx="320" cy="100" rx="70" ry="40" fill="#c95a2a" opacity="0.20" stroke="#c95a2a"></ellipse>
+      <circle cx="300" cy="90" r="6" fill="#c95a2a"></circle>
+      <circle cx="320" cy="110" r="6" fill="#c95a2a"></circle>
+      <circle cx="340" cy="90" r="6" fill="#c95a2a"></circle>
+      <text x="320" y="156" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">DNA damage response</text>
+
+      
+      <ellipse cx="220" cy="220" rx="70" ry="40" fill="#6b4e8a" opacity="0.20" stroke="#6b4e8a"></ellipse>
+      <circle cx="200" cy="210" r="6" fill="#6b4e8a"></circle>
+      <circle cx="220" cy="230" r="6" fill="#6b4e8a"></circle>
+      <circle cx="240" cy="210" r="6" fill="#6b4e8a"></circle>
+      <text x="220" y="266" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">organelle biogenesis</text>
+    </g>
+
+    <text x="1420" y="748" class="annot" font-weight="700">genes that look alike  →  act alike</text>
+    <text x="1420" y="772" class="annot">membership in a phenotype cluster suggests function</text>
+    <text x="1420" y="810" class="annot" font-style="italic" fill="#5c5c66">unknown genes inherit annotations from cluster neighbours.</text>
+
+    <text x="1420" y="858" class="key" fill="#2c8a4f">phenotypic homology → functional homology</text>
+    <text x="1900" y="930" text-anchor="end" class="emoji">🧬✨</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="980" width="1880" height="90" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="1010" class="step-tag" fill="#a14854">⚠  THE PITFALL</text>
+    <text x="80" y="1044" class="key" fill="#a14854">controls cluster by plate position, not by gene KO  —  batch effects dominate biology in Cell Painting.</text>
+    <text x="80" y="1066" class="annot" font-style="italic" fill="#5c5c66">CP-DINO&#39;s augmentation choice (defocus + coarse-dropout) is exactly what makes the learned features survive this.</text>
+  </g>
+</svg>

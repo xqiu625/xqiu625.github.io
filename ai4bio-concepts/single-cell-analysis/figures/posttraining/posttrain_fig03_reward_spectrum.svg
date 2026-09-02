@@ -1,0 +1,156 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ax" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2a2a33"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE VERIFIABLE-REWARD SPECTRUM</text>
+  <text x="60" y="96" class="h1">When RL works, when it leaks, and when you should not even try.</text>
+  <text x="60" y="124" class="h-sub">The single most important design decision in biological post-training — chosen <tspan font-style="italic">before</tspan> the model, not after.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="80" y="200" class="axis-tag">EASILY VERIFIABLE  ←</text>
+  <text x="1920" y="200" text-anchor="end" class="axis-tag">→  UNVERIFIABLE</text>
+
+  <g>
+    
+    <rect x="60" y="220" width="626" height="60" fill="#2c8a4f" opacity="0.30"></rect>
+    <rect x="687" y="220" width="626" height="60" fill="#b8902c" opacity="0.30"></rect>
+    <rect x="1314" y="220" width="626" height="60" fill="#a14854" opacity="0.30"></rect>
+
+    <line x1="60" y1="280" x2="1940" y2="280" stroke="#2a2a33" stroke-width="2"></line>
+    
+    <line x1="686" y1="220" x2="686" y2="280" stroke="#ffffff" stroke-width="2"></line>
+    <line x1="1313" y1="220" x2="1313" y2="280" stroke="#ffffff" stroke-width="2"></line>
+
+    <text x="370" y="256" text-anchor="middle" class="zone-tag" fill="#2c8a4f">GREEN ZONE  ·  COMPUTABLE</text>
+    <text x="1000" y="256" text-anchor="middle" class="zone-tag" fill="#7a5b13">YELLOW ZONE  ·  PROXY</text>
+    <text x="1626" y="256" text-anchor="middle" class="zone-tag" fill="#a14854">RED ZONE  ·  GROUND TRUTH ABSENT</text>
+  </g>
+
+  
+
+  
+  <g>
+    <rect x="60" y="310" width="626" height="320" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="80" y="338" class="zone-title">Tasks RL handles directly</text>
+    <text x="80" y="358" class="task-meta">reward is a closed-form computation; no model needed to score</text>
+
+    <g transform="translate(80,378)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">Protein charge</text>
+      <text x="14" y="44" class="task-meta">ProteinRL  ·  net charge from sequence is an exact integer</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">extreme charges (+18, −39) reached without forgetting fold</text>
+    </g>
+    <g transform="translate(80,452)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">Code compiles  /  unit tests pass</text>
+      <text x="14" y="44" class="task-meta">SPARK  ·  python exec succeeds, image features extract</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">96.7 % pipeline-survival rate across 500 agent-proposed ideas</text>
+    </g>
+    <g transform="translate(80,526)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">Batch one-to-one cell match</text>
+      <text x="14" y="44" class="task-meta">Cell-o1  ·  binary reward — all N right or 0</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">forces consistency-aware reasoning; +73 % batch accuracy vs o1</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="687" y="310" width="626" height="320" rx="14" fill="#ffffff" stroke="#b8902c" stroke-width="1.8"></rect>
+    <text x="707" y="338" class="zone-title">Tasks RL handles, but watch the reward</text>
+    <text x="707" y="358" class="task-meta">reward is a learned proxy — gameable if you don&#39;t filter</text>
+
+    <g transform="translate(707,378)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">GO-term semantic similarity</text>
+      <text x="14" y="44" class="task-meta">Gene-R1  ·  MedCPT proxy on the predicted annotation</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">paired with an exact-match reward to prevent paraphrase laziness</text>
+    </g>
+    <g transform="translate(707,452)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">BioBERTScore  /  NL similarity</text>
+      <text x="14" y="44" class="task-meta">C2S-Scale  ·  neural similarity to a reference description</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">most hackable reward in this catalogue — needs adversarial filtering</text>
+    </g>
+    <g transform="translate(707,526)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#fff7d9" stroke="#b8902c" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">CASSIA-style quality score</text>
+      <text x="14" y="44" class="task-meta">calibrated 0 – 100 per annotation</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">predicts accuracy at F = 23.88 but is itself a learned function</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="1314" y="310" width="626" height="320" rx="14" fill="#ffffff" stroke="#a14854" stroke-width="1.8"></rect>
+    <text x="1334" y="338" class="zone-title">Tasks where RL should not steer</text>
+    <text x="1334" y="358" class="task-meta">no ground truth a reward could compute against</text>
+
+    <g transform="translate(1334,378)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">Novel pathway hypothesis</text>
+      <text x="14" y="44" class="task-meta">no labelled set says &#34;this hypothesis is true&#34;</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">verification has to come from the literature or the bench</text>
+    </g>
+    <g transform="translate(1334,452)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">Drug mechanism of action</text>
+      <text x="14" y="44" class="task-meta">takes months of wet-lab perturbation studies to confirm</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">no reward signal exists on the timescale of training</text>
+    </g>
+    <g transform="translate(1334,526)">
+      <rect x="0" y="0" width="586" height="68" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="1.2"></rect>
+      <text x="14" y="24" class="task-name">Cell-type discovery</text>
+      <text x="14" y="44" class="task-meta">labels disagree across atlases by ~ 25 %</text>
+      <text x="14" y="60" class="task-meta" font-style="italic" fill="#5c5c66">the &#34;ground truth&#34; is itself contested between annotators</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="660" width="626" height="200" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="80" y="688" class="strategy-tag" fill="#2c8a4f">STRATEGY  ·  GREEN ZONE</text>
+    <text x="80" y="722" class="key" fill="#2c8a4f">RL elicitation works directly.</text>
+    <text x="80" y="754" class="annot">point GRPO at the computable reward and let it run.</text>
+    <text x="80" y="782" class="annot">no critic needed; advantage from sibling rollouts.</text>
+    <text x="80" y="822" class="annot" font-style="italic" fill="#5c5c66">examples: ProteinRL, Cell-o1, SPARK code-pass reward.</text>
+    <text x="80" y="842" class="annot" font-style="italic" fill="#5c5c66">smallest engineering surface in the figure.</text>
+  </g>
+
+  <g>
+    <rect x="687" y="660" width="626" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="707" y="688" class="strategy-tag" fill="#7a5b13">STRATEGY  ·  YELLOW ZONE</text>
+    <text x="707" y="722" class="key" fill="#7a5b13">RL works  +  add a second reward and a filter.</text>
+    <text x="707" y="754" class="annot">pair the proxy with an exact-match reward (Gene-R1).</text>
+    <text x="707" y="782" class="annot">reject trajectories that hit the proxy without hitting the source.</text>
+    <text x="707" y="822" class="annot" font-style="italic" fill="#5c5c66">never put a single neural reward at the centre of the loop.</text>
+    <text x="707" y="842" class="annot" font-style="italic" fill="#5c5c66">reward hacking starts the moment you stop checking.</text>
+  </g>
+
+  <g>
+    <rect x="1314" y="660" width="626" height="200" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="1334" y="688" class="strategy-tag" fill="#a14854">STRATEGY  ·  RED ZONE</text>
+    <text x="1334" y="722" class="key" fill="#a14854">Fall back to verification or active learning.</text>
+    <text x="1334" y="754" class="annot">multi-agent loops (GeneAgent, CASSIA, CyteType) ground claims</text>
+    <text x="1334" y="774" class="annot">in databases — no reward function needed.</text>
+    <text x="1334" y="804" class="annot">or close the loop via wet-lab feedback (DeMeo).</text>
+    <text x="1334" y="844" class="annot" font-style="italic" fill="#5c5c66">RL here would optimise nothing real.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="900" width="1880" height="180" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <text x="80" y="930" class="strategy-tag" fill="#8a5a4a">THE DESIGN DECISION</text>
+    <text x="80" y="964" class="key">Locate your task on this axis before you pick a recipe.</text>
+    <text x="80" y="996" class="annot">A green-zone task with a multi-agent recipe is overbuilt; a red-zone task with a single-reward RL recipe is unsafe.</text>
+    <text x="80" y="1020" class="annot">Every successful biological post-training paper has matched its method to the right zone — and most failures come from forcing the wrong recipe onto the wrong zone.</text>
+    <text x="80" y="1054" class="annot" font-style="italic" fill="#5c5c66">If you cannot place your task on this spectrum, you are not ready to choose a recipe yet.</text>
+  </g>
+</svg>

@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  WHICH IMAGING METHOD FOR WHICH QUESTION?</text>
+  <text x="60" y="96" class="h1">Top-down by what&#39;s on the slide.</text>
+  <text x="60" y="124" class="h-sub">Pick the branch by your input modality; pick the leaf by your goal.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="780" y="170" width="440" height="80" rx="14" fill="#ffffff" stroke="#1a1a22" stroke-width="2"></rect>
+    <text x="1000" y="198" text-anchor="middle" class="root-tag">START HERE  🎯</text>
+    <text x="1000" y="232" text-anchor="middle" class="root-q">What is your imaging input?</text>
+  </g>
+
+  
+  <g fill="none" stroke-width="2">
+    <path d="M 1000 250 C 1000 285, 250 285, 250 318" stroke="#4a6a8a" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 700 285, 700 318" stroke="#c95a2a" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 1280 285, 1280 318" stroke="#2c8a4f" marker-end="url(#ar)"></path>
+    <path d="M 1000 250 C 1000 285, 1740 285, 1740 318" stroke="#6b4e8a" marker-end="url(#ar)"></path>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="320" width="380" height="84" rx="12" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="78" y="350" class="node-tag" fill="#4a6a8a">BRANCH 1  🔬</text>
+    <text x="78" y="378" class="node-q">Fluorescence microscopy</text>
+    <text x="78" y="398" class="node-q">(cultured cells)?</text>
+  </g>
+  <line x1="250" y1="408" x2="250" y2="430" stroke="#4a6a8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="60" y="436" width="380" height="320" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.4"></rect>
+    <text x="78" y="462" class="node-tag" fill="#4a6a8a">PICK BY GOAL</text>
+
+    <text x="78" y="490" class="leaf-title">segmentation  ✂</text>
+    <text x="78" y="510" class="leaf-body">Cellpose  →  diverse modalities</text>
+    <text x="78" y="530" class="leaf-body">CellSAM  →  bacteria, yeast, tissue</text>
+
+    <text x="78" y="572" class="leaf-title">Cell Painting screen  🎨</text>
+    <text x="78" y="592" class="leaf-body">CellPaint-POSH + CP-DINO</text>
+
+    <text x="78" y="634" class="leaf-title">live organelle imaging  🎥</text>
+    <text x="78" y="654" class="leaf-body">ESPRESSO  →  high-throughput tracking</text>
+
+    <text x="78" y="710" class="leaf-body" font-style="italic" fill="#5c5c66">batch effects dominate  →  pick augmentations carefully.</text>
+  </g>
+
+  
+  <g>
+    <rect x="510" y="320" width="380" height="84" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="528" y="350" class="node-tag" fill="#c95a2a">BRANCH 2  🩸</text>
+    <text x="528" y="378" class="node-q">H&amp;E tissue section?</text>
+    <text x="528" y="398" class="node-q">(slide-mounted)</text>
+  </g>
+  <line x1="700" y1="408" x2="700" y2="430" stroke="#c95a2a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="510" y="436" width="380" height="320" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1.4"></rect>
+    <text x="528" y="462" class="node-tag" fill="#c95a2a">PICK BY GOAL</text>
+
+    <text x="528" y="490" class="leaf-title">molecular prediction  🧬</text>
+    <text x="528" y="510" class="leaf-body">spot-level Visium  →  ST-Net / Hist2ST</text>
+    <text x="528" y="530" class="leaf-body">single-cell  →  GHIST</text>
+    <text x="528" y="550" class="leaf-body">single protein  →  HEX  (MUSK)</text>
+    <text x="528" y="570" class="leaf-body">zero-shot cross-organ  →  OmiCLIP / Loki</text>
+
+    <text x="528" y="616" class="leaf-title">classification  🩺</text>
+    <text x="528" y="636" class="leaf-body">PaSCient  →  MIL on disease state</text>
+    <text x="528" y="656" class="leaf-body">SPARK  →  agentic biomarker discovery</text>
+
+    <text x="528" y="710" class="leaf-body" font-style="italic" fill="#5c5c66">resolution and ground truth matter more than model size.</text>
+  </g>
+
+  
+  <g>
+    <rect x="1090" y="320" width="380" height="84" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="1108" y="350" class="node-tag" fill="#2c8a4f">BRANCH 3  🗺</text>
+    <text x="1108" y="378" class="node-q">Multiplexed spatial?</text>
+    <text x="1108" y="398" class="node-q">Xenium · CosMx · CODEX</text>
+  </g>
+  <line x1="1280" y1="408" x2="1280" y2="430" stroke="#2c8a4f" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="1090" y="436" width="380" height="320" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="1108" y="462" class="node-tag" fill="#2c8a4f">PICK BY GOAL</text>
+
+    <text x="1108" y="490" class="leaf-title">segmentation  ✂</text>
+    <text x="1108" y="510" class="leaf-body">Baysor  +  ALWAYS run cellAdmix  ⚠</text>
+    <text x="1108" y="530" class="leaf-body" fill="#a14854">→  before any DE / LR / program analysis</text>
+
+    <text x="1108" y="572" class="leaf-title">spatial clustering  🧭</text>
+    <text x="1108" y="592" class="leaf-body">BANKSY  ·  one λ for typing &amp; domains</text>
+
+    <text x="1108" y="634" class="leaf-title">domain identification  🗺</text>
+    <text x="1108" y="654" class="leaf-body">Novae  ·  cross-tissue domain transfer</text>
+
+    <text x="1108" y="696" class="leaf-title">CCC networks  🕸</text>
+    <text x="1108" y="716" class="leaf-body">CellNEST  ·  multi-hop relay cascades</text>
+  </g>
+
+  
+  <g>
+    <rect x="1550" y="320" width="380" height="84" rx="12" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <text x="1568" y="350" class="node-tag" fill="#6b4e8a">BRANCH 4  🩻</text>
+    <text x="1568" y="378" class="node-q">Clinical CT / MRI?</text>
+    <text x="1568" y="398" class="node-q">radiology images</text>
+  </g>
+  <line x1="1740" y1="408" x2="1740" y2="430" stroke="#6b4e8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+  <g>
+    <rect x="1550" y="436" width="380" height="320" rx="10" fill="#ffffff" stroke="#6b4e8a" stroke-width="1.4"></rect>
+    <text x="1568" y="462" class="node-tag" fill="#6b4e8a">RECOMMENDED</text>
+    <text x="1568" y="490" class="leaf-title">MedMPT  🧠</text>
+    <text x="1568" y="512" class="leaf-body">4 SSL objectives  ·  154 K curated pairs</text>
+    <text x="1568" y="532" class="leaf-body">intra-slice + intra-scan + CLIP + MAE</text>
+
+    <line x1="1568" y1="558" x2="1910" y2="558" stroke="#cfc5dd"></line>
+
+    <text x="1568" y="586" class="leaf-title">why this</text>
+    <text x="1568" y="608" class="leaf-body">multi-modal training generalises across</text>
+    <text x="1568" y="628" class="leaf-body">scanners, sites, and reading styles.</text>
+
+    <text x="1568" y="710" class="leaf-body" font-style="italic" fill="#5c5c66">expert-curated pairs beat web-scraped scale.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="790" width="1880" height="130" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="820" class="root-tag" fill="#7a5b13">SIDE BRANCH  ·  APPLIES TO ANY SPATIAL OR IMAGING RESULT  ➕</text>
+    <text x="80" y="852" class="leaf-title" fill="#7a5b13">cross-validate cell types against dissociated scRNA-seq</text>
+    <text x="80" y="876" class="leaf-body">→  catches segmentation/admixture artifacts before they reach downstream analyses</text>
+    <text x="80" y="908" class="leaf-body" font-style="italic" fill="#5c5c66">if your spatial cell types don&#39;t match the dissociated reference, your segmentation pipeline has a problem.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="940" width="1880" height="130" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <text x="80" y="970" class="node-tag" fill="#1a1a22">METHOD FAMILY COLOUR KEY</text>
+    <g transform="translate(80,986)">
+      <rect x="0" y="0" width="18" height="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.5"></rect>
+      <text x="28" y="12" class="leaf-body">fluorescence + Cell Painting</text>
+
+      <rect x="340" y="0" width="18" height="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.5"></rect>
+      <text x="368" y="12" class="leaf-body">H&amp;E (slide / WSI)</text>
+
+      <rect x="640" y="0" width="18" height="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.5"></rect>
+      <text x="668" y="12" class="leaf-body">multiplexed spatial</text>
+
+      <rect x="920" y="0" width="18" height="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.5"></rect>
+      <text x="948" y="12" class="leaf-body">clinical radiology</text>
+
+      <rect x="1200" y="0" width="18" height="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.5"></rect>
+      <text x="1228" y="12" class="leaf-body">cross-validation / QC side branch</text>
+    </g>
+
+    <text x="80" y="1044" class="leaf-body" font-style="italic" fill="#5c5c66">if you can&#39;t audit your inputs cell-by-cell, none of the downstream methods rescue you  —  start with QC, then pick a leaf.</text>
+  </g>
+</svg>

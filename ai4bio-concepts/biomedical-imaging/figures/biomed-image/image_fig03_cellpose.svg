@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar-flow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#4a6a8a"></path>
+    </marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CELLPOSE  ·  THE GRADIENT-FLOW TRICK</text>
+  <text x="60" y="96" class="h1">Predict flows, not boundaries.</text>
+  <text x="60" y="124" class="h-sub">Inside every cell, point at its centre. Then trace the arrows back: every pixel that converges is one cell.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+
+  
+  <g>
+    <rect x="60" y="180" width="610" height="780" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.8"></rect>
+    <circle cx="100" cy="222" r="22" fill="#a14854"></circle>
+    <text x="100" y="230" text-anchor="middle" class="step-num">1</text>
+    <text x="132" y="212" class="step-tag" fill="#a14854">STEP 1  ·  THE PROBLEM  ⚠</text>
+    <text x="132" y="238" class="step-title">cells come in every shape</text>
+
+    <text x="80" y="284" class="annot">round, elongated, irregular, touching each other</text>
+    <text x="80" y="306" class="annot">threshold &amp; watershed fail on the irregular ones</text>
+
+    
+    <g transform="translate(80,330)">
+      <rect x="0" y="0" width="540" height="380" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1.2"></rect>
+
+      
+      <circle cx="100" cy="100" r="50" fill="#a14854" opacity="0.35" stroke="#a14854" stroke-width="1.6"></circle>
+      <text x="100" y="180" text-anchor="middle" class="annot" fill="#5c5c66">round</text>
+
+      
+      <ellipse cx="280" cy="100" rx="80" ry="30" fill="#a14854" opacity="0.35" stroke="#a14854" stroke-width="1.6"></ellipse>
+      <text x="280" y="180" text-anchor="middle" class="annot" fill="#5c5c66">elongated</text>
+
+      
+      <path d="M 440 60 Q 480 50, 500 90 Q 520 130, 480 160 Q 440 170, 420 130 Q 410 90, 440 60 Z" fill="#a14854" opacity="0.35" stroke="#a14854" stroke-width="1.6"></path>
+      <text x="460" y="190" text-anchor="middle" class="annot" fill="#5c5c66">irregular</text>
+
+      
+      <circle cx="180" cy="280" r="50" fill="#a14854" opacity="0.35" stroke="#a14854" stroke-width="1.6"></circle>
+      <circle cx="280" cy="280" r="50" fill="#a14854" opacity="0.35" stroke="#a14854" stroke-width="1.6"></circle>
+      <text x="230" y="360" text-anchor="middle" class="annot" fill="#5c5c66">touching  (watershed merges them ❌)</text>
+
+      
+      <path d="M 440 230 A 50 50 0 1 0 440 330 A 35 35 0 1 1 440 230 Z" fill="#a14854" opacity="0.35" stroke="#a14854" stroke-width="1.6"></path>
+      <text x="460" y="360" text-anchor="middle" class="annot" fill="#5c5c66">crescent</text>
+    </g>
+
+    <text x="80" y="752" class="annot" font-style="italic" fill="#a14854">how do you represent &#34;the inside of <tspan font-weight="700">a</tspan> cell&#34; without committing to a shape?</text>
+    <text x="80" y="784" class="emoji">🤔</text>
+  </g>
+
+  
+  <g>
+    <rect x="690" y="180" width="610" height="780" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <circle cx="730" cy="222" r="22" fill="#4a6a8a"></circle>
+    <text x="730" y="230" text-anchor="middle" class="step-num">2</text>
+    <text x="762" y="212" class="step-tag" fill="#4a6a8a">STEP 2  ·  GRADIENT FLOWS  🌀</text>
+    <text x="762" y="238" class="step-title">point at the centre</text>
+
+    <text x="710" y="284" class="annot">every pixel inside a cell carries a vector</text>
+    <text x="710" y="306" class="annot">pointing toward that cell&#39;s centre of mass</text>
+
+    
+    <g transform="translate(710,330)">
+      <rect x="0" y="0" width="540" height="380" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.2"></rect>
+
+      
+      <path d="M 100 100 Q 200 60, 380 100 Q 460 200, 380 300 Q 200 340, 100 280 Q 40 200, 100 100 Z" fill="#e3edf6" opacity="0.6" stroke="#4a6a8a" stroke-width="2"></path>
+
+      
+      <circle cx="240" cy="200" r="14" fill="#4a6a8a"></circle>
+      <text x="240" y="220" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">●</text>
+
+      
+      <g stroke="#4a6a8a" stroke-width="1.6" fill="none">
+        <line x1="120" y1="130" x2="220" y2="195" marker-end="url(#ar-flow)"></line>
+        <line x1="180" y1="100" x2="232" y2="190" marker-end="url(#ar-flow)"></line>
+        <line x1="280" y1="100" x2="244" y2="190" marker-end="url(#ar-flow)"></line>
+        <line x1="360" y1="120" x2="252" y2="194" marker-end="url(#ar-flow)"></line>
+        <line x1="400" y1="190" x2="256" y2="200" marker-end="url(#ar-flow)"></line>
+        <line x1="380" y1="270" x2="252" y2="208" marker-end="url(#ar-flow)"></line>
+        <line x1="300" y1="320" x2="248" y2="214" marker-end="url(#ar-flow)"></line>
+        <line x1="220" y1="320" x2="240" y2="216" marker-end="url(#ar-flow)"></line>
+        <line x1="140" y1="310" x2="234" y2="210" marker-end="url(#ar-flow)"></line>
+        <line x1="80" y1="240" x2="226" y2="206" marker-end="url(#ar-flow)"></line>
+        <line x1="80" y1="170" x2="222" y2="198" marker-end="url(#ar-flow)"></line>
+      </g>
+
+      <text x="240" y="372" text-anchor="middle" class="annot" fill="#4a6a8a" font-style="italic">vector field  →  every pixel knows where to flow</text>
+    </g>
+
+    <text x="710" y="752" class="annot" font-style="italic" fill="#5c5c66">the model predicts two maps:  ∂x  &amp;  ∂y  flow components, pixel by pixel.</text>
+    <text x="710" y="784" class="emoji">📐</text>
+  </g>
+
+  
+  <g>
+    <rect x="1320" y="180" width="620" height="780" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <circle cx="1360" cy="222" r="22" fill="#2c8a4f"></circle>
+    <text x="1360" y="230" text-anchor="middle" class="step-num">3</text>
+    <text x="1392" y="212" class="step-tag" fill="#2c8a4f">STEP 3  ·  RECOVER THE CELLS  ✅</text>
+    <text x="1392" y="238" class="step-title">follow the flow, collect pixels</text>
+
+    <text x="1340" y="284" class="annot">at inference  ·  start at every pixel</text>
+    <text x="1340" y="306" class="annot">follow the predicted gradient until you stop moving</text>
+
+    <g transform="translate(1340,330)">
+      <rect x="0" y="0" width="560" height="380" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.2"></rect>
+
+      
+      <path d="M 100 100 Q 200 60, 280 100 Q 320 180, 280 240 Q 200 260, 100 240 Q 60 180, 100 100 Z" fill="#2c8a4f" opacity="0.45" stroke="#2c8a4f" stroke-width="2"></path>
+      <circle cx="190" cy="170" r="10" fill="#2c8a4f"></circle>
+
+      <path d="M 360 100 Q 440 80, 500 130 Q 540 200, 480 260 Q 400 280, 340 240 Q 320 170, 360 100 Z" fill="#c95a2a" opacity="0.45" stroke="#c95a2a" stroke-width="2"></path>
+      <circle cx="430" cy="190" r="10" fill="#c95a2a"></circle>
+
+      
+      <text x="280" y="320" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">two touching cells, cleanly separated  ✅</text>
+
+      
+      <g transform="translate(60,350)">
+        <rect x="0" y="0" width="14" height="14" fill="#2c8a4f"></rect>
+        <text x="22" y="12" class="annot">cell 1 sink</text>
+        <rect x="120" y="0" width="14" height="14" fill="#c95a2a"></rect>
+        <text x="142" y="12" class="annot">cell 2 sink</text>
+      </g>
+    </g>
+
+    <text x="1340" y="752" class="annot" font-style="italic" fill="#5c5c66">every pixel that converges to the <tspan font-weight="700">same</tspan> sink  =  the same cell.</text>
+    <text x="1340" y="784" class="emoji">🎯</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="980" width="1880" height="100" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1010" class="step-tag" fill="#7a5b13">WHY THIS WINS</text>
+    <text x="80" y="1044" class="key" fill="#7a5b13">the gradient-flow representation is shape-agnostic.</text>
+    <text x="80" y="1068" class="annot">one trained model handles fluorescence  ·  brightfield  ·  H&amp;E  ·  even non-cell objects  —  because &#34;point at the centre&#34; is a universal contract.</text>
+  </g>
+</svg>

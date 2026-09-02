@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar-up" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c95a2a"></path>
+    </marker>
+    <marker id="ar-dn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2c8a4f"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE ADAPTATION ESCALATION LADDER</text>
+  <text x="60" y="96" class="h1">Start at the bottom. Only escalate when the data says you must.</text>
+  <text x="60" y="124" class="h-sub">Three rungs. The cheapest one wins more often than people expect — including on balanced PPI.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="240" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="2"></rect>
+    <circle cx="100" cy="222" r="22" fill="#c95a2a"></circle>
+    <text x="100" y="230" text-anchor="middle" class="rung-num">3</text>
+    <text x="132" y="212" class="rung-tag" fill="#c95a2a">RUNG 3  ·  LAST RESORT</text>
+    <text x="132" y="242" class="rung-title">Full SFT  —  update every parameter</text>
+    <text x="132" y="266" class="rung-sub">100 % of the backbone  ·  highest task-specific ceiling  ·  highest forgetting risk</text>
+
+    
+    <g transform="translate(132,292)">
+      <rect x="0" y="0" width="380" height="100" rx="10" fill="#c95a2a" opacity="0.85" stroke="#a14854" stroke-width="1.6"></rect>
+      <text x="190" y="38" text-anchor="middle" class="rung-tag" fill="#ffffff">TRAINED  ▲</text>
+      <text x="190" y="64" text-anchor="middle" class="rung-title" fill="#ffffff">all weights move</text>
+      <text x="190" y="86" text-anchor="middle" class="annot" fill="#ffe7d6">no frozen prior</text>
+    </g>
+
+    <g transform="translate(560,292)">
+      <text x="0" y="0" class="rung-tag" fill="#c95a2a">WHEN TO PICK IT</text>
+      <text x="0" y="26" class="annot">•  &gt; 100K curated labels in your task</text>
+      <text x="0" y="46" class="annot">•  well-defined task, want absolute ceiling</text>
+      <text x="0" y="66" class="annot">•  can afford forgetting risk on rare types</text>
+      <text x="0" y="100" class="key" fill="#c95a2a">scGPT-Protocol  →  99.5 % F1 on 111 retinal cell types</text>
+    </g>
+
+    <g transform="translate(1240,292)">
+      <rect x="0" y="0" width="660" height="100" rx="10" fill="#fbe6e6" stroke="#a14854" stroke-width="1.5"></rect>
+      <text x="16" y="26" class="rung-tag" fill="#a14854">⚠  WARNING</text>
+      <text x="16" y="54" class="warn">Monitor rare classes separately.</text>
+      <text x="16" y="78" class="annot" fill="#a14854">Full FT smooths away XCL1⁺ T cells and other rare populations</text>
+      <text x="16" y="96" class="annot" fill="#a14854">that PEFT (rung 2) catches.</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(960,430)">
+    <line x1="0" y1="20" x2="0" y2="-10" stroke="#c95a2a" stroke-width="2.5" marker-end="url(#ar-up)"></line>
+    <text x="14" y="14" class="arrow-tag" fill="#c95a2a">still &lt; 90 % accuracy?  escalate UP</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="460" width="1880" height="240" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <circle cx="100" cy="502" r="22" fill="#2c8a4f"></circle>
+    <text x="100" y="510" text-anchor="middle" class="rung-num">2</text>
+    <text x="132" y="492" class="rung-tag" fill="#2c8a4f">RUNG 2  ·  ESCALATE IF NEEDED</text>
+    <text x="132" y="522" class="rung-title">PEFT  —  LoRA  /  adapters  /  prefix</text>
+    <text x="132" y="546" class="rung-sub">0.05 – 5 % of base params  ·  preserves the pretrained prior</text>
+
+    
+    <g transform="translate(132,572)">
+      <rect x="0" y="0" width="380" height="100" rx="10" fill="#efeae0" stroke="#8a8275" stroke-width="1.6"></rect>
+      <text x="190" y="38" text-anchor="middle" class="rung-tag" fill="#8a8275">FROZEN  ❄  +  ADAPTERS</text>
+      
+      <rect x="30" y="50" width="60" height="22" rx="3" fill="#2c8a4f"></rect>
+      <text x="60" y="66" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">A·B</text>
+      <rect x="100" y="50" width="60" height="22" rx="3" fill="#2c8a4f"></rect>
+      <text x="130" y="66" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">A·B</text>
+      <rect x="170" y="50" width="60" height="22" rx="3" fill="#2c8a4f"></rect>
+      <text x="200" y="66" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">A·B</text>
+      <rect x="240" y="50" width="120" height="22" rx="3" fill="#2c8a4f" opacity="0.7"></rect>
+      <text x="300" y="66" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">encoder bottleneck</text>
+    </g>
+
+    <g transform="translate(560,572)">
+      <text x="0" y="0" class="rung-tag" fill="#2c8a4f">WHEN TO PICK IT</text>
+      <text x="0" y="26" class="annot">•  rare cell types  ·  cross-species transfer</text>
+      <text x="0" y="46" class="annot">•  imbalanced multiclass  ·  &lt; 100 K labels</text>
+      <text x="0" y="66" class="annot">•  you want to preserve gene-gene knowledge</text>
+      <text x="0" y="100" class="key" fill="#2c8a4f">+ 39.7 – 81.7 % vs native  ·  + 4.3 – 15 % vs full FT</text>
+    </g>
+
+    <g transform="translate(1240,572)">
+      <rect x="0" y="0" width="660" height="100" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.5"></rect>
+      <text x="16" y="26" class="rung-tag" fill="#2c8a4f">RECIPES IN THIS RUNG</text>
+      <text x="16" y="54" class="annot">scPEFT  (Token · Prefix · LoRA · Encoder)  ·  PEFT-PLM  (ESM2 LoRA)</text>
+      <text x="16" y="74" class="annot">QLoRA  (4-bit backbone + LoRA)  ·  ColabSaprot  (community adapters)</text>
+      <text x="16" y="94" class="annot" font-style="italic" fill="#5c5c66">the most popular default in modern bio post-training</text>
+    </g>
+  </g>
+
+  
+  <g transform="translate(880,710)">
+    <line x1="0" y1="20" x2="0" y2="-10" stroke="#c95a2a" stroke-width="2.5" marker-end="url(#ar-up)"></line>
+    <text x="14" y="14" class="arrow-tag" fill="#c95a2a">still &lt; 90 % accuracy?</text>
+  </g>
+  <g transform="translate(1080,710)">
+    <line x1="0" y1="-10" x2="0" y2="20" stroke="#2c8a4f" stroke-width="2.5" marker-end="url(#ar-dn)"></line>
+    <text x="14" y="14" class="arrow-tag" fill="#2c8a4f">rare-class F1 dropping?  step DOWN</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="740" width="1880" height="240" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="2"></rect>
+    <circle cx="100" cy="782" r="22" fill="#4a6a8a"></circle>
+    <text x="100" y="790" text-anchor="middle" class="rung-num">1</text>
+    <text x="132" y="772" class="rung-tag" fill="#4a6a8a">RUNG 1  ·  START HERE</text>
+    <text x="132" y="802" class="rung-title">Frozen backbone + MLP head</text>
+    <text x="132" y="826" class="rung-sub">88 K – 100 K params trained  ·  zero backbone updates</text>
+
+    
+    <g transform="translate(132,852)">
+      <rect x="0" y="0" width="380" height="100" rx="10" fill="#efeae0" stroke="#8a8275" stroke-width="1.6"></rect>
+      <text x="190" y="38" text-anchor="middle" class="rung-tag" fill="#8a8275">FROZEN  ❄  +  TINY HEAD</text>
+      
+      <rect x="150" y="-30" width="80" height="22" rx="4" fill="#4a6a8a"></rect>
+      <text x="190" y="-14" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">MLP head</text>
+      <line x1="190" y1="-8" x2="190" y2="0" stroke="#4a6a8a" stroke-width="2"></line>
+      <text x="190" y="78" text-anchor="middle" class="annot" fill="#8a8275">CLS embedding → classes</text>
+    </g>
+
+    <g transform="translate(560,852)">
+      <text x="0" y="0" class="rung-tag" fill="#4a6a8a">WHEN TO PICK IT</text>
+      <text x="0" y="26" class="annot">•  balanced binary task</text>
+      <text x="0" y="46" class="annot">•  strong pretrained embeddings already</text>
+      <text x="0" y="66" class="annot">•  small or no labeled set</text>
+      <text x="0" y="100" class="key" fill="#4a6a8a">beats LoRA &amp; full FT on balanced PPI  ·  AUPR 0.684</text>
+    </g>
+
+    <g transform="translate(1240,852)">
+      <rect x="0" y="0" width="660" height="100" rx="10" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.5"></rect>
+      <text x="16" y="26" class="rung-tag" fill="#4a6a8a">SURPRISE RESULT</text>
+      <text x="16" y="54" class="annot">An MLP on frozen ESM2 (88K params) beats:</text>
+      <text x="16" y="74" class="annot">  •  LoRA  (369K params, AUPR 0.600)</text>
+      <text x="16" y="94" class="annot">  •  full FT  (78M params, AUPR 0.623)</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="1000" width="1880" height="80" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1028" class="rung-tag" fill="#7a5b13">THE LADDER RULE</text>
+    <text x="80" y="1058" class="key" fill="#7a5b13">Match adaptation capacity to task complexity. Start at rung 1; only step up when the data forces you to.</text>
+  </g>
+</svg>

@@ -1,0 +1,150 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  ARCHITECTURE &gt; MODEL</text>
+  <text x="60" y="96" class="h1">The pipeline is the moat. The base model is a swappable cartridge.</text>
+  <text x="60" y="124" class="h-sub">Same scaffold, three LLMs. The gains travel with the scaffold, not with the model name on the cartridge.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="80" y="200" class="with-tag">WITH THE SCAFFOLD  ·  THE PIPELINE IS DOING THE WORK</text>
+
+  
+  <g transform="translate(60,240)">
+    
+    <rect x="0" y="0" width="600" height="280" rx="16" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="2.5"></rect>
+    <text x="20" y="28" class="frame-tag">SCAFFOLD  ·  5-AGENT PIPELINE</text>
+
+    
+    <g transform="translate(20,40)">
+      <rect x="0" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="52" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">DB verify</text>
+      <rect x="115" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="167" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">code-gen</text>
+      <rect x="230" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="282" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">quality score</text>
+      <rect x="345" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="397" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">heterogeneity</text>
+      <rect x="460" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="512" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">summariser</text>
+    </g>
+
+    
+    <g transform="translate(140,110)">
+      <rect x="0" y="0" width="320" height="120" rx="12" fill="#fbe6d8" stroke="#c95a2a" stroke-width="2.5"></rect>
+      <text x="160" y="32" text-anchor="middle" class="cart-tag" fill="#c95a2a">CARTRIDGE  ·  $$$</text>
+      <text x="160" y="68" text-anchor="middle" class="cart-name">GPT-5</text>
+      <text x="160" y="92" text-anchor="middle" class="cart-sub">frontier model, premium API</text>
+      <text x="160" y="110" text-anchor="middle" class="cart-sub">replaceable</text>
+    </g>
+
+    <text x="300" y="260" text-anchor="middle" class="perf-num" fill="#2c8a4f">100 %</text>
+  </g>
+
+  
+  <g transform="translate(700,240)">
+    <rect x="0" y="0" width="600" height="280" rx="16" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="2.5"></rect>
+    <text x="20" y="28" class="frame-tag">SCAFFOLD  ·  5-AGENT PIPELINE</text>
+
+    <g transform="translate(20,40)">
+      <rect x="0" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="52" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">DB verify</text>
+      <rect x="115" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="167" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">code-gen</text>
+      <rect x="230" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="282" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">quality score</text>
+      <rect x="345" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="397" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">heterogeneity</text>
+      <rect x="460" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="512" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">summariser</text>
+    </g>
+
+    <g transform="translate(140,110)">
+      <rect x="0" y="0" width="320" height="120" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="2.5"></rect>
+      <text x="160" y="32" text-anchor="middle" class="cart-tag" fill="#2c8a4f">CARTRIDGE  ·  $</text>
+      <text x="160" y="68" text-anchor="middle" class="cart-name">Kimi K2</text>
+      <text x="160" y="92" text-anchor="middle" class="cart-sub">open-weight</text>
+      <text x="160" y="110" text-anchor="middle" class="cart-sub">replaceable</text>
+    </g>
+
+    <text x="300" y="260" text-anchor="middle" class="perf-num" fill="#2c8a4f">95 %</text>
+  </g>
+
+  
+  <g transform="translate(1340,240)">
+    <rect x="0" y="0" width="600" height="280" rx="16" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="2.5"></rect>
+    <text x="20" y="28" class="frame-tag">SCAFFOLD  ·  5-AGENT PIPELINE</text>
+
+    <g transform="translate(20,40)">
+      <rect x="0" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="52" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">DB verify</text>
+      <rect x="115" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="167" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">code-gen</text>
+      <rect x="230" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="282" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">quality score</text>
+      <rect x="345" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="397" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">heterogeneity</text>
+      <rect x="460" y="0" width="105" height="36" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="512" y="22" text-anchor="middle" class="frame-name" fill="#6b4e8a">summariser</text>
+    </g>
+
+    <g transform="translate(140,110)">
+      <rect x="0" y="0" width="320" height="120" rx="12" fill="#dfeede" stroke="#2c8a4f" stroke-width="2.5"></rect>
+      <text x="160" y="32" text-anchor="middle" class="cart-tag" fill="#2c8a4f">CARTRIDGE  ·  $</text>
+      <text x="160" y="68" text-anchor="middle" class="cart-name">DeepSeek R1</text>
+      <text x="160" y="92" text-anchor="middle" class="cart-sub">open-weight</text>
+      <text x="160" y="110" text-anchor="middle" class="cart-sub">replaceable</text>
+    </g>
+
+    <text x="300" y="260" text-anchor="middle" class="perf-num" fill="#2c8a4f">95 %</text>
+  </g>
+
+  
+  <text x="80" y="580" class="without-tag">WITHOUT THE SCAFFOLD  ·  SAME LLMs, SINGLE-PASS PROMPTING</text>
+
+  <g>
+    <rect x="60" y="610" width="1880" height="280" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.8"></rect>
+    <text x="80" y="638" class="without-tag">UNIFORM LOW PERFORMANCE  ·  ARCHITECTURE GONE  ·  GAINS GONE</text>
+
+    
+    <g transform="translate(80,660)">
+      <line x1="120" y1="180" x2="1780" y2="180" stroke="#2a2a33" stroke-width="1.4"></line>
+      <line x1="120" y1="60" x2="120" y2="180" stroke="#2a2a33" stroke-width="1.4"></line>
+
+      
+      <rect x="220" y="124" width="200" height="56" fill="#c95a2a" opacity="0.55"></rect>
+      <text x="320" y="208" text-anchor="middle" class="cart-name">GPT-5</text>
+      <text x="320" y="118" text-anchor="middle" class="annot" font-weight="700">~ 26 %</text>
+
+      
+      <rect x="700" y="138" width="200" height="42" fill="#c95a2a" opacity="0.55"></rect>
+      <text x="800" y="208" text-anchor="middle" class="cart-name">Kimi K2</text>
+      <text x="800" y="132" text-anchor="middle" class="annot" font-weight="700">~ 22 %</text>
+
+      
+      <rect x="1180" y="142" width="200" height="38" fill="#c95a2a" opacity="0.55"></rect>
+      <text x="1280" y="208" text-anchor="middle" class="cart-name">DeepSeek R1</text>
+      <text x="1280" y="136" text-anchor="middle" class="annot" font-weight="700">~ 20 %</text>
+
+      
+      <text x="1500" y="100" class="annot" font-weight="700" fill="#a14854">single-pass prompting</text>
+      <text x="1500" y="122" class="annot" fill="#5c5c66">no DB checks, no quality scoring</text>
+      <text x="1500" y="142" class="annot" fill="#5c5c66">no agent loop — just the raw LLM</text>
+      <text x="1500" y="172" class="annot" font-style="italic" fill="#a14854">model choice barely matters here</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="920" width="1880" height="160" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="950" class="frame-tag" fill="#7a5b13">THE LESSON</text>
+    <text x="80" y="982" class="key" fill="#7a5b13">Post-training recipe is the moat. The base model is a commodity.</text>
+    <text x="80" y="1012" class="annot"><tspan font-weight="700">CyteType</tspan>  +252 – 388 % gains come from the architecture, not the model choice.</text>
+    <text x="80" y="1034" class="annot"><tspan font-weight="700">SPARK</tspan>  spends ≈ €4 K of API calls across o1 + Claude and reaches AUROC 0.933 on CRC MSI — the system is the contribution.</text>
+    <text x="80" y="1066" class="annot" font-style="italic" fill="#5c5c66">If you can choose between a better model and a better pipeline, choose the pipeline.</text>
+  </g>
+</svg>

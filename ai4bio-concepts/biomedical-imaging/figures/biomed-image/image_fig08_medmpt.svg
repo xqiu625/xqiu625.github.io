@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  MEDMPT  ·  FOUR SELF-SUPERVISED OBJECTIVES</text>
+  <text x="60" y="96" class="h1">Two intra-modal + two inter-modal, trained simultaneously.</text>
+  <text x="60" y="124" class="h-sub">154 K curated CT–report pairs. Quality beats BiomedCLIP&#39;s 15 M+ web pairs.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="120" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="208" class="obj-tag" fill="#8a5a4a">INPUT  ·  PAIRED CT + REPORT  📚</text>
+    <text x="80" y="240" class="obj-title">154 K expert-curated chest CT scans with paired radiology text</text>
+    <g transform="translate(80,254)">
+      <rect x="0" y="0" width="220" height="38" rx="6" fill="#e3edf6" stroke="#4a6a8a"></rect>
+      <text x="110" y="24" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">CT scan  🩻</text>
+      <rect x="240" y="0" width="320" height="38" rx="6" fill="#dfeede" stroke="#2c8a4f"></rect>
+      <text x="260" y="24" class="annot" font-style="italic" fill="#5c5c66">&#34;5 mm nodule in RUL …&#34;</text>
+      <text x="580" y="24" class="annot" fill="#5c5c66">paired (image, report) example</text>
+    </g>
+  </g>
+
+  
+  
+  <g>
+    <rect x="60" y="320" width="920" height="280" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="80" y="348" class="obj-tag" fill="#4a6a8a">OBJECTIVE 1  ·  INTRA-SLICE CONTRASTIVE  🔍</text>
+    <text x="80" y="378" class="obj-title">two augmented views of the same CT slice  →  attract</text>
+    <text x="80" y="412" class="annot">SimCLR-style, within a single 2D slice</text>
+    <g transform="translate(80,436)">
+      <rect x="0" y="0" width="100" height="100" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="50" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <text x="50" y="118" text-anchor="middle" class="annot" fill="#5c5c66">view A</text>
+
+      <text x="120" y="58" class="annot" font-weight="700" fill="#2c8a4f">attract  💚</text>
+
+      <rect x="200" y="0" width="100" height="100" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="250" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <text x="250" y="118" text-anchor="middle" class="annot" fill="#5c5c66">view B (aug)</text>
+
+      <text x="360" y="58" class="annot">teaches invariance to crop / brightness / noise</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="1020" y="320" width="920" height="280" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="1040" y="348" class="obj-tag" fill="#2c8a4f">OBJECTIVE 2  ·  INTRA-SCAN CONTRASTIVE  📚</text>
+    <text x="1040" y="378" class="obj-title">across slices within the same scan  →  preserve volume</text>
+    <text x="1040" y="412" class="annot">multi-window fusion across the CT volume</text>
+    <g transform="translate(1040,436)">
+      <rect x="0" y="0" width="80" height="100" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="40" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <rect x="100" y="0" width="80" height="100" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="140" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <rect x="200" y="0" width="80" height="100" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="240" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <text x="140" y="118" text-anchor="middle" class="annot" fill="#5c5c66">slices of one scan</text>
+
+      <text x="320" y="58" class="annot">embeddings cohere within a volume</text>
+      <text x="320" y="80" class="annot" fill="#5c5c66">preserve volumetric anatomy</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="620" width="920" height="280" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="80" y="648" class="obj-tag" fill="#c95a2a">OBJECTIVE 3  ·  INTER-MODAL  (CLIP-STYLE)  🔗</text>
+    <text x="80" y="678" class="obj-title">CT scan ↔ matched report  →  attract; unmatched → repel</text>
+    <text x="80" y="712" class="annot">symmetric InfoNCE between image and text encoders</text>
+    <g transform="translate(80,736)">
+      <rect x="0" y="0" width="100" height="100" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="50" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <text x="50" y="118" text-anchor="middle" class="annot" fill="#5c5c66">CT</text>
+
+      <text x="120" y="58" class="annot" font-weight="700" fill="#2c8a4f">attract  💚</text>
+
+      <rect x="200" y="0" width="120" height="100" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="260" y="60" text-anchor="middle" class="emoji">📝</text>
+      <text x="260" y="118" text-anchor="middle" class="annot" fill="#5c5c66">report</text>
+
+      <text x="360" y="50" class="annot">matched pair  ↔  pulled together</text>
+      <text x="360" y="78" class="annot">unmatched in batch  ↔  pushed apart</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="1020" y="620" width="920" height="280" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <text x="1040" y="648" class="obj-tag" fill="#6b4e8a">OBJECTIVE 4  ·  MASKED IMAGE RECONSTRUCTION  🎭</text>
+    <text x="1040" y="678" class="obj-title">mask random patches  →  decoder reconstructs them</text>
+    <text x="1040" y="712" class="annot">MAE-style; teaches local spatial reasoning</text>
+    <g transform="translate(1040,736)">
+      <rect x="0" y="0" width="100" height="100" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="50" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <rect x="20" y="20" width="20" height="20" fill="#1a1a22"></rect>
+      <rect x="50" y="50" width="20" height="20" fill="#1a1a22"></rect>
+      <rect x="70" y="70" width="20" height="20" fill="#1a1a22"></rect>
+      <text x="50" y="118" text-anchor="middle" class="annot" fill="#5c5c66">masked input</text>
+
+      <text x="120" y="58" class="annot">→</text>
+
+      <rect x="160" y="0" width="100" height="100" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="210" y="60" text-anchor="middle" class="emoji">🩻</text>
+      <text x="210" y="118" text-anchor="middle" class="annot" fill="#5c5c66">reconstruct</text>
+
+      <text x="290" y="58" class="annot">recover what was hidden</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="920" width="1240" height="150" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="948" class="obj-tag" fill="#7a5b13">RESULTS  🏆</text>
+    <g transform="translate(80,964)">
+      <rect x="0" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#b8902c"></rect>
+      <text x="20" y="28" class="annot" font-weight="700" fill="#7a5b13">LUNG CANCER AUROC</text>
+      <text x="20" y="62" class="stat" fill="#7a5b13">0.93</text>
+
+      <rect x="400" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#b8902c"></rect>
+      <text x="420" y="28" class="annot" font-weight="700" fill="#7a5b13">REPORTING TIME</text>
+      <text x="420" y="62" class="stat" fill="#7a5b13">−32 %</text>
+
+      <rect x="800" y="0" width="380" height="80" rx="10" fill="#ffffff" stroke="#b8902c"></rect>
+      <text x="820" y="28" class="annot" font-weight="700" fill="#7a5b13">TRAINING PAIRS</text>
+      <text x="820" y="62" class="stat" fill="#7a5b13">154 K curated</text>
+    </g>
+  </g>
+
+  <g>
+    <rect x="1320" y="920" width="620" height="150" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="1340" y="948" class="obj-tag" fill="#a14854">CURATION LESSON  ⚠</text>
+    <text x="1340" y="982" class="key" fill="#a14854">154 K expert-curated pairs</text>
+    <text x="1340" y="1004" class="key" fill="#a14854">beat BiomedCLIP&#39;s 15 M+ web pairs</text>
+    <text x="1340" y="1036" class="annot" font-style="italic" fill="#5c5c66">for clinical tasks: quality &gt; quantity.</text>
+    <text x="1340" y="1060" class="annot" font-style="italic" fill="#5c5c66">web scraping is a starting point, not the dataset.</text>
+  </g>
+</svg>

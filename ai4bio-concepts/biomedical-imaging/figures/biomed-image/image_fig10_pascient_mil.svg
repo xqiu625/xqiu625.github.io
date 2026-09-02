@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  WHY MIL  ·  PATIENT-LEVEL LABELS, PATCH-LEVEL DATA</text>
+  <text x="60" y="96" class="h1">A WSI is labelled &#34;cancer&#34;, but only 20 % of patches contain tumour.</text>
+  <text x="60" y="124" class="h-sub">Training a CNN to predict the patient label per patch teaches it the stains, not the disease.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  <rect x="40" y="170" width="950" height="800" rx="14" fill="#a14854" fill-opacity="0.04"></rect>
+  <rect x="1010" y="170" width="950" height="800" rx="14" fill="#2c8a4f" fill-opacity="0.04"></rect>
+
+  
+  <text x="80" y="208" class="panel-tag" fill="#a14854">LEFT  ·  WRONG APPROACH  ✗</text>
+  <text x="80" y="244" class="panel-title">patch-level training on patient labels</text>
+
+  <g transform="translate(80,280)">
+    <rect x="0" y="0" width="900" height="380" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1.4"></rect>
+    <text x="20" y="30" class="annot" font-weight="700" fill="#a14854">WSI labelled &#34;cancer&#34;  ·  every patch inherits the label</text>
+
+    
+    <g transform="translate(40,60)">
+      
+      
+      <rect x="0" y="0" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="50" y="36" text-anchor="middle" class="annot" fill="#a14854">stroma</text>
+      <text x="50" y="54" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">&#34;cancer&#34; ❌</text>
+      <rect x="105" y="0" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="155" y="36" text-anchor="middle" class="annot" fill="#a14854">fat</text>
+      <text x="155" y="54" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">&#34;cancer&#34; ❌</text>
+      <rect x="210" y="0" width="100" height="60" fill="#a14854"></rect>
+      <text x="260" y="36" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">tumour</text>
+      <text x="260" y="54" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">&#34;cancer&#34; ✅</text>
+      <rect x="315" y="0" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="365" y="36" text-anchor="middle" class="annot" fill="#a14854">necrosis</text>
+      <text x="365" y="54" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">&#34;cancer&#34; ❌</text>
+      <rect x="420" y="0" width="100" height="60" fill="#a14854"></rect>
+      <text x="470" y="36" text-anchor="middle" class="annot" fill="#ffffff" font-weight="700">tumour</text>
+      <text x="470" y="54" text-anchor="middle" class="annot" fill="#ffffff" font-style="italic">&#34;cancer&#34; ✅</text>
+      <rect x="525" y="0" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="575" y="36" text-anchor="middle" class="annot" fill="#a14854">stroma</text>
+      <text x="575" y="54" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">&#34;cancer&#34; ❌</text>
+      <rect x="630" y="0" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="680" y="36" text-anchor="middle" class="annot" fill="#a14854">fat</text>
+      <text x="680" y="54" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">&#34;cancer&#34; ❌</text>
+      <rect x="735" y="0" width="80" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="775" y="36" text-anchor="middle" class="annot" fill="#a14854">stroma</text>
+      <text x="775" y="54" text-anchor="middle" class="annot" font-style="italic" fill="#a14854">&#34;cancer&#34; ❌</text>
+
+      
+      <rect x="0" y="65" width="100" height="60" fill="#a14854"></rect>
+      <rect x="105" y="65" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="210" y="65" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="315" y="65" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="420" y="65" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="525" y="65" width="100" height="60" fill="#a14854"></rect>
+      <rect x="630" y="65" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="735" y="65" width="80" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+
+      
+      <rect x="0" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="105" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="210" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="315" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="420" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="525" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="630" y="130" width="100" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+      <rect x="735" y="130" width="80" height="60" fill="#fbe6e6" stroke="#a14854"></rect>
+    </g>
+
+    <text x="20" y="300" class="annot" font-weight="700" fill="#a14854">~ 20 % patches are tumour  ·  80 % wear a false label</text>
+    <text x="20" y="324" class="annot" fill="#a14854">CNN learns to predict &#34;cancer&#34; from stroma textures, fat, necrosis</text>
+    <text x="20" y="348" class="annot" font-style="italic" fill="#5c5c66">evaluating at patient level hides the leakage  —  the model is memorising slides.</text>
+  </g>
+
+  <g>
+    <rect x="60" y="700" width="900" height="270" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="730" class="panel-tag" fill="#a14854">WHAT GOES WRONG  ⚠</text>
+    <text x="80" y="764" class="key" fill="#a14854">the CNN can be &#34;right for the wrong reason&#34;</text>
+    <text x="80" y="796" class="annot">it predicts &#34;cancer&#34; because fat patches in cancer slides happen to look slightly different</text>
+    <text x="80" y="816" class="annot">from fat in normal slides  (different lab, scanner, staining lot).</text>
+
+    <text x="80" y="858" class="annot" font-weight="700">consequences</text>
+    <text x="80" y="880" class="annot">drops on external cohorts  ·  flips on stain changes  ·  attribution maps highlight non-tumour regions</text>
+
+    <text x="80" y="918" class="annot" font-style="italic" fill="#5c5c66">a high patient-level AUROC can be a measurement, not a model.</text>
+    <text x="80" y="942" class="emoji">🚨</text>
+  </g>
+
+  
+  <text x="1030" y="208" class="panel-tag" fill="#2c8a4f">RIGHT  ·  MULTI-INSTANCE LEARNING  ✓</text>
+  <text x="1030" y="244" class="panel-title">PaSCient — bag of patches, attention pools</text>
+
+  <g transform="translate(1030,280)">
+    <rect x="0" y="0" width="900" height="380" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.4"></rect>
+    <text x="20" y="30" class="annot" font-weight="700" fill="#2c8a4f">WSI = bag of patches  ·  each patch embedded  ·  attention re-weights them</text>
+
+    
+    <g transform="translate(40,60)">
+      
+      
+      
+      <circle cx="40" cy="30" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="100" cy="30" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="160" cy="30" r="22" fill="#2c8a4f"></circle>
+      <circle cx="220" cy="30" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="280" cy="30" r="22" fill="#2c8a4f"></circle>
+      <circle cx="340" cy="30" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="400" cy="30" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="460" cy="30" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      
+      <circle cx="40" cy="90" r="22" fill="#2c8a4f"></circle>
+      <circle cx="100" cy="90" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="160" cy="90" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="220" cy="90" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="280" cy="90" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="340" cy="90" r="22" fill="#2c8a4f"></circle>
+      <circle cx="400" cy="90" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="460" cy="90" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      
+      <circle cx="40" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="100" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="160" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="220" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="280" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="340" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="400" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+      <circle cx="460" cy="150" r="14" fill="#dfeede" stroke="#2c8a4f"></circle>
+
+      
+      <line x1="160" y1="46" x2="700" y2="180" stroke="#2c8a4f" stroke-width="2" marker-end="url(#ar)"></line>
+      <line x1="280" y1="46" x2="700" y2="180" stroke="#2c8a4f" stroke-width="2" marker-end="url(#ar)"></line>
+      <line x1="40" y1="106" x2="700" y2="180" stroke="#2c8a4f" stroke-width="2" marker-end="url(#ar)"></line>
+      <line x1="340" y1="106" x2="700" y2="180" stroke="#2c8a4f" stroke-width="2" marker-end="url(#ar)"></line>
+      <line x1="100" y1="46" x2="700" y2="180" stroke="#2c8a4f" stroke-width="0.6" stroke-dasharray="3 3"></line>
+      <line x1="400" y1="106" x2="700" y2="180" stroke="#2c8a4f" stroke-width="0.6" stroke-dasharray="3 3"></line>
+
+      <rect x="640" y="160" width="160" height="60" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+      <text x="720" y="184" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">patient prediction</text>
+      <text x="720" y="204" text-anchor="middle" class="annot" fill="#2c8a4f">&#34;cancer ✅&#34;</text>
+    </g>
+
+    <text x="20" y="300" class="annot" font-weight="700" fill="#2c8a4f">large green dots  ·  high attention  →  tumour patches drive the call</text>
+    <text x="20" y="324" class="annot" fill="#2c8a4f">small dots  ·  low attention  →  stroma is ignored</text>
+    <text x="20" y="348" class="annot" font-style="italic" fill="#5c5c66">heatmap overlays diagnostic regions  —  hot spots match pathology.</text>
+  </g>
+
+  <g>
+    <rect x="1010" y="700" width="930" height="270" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="1030" y="730" class="panel-tag" fill="#2c8a4f">WHY THIS WORKS  ✅</text>
+    <text x="1030" y="764" class="key" fill="#2c8a4f">attention learns &#34;which patches matter for this patient label&#34;</text>
+    <text x="1030" y="796" class="annot">embedder can be a foundation model  ·  attention head is the only thing trained per task</text>
+
+    <text x="1030" y="838" class="annot" font-weight="700">PaSCient scale  📊</text>
+    <text x="1030" y="860" class="annot">24.3 M cells across 5 000 patients  ·  135 disease states</text>
+
+    <text x="1030" y="900" class="annot" font-weight="700">interpretability</text>
+    <text x="1030" y="922" class="annot">attention heatmaps overlay tumour regions  →  pathologist can audit the call</text>
+
+    <text x="1030" y="956" class="annot" font-style="italic" fill="#5c5c66">MIL is the standard solution for weakly-labelled medical imaging.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="990" width="1880" height="60" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="1018" class="panel-tag" fill="#7a5b13">THE RULE</text>
+    <text x="80" y="1042" class="key" fill="#7a5b13">WSI labels are weak  —  patient-level, not patch-level.  use MIL.  never assume the label applies to every tile.</text>
+  </g>
+</svg>

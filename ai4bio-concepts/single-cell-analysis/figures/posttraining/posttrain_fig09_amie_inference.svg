@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  AMIE  ·  ADAPTATION WITHOUT GRADIENTS</text>
+  <text x="60" y="96" class="h1">Four layers of inference-time post-training. Zero parameters updated.</text>
+  <text x="60" y="124" class="h-sub">When you can&#39;t touch the base model, this is post-training as inference engineering.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1280" height="80" rx="14" fill="#efeae0" stroke="#8a8275" stroke-width="1.8" stroke-dasharray="6 4"></rect>
+    <text x="80" y="208" class="layer-tag" fill="#8a8275">STARTING POINT  ·  FROZEN  ❄</text>
+    <text x="80" y="240" class="layer-title">Gemini-2.0-Flash  —  no fine-tuning, no LoRA, no checkpoint</text>
+  </g>
+  
+  <g>
+    <rect x="1360" y="180" width="580" height="80" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1380" y="208" class="layer-tag" fill="#7a5b13">PARAMS UPDATED THROUGH STAGES 1-4</text>
+    <text x="1380" y="244" class="layer-title" fill="#7a5b13">zero  ·  not one weight moves</text>
+  </g>
+
+  <line x1="700" y1="266" x2="700" y2="296" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="300" width="1880" height="160" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="338" r="20" fill="#4a6a8a"></circle>
+    <text x="100" y="344" text-anchor="middle" class="layer-num">1</text>
+    <text x="132" y="328" class="layer-tag" fill="#4a6a8a">LAYER 1  ·  MULTISTEP INFERENCE</text>
+    <text x="132" y="356" class="layer-title">Decompose into history → differential → workup → management</text>
+    <text x="132" y="376" class="layer-sub">a complex cardiomyopathy case is broken into sequential reasoning steps; intermediate state survives between turns</text>
+    <g transform="translate(132,392)">
+      <rect x="0" y="0" width="160" height="36" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="80" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">history analysis</text>
+      <rect x="176" y="0" width="160" height="36" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="256" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">differential</text>
+      <rect x="352" y="0" width="160" height="36" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="432" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">workup</text>
+      <rect x="528" y="0" width="160" height="36" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="608" y="22" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">management</text>
+    </g>
+  </g>
+
+  <line x1="1000" y1="466" x2="1000" y2="486" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="490" width="1880" height="120" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.6"></rect>
+    <circle cx="100" cy="528" r="20" fill="#2c8a4f"></circle>
+    <text x="100" y="534" text-anchor="middle" class="layer-num">2</text>
+    <text x="132" y="518" class="layer-tag" fill="#2c8a4f">LAYER 2  ·  WEB SEARCH</text>
+    <text x="132" y="546" class="layer-title">At each step, query real-time medical literature and guidelines</text>
+    <text x="132" y="566" class="layer-sub">facts come from outside the model — the LLM cites instead of recalling</text>
+    <text x="132" y="590" class="annot" font-style="italic" fill="#5c5c66">retrieval-augmented inference; counts as post-training only because it changes what the model can do at deploy</text>
+  </g>
+
+  <line x1="1000" y1="616" x2="1000" y2="636" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="640" width="1880" height="180" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="678" r="20" fill="#c95a2a"></circle>
+    <text x="100" y="684" text-anchor="middle" class="layer-num">3</text>
+    <text x="132" y="668" class="layer-tag" fill="#c95a2a">LAYER 3  ·  SELF-CRITIQUE</text>
+    <text x="132" y="696" class="layer-title">Review the draft response; flag and retract errors</text>
+    <text x="132" y="716" class="layer-sub">a second pass scans the draft for unsupported claims; retractions are explicit</text>
+    <g transform="translate(132,732)">
+      <rect x="0" y="0" width="1640" height="68" rx="8" fill="#ffffff" stroke="#c95a2a" stroke-width="1"></rect>
+      <text x="14" y="22" class="mono" fill="#1a1a22">draft  →  &#34;patient shows LV hypertrabeculation (probable non-compaction cardiomyopathy)&#34;</text>
+      <text x="14" y="44" class="mono" fill="#a14854">critic  →  &#34;this finding is not in the imaging report — RETRACT&#34;</text>
+      <text x="14" y="64" class="mono" fill="#2c8a4f">revise →  remove the hallucinated finding; the diagnosis is downgraded accordingly</text>
+    </g>
+  </g>
+
+  <line x1="1000" y1="826" x2="1000" y2="846" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="60" y="850" width="1280" height="160" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="888" r="20" fill="#6b4e8a"></circle>
+    <text x="100" y="894" text-anchor="middle" class="layer-num">4</text>
+    <text x="132" y="878" class="layer-tag" fill="#6b4e8a">LAYER 4  ·  CONVERSATIONAL REFINEMENT</text>
+    <text x="132" y="906" class="layer-title">Cardiologist challenges specific claims; the model reconsiders</text>
+    <text x="132" y="926" class="layer-sub">human-in-the-loop verification; the model is the assistant, not the decision-maker</text>
+    <text x="132" y="958" class="annot" font-style="italic" fill="#5c5c66">&#34;can you re-check whether the guideline really recommends X?&#34;  →  the model goes back and verifies</text>
+  </g>
+
+  
+  <g>
+    <rect x="1360" y="850" width="580" height="160" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <text x="1380" y="878" class="layer-tag" fill="#2c8a4f">OUTCOME  ·  CLINICALLY SIGNIFICANT ERRORS</text>
+    <g transform="translate(1380,896)">
+      <text x="0" y="20" class="annot" font-weight="700">cardiologist alone</text>
+      <rect x="200" y="6" width="252" height="20" fill="#a14854" opacity="0.55"></rect>
+      <text x="460" y="22" class="annot" font-weight="700" fill="#a14854">24.3 %</text>
+
+      <text x="0" y="58" class="annot" font-weight="700">+ AMIE (these 4 layers)</text>
+      <rect x="200" y="44" width="135" height="20" fill="#2c8a4f" opacity="0.7"></rect>
+      <text x="345" y="60" class="annot" font-weight="700" fill="#2c8a4f">13.1 %</text>
+
+      <text x="0" y="98" class="key" fill="#2c8a4f">nearly halved  ·  zero training</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="1030" width="1880" height="50" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="1.5"></rect>
+    <text x="80" y="1060" class="annot" font-weight="700" fill="#7a5b13">This is post-training as inference engineering — the recipe when you can&#39;t touch the base model.</text>
+  </g>
+</svg>

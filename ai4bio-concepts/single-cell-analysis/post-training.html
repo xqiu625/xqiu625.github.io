@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Post-training for biological foundation models — SFT, PEFT/LoRA, RL elicitation, multi-agent verification, active learning, and quantization recipes">
+    <title>Post-Training for Biological Foundation Models - AI4Bio Learning Hub</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== BASE STYLES ===== */
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, #f2f8fc 0%, #e6f2f9 50%, #d8eaf4 100%);
+            line-height: 1.7;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e7e7e7;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-nav { list-style-type: none; padding: 0; margin: 0; display: flex; justify-content: center; align-items: center; flex-wrap: wrap; }
+        .navbar-nav li { margin: 5px 15px; }
+        .navbar-nav a { color: #666666; text-decoration: none; font-weight: bold; font-size: 16px; transition: color 0.3s; }
+        .navbar-nav a:hover { color: var(--sport-primary, #145DA0); }
+        .home-link { color: var(--sport-dark, #0d3d6b) !important; }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: linear-gradient(135deg, var(--sport-dark, #0d3d6b) 0%, var(--sport-primary, #145DA0) 55%, #2e7ec4 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 20px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(13, 61, 107, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .header:before {
+            content: "r(y)   π_θ   β·KL   Â";
+            position: absolute;
+            top: -10px;
+            left: 0;
+            right: 0;
+            font-size: 3.4em;
+            opacity: 0.09;
+            letter-spacing: 22px;
+            font-family: 'Times New Roman', serif;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .header h1 { margin: 0 0 15px 0; font-size: 2.8em; font-weight: 300; letter-spacing: 1px; position: relative; }
+        .header .subtitle { font-size: 1.3em; opacity: 0.95; margin-bottom: 15px; font-weight: 300; letter-spacing: 0.5px; }
+        .header .description { font-size: 1.05em; max-width: 920px; margin: 0 auto; line-height: 1.8; font-weight: 300; }
+
+        /* ===== STATISTICS BAR ===== */
+        .stats-bar {
+            background: linear-gradient(135deg, #ffffff 0%, #f2f8fd 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 25px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            box-shadow: 0 4px 20px rgba(13, 61, 107, 0.15);
+            border: 1px solid rgba(20, 93, 160, 0.2);
+        }
+        .stat-item { text-align: center; padding: 20px; border-left: 4px solid var(--sport-primary, #145DA0); background: white; border-radius: 8px; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .stat-item:hover { transform: translateY(-5px); box-shadow: 0 6px 20px rgba(20, 93, 160, 0.2); }
+        .stat-number { font-size: 2.8em; font-weight: 300; color: var(--sport-dark, #0d3d6b); display: block; letter-spacing: -1px; }
+        .stat-label { color: var(--sport-primary, #145DA0); font-size: 0.95em; margin-top: 8px; font-weight: 500; }
+
+        .curation-note { text-align: center; font-size: .84em; color: #6b87a0; margin: 4px 0 26px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+        .curation-note a { color: inherit; }
+
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 25px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--sport-primary, #145DA0);
+        }
+        .content-section h2 { color: var(--sport-dark, #0d3d6b); border-bottom: 2px solid var(--sport-primary, #145DA0); padding-bottom: 15px; margin-bottom: 30px; font-size: 1.9em; font-weight: 400; letter-spacing: 0.5px; }
+        .content-section h3 { color: var(--sport-dark, #0d3d6b); margin-top: 35px; margin-bottom: 20px; font-size: 1.5em; font-weight: 500; border-left: 4px solid var(--sport-primary, #145DA0); padding-left: 15px; }
+        .content-section ul { line-height: 2; }
+
+        .math-inline { font-family: 'Times New Roman', serif; font-style: italic; color: var(--sport-primary, #145DA0); font-size: 1.05em; }
+
+        /* ===== CASEWORK BANNER + STORY (K-pop trainee, 07 Update) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#0a2740 0%,#145DA0 60%,#1c496e 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(10,39,64,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #cfe5f5; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #dcebf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: #f4f9fd; border: 1.5px solid #d5e8f5; }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #0d3d6b); border-left: 4px solid var(--sport-primary, #145DA0); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid #d5e8f5; border-left: 5px solid var(--sport-primary, #145DA0); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(13,61,107,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(13,61,107,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #145DA0); }
+        .library-card h4 { color: var(--sport-dark, #0d3d6b); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #0d3d6b); background: #e8f3fb; border: 1px dashed #a8cce8; border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #145DA0); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #145DA0); font-size: .95em; clear: both; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid #d5e8f5; box-shadow: 0 10px 28px rgba(13,61,107,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #7fb3e0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #9ec5e5; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(20,93,160,.15); border-color: rgba(127,179,224,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #7fb3e0; }
+        [data-theme="dark"] .library-footnote { color: #7fb3e0; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid #d5e8f5; }
+        .content-figure figcaption { margin-top: 10px; font-size: 0.9em; line-height: 1.55; color: #5a6b7c; text-align: center; }
+        [data-theme="dark"] .content-figure figcaption { color: #9fb3a7; }
+
+        /* ===== CONCEPT / GLOSSARY CARDS ===== */
+        .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0; }
+        .concept-card { background: linear-gradient(135deg, #ffffff 0%, #f6fafd 100%); border: 1px solid #d3e2ef; border-top: 4px solid var(--sport-primary, #145DA0); border-radius: 10px; padding: 20px; transition: transform .25s ease, box-shadow .25s ease; }
+        .concept-card:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(20, 93, 160, .18); }
+        .concept-card .concept-tag { display: inline-block; font-size: .7em; font-weight: bold; letter-spacing: .08em; text-transform: uppercase; color: #fff; background: var(--sport-primary, #145DA0); border-radius: 10px; padding: 3px 10px; margin-bottom: 8px; }
+        .concept-card h4 { color: var(--sport-dark, #0d3d6b); margin: 6px 0 10px; font-size: 1.05em; }
+        .concept-card p { font-size: .9em; line-height: 1.65; margin: 0 0 8px; color: #555; }
+        .concept-card .seen-in { font-size: .8em; color: var(--sport-primary, #145DA0); font-weight: 600; }
+        [data-theme="dark"] .concept-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); }
+        [data-theme="dark"] .concept-card h4 { color: #9ec5e5; }
+        [data-theme="dark"] .concept-card p { color: #c9d1d9; }
+
+        /* ===== PAPER CARDS ===== */
+        .paper-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 25px; margin: 30px 0; }
+        .paper-card { border: 1px solid #d3e2ef; border-radius: 12px; padding: 25px; transition: all 0.3s ease; background: linear-gradient(135deg, #ffffff 0%, #f8fbfd 100%); position: relative; border-top: 4px solid var(--sport-primary, #145DA0); }
+        .paper-card:hover { border-color: var(--sport-primary, #145DA0); box-shadow: 0 8px 25px rgba(20, 93, 160, 0.25); transform: translateY(-5px); }
+        .paper-card h4 { color: var(--sport-dark, #0d3d6b); margin-top: 0; font-size: 1.15em; line-height: 1.5; font-weight: 600; }
+        .paper-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+        .meta-badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75em; font-weight: bold; }
+        .year-badge { background: var(--sport-primary, #145DA0); color: white; }
+        .journal-badge { background: #dce9f8; color: var(--sport-dark, #0d3d6b); }
+        .type-badge { background: var(--sport-dark, #0d3d6b); color: white; }
+        .paper-description { color: #555; line-height: 1.6; margin: 12px 0; font-size: 0.95em; }
+        .key-contributions { list-style: none; padding: 0; margin: 15px 0; }
+        .key-contributions li { padding-left: 22px; position: relative; margin: 8px 0; font-size: 0.9em; color: #666; }
+        .key-contributions li:before { content: "✓"; position: absolute; left: 0; color: #27ae60; font-weight: bold; }
+        .paper-links { margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .paper-links a { padding: 6px 14px; background: linear-gradient(135deg, var(--sport-primary, #145DA0), var(--sport-dark, #0d3d6b)); color: white; text-decoration: none; border-radius: 6px; font-size: 0.85em; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 6px; }
+        .paper-links a:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(20, 93, 160, 0.3); }
+
+        /* ===== HIGHLIGHT / WARNING BOXES ===== */
+        .highlight-box { background: linear-gradient(135deg, #f6fafd 0%, #e8f2fa 100%); border: 2px solid var(--sport-primary, #145DA0); border-left: 6px solid var(--sport-primary, #145DA0); padding: 30px; margin: 25px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(20, 93, 160, 0.1); }
+        .highlight-box h4 { color: var(--sport-dark, #0d3d6b); margin-top: 0; font-size: 1.3em; font-weight: 500; border-bottom: 2px solid var(--sport-primary, #145DA0); padding-bottom: 10px; margin-bottom: 20px; }
+        .warning-box { background: linear-gradient(135deg, #fffaf0 0%, #fff5e6 100%); border: 2px solid #ffa726; border-left: 6px solid #f57c00; padding: 25px; margin: 25px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(255, 167, 38, 0.1); }
+        .warning-box h4 { color: #e65100; margin-top: 0; font-size: 1.3em; display: flex; align-items: center; gap: 10px; }
+        .warning-box h4:before { content: "⚠"; font-size: 1.3em; }
+
+        /* ===== TABLES ===== */
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 0.95em; }
+        .comparison-table th, .comparison-table td { padding: 14px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        .comparison-table th { background: linear-gradient(135deg, var(--sport-primary, #145DA0), var(--sport-dark, #0d3d6b)); color: white; font-weight: bold; }
+        .comparison-table tr:hover { background-color: #f4f9fe; }
+        .comparison-table td:first-child { font-weight: bold; color: var(--sport-primary, #145DA0); }
+        .family-tag { display: inline-block; padding: 3px 10px; border-radius: 10px; font-size: 0.78em; font-weight: bold; background: #dce9f8; color: var(--sport-dark, #0d3d6b); }
+
+        /* ===== FIGURES ===== */
+        .module-figure { margin: 26px auto; max-width: 980px; }
+        .module-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid rgba(20, 93, 160, 0.22); box-shadow: 0 4px 18px rgba(13, 61, 107, 0.10); }
+        .module-figure figcaption { margin-top: 10px; font-size: 0.9em; line-height: 1.55; color: #5a6b7c; text-align: center; }
+
+        /* ===== SIDE-BY-SIDE ===== */
+        .sbs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin: 24px 0; }
+        .sbs-col { border-radius: 14px; padding: 24px; color: #fff; }
+        .sbs-col.col-a { background: linear-gradient(150deg, #0f6f6a 0%, #14958e 100%); }
+        .sbs-col.col-b { background: linear-gradient(150deg, #a8620a 0%, #d9821a 100%); }
+        .sbs-col.col-c { background: linear-gradient(150deg, #1c496e 0%, #2e7ec4 100%); }
+        .sbs-col h4 { margin: 0 0 4px; font-size: 1.2em; }
+        .sbs-col .sbs-sub { font-size: .85em; opacity: .9; margin-bottom: 16px; }
+        .sbs-step { background: rgba(255,255,255,.14); border-radius: 10px; padding: 14px 16px; margin: 10px 0; }
+        .sbs-step strong { display: block; margin-bottom: 4px; }
+        .sbs-step code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; }
+        .sbs-chips { margin: 12px 0; }
+        .sbs-chips span { display: inline-block; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35); border-radius: 12px; padding: 3px 10px; font-size: .78em; margin: 3px 4px 3px 0; }
+        .sbs-foot { font-size: .82em; opacity: .92; border-top: 1px dashed rgba(255,255,255,.4); padding-top: 10px; margin-top: 12px; }
+
+        /* ===== CODE ===== */
+        pre { background: #0d2137; color: #dcebf7; padding: 22px; border-radius: 10px; overflow-x: auto; font-size: 0.88em; line-height: 1.6; border-left: 5px solid var(--sport-primary, #145DA0); }
+        pre code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+        code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #e3eefb; color: var(--sport-dark, #0d3d6b); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+        pre code { background: none; color: inherit; padding: 0; }
+        [data-theme="dark"] code { background: rgba(20,93,160,.25); color: #dcebfd; }
+
+        /* ===== TIMELINE ===== */
+        .timeline { list-style: none; padding: 0; margin: 24px 0; counter-reset: step; }
+        .timeline li { counter-increment: step; position: relative; padding: 18px 20px 18px 66px; margin: 12px 0; background: linear-gradient(135deg, #ffffff 0%, #f6fafd 100%); border: 1px solid #d3e2ef; border-radius: 10px; }
+        .timeline li:before { content: counter(step); position: absolute; left: 18px; top: 18px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; background: var(--sport-primary, #145DA0); color: #fff; font-weight: bold; }
+        .timeline strong { color: var(--sport-dark, #0d3d6b); }
+        .timeline .tl-year { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .78em; letter-spacing: .08em; text-transform: uppercase; color: var(--sport-primary, #145DA0); font-weight: 700; }
+        [data-theme="dark"] .timeline li { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); }
+        [data-theme="dark"] .timeline strong { color: #9ec5e5; }
+
+        /* ===== FOOTER ===== */
+        footer { text-align: center; padding: 30px; color: #666; background: white; margin-top: 40px; }
+        footer p { margin: 10px 0; }
+        footer a { color: var(--sport-primary, #145DA0); text-decoration: none; font-weight: bold; }
+        footer a:hover { text-decoration: underline; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) { .sbs-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .paper-grid, .stats-bar, .library-grid, .glossary-grid { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.85em; }
+            .comparison-table th, .comparison-table td { padding: 10px 8px; }
+            .header h1 { font-size: 2em; }
+            .header .subtitle { font-size: 1.1em; }
+            .content-section { padding: 28px 22px; }
+            .navbar-nav { flex-wrap: wrap; row-gap: 2px; justify-content: center; }
+            .navbar-nav li { margin: 3px 7px; }
+            .navbar-nav a { font-size: 12.5px; }
+            .container { padding-left: 12px; padding-right: 12px; }
+        }
+    </style>
+    <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
+    <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
+</head>
+
+<body data-sport="update">
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="navbar-nav">
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
+                <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
+                <li><a href="#kpop-trainee">🎤 Story</a></li>
+                <li><a href="#core-concepts"><i class="fas fa-bookmark"></i> Concepts</a></li>
+                <li><a href="#timeline"><i class="fas fa-timeline"></i> Timeline</a></li>
+                <li><a href="#compare"><i class="fas fa-scale-balanced"></i> Compare</a></li>
+                <li><a href="#families"><i class="fas fa-layer-group"></i> Families</a></li>
+                <li><a href="#table"><i class="fas fa-table"></i> Selection</a></li>
+                <li><a href="#reading-order"><i class="fas fa-list-ol"></i> Reading order</a></li>
+                <li><a href="#practical"><i class="fas fa-wrench"></i> Practical</a></li>
+                <li><a href="#hands-on"><i class="fas fa-laptop-code"></i> Hands-on</a></li>
+                <li><a href="#related"><i class="fas fa-link"></i> Related</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.8); margin-bottom: 18px;">AI4Bio Learning Hub · Field Guide</div>
+            <h1>Post-Training for Biological Foundation Models</h1>
+            <div class="subtitle">
+                The full post-pretraining stack — SFT, PEFT/LoRA, RL elicitation, multi-agent verification, active learning, and quantization
+            </div>
+            <p class="description">
+                22 curated papers on what happens <em>after</em> pretraining — the recipes that turn a base scFM, PLM, or
+                general LLM into a tool a wet lab can trust. Spans 2023–2026 and covers supervised fine-tuning protocols
+                (scGPT-Protocol, DANCE, TIME-LLM, CodonFM, C2S-Scale), parameter-efficient adapters (scPEFT, PEFT-PLM,
+                ColabSaprot, Geneformer-Scaling QLoRA), RL elicitation of reasoning (ProteinRL, Cell-o1, Gene-R1),
+                multi-agent verification pipelines (GeneAgent, CASSIA, CyteType, SpatialAgent, SPARK), memory,
+                active-learning, and field-review syntheses (Mem0, DeMeo, LLM4Cell, AI Agents in Drug Discovery), and
+                clinical post-training (AMIE).
+            </p>
+        </header>
+
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">22</span>
+                <div class="stat-label">Curated Papers</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">6</span>
+                <div class="stat-label">Method Families</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2017–2026</span>
+                <div class="stat-label">Years Covered</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2</span>
+                <div class="stat-label">Reviews</div>
+            </div>
+        </div>
+
+        <p class="curation-note">Last reviewed: September 2026 · Inclusion: maintained, benchmarked, or recipe-defining post-training methods for biological foundation models · Found an issue? <a href="https://github.com/xqiu625" target="_blank" rel="noopener noreferrer">Suggest a fix on GitHub</a></p>
+
+        <!-- CASEWORK BANNER (Update · K-pop lens) -->
+        <section class="casework-banner" aria-label="K-pop trainee system inspired post-training casework">
+            <div class="casework-art">
+                <img src="../animations/rive-assets/stage-themes-v5/kpop-trainee-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu as a K-pop trainee practicing in a mirror, receiving a dot-only scorecard from a mentor, and bowing in a small spotlight">
+            </div>
+            <div class="casework-copy">
+                <div class="kicker">K-pop lens · post-training</div>
+                <h2>天赋不缺，缺的是点评与纠错。</h2>
+                <p>Pretraining graduates a trainee with raw talent; post-training is the trainee system that turns talent into a debut-ready performer. 训练、点评、小步纠错、再练——SFT 是第一节编舞课，RL 是导师打分制，多智能体验证是出道评审团。</p>
+            </div>
+        </section>
+
+        <!-- STORY LINE: the trainee system -->
+        <section class="content-section story-section" id="kpop-trainee">
+            <figure class="story-hero">
+                <img src="../animations/rive-assets/stage-themes-v5/kpop-trainee-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu as a K-pop trainee in a blue training jacket performing in a practice studio mirror while a mentor panel holds scorecards with only dot ratings">
+            </figure>
+            <h2>🎤 The Trainee System: Post-Training in Six Lessons</h2>
+            <p class="story-quote">「天赋练习生满街，出道靠点评循环。」</p>
+            <p class="story-intro">A K-pop trainee has raw talent; the trainee system — practice, evaluation, small corrections, more practice — is what produces a debut. A pretrained model is that trainee; post-training is the system. Six lessons from the practice room, re-read as the post-training stack. <em>(K-pop sparing: no real agencies were harmed.)</em></p>
+            <div class="library-grid">
+                <div class="library-card">
+                    <div class="book-meta">Lesson 1 · 练习生海选 The trainee audition</div>
+                    <h4>The pretrained base &amp; SFT</h4>
+                    <p class="plot">The audition room is full of kids with perfect pitch and zero stage discipline. The first choreography lesson is pure imitation: watch the curated routine, copy it exactly, a hundred times.</p>
+                    <p class="echo"><strong>SFT.</strong> The pretrained model is raw talent. Supervised fine-tuning is the imitation phase: curated instruction–answer pairs, cross-entropy, until the routine lands — scGPT-Protocol's 99.5% F1 on the retinal atlas is the polished first stage. <a href="#families">Family 1 ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Lesson 2 · 导师打分制 The mentor scorecard</div>
+                    <h4>Verifiable rewards</h4>
+                    <p class="plot">Every practice run ends with the mentor holding up a score. The rule of the house: the score must be checkable — did the note land, yes or no. Judges who score on "vibe" get gamed by confident trainees.</p>
+                    <p class="echo"><strong>RL needs a checkable reward.</strong> R1-style RL elicitation works when the reward is verifiable — a fold, an exact match, a one-to-one batch constraint. Score on vibes (a neural judge) and the policy reward-hacks. <a href="#compare">PPO vs DPO vs GRPO ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Lesson 3 · 小步纠错，别改嗓音 Fix the move, keep the voice</div>
+                    <h4>Anti-forgetting</h4>
+                    <p class="plot">The coach stops a trainee mid-drill: fix the footwork, but do not touch the voice — the tone is why you were signed. Over-correct, and the debut stage loses the one thing that made you special.</p>
+                    <p class="echo"><strong>Frozen prior, backbone, quantized base.</strong> Every successful bio post-training paper has an anti-forgetting mechanism: ProteinRL's fixed Prior PLM, scPEFT's frozen backbone, QLoRA's 4-bit base. Correct the move; keep the voice. <a href="#practical">The zoo ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Lesson 4 · 直接给示范 Skip the judge, show the answer</div>
+                    <h4>DPO</h4>
+                    <p class="plot">No scorecard this week — just two videos side by side: this run is the keeper, that one is not. Watch both, learn the difference directly, no mentor in the loop.</p>
+                    <p class="echo"><strong>Direct preference optimization.</strong> DPO trains offline on chosen/rejected pairs with the reward implicit in the policy log-ratio — no reward model, no rollouts. The cheapest entry into preference alignment. <a href="#hands-on">DPO walkthrough ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Lesson 5 · 组内互评 Score against your own group</div>
+                    <h4>GRPO</h4>
+                    <p class="plot">New house rule for the month: each trainee performs eight takes, and your score is how far above (or below) the group average you land. No mentor needed — the group is the baseline.</p>
+                    <p class="echo"><strong>Group-relative policy optimization.</strong> GRPO samples a group of completions per prompt and normalizes the advantage within it — no value function, no reward model, just a verifiable score and the group mean. <a href="#compare">See the panel ↓</a></p>
+                </div>
+                <div class="library-card">
+                    <div class="book-meta">Lesson 6 · 出道评审团 The debut panel</div>
+                    <h4>Verification before debut</h4>
+                    <p class="plot">Before the stage lights turn on, a panel of veterans checks every claim against the record books: was that really the highest note, the original move? Confidence scores get calibrated; anything unverified gets sent back.</p>
+                    <p class="echo"><strong>Multi-agent verification.</strong> GeneAgent's database lookups (44% → 19% hallucination), CASSIA's calibrated quality scores, AMIE's 10-domain RCT rubric — the debut panel is what makes the performance trustworthy. <a href="#families">Family 4 ↓</a></p>
+                </div>
+            </div>
+            <figure class="content-figure comic-figure">
+                <img src="figures/kpop-trainee-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel K-pop trainee comic: a confident trainee singing off-key at the audition; a mentor contrasting a doodled scorecard crossed out with a clean dot-rated one; a mentor fixing the dance foot position while the sound wave stays unchanged; and three judges checking the trainee&apos;s profile against record archives before debut">
+                <figcaption><strong>The trainee system in four plays.</strong> Talent is not enough (the pretrained base) · score what you can check (verifiable rewards) · fix the move, keep the voice (anti-forgetting) · the debut panel (multi-agent verification).</figcaption>
+            </figure>
+            <p class="library-footnote">「天赋免费，出道靠点评。」 — talent is free; the feedback loop is the product.</p>
+        </section>
+
+        <!-- Core Concepts -->
+        <section class="content-section" id="core-concepts">
+            <h2>🎯 Core Concepts</h2>
+
+            <h3>Why post-training is now where the action is</h3>
+            <p>
+                Pretraining gives you a substrate; post-training gives you a tool. The 2023–2024 wave of biological
+                foundation models — Geneformer, scGPT, scFoundation, ESM-2, Nucleotide Transformer — established that
+                masked-LM, contrastive, and decoder-only objectives can absorb tens to hundreds of millions of cells or
+                sequences. But every downstream application that matters — annotate a disease atlas, predict a
+                perturbation, design a protein, draft a cardiology consult — requires a second training phase: aligning,
+                specialising, verifying, or compressing the base model so it behaves correctly on the actual task.
+            </p>
+            <p>
+                This module is the umbrella view: given a base biological FM, which post-training recipe should you
+                reach for, and why? Focused companions on this hub cover the pieces in depth —
+                <a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/fine-tuning.html">fine-tuning</a> (LoRA/PEFT/adapters),
+                <a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/pretraining.html">pretraining</a> (what comes before),
+                <a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/generative-models.html">generative models</a> (the architectures being post-trained), and
+                <a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/transformer-architecture.html">transformer architecture</a> (the blocks underneath).
+            </p>
+
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig01_lifecycle.svg" alt="Two-phase biological foundation model lifecycle: pretraining produces a substrate with general biological priors; post-training converts it into a task-specific tool" loading="lazy">
+                <figcaption><strong>Pretraining is the substrate, post-training is the tool.</strong> The full lifecycle of a biological foundation model in two phases. Different physics, different bottlenecks, different teams now own each side. Pretraining is compute-bound and corpus-bound; post-training is data-bound and verification-bound.</figcaption>
+            </figure>
+
+            <h3>The post-training stack: 7 composable stages</h3>
+            <ul>
+                <li><strong>1 · Supervised fine-tuning (SFT) / domain adaptation.</strong> Update some (or all) base weights on labeled task data. The dominant 2023–2024 pattern: scGPT-Protocol (99.5% F1 retinal annotation), CodonFM continued pretraining, TIME-LLM reprogramming, DANCE dual-modality adaptation.</li>
+                <li><strong>2 · Parameter-efficient fine-tuning (PEFT).</strong> Freeze the base, train &lt;1–5% of parameters via LoRA, prefix tokens, or autoencoders. scPEFT: 96–99.95% parameter reduction with gains over full FT; PEFT-Proteomics: within 10–15% of full FT at 240–395× fewer params.</li>
+                <li><strong>3 · RL elicitation of reasoning.</strong> R1-style: reward verifiable reasoning chains. Cell-o1 (o1 distillation + GRPO, +73% on CellPuzzles), Gene-R1 (3-stage pipeline, 108–257% ROUGE-L over base), ProteinRL (prior-regularised policy gradient), C2S-Scale (GRPO + BioBERTScore).</li>
+                <li><strong>4 · Multi-agent verification.</strong> Wrap the base model in structured workflows with database lookups, self-critique, and confidence scoring — "post-training without gradient updates". GeneAgent (44% → 19% hallucination), CASSIA, CyteType, SpatialAgent, SPARK, AMIE.</li>
+                <li><strong>5 · Memory and active learning.</strong> Long-running deployments need a memory layer (Mem0: −91% p95 latency, &gt;90% token-cost reduction) and/or an experimental feedback loop (DeMeo: closed-loop ARL, 17×/13× hit-rate over random).</li>
+                <li><strong>6 · Quantization &amp; compression.</strong> Trade precision for speed and memory. Geneformer-Scaling 4-bit NF4 + double quantization preserves contextual embeddings at r=0.998; in-silico KO screen cost drops $25k → &lt;$5k.</li>
+                <li><strong>7 · Inference-time compute scaling.</strong> Chain-of-thought sampling, best-of-N, MCTS-guided rollout — adapt the model's reasoning budget, not its weights. AMIE's conversational refinement loop <em>is</em> Stage 7 post-training in deployment: zero gradient updates, all the adaptation happens at inference time via multistep reasoning, retrieval, and self-critique. DeepSeek-R1 proved the pattern generalises far beyond biology. Prerequisite: a verifiable scoring function that can tell a better reasoning chain from a worse one — without it, more inference-time compute just samples more confidently wrong answers.</li>
+            </ul>
+
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig02_six_stage_stack.svg" alt="The six-stage post-training stack as composable layers, each changing exactly one thing: weights, parameters touched, reward signal, verification, memory, or precision" loading="lazy">
+                <figcaption><strong>The 6-stage post-training stack — composable layers, not a fixed pipeline.</strong> You compose them, not run them in order. A production biological reasoning system typically uses 3–4 simultaneously: PEFT + RL elicitation + multi-agent verification + 4-bit inference. (A 7th stage, inference-time compute scaling — AMIE's regime — sits alongside these six without touching weights at all; see the text above.)</figcaption>
+            </figure>
+
+            <h3>Bio-specific constraints</h3>
+            <ul>
+                <li><strong>Verifiable rewards are rare.</strong> Math has ground truth; biology mostly doesn't. Cell type labels disagree across atlases by ~25%, and mechanism hypotheses have none. The successful bio-RL papers all engineer a verifiable proxy — batch-level one-to-one constraints (Cell-o1), semantic + lexical rewards against curated labels (Gene-R1), or computable properties like charge and pLDDT (ProteinRL). If you can't define one, RL elicitation will reward-hack.</li>
+                <li><strong>Data is small and uneven.</strong> Most biological tasks live in 1K–100K labelled examples — exactly the regime where PEFT beats full fine-tuning, because the full model overwrites itself.</li>
+                <li><strong>Evaluation is expensive and benchmarks lag.</strong> Wet-lab validation takes weeks to months. Multi-agent verification works around it with database lookups and calibrated LLM judging as a cheap proxy — improving the <em>verification surface</em> often matters more than improving base accuracy.</li>
+                <li><strong>Catastrophic forgetting is real.</strong> Fine-tune a 33M-cell scFM on your 5K-cell disease atlas and you can erase the pretrained gene–gene relationships that made it useful. Every successful paper has an explicit anti-forgetting mechanism.</li>
+                <li><strong>The base model is increasingly fungible.</strong> CyteType's finding is that performance is architecture-driven, not LLM-driven — open-weight backbones reach 95% of frontier at a fraction of cost inside a good scaffold. The post-training <em>recipe</em> is now the moat.</li>
+            </ul>
+
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig03_reward_spectrum.svg" alt="Verifiable-reward spectrum from fully checkable (RL works) through engineered proxies (RL leaks) to inherently noisy (do not run RL)" loading="lazy">
+                <figcaption><strong>The verifiable-reward spectrum — when RL works, when it leaks, when you should not try.</strong> The single most important design decision in biological post-training, chosen <em>before</em> the model. Left: run RL. Middle: engineer a proxy and monitor for reward-hacking. Right: fall back to multi-agent verification.</figcaption>
+            </figure>
+        </section>
+
+        <!-- Timeline -->
+        <section class="content-section" id="timeline">
+            <h2>🕰 Evolution Timeline</h2>
+            <ol class="timeline">
+                <li><span class="tl-year">2017</span> · <strong>PPO and the RL substrate.</strong> Proximal Policy Optimization defines the policy-gradient template every later RL fine-tune uses; <a href="https://doi.org/10.1186/s13321-017-0235-x" target="_blank" rel="noopener noreferrer">REINVENT</a> ports it to chemistry with prior-regularised loss — the direct ancestor of ProteinRL.</li>
+                <li><span class="tl-year">2023</span> · <strong>ProteinRL, the first bio RL fine-tune.</strong> REINVENT-style policy gradient on ProGen2-764M for property-directed protein design — β-lactamase net charge pushed to +18/−39 while preserving fold and active-site residues. Same year, InstructGPT-style RLHF goes mainstream in NLP.</li>
+                <li><span class="tl-year">2024</span> · <strong>PEFT mainstreams; SFT protocols mature.</strong> LoRA comes to ESM-2 with proteomics-specific hyperparameters (r≥4, W_K+W_V); DANCE tackles dual-label-scarcity multi-omics; CodonFM scales codon-level masked LM; TIME-LLM reprograms a frozen Llama-7B with an input head only.</li>
+                <li><span class="tl-year">2025 H1</span> · <strong>Multi-agent verification + RL reasoning land in biology.</strong> scGPT-Protocol standardises full-FT (99.5% F1); Mem0 defines the production memory layer; SpatialAgent launches the autonomous-agent template; Cell-o1 ports o1 distillation + GRPO to single-cell (+73%); GeneAgent cuts hallucination 44% → 19%.</li>
+                <li><span class="tl-year">2025 H2</span> · <strong>PEFT for scLLMs, community ecosystems, active learning.</strong> Gene-R1's 3-stage RL pipeline; ColabSaprot ships SaprotHub community adapters; DeMeo demonstrates closed-loop ARL (17× hit-rate); CyteType proves architecture over model; CASSIA ships 5-agent calibrated annotation; scPEFT systematises four adapter types.</li>
+                <li><span class="tl-year">2026</span> · <strong>Clinical RCTs, quantization-native scFMs, agentic discovery.</strong> AMIE delivers the first RCT-level evidence that inference-time post-training improves cardiologists (46.7% vs 32.7% preferred); Geneformer-Scaling defines scaling laws to 316M and ships 4-bit QLoRA; SPARK runs autonomous concept discovery across 5,400+ patients for ~€4K.</li>
+            </ol>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig11_capability_timeline.svg" alt="Capability-accumulation timeline 2017–2026, from PPO to clinical RCTs and agentic discovery" loading="lazy">
+                <figcaption><strong>Post-training timeline — capability accumulation across a decade.</strong> 12 of 22 surveyed papers landed in 2025 — the year post-training went from isolated recipes to a full composable stack.</figcaption>
+            </figure>
+        </section>
+
+        <!-- Side-by-Side: PPO vs DPO vs GRPO -->
+        <section class="content-section" id="compare">
+            <h2>⚖️ Side-by-Side: PPO vs DPO vs GRPO</h2>
+            <p>
+                Three ways to turn human or verifiable feedback into a better policy — PPO (online RL with an explicit
+                reward model), DPO (offline, direct preference optimization, no reward model), and GRPO (group-relative
+                policy optimization on verifiable rewards, no reward model, no value function). The same starting point —
+                a base policy <span class="math-inline">π_θ</span> and preference data or a verifiable reward — becomes
+                three very different training pipelines.
+            </p>
+            <div class="sbs-grid">
+                <div class="sbs-col col-a">
+                    <h4>PPO / ProteinRL</h4>
+                    <div class="sbs-sub">online RL with explicit reward model</div>
+                    <div class="sbs-step">
+                        <strong>Train a reward model</strong>
+                        <code>Bradley–Terry on (chosen, rejected) pairs; or a fixed prior PLM log-prob (ProteinRL)</code>
+                    </div>
+                    <div class="sbs-step">
+                        <strong>Online rollout + advantage</strong>
+                        <code>sample completions, score with RM, clip-ratio PPO gradient; KL vs reference policy</code>
+                    </div>
+                    <div class="sbs-chips"><span>r(y) from RM</span><span>Â = r − V(s)</span></div>
+                    <div class="sbs-foot">online · explicit RM · value baseline · anti-forgetting via frozen prior</div>
+                </div>
+                <div class="sbs-col col-b">
+                    <h4>DPO</h4>
+                    <div class="sbs-sub">offline, no reward model needed</div>
+                    <div class="sbs-step">
+                        <strong>Reparameterise reward</strong>
+                        <code>r*(y) ≈ β log [π_θ(y)/π_ref(y)]; reward is implicit in the policy log-ratio</code>
+                    </div>
+                    <div class="sbs-step">
+                        <strong>Offline CE on pairs</strong>
+                        <code>max log σ(β·log-ratio chosen − β·log-ratio rejected); no rollouts needed</code>
+                    </div>
+                    <div class="sbs-chips"><span>log-ratio loss</span><span>β KL implicit</span></div>
+                    <div class="sbs-foot">offline · no RM · no value fn · distribution shift if data is stale</div>
+                </div>
+                <div class="sbs-col col-c">
+                    <h4>GRPO</h4>
+                    <div class="sbs-sub">group-relative, verifiable reward, no value fn</div>
+                    <div class="sbs-step">
+                        <strong>Sample G rollouts per prompt</strong>
+                        <code>score each with a verifiable reward (batch accuracy, ROUGE-L, BioBERTScore, format check)</code>
+                    </div>
+                    <div class="sbs-step">
+                        <strong>Group-normalised advantage</strong>
+                        <code>Â_i = (r_i − mean(r)) / std(r); the group mean replaces a learned value baseline</code>
+                    </div>
+                    <div class="sbs-chips"><span>group Â</span><span>KL vs π_ref</span></div>
+                    <div class="sbs-foot">online · no RM · no value fn · reward must be verifiable</div>
+                </div>
+            </div>
+            <p>
+                The split traces back to one root decision — <strong>whether to learn a separate reward signal or eliminate it</strong>.
+                PPO pays for training and maintaining an RM but handles any preference signal; DPO eliminates the RM by
+                reparameterising the reward as a log-ratio between current and reference policy — purely offline, but
+                vulnerable to distribution shift; GRPO removes both RM and value function by computing advantage within a
+                sampled group, which only works when the reward is checkable without a neural model — exactly the
+                verifiable-reward design criterion that makes Cell-o1, Gene-R1, and C2S-Scale tick in biology.
+            </p>
+            <p style="font-size:.92em; color:#5a6b7c; border-top:1px dashed #cdddec; padding-top:14px; margin-top:18px;">
+                <strong>Three variants worth knowing before picking one of these three.</strong>
+                <a href="https://arxiv.org/abs/2403.07691" target="_blank" rel="noopener noreferrer">ORPO</a> (Hong et al. 2024) drops the reference model entirely and optimises an odds-ratio term added directly to the SFT loss — one training stage instead of SFT-then-DPO, and more stable than DPO in small-data regimes exactly like the &lt;100K-label tasks common in biology.
+                <a href="https://arxiv.org/abs/2405.14734" target="_blank" rel="noopener noreferrer">SimPO</a> (Meng, Xia &amp; Chen, NeurIPS 2024) is also reference-free, but its fix targets DPO's length bias: it normalises the reward by sequence length so the policy can't win by generating longer (not better) completions — worth checking whenever you eval by win-rate.
+                <a href="https://arxiv.org/abs/2503.14476" target="_blank" rel="noopener noreferrer">DAPO</a> (ByteDance Seed, 2025) instead targets GRPO's training instability at scale — Clip-Higher, dynamic sampling, token-level policy-gradient loss, and overlong-reward shaping — and has become the de facto reference recipe for open, reproducible GRPO training since C2S-Scale and Cell-o1-style pipelines were built.
+            </p>
+        </section>
+
+        <!-- Method Families -->
+        <section class="content-section" id="families">
+            <h2>🧩 Method Families</h2>
+            <p>The 22 papers fall into six families by post-training recipe. Some papers fit two — placed in best fit.</p>
+
+            <h3>1 · Supervised Fine-Tuning &amp; Domain Adaptation</h3>
+            <p>Classical post-training: cross-entropy/NLL on labelled task data, updating some or all base-model weights. The workhorse pattern when you have curated labels and a base model in the right modality.</p>
+            <div class="paper-grid">
+                <div class="paper-card" id="paper-scgpt-protocol">
+                    <h4>scGPT: End-to-End Protocol for Fine-Tuned Retinal Cell Type Annotation</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nat Protoc</span>
+                        <span class="meta-badge type-badge">Full SFT protocol</span>
+                    </div>
+                    <p class="paper-description">A standardised, end-to-end protocol for fine-tuning the 33M-cell scGPT foundation model on a 2.9M-cell Human Retina Cell Atlas covering 111 cell types across 10 major classes. Defines preprocessing → fine-tune → inference → evaluation modules — the canonical SFT recipe for scLLMs in a single paper.</p>
+                    <ul class="key-contributions">
+                        <li>Type-level F1 99.5% (bipolar cells), class-level F1 99.47%, cross-dataset macro F1 96.10% across 9 independent cohorts</li>
+                        <li>3–13 hour fine-tune on A100 80GB vs weeks from scratch; Cohen's κ = 0.994 for BC annotation</li>
+                        <li>Validated across snRNA-seq, scRNA-seq, multiome, and AMD disease samples — first standard for FM fine-tune in single-cell</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41596-025-01220-1" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/RCHENLAB/scGPT_fineTune_protocol" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-dance">
+                    <h4>DANCE — Semi-supervised Knowledge Transfer Across Multi-omic Single-cell Data</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">NeurIPS</span>
+                        <span class="meta-badge type-badge">Semi-supervised SFT</span>
+                    </div>
+                    <p class="paper-description">Post-trains a shared MLP encoder across scRNA-seq and scATAC-seq under <em>dual</em> label scarcity in both source and target modalities. Combines Optimal Transport pseudo-labelling, divide-and-conquer target supervision, and cross-omic multi-sample Mixup to align modality-specific representations without paired measurements.</p>
+                    <ul class="key-contributions">
+                        <li>Outperforms DAN, CDAN, MCC, FixMatch, scJoint, scNCL, scBridge, Harmony, Seurat across 1%/5%/10% label ratios</li>
+                        <li>Effective reverse transfer scATAC → scRNA; robust to noise, class imbalance, and domain shifts</li>
+                        <li>60-epoch training with SGD lr=3e-3 — minimal-compute alternative to large scLLMs</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://proceedings.neurips.cc/paper_files/paper/2024/hash/47f30d67bce3e9824928267e9355420f-Abstract-Conference.html" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/zfkarl/DANCE" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-timellm">
+                    <h4>TIME-LLM: Time Series Forecasting by Reprogramming Large Language Models</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">ICLR</span>
+                        <span class="meta-badge type-badge">Reprogramming / frozen LM</span>
+                    </div>
+                    <p class="paper-description">Keeps a Llama-7B frozen and trains only a small input-reprogramming head + Prompt-as-Prefix template to align time-series patches with text-prototype representations. Zero LM gradient updates — all adaptation happens in the wrapper. The template for "specialise without touching base weights".</p>
+                    <ul class="key-contributions">
+                        <li>Beats PatchTST, FEDformer, Autoformer, GPT4TS, DLinear, TimesNet on ETT/Weather/Electricity/Traffic/ILI</li>
+                        <li>Prompt-as-Prefix injects dataset background + task instructions + input statistics — zero-fine-tune adaptation</li>
+                        <li>Trained on a single A100-80G; reprogramming layer + output projection are the only trainable parameters</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2310.01728" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/KimMeen/Time-LLM" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-codonfm">
+                    <h4>Learning the Language of Codon Translation with CodonFM (EnCodon)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">Preprint</span>
+                        <span class="meta-badge type-badge">Continued pretraining + FT</span>
+                    </div>
+                    <p class="paper-description">A codon-level BERT (80M / 600M / 1B params) pretrained on 130M+ CDS across 22K species, then fine-tuned on gnomAD common-vs-rare missense variants for pathogenicity. Codon-frequency Weighted Masking emphasises rare codons during MLM. The post-training step matches AlphaMissense using sequence alone.</p>
+                    <ul class="key-contributions">
+                        <li>ClinVar synonymous variants: −log10(p) = 3.2 (1B-CDWT) vs 1.5 (mRNA-FM) — SOTA on the hardest variant class</li>
+                        <li>DDD missense: −log10(p) = 45 after gnomAD fine-tune, matching/exceeding AlphaMissense</li>
+                        <li>Zero-shot mRNA design: R²=0.50 translation efficiency, ρ=0.70 protein expression — no task-specific FT</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://research.nvidia.com/labs/dbr/assets/data/manuscripts/nv-codonfm-preprint.pdf" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/NVIDIA-Digital-Bio/CodonFM" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-c2s">
+                    <h4>C2S-Scale: Scaling Large Language Models for Next-Generation Single-Cell Analysis</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">SFT + RL elicitation</span>
+                    </div>
+                    <p class="paper-description">Fine-tunes 410M–27B decoder-only LLMs (Gemma 2, Pythia) on cell-as-sentence representations of 50M+ cells across 800+ datasets — multi-task SFT for prediction, generation, and dataset interpretation. The 27B variant is additionally GRPO-aligned with BioBERTScore rewards — a hybrid SFT + RL elicitation pipeline.</p>
+                    <ul class="key-contributions">
+                        <li>95.43% cell-type annotation accuracy (vs scGPT 93.1%, Geneformer 94.0%); +3% BERTScore vs GPT-4o on dataset interpretation</li>
+                        <li>GRPO with BioBERTScore reward: +16% scFID on IFN-related genes; +9.2% Kendall τ on L1000</li>
+                        <li>Experimentally validated silmitasertib as IFN-γ-conditional MHC-II inducer (2.1× macrophage induction, p&lt;0.0001)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.04.14.648850" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/vandijklab/cell2sentence" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+            </div>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig04_adaptation_ladder.svg" alt="Three-rung adaptation escalation ladder: MLP head on frozen embeddings, LoRA/adapters, full fine-tuning — escalate only when the data says you must" loading="lazy">
+                <figcaption><strong>The adaptation escalation ladder — start at the bottom, only escalate when the data says you must.</strong> The cheapest rung wins more often than people expect — on balanced binary PPI an MLP head on frozen ESM2 embeddings beats both LoRA and full FT.</figcaption>
+            </figure>
+
+            <h3>2 · Parameter-Efficient Post-Training (PEFT)</h3>
+            <p>Freeze most of the base model; train low-rank adapters, prefix tokens, or autoencoder bottlenecks. The default recipe when you have &lt;100K labelled examples or a single consumer GPU. Code-level deep-dive in the <a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/fine-tuning.html">fine-tuning module</a>.</p>
+            <div class="paper-grid">
+                <div class="paper-card" id="paper-peft-plm">
+                    <h4>Democratizing Protein Language Models with Parameter-Efficient Fine-Tuning</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span>
+                        <span class="meta-badge journal-badge">PNAS</span>
+                        <span class="meta-badge type-badge">LoRA for PLMs</span>
+                    </div>
+                    <p class="paper-description">Sledzieski et al. adapt LoRA to ESM2-650M for PPI and homooligomer-symmetry prediction, identifying proteomics-specific hyperparameters that diverge from NLP: rank r≥4 (not r=1), target W_K+W_V (not W_Q+W_V), adapt the last 5–12 layers. Within 10–15% of full FT at 240–395× fewer trainable parameters.</p>
+                    <ul class="key-contributions">
+                        <li>PEFT: 369K–658K trainable params, AUPR 0.600 (PPI) / 0.400 (symmetry) vs FT 78–157M params, AUPR 0.623 / 0.489</li>
+                        <li>32GB GPU fits 12-layer PEFT vs 8-layer FT for symmetry — 50% more depth at the same memory</li>
+                        <li>Surprising: MLP on frozen embeddings (88K params) reaches AUPR 0.684 on balanced binary PPI — beats both PEFT and FT</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1073/pnas.2405840121" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/microsoft/peft_proteomics" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-scpeft">
+                    <h4>scPEFT: Harnessing Single-cell LLMs with Parameter-Efficient Fine-Tuning</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nat Mach Intell</span>
+                        <span class="meta-badge type-badge">4-adapter PEFT for scLLMs</span>
+                    </div>
+                    <p class="paper-description">Systematises four adapter types for single-cell LLMs: Token Adapter (autoencoder in the tokeniser), Prefix Adapter (learnable task tokens), LoRA (low-rank in Q/V attention), and Encoder Adapter (autoencoder after self-attention). Freezes the scBERT / Geneformer / scGPT / scFoundation backbone and trains only 0.05–3.97% of parameters — gains come from <em>not forgetting</em>.</p>
+                    <ul class="key-contributions">
+                        <li>39.7–81.7% accuracy improvement vs native scLLMs (P&lt;0.001); 4.3–15% improvement vs full FT (P&lt;0.05)</li>
+                        <li>96.03–99.95% trainable-parameter reduction; &gt;50% GPU memory reduction</li>
+                        <li>Cross-species transfer: +144.5% C. elegans, +39.3% macaque; uncovers COVID-specific CEBPD/SCART1 in effector memory CD8+</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s42256-025-01170-z" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/coffee19850519/scPEFT" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-saprot">
+                    <h4>ColabSaprot / SaprotHub: Democratizing Protein LM Training, Sharing and Collaboration</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nat Biotechnol</span>
+                        <span class="meta-badge type-badge">Adapter ecosystem</span>
+                    </div>
+                    <p class="paper-description">Saprot is a structure-aware PLM (BERT-style, 35M/650M/1.3B) trained on 40M AlphaFold2 structures with a 20×20=400 Structure-Aware alphabet combining amino acids and Foldseek 3Di tokens. ColabSaprot wraps it in one-click LoRA fine-tuning notebooks (~1% of params); SaprotHub is the community adapter repository with model-aggregation gains of 5–10%.</p>
+                    <ul class="key-contributions">
+                        <li>Zero-shot mutation: 0.574 Mega-scale, 0.457 ProteinGym, 0.909 ClinVar (vs ESM-2: 0.478 / 0.414 / 0.862)</li>
+                        <li>Protein design: 34–39% sequence recovery on CATH; 16× faster than ProteinMPNN</li>
+                        <li>Wet-lab: xylanase R59S +2.55× activity; TDG 17/20 variants improved editing — community-trained adapter validation</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41587-025-02859-7" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/westlake-repl/Saprot" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-gf-scaling">
+                    <h4>Geneformer-Scaling: Scaling and Quantization of Large-Scale Foundation Models</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span>
+                        <span class="meta-badge journal-badge">Nat Comput Sci</span>
+                        <span class="meta-badge type-badge">4-bit QLoRA</span>
+                    </div>
+                    <p class="paper-description">Scales Geneformer to 316M params on Genecorpus-104M (~150B tokens, 55 tissues), defining transcriptomic masked-learning scaling laws. Then layers 4-bit NF4 + double quantization + LoRA (rank 128 gene-level, 32 cell-level) on the pretrained model — the QLoRA recipe brings full-precision-equivalent contextual embeddings to commodity GPUs.</p>
+                    <ul class="key-contributions">
+                        <li>4-bit QLoRA: fine-tune time = 15% (gene-level) / 21% (cell-level); peak memory = 34% / 38% of FP32</li>
+                        <li>GATA4 in-silico KO embedding shift: Pearson r=0.998 between quantized and full-precision GF-316M</li>
+                        <li>30K-cell × 4,096-gene in-silico KO screen: $25k / 32.8 days → &lt;$5k / 5.9 days on A100</li>
+                        <li>Zero-shot bivalent vs Lys4-only promoter AUC = 0.79; 159 tissue/cell-type classes F1≈0.93, 78 disease classes F1≈0.97</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s43588-026-00972-4" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank" rel="noopener noreferrer"><i class="fas fa-cube"></i> Model</a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>3 · RL Elicitation of Reasoning</h3>
+            <p>Following the R1 / GRPO template, reward verifiable correctness on structured reasoning traces. Works when you can define a checkable reward — a computable property, an exact-match label, a multi-objective score.</p>
+            <div class="paper-grid">
+                <div class="paper-card" id="paper-proteinrl">
+                    <h4>ProteinRL: Reinforcement Learning with Generative Protein Language Models for Property-Directed Sequence Design</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2023</span>
+                        <span class="meta-badge journal-badge">NeurIPS GenBio</span>
+                        <span class="meta-badge type-badge">REINVENT-style RL</span>
+                    </div>
+                    <p class="paper-description">Ports the REINVENT chemistry RL framework to ProGen2-764M for protein design. Dual-model architecture: a trainable Agent PLM and a fixed Prior PLM, regularised by a property-scaled prior-loss <span class="math-inline">L(θ) = [log P_Agent − log P_Augmented]²</span>. Multi-objective optimisation via weighted geometric mean of reward functions — first RL fine-tune of a generative PLM for full sequence design.</p>
+                    <ul class="key-contributions">
+                        <li>β-lactamase net charge pushed to +18 (positive) / −39 (negative) vs natural −2 — extreme values at distribution tails</li>
+                        <li>Multi-objective lysozyme: 85% identity + 89 pLDDT + 95% expression probability (vs 23% / 60 / 84% before FT)</li>
+                        <li>Active-site residues conserved; charged residues localise to surface — implicit structural awareness without an explicit structural reward</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://openreview.net/forum?id=Ld8b14YfhI" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-cello1">
+                    <h4>Cell-o1: Training LLMs to Solve Single-Cell Reasoning Puzzles with Reinforcement Learning</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">arXiv</span>
+                        <span class="meta-badge type-badge">o1 distillation + GRPO</span>
+                    </div>
+                    <p class="paper-description">Reformulates cell annotation from cell-by-cell classification to <em>batch-level</em> reasoning: 8–15 cells must be jointly assigned to N unique candidate types under a one-to-one constraint, mirroring expert workflow. Two-stage post-training on Qwen2.5-7B: reasoning distillation from o1 (3,912 traces, 38.52% acceptance) → SFT cold-start, then GRPO with binary batch-level reward + format penalty.</p>
+                    <ul class="key-contributions">
+                        <li>Batch-level accuracy 32.9% vs OpenAI o1 19.0% — +73% relative gain on the harder constraint task</li>
+                        <li>Cell-level accuracy 68.5% improvement over baseline; format validity 98.26%</li>
+                        <li>Maintains 38.96% avg batch accuracy on 4 unseen diseases — OOD generalisation from a 7B model</li>
+                        <li>LoRA rank 256 on Qwen2.5-7B, 10 SFT epochs + 20 RL epochs, lr=5e-5 — full recipe public</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2506.02911" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/ncbi-nlp/cell-o1" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-gener1">
+                    <h4>Gene-R1: Reasoning with Data-Augmented Lightweight LLMs for Gene Set Analysis</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">arXiv</span>
+                        <span class="meta-badge type-badge">3-stage RL pipeline</span>
+                    </div>
+                    <p class="paper-description">Systematises bio-domain R1-style post-training as a three-module pipeline on Llama-1B/3B/8B: <strong>Knowledge Warm-up</strong> (244,754 instances from GO, UniProtKB, CTD, Reactome, and more) → <strong>Reasoning Activation</strong> (9,873 sets, GPT-o1-distilled reasoning chains filtered at &gt;0.7 similarity) → <strong>Task Alignment</strong> via GRPO with dual semantic + exact-match reward.</p>
+                    <ul class="key-contributions">
+                        <li>ROUGE-L improvement 133.1–257.3% over baseline Llama3 in-distribution; semantic-sim +5.9–18.3% vs Llama3, +2.9–8.4% vs GPT</li>
+                        <li>Gene-R1 (8B) matches or exceeds GPT-4 and GPT-o1 on semantic similarity — open-source closes the gap to proprietary reasoners</li>
+                        <li>Hallucination fix: base model called GHRHR an "ERAD regulator"; post-training correctly identifies growth-hormone signalling</li>
+                        <li>OOD (NeST, MSigDB): no significant difference (p&gt;0.05) vs GPT-4 / Llama3-70B — generalises across gene-set sources</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2509.10575" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/ncbi-nlp/Gene-R1" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+            </div>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig05_proteinrl_prior.svg" alt="ProteinRL dual-model architecture: a trainable Agent PLM and a frozen Prior PLM — the prior is the anti-forgetting mechanism that pulls the agent back toward the natural protein distribution" loading="lazy">
+                <figcaption><strong>ProteinRL — two copies of the same model, one trains, one never moves.</strong> The frozen Prior PLM is the anti-forgetting mechanism for RL: it preserves the native protein distribution while the Agent is pulled toward extreme property values. Without it the Agent would discover gibberish sequences that maximise charge but fold to nothing.</figcaption>
+            </figure>
+
+            <h3>4 · Multi-Agent Verification as Post-Training</h3>
+            <p>The base model is left untouched; the system wraps it with structured workflows, database lookups, self-critique, and confidence scoring. This is "post-training without gradient updates" — the recipe when you can't (or shouldn't) fine-tune the base model.</p>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig06_three_verifiers.svg" alt="Three multi-agent verification architectures: GeneAgent's 4-stage verify loop, CASSIA's calibrated 5-agent pipeline with quality score, CyteType's evidence-heavy comparator" loading="lazy">
+                <figcaption><strong>Three multi-agent verification architectures — GeneAgent · CASSIA · CyteType.</strong> Same problem (don't hallucinate), different shapes: simple verification loop, calibrated pipeline with quality score, evidence-heavy comparator. The architectural decision is what gets verified at each step.</figcaption>
+            </figure>
+            <div class="paper-grid">
+                <div class="paper-card" id="paper-geneagent">
+                    <h4>GeneAgent: Self-Verification Language Agent for Gene-Set Analysis Using Domain Databases</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nat Methods</span>
+                        <span class="meta-badge type-badge">DB-verified LLM</span>
+                    </div>
+                    <p class="paper-description">Wraps GPT-4 in a 4-stage pipeline — Generation → Self-verification (claims → DB query via 4 APIs to 18 biology databases) → Modification → Summarization. Returns Supported / Partially Supported / Refuted / Unknown labels, then revises. Pure prompt-engineering + tool-use, no gradient updates.</p>
+                    <ul class="key-contributions">
+                        <li>Hallucination drops from ~44% (GPT-4 baseline) to ~19%; 80.7% exact-match accuracy on enrichment terms (vs 56.0% without gene synopsis)</li>
+                        <li>15,903 claims verified — 84% supported, 8% refuted, 7% unknown; 92% accuracy on expert-validated random sample</li>
+                        <li>76.9% of process names rank in top 90th percentile vs 12,320 candidates; p = 3.1×10⁻⁵ across 9-fold CV</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-025-02748-6" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/ncbi-nlp/GeneAgent" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-cassia">
+                    <h4>CASSIA: A Multi-Agent LLM for Automated and Interpretable Cell Annotation</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Nat Commun</span>
+                        <span class="meta-badge type-badge">5-agent annotation</span>
+                    </div>
+                    <p class="paper-description">Chains five agents (Annotation, Validation, Formatting, Quality Scoring, Reporting) plus optional RAG, Annotation Boost, Subclustering, and Uncertainty Quantification specialists. Self-reflective validation loop (up to 3 cycles) catches hallucinations; a 0–100 quality score with a &lt;75% threshold flags low-confidence annotations.</p>
+                    <ul class="key-contributions">
+                        <li>Fully Correct Rate +12–41%, Combined Correct Rate +9–20% over GPTCellType, CellTypist, SingleR on 970 cell types / 5 atlases</li>
+                        <li>Cancer detection: 72.5% vs 20% for GPTCellType, 88–100% with a cancer-specific prompt</li>
+                        <li>Quality-score calibration: scores &lt;75% predominantly wrong (20/29); scores &gt;90% strongly correct</li>
+                        <li>Identifies errors in gold standards: 11/15 (73.3%) high-confidence discrepancies validated as correct re-annotations</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41467-025-67084-x" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/ElliotXie/CASSIA" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-cytetype">
+                    <h4>CyteType: Multi-Agent AI Enables Evidence-Based Cell Annotation in Single-Cell Transcriptomics</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">5-agent + 16-LLM</span>
+                    </div>
+                    <p class="paper-description">Extends the multi-agent annotation template with Contextualizer / Annotator / Reviewer / Literature-and-Clinical / Summarizer agents. Tools span Cell Ontology, CellGuide, CellMarker, PubMed, GTEx, Enrichr, Disease Ontology, Drug Ontology. Tested across 16 LLM backbones to prove the architecture, not the model, drives performance.</p>
+                    <ul class="key-contributions">
+                        <li>+388.52% vs GPTCellType (same GPT-5), +267.9% vs CellTypist, +100.67% vs SingleR — 252.36% average gain</li>
+                        <li>Open-weight Kimi K2 / DeepSeek R1 reach 95% of peak performance at a fraction of cost — architecture supersedes LLM</li>
+                        <li>977 clusters across 20 datasets: 41% functional enhancement, 29% subtype refinement, 30% major re-annotation</li>
+                        <li>Diabetic-kidney "leukocytes" → "activated CD45+DOCK2+ pro-inflammatory T cell" — disease-specific refinement</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.11.06.686964" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/NygenAnalytics/CyteType" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-spatialagent">
+                    <h4>SpatialAgent: An Autonomous AI Agent for Spatial Biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">bioRxiv</span>
+                        <span class="meta-badge type-badge">Autonomous spatial agent</span>
+                    </div>
+                    <p class="paper-description">A three-module agent (Memory / Planning / Action) wrapping an LLM with 19 specialised tools for spatial transcriptomics: CZI CELLxGENE, PanglaoDB, CellMarker2, LIANA, PROGENy, Scanpy, Harmony, UTAG, factor analysis, pathway enrichment. Plan-template system for gene-panel design, cell annotation, and interaction analysis, with autonomous and human co-pilot modes.</p>
+                    <ul class="key-contributions">
+                        <li>2 million cells across human brain, heart, mouse colon under multiple conditions — full agentic workflow</li>
+                        <li>Outperforms 4 computational baselines and 10 human experts on gene-panel design; human+agent &gt; either alone</li>
+                        <li>Cell–cell interaction inference, factor analysis, multi-source aggregation in a single chain-of-thought pipeline</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.04.03.646459" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/Genentech/SpatialAgent" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-spark">
+                    <h4>SPARK: An Agentic Framework for Autonomous Scientific Discovery in Cancer Pathology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span>
+                        <span class="meta-badge journal-badge">Nat Med</span>
+                        <span class="meta-badge type-badge">crewAI + concept discovery</span>
+                    </div>
+                    <p class="paper-description">The largest-scale agentic post-training paper to date. A crewAI-style system links Idea Generation (o1) → Idea Refinement (o1) → Code Generation (Claude Sonnet 3.5) → Parameter Verification over a structured whole-slide-image object. Generates, codes, and verifies interpretable morphological concepts on routine H&amp;E across 5 cancer types and 5,400+ patients with no task-specific model training.</p>
+                    <ul class="key-contributions">
+                        <li>500 unique ideas in 2h 19min for the prognosis use case; 75.8% pass-rate after filtering; 1,115 verified parameters from 475 ideas</li>
+                        <li>Predictive AUROCs: BRCA subtype 0.898, BRCA ER 0.863, HNSC HPV/p16 0.828, CRC MSI 0.933</li>
+                        <li>Identifies a cross-tumor "active tumor front" signature (neutrophils + eosinophils + fibroblasts at the stroma interface)</li>
+                        <li>Total compute cost ~€4,000 for full discovery + validation — agentic discovery is now financially viable for a single lab</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-026-04357-y" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://github.com/cpath-ukk/SPARK" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </div>
+            </div>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig12_architecture_over_model.svg" alt="Architecture over model: single-pass prompting shows a wide gap between frontier and open-weight models, but inside CyteType's 5-agent scaffold the bars converge — open weights reach 95% of GPT-5" loading="lazy">
+                <figcaption><strong>Architecture &gt; model — the pipeline is the moat, the base LLM is a swappable cartridge.</strong> Same scaffold, three different LLMs: the gains travel with the scaffold, not with the model name. This is the core argument for treating multi-agent verification as a post-training recipe.</figcaption>
+            </figure>
+
+            <h3>5 · Memory, Active Learning &amp; Online Refinement</h3>
+            <p>Post-training that runs <em>during</em> deployment — memory systems that consolidate facts across sessions, active learning loops that query the model for the next experiment, and review syntheses tying the agentic discovery pattern together. The bridge from offline fine-tune to a continually improving system.</p>
+            <div class="paper-grid">
+                <div class="paper-card" id="paper-mem0">
+                    <h4>Mem0: Building Production-Ready AI Agents with Scalable Long-Term Memory</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">arXiv</span>
+                        <span class="meta-badge type-badge">Memory architecture</span>
+                    </div>
+                    <p class="paper-description">The production memory layer underneath long-running biomedical agents. Two-phase pipeline (extraction + update): an LLM extracts salient facts from each new message pair, then tool-calls ADD/UPDATE/DELETE/NOOP against a vector DB of consolidated facts. Mem0ᵍ adds a Neo4j graph layer with typed entities and conflict-detection for temporal reasoning.</p>
+                    <ul class="key-contributions">
+                        <li>LOCOMO benchmark: Mem0 single-hop J=67.13, multi-hop J=51.15, Mem0ᵍ temporal J=58.13 — SOTA across query types</li>
+                        <li>91% p95 latency reduction vs full-context baseline; &gt;90% token cost reduction</li>
+                        <li>GPT-4o-mini backbone for extraction/update; dual retrieval (dense NL + graph triplets) supports entity and conceptual queries</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2504.19413" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://mem0.ai/research" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt"></i> Project</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-demeo">
+                    <h4>DeMeo / DrugReflector: Active Learning Framework Leveraging Transcriptomics Identifies Modulators of Disease Phenotypes</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">Science</span>
+                        <span class="meta-badge type-badge">Closed-loop ARL</span>
+                    </div>
+                    <p class="paper-description">Wraps DrugReflector (ensemble of 3 MLPs on CMap L1000, 9,597 compounds × 52 cell lines) in a closed-loop Active Reinforcement Learning system. Each round: predict top compounds → wet-lab assay (flow cytometry) → refine the biological signature toward the experiment-derived embedding → repeat. The original signature is interpolated with the learned signature via a tunable step-size — first demonstration of post-training a drug-discovery FM via experimental feedback at scale.</p>
+                    <ul class="key-contributions">
+                        <li>17× hit-rate vs random for megakaryocyte differentiation (19.6% vs 1.1%); 13× for erythroid (16% vs 1.2%)</li>
+                        <li>Signature refinement adds 2× further hit-rate improvement; median rank improves 3.4× (463 → 138)</li>
+                        <li>+323% vs Dr.Insight, +73% vs SigCom on cancer lines; +194% / +30% on primary cells (out-of-training generalisation)</li>
+                        <li>v-score: novel cell-count-invariant signature metric enabling fair comparison across populations of different sizes</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1126/science.adi8577" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-agents-review">
+                    <h4>AI Agents in Drug Discovery (Review)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">arXiv</span>
+                        <span class="meta-badge type-badge">Review</span>
+                    </div>
+                    <p class="paper-description">First systematic review of operational agentic AI in drug discovery — LLM-based agents coupled with Perception (ChEMBL, PubChem, STRING, Reactome), Computation (AlphaFold, QSAR, PK/PD, docking), Action (robotic pipetting, LIMS, NGS automation), and Memory (vector DB of SAR patterns) tools. Surveys ReAct / Reflection / Supervisor / Swarm architectures and seven case studies.</p>
+                    <ul class="key-contributions">
+                        <li>Workflow compression: weeks → hours for 100+ molecular structure reviews; 13× IC50 inter-assay-variability detection (Acalabrutinib/BTK case)</li>
+                        <li>Architecture taxonomy: ReAct (lit triage), Reflection (synthesis route planning), Supervisor (autonomous HTS), Swarm (federated tox)</li>
+                        <li>Frames every other paper in this module — the canonical "what does post-training look like in industry?" reference</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2510.27130" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </div>
+                <div class="paper-card" id="paper-llm4cell">
+                    <h4>LLM4Cell: A Survey of Large Language and Agentic Models for Single-Cell Biology</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span>
+                        <span class="meta-badge journal-badge">arXiv</span>
+                        <span class="meta-badge type-badge">Review</span>
+                    </div>
+                    <p class="paper-description">The field-level companion to Family 4 of this module: a systematic review of 58 foundation and agentic models for single-cell research, organised into six method families and mapped to eight analytical tasks. Where the AI Agents in Drug Discovery review above surveys the industry deployment pattern, LLM4Cell surveys the model landscape itself — directly relevant to reading GeneAgent, CASSIA, CyteType, SpatialAgent, and Cell-o1 in a shared taxonomy rather than as isolated papers.</p>
+                    <ul class="key-contributions">
+                        <li>Organises 58 single-cell foundation and agentic models into six families across eight downstream analytical tasks</li>
+                        <li>Evaluates models across 10 domain dimensions: biological grounding, multi-omics alignment, benchmark suitability, data diversity, fairness, privacy, scalability, and explainability</li>
+                        <li>Analyzes ethical and scalability constraints often left out of individual model papers — useful context before committing to a post-training recipe at atlas scale</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://arxiv.org/abs/2510.07793" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                    </div>
+                </div>
+            </div>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig07_demeo_loop.svg" alt="DeMeo closed-loop active reinforcement learning: predict top compounds, wet-lab assay, refine the signature toward the experiment-derived embedding, repeat — model and target signature both update every round" loading="lazy">
+                <figcaption><strong>DeMeo — active learning with the wet-lab in the loop.</strong> A drug-discovery foundation model that gets better every round. First post-training of an FM via real experimental feedback — 17× hit-rate vs random for megakaryocyte differentiation; 13× for erythroid.</figcaption>
+            </figure>
+
+            <h3>6 · Clinical / Translational Post-Training</h3>
+            <p>The hardest test: does the post-training recipe survive an RCT with real patients? AMIE is the first paper to clear this bar in a cardiology subspecialty.</p>
+            <div class="paper-grid">
+                <div class="paper-card" id="paper-amie">
+                    <h4>AMIE: A Large Language Model for Complex Cardiology Care (RCT)</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2026</span>
+                        <span class="meta-badge journal-badge">Nat Med</span>
+                        <span class="meta-badge type-badge">Inference-time post-training</span>
+                    </div>
+                    <p class="paper-description">Gemini-2.0-Flash adapted to inherited cardiomyopathy <em>without any fine-tuning</em>. The post-training is entirely inference-time: a multistep inference procedure with web search, self-critique, and a conversational refinement interface that lets clinicians challenge and correct outputs. Evaluated in a real RCT of 107 referred cases with blinded subspecialist preference and a 10-domain assessment rubric (NCT06935253).</p>
+                    <ul class="key-contributions">
+                        <li>Entire response preferred 46.7% (AMIE-assisted) vs 32.7% (cardiologist alone), P=0.02; management plan preferred 45.8% vs 29.9%, P=0.008</li>
+                        <li>Clinically significant errors: 13.1% vs 24.3% (−46% relative, P=0.033); missing content: 17.8% vs 37.4% (−52% relative, P=0.0021)</li>
+                        <li>Hallucinations only in 6.5% of cases; 1.9% clinically significant; cardiologists could prompt self-correction in interactive mode</li>
+                        <li>57% of cardiologists rated AI helpful; time saved in 50.5% of cases; 93.5% no clinically significant omission</li>
+                        <li>First open-source real-world subspecialty cardiology RCT dataset on Redivis (CC 4.0)</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41591-025-04190-9" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-alt"></i> Paper</a>
+                        <a href="https://redivis.com/datasets/1z3x-2354972da" target="_blank" rel="noopener noreferrer"><i class="fas fa-database"></i> Data</a>
+                    </div>
+                </div>
+            </div>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig09_amie_inference.svg" alt="AMIE four-layer inference-time post-training: multistep inference, web search retrieval, self-critique loop, conversational refinement — zero gradient updates" loading="lazy">
+                <figcaption><strong>AMIE — adaptation without gradients, four layers of inference-time post-training.</strong> Zero parameters updated. When you can't (or won't) touch the base model, post-training becomes inference engineering. AMIE's RCT-grade result was achieved without a single gradient step on Gemini-2.0-Flash.</figcaption>
+            </figure>
+        </section>
+
+        <!-- Selection -->
+        <section class="content-section" id="table">
+            <h2>🧭 Selection at a Glance</h2>
+            <p>Which post-training recipe to reach for, given your base model, data scale, compute budget, and downstream goal. <em>Scope: the table covers the 11 core recipes; the family cards above carry the full paper details.</em></p>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig08_decision_matrix.svg" alt="Post-training decision matrix by data regime and reward verifiability: full SFT or RL elicitation for high data with clean reward; PEFT + multi-agent verification for high data with noisy reward; RL with prior-regularised loss for low data with clean reward; inference-time post-training and memory for low data with no reward" loading="lazy">
+                <figcaption><strong>Post-training decision matrix — which recipe by data regime × reward verifiability.</strong> The master selection guide. Locate your task in the grid; the cell tells you what to build. Use this <em>before</em> picking a base model — the recipe constrains the model far more than the model constrains the recipe.</figcaption>
+            </figure>
+            <table class="comparison-table">
+                <thead>
+                    <tr><th>Recipe</th><th>Trainable</th><th>Compute</th><th>When to use</th><th>Anchor paper</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Full SFT (CE / NLL)</td><td>100% of base</td><td>A100 80GB ×1–8</td><td>&gt;100K curated labels, well-defined task, base is in the right modality</td><td><a href="#paper-scgpt-protocol">scGPT-Protocol (Nat Protoc 2025)</a></td></tr>
+                    <tr><td>Frozen-base + linear/MLP head</td><td>~10⁵ params</td><td>Single GPU / CPU</td><td>Balanced binary task with strong frozen embeddings; inference-speed-critical screens</td><td><a href="#paper-peft-plm">PEFT-Proteomics MLP (PNAS 2024)</a></td></tr>
+                    <tr><td>LoRA (rank 4–256)</td><td>0.05–5% of base</td><td>32GB GPU</td><td>Multiclass / imbalanced / rare-class task with &lt;100K labels; forgetting-sensitive base</td><td><a href="#paper-scpeft">scPEFT (Nat Mach Intell 2025)</a></td></tr>
+                    <tr><td>4-bit QLoRA (NF4 + DQ)</td><td>0.1–3% adapters</td><td>24GB consumer GPU</td><td>Base is 300M+ params; need full-precision-equivalent embeddings on cheap hardware</td><td><a href="#paper-gf-scaling">Geneformer-Scaling (Nat Comput Sci 2026)</a></td></tr>
+                    <tr><td>Reprogramming (input/output head only)</td><td>~1% of base</td><td>Single A100</td><td>Cross-modality transfer (time-series → text, image → text); base is a general-purpose LLM</td><td><a href="#paper-timellm">TIME-LLM (ICLR 2024)</a></td></tr>
+                    <tr><td>Instruction tuning + RLHF (no FT)</td><td>0 base params</td><td>Inference-only</td><td>Closed base model (Gemini, GPT-4); need clinical-grade reliability; have a verified rubric</td><td><a href="#paper-amie">AMIE (Nat Med 2026)</a></td></tr>
+                    <tr><td>SFT distillation + GRPO</td><td>0.1–5% via LoRA</td><td>1–4× A100</td><td>Strong teacher (o1, GPT-4) + a verifiable reward (one-to-one, exact-match, computable property)</td><td><a href="#paper-cello1">Cell-o1 (arXiv 2025)</a>, <a href="#paper-gener1">Gene-R1 (arXiv 2025)</a></td></tr>
+                    <tr><td>Prior-regularised policy gradient</td><td>100% of agent</td><td>2–3× A6000</td><td>Generative task with computable property scores (charge, pLDDT, identity); want to avoid catastrophic forgetting</td><td><a href="#paper-proteinrl">ProteinRL (NeurIPS 2023)</a></td></tr>
+                    <tr><td>Multi-agent verification loop</td><td>0 base params</td><td>API calls only</td><td>Hallucination is the bottleneck; authoritative DBs to verify against; cost &lt; wet-lab</td><td><a href="#paper-geneagent">GeneAgent (Nat Methods 2025)</a>, <a href="#paper-cassia">CASSIA (Nat Commun 2025)</a></td></tr>
+                    <tr><td>Active learning / online refinement</td><td>0–100% of head</td><td>Wet-lab + GPU</td><td>You can run paired-omics + phenotypic assays; signature drifts across rounds; closed-loop discovery</td><td><a href="#paper-demeo">DeMeo / DrugReflector (Science 2025)</a></td></tr>
+                    <tr><td>Memory layer (Mem0 / Mem0ᵍ)</td><td>0 base params</td><td>Vector + graph DB</td><td>Production deployment with multi-session users; temporal reasoning at low latency/token cost</td><td><a href="#paper-mem0">Mem0 (arXiv 2025)</a></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Reading Order -->
+        <section class="content-section" id="reading-order">
+            <h2>📚 Reading Order for Newcomers</h2>
+            <ol class="timeline">
+                <li><strong>PEFT-Proteomics (2024, PNAS).</strong> The cleanest, most rigorous PEFT paper in biology. Read for LoRA mathematics, domain-specific hyperparameter tuning (r≥4, W_K+W_V), and the unsettling finding that frozen-MLP often beats both PEFT and full FT. Sets the right expectations.</li>
+                <li><strong>scPEFT (2025, Nat Mach Intell).</strong> The systematic extension to single-cell LLMs. Four adapter types, 96–99.95% parameter reduction, anti-forgetting argument. Read alongside PEFT-Proteomics to see how the recipe transfers across modalities.</li>
+                <li><strong>Cell-o1 (2025, arXiv).</strong> The clearest worked example of R1-style post-training in biology. Two-stage SFT distillation + GRPO with a verifiable batch-level reward. Read this before the more elaborate Gene-R1 pipeline; it makes the GRPO mechanics concrete.</li>
+                <li><strong>GeneAgent (2025, Nat Methods).</strong> The simplest, most effective multi-agent verification recipe. 4-stage Generate → Verify → Modify → Summarize loop with database queries. Hallucination 44% → 19% with zero gradient updates. The intro to "post-training without training."</li>
+                <li><strong>Geneformer-Scaling (2026, Nat Comput Sci).</strong> The synthesis paper. Defines transcriptomic scaling laws, then layers 4-bit QLoRA on the 316M model. Read for the quantization-preserves-contextual-embeddings argument (r=0.998 on GATA4 KO) — this is what makes scFM post-training economically viable.</li>
+                <li><strong>AMIE (2026, Nat Med).</strong> The clinical reality check. No fine-tuning, no PEFT — pure inference-time post-training via multistep inference + self-critique + web search + conversational refinement. First RCT-level evidence in a cardiology subspecialty. Read to recalibrate what "good enough" means in deployment.</li>
+                <li><strong>DeMeo / DrugReflector (2025, Science).</strong> The only paper in this module with a real wet-lab feedback loop: 17× hit-rate vs random for megakaryocyte differentiation, with the biological signature refined round-over-round by experimental data. Read last, to understand the gap between offline post-training — every other recipe above, however sophisticated — and a system that keeps improving from real experimental results after deployment.</li>
+            </ol>
+        </section>
+
+        <!-- Practical Guide -->
+        <section class="content-section" id="practical">
+            <h2>🧰 Practical Implementation Guide</h2>
+
+            <div class="highlight-box">
+                <h4>If your goal is annotating a single-cell atlas with a known label set</h4>
+                <p>Start with <strong>frozen Geneformer / scGPT + MLP head</strong> on cell embeddings. If accuracy is &gt;90% and balanced, stop here — adding LoRA or full FT often <em>hurts</em> (PEFT-Proteomics, scPEFT). If it's a rare-class or disease-specific task, escalate to <strong>scPEFT</strong> with LoRA + Encoder adapters (rank 4–8, last 5–12 layers). For multi-batch / cross-platform deployment, follow the <strong>scGPT-Protocol</strong> full-FT recipe. For multi-agent quality scoring and disease-state refinement, wrap the result in <strong>CASSIA</strong> or <strong>CyteType</strong>.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is designing a protein with specific properties</h4>
+                <p>Two paths. <strong>(a)</strong> If properties are computable (charge, pLDDT, expression probability), use <strong>ProteinRL</strong>: dual-model architecture (Agent + fixed Prior PLM), property-scaled prior-regularised loss, weighted geometric mean reward for multi-objective. Budget: 2–3× A6000, 3–6 hours per run. <strong>(b)</strong> If you need a community-shared starting point on structure-aware embeddings, fine-tune <strong>ColabSaprot</strong> via SaprotHub — one-click notebook, ~1% trainable parameters, ensemble multiple shared adapters for 5–10% gains. Always validate with ESMFold pLDDT and sequence identity to the natural distribution.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is R1-style reasoning on a biological task</h4>
+                <p>Follow the <strong>Gene-R1</strong> three-module recipe: (1) Knowledge Warm-up — continued pretraining on 200K+ domain instances so the model stops treating gene symbols as meaningless strings; (2) Reasoning Activation — distil 5–10K traces from a frontier reasoner and filter at &gt;0.7 similarity before SFT; (3) Task Alignment — GRPO with a dual reward (semantic similarity + exact-match/format compliance). Verifiable reward is non-negotiable: <em>Cell-o1's one-to-one batch constraint is what makes the recipe work</em>. Without it, the model reward-hacks.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>If your goal is a deployable clinical or biomedical assistant</h4>
+                <p>The <strong>AMIE</strong> recipe is the strongest existing evidence: a strong base LLM (Gemini-2.0-Flash, GPT-4o, Claude Sonnet 3.5) + multistep inference + web search + self-critique + an interactive conversational refinement layer. <em>No fine-tuning</em> — adaptation entirely via prompt and inference engineering. Pair with a <strong>Mem0</strong> memory layer for session persistence (91% lower p95 latency). For high-stakes domains, add a <strong>GeneAgent</strong>-style database verification loop with a clear "supported / partially supported / refuted / unknown" decision schema. Always pre-register your evaluation rubric (AMIE used 10 domains).</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>If your label budget is under 1,000 examples</h4>
+                <p>This is the regime most wet-lab groups actually operate in, and it changes the recipe. Start with <strong>frozen embeddings + a linear/MLP head</strong> — PEFT-Proteomics showed this beats both PEFT and full FT on balanced binary tasks with an 88K-parameter head. If accuracy is still insufficient, apply <strong>scPEFT</strong>'s cross-species adapter transfer (+39.3% macaque, +144.5% <em>C. elegans</em>) rather than collecting more in-species labels. For protein tasks, aggregate community adapters from <strong>SaprotHub</strong> instead of training your own — ensemble gains of 5–10% come for free. Do <strong>not</strong> run full fine-tuning in this regime: at N &lt; 1,000 examples, full FT overwrites the pretrained priors that made the base model useful in the first place — catastrophic forgetting erases exactly the signal you were relying on the foundation model to provide.</p>
+            </div>
+
+            <div class="warning-box">
+                <h4>Common Pitfalls</h4>
+                <ul>
+                    <li><strong>PEFT is not always faster — context length dominates.</strong> For pairwise tasks (PPI, multi-cell context), storing two activation graphs eats most of the memory savings. PEFT-Proteomics could only add 1 extra adapted layer for PPI vs 4 for single-protein symmetry. Profile before assuming PEFT &gt; full FT.</li>
+                    <li><strong>RL elicitation needs verifiable rewards.</strong> ProteinRL works because charge and pLDDT are computable. Cell-o1 works because batch-level one-to-one assignment has a binary truth. The minute your reward is a neural model, the policy will reward-hack — see C2S-Scale's careful BioBERTScore + structured-format dual reward.</li>
+                    <li><strong>Multi-agent loops add latency × N.</strong> GeneAgent's 4-stage verify loop is 4× the GPT-4 calls of a single-pass baseline. Production systems must respect agent depth budgets. AMIE's clinician self-correction loop adds an interactive step that's only acceptable because it saves clinician time in 50.5% of cases.</li>
+                    <li><strong>Reward hacking with neural reward models.</strong> Any post-training step where the reward is itself a model (BERTScore, MedCPT similarity, an LLM judge) is vulnerable to the policy exploiting reward-model artefacts. Mitigate with format-compliance rewards (Gene-R1 dual reward), filtered teacher traces (Cell-o1 38.52% acceptance), and human spot-checks.</li>
+                    <li><strong>Forgetting during fine-tune.</strong> Full FT a 5K-cell disease atlas on a 33M-cell scGPT and you'll erase the pretrained gene–gene relationships that made it useful. Use LoRA + Encoder adapters, or ProteinRL's fixed prior model, or QLoRA's frozen base — always have an explicit anti-forgetting mechanism.</li>
+                    <li><strong>Pretrain + fine-tune on the same dataset = no gain.</strong> If your pretraining and downstream datasets overlap, the post-training "benefit" collapses. Always verify that your fine-tune data was held out of pretraining.</li>
+                    <li><strong>4-bit quantization can break in-silico perturbation.</strong> Geneformer-Scaling's r=0.998 on GATA4 KO is the well-engineered case (NF4 + double-quantization + calibration). Generic INT4/INT8 without those breaks contextual embedding geometry even when classification accuracy is preserved. Verify embedding fidelity, not just task accuracy.</li>
+                    <li><strong>Multi-agent verification's quality score must be calibrated.</strong> CASSIA's 75% threshold and CyteType's confidence intervals only work because they were calibrated against held-out labels. Shipping uncalibrated LLM-as-judge confidence scores is worse than no confidence score.</li>
+                    <li><strong>Alignment tax in biology.</strong> RLHF/DPO-style preference optimisation can improve instruction-following and general agreeableness while quietly degrading factual recall of rare disease presentations or low-frequency gene–disease associations — the model becomes easier to work with but less accurate on exactly the long-tail cases where correctness matters most. Always re-evaluate on the original factual benchmark after preference optimisation, not only on win-rate against the reference policy.</li>
+                </ul>
+            </div>
+            <figure class="module-figure">
+                <img src="figures/posttraining/posttrain_fig10_antiforgetting_zoo.svg" alt="Five anti-forgetting mechanisms across the post-training stack: frozen prior, frozen backbone, quantized base, cold-start warm-up, verification loop" loading="lazy">
+                <figcaption><strong>The anti-forgetting zoo — five mechanisms across the post-training stack.</strong> Every successful biological post-training paper has an explicit anti-forgetting trick. Pick at least one when designing a pipeline — without one, you will erase the pretrained priors that made the base model useful.</figcaption>
+            </figure>
+        </section>
+
+        <!-- Hands-on -->
+        <section class="content-section" id="hands-on">
+            <h2>🛠 Hands-On Practice</h2>
+            <p>
+                This walkthrough takes you from a raw base model to a preference-aligned checkpoint using the
+                <strong>trl</strong> library. The DPO path is the most accessible entry point into post-training: it
+                skips an explicit reward model and optimises directly on chosen/rejected pairs — a practical first
+                step before exploring online methods like PPO or GRPO.
+            </p>
+
+            <h3>Environment &amp; packages</h3>
+            <p>All packages below are available on PyPI. <code>vllm</code> is optional but strongly recommended for GRPO and PPO, where fast rollout generation is the main bottleneck.</p>
+            <pre><code># create a clean env first (Python 3.10+)
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+pip install transformers==4.45.0 datasets peft accelerate
+pip install trl==0.11.4           # SFTTrainer, DPOTrainer, GRPOTrainer, PPOTrainer
+pip install deepspeed             # multi-GPU ZeRO-2/3 for larger runs
+pip install vllm                  # fast rollout engine for online RL (PPO/GRPO)</code></pre>
+            <p><strong>Hardware.</strong> DPO on a 7B model with LoRA (rank 64) fits comfortably on a single 40 GB A100 or two 24 GB consumer GPUs with <code>accelerate</code>; full-parameter DPO needs 2–4× A100 80 GB. GRPO with vllm rollouts requires a separate GPU for the rollout engine (8+ GB) alongside the training GPU.</p>
+
+            <h3>Data structures &amp; formats</h3>
+            <ul>
+                <li><strong>Preference dataset</strong> — three columns: <code>prompt</code> (string), <code>chosen</code> (string or messages list), <code>rejected</code> (string or messages list). Standard hub example: <code>trl-lib/ultrafeedback_binarized</code>.</li>
+                <li><strong>SFT dataset</strong> — a <code>messages</code> column containing a list of <code>{"role": ..., "content": ...}</code> dicts; the tokenizer's chat template converts this to input IDs + labels. Alternatively a flat <code>text</code> column with the template already applied.</li>
+                <li><strong>LoRA adapter</strong> — a tiny <code>adapter_config.json</code> + <code>adapter_model.safetensors</code> written by <code>peft</code>; merged into base weights at inference with <code>model.merge_and_unload()</code>.</li>
+                <li><strong>Reward / verifiable signal</strong> (GRPO) — a Python function <code>reward_fn(completions, **kwargs) -&gt; list[float]</code> called on each group of rollouts; return scalars — no gradient required.</li>
+                <li><strong>GRPO group rollouts</strong> — for each prompt, <code>num_generations</code> completions are sampled (default 8); the per-group mean reward is subtracted as a baseline before computing the policy-gradient loss.</li>
+            </ul>
+
+            <h3>Minimal code walkthrough</h3>
+            <p>A complete DPO run: load a base model + LoRA, attach a preference dataset, configure DPOConfig, train for one epoch, and save the adapter.</p>
+            <pre><code>from datasets import load_dataset
+from peft import LoraConfig, TaskType
+from transformers import AutoModelForCausalLM, AutoTokenizer
+from trl import DPOConfig, DPOTrainer
+
+# 1. Load base model + tokenizer
+model_id = "Qwen/Qwen2.5-7B-Instruct"
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(
+    model_id, torch_dtype="auto", device_map="auto"
+)
+
+# 2. LoRA config — keeps base frozen; ~0.5% trainable params
+peft_cfg = LoraConfig(
+    task_type=TaskType.CAUSAL_LM,
+    r=64, lora_alpha=128, lora_dropout=0.05,
+    target_modules=["q_proj", "v_proj", "k_proj", "o_proj"],
+)
+
+# 3. Preference dataset (prompt / chosen / rejected columns)
+dataset = load_dataset("trl-lib/ultrafeedback_binarized", split="train")
+
+# 4. DPO hyperparameters
+# beta controls KL penalty: higher beta = stay closer to reference policy
+training_args = DPOConfig(
+    output_dir="./dpo-out",
+    num_train_epochs=1,
+    per_device_train_batch_size=2,
+    gradient_accumulation_steps=8,
+    learning_rate=5e-5,
+    beta=0.1,                   # KL regularisation coefficient
+    max_length=1024,
+    max_prompt_length=512,
+    bf16=True,
+    logging_steps=10,
+    save_strategy="epoch",
+)
+
+# 5. DPOTrainer handles reference model internally (frozen copy of model)
+trainer = DPOTrainer(
+    model=model,
+    args=training_args,
+    train_dataset=dataset,
+    processing_class=tokenizer,
+    peft_config=peft_cfg,
+)
+trainer.train()
+trainer.save_model("./dpo-adapter")</code></pre>
+
+            <h3>Common pitfalls &amp; tips</h3>
+            <ul>
+                <li><strong>Always SFT before preference optimisation.</strong> DPO and GRPO assume the policy already generates coherent completions. Starting from a raw pretrained base (not instruction-tuned) causes extremely noisy gradients because the chosen/rejected distinction is meaningless relative to random outputs. Run at least a light SFT pass with <code>SFTTrainer</code> first.</li>
+                <li><strong>Chat-template / tokenization mismatch is the silent killer.</strong> The prompt in your preference dataset must be tokenized with the <em>same</em> chat template the model was trained with — including special tokens, role labels, and any BOS/EOS placement. A mismatched template shifts where labels start and produces near-zero DPO loss that looks like convergence but is not.</li>
+                <li><strong>Tune <code>beta</code> carefully in DPO.</strong> <code>beta</code> is the coefficient on the KL divergence term that keeps the trained policy close to the reference. Too low → reward hacking; too high → the model never moves from the reference. Start at 0.1 and sweep 0.05–0.5.</li>
+                <li><strong>Length bias inflates win-rate.</strong> DPO and GRPO reward models (including LLM judges) systematically prefer longer completions. Track response length alongside reward; add a length-penalty term to the reward function, or filter your preference dataset to be length-balanced before training.</li>
+                <li><strong>KL explosion in online RL (PPO/GRPO) kills training.</strong> Monitor <code>kl_coef</code> and the actual KL divergence at every logging step. If KL spikes sharply after a few hundred steps, reduce the rollout learning rate or increase <code>kl_coef</code>. vllm rollout speeds up generation 5–10× but requires keeping the rollout engine in sync with updated policy weights.</li>
+                <li><strong>Eval beyond loss: use win-rate and downstream benchmarks.</strong> DPO loss decreasing monotonically does not mean the model is improving. Run periodic win-rate evaluations (compare sampled completions against the reference model with an LLM judge or a rule-based verifier), and track a fixed held-out benchmark to catch regressions on general capability.</li>
+            </ul>
+        </section>
+
+        <!-- Related Modules -->
+        <section class="content-section" id="related">
+            <h2>🔗 Related Modules in This Hub</h2>
+            <ul>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/fine-tuning.html">Fine-Tuning &amp; Adaptation</a> — the code-level deep-dive on LoRA/PEFT/adapters that this module surveys from above (the retrofit story: head tuning, LoRA packs, and load-bearing walls).</li>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/pretraining.html">Pretraining &amp; Foundation Models</a> — what comes before: the masked-LM and contrastive objectives that produce the substrate this module post-trains.</li>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/generative-models.html">Generative Models</a> — the VAE / diffusion / flow / GNN architectures that RL elicitation and ProteinRL fine-tune for design tasks.</li>
+                <li><a href="https://xqiu625.github.io/ai4bio-concepts/foundation-models-deep-learning/transformer-architecture.html">Transformer Architecture</a> — the power brick underneath everything on this page: attention, residuals, norms, and the encoder/decoder variants being adapted.</li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center;">
+        <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+        <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
+        <p style="font-size: 0.85em; margin-top: 12px; opacity: 0.7;">Created 2026 · Updated September 2026</p>
+        <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">🔒 Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
+    </footer>
+</body>
+</html>

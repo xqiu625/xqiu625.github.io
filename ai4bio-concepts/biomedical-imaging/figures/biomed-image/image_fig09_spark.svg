@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  SPARK  ·  AGENTIC PIPELINE ON WHOLE-SLIDE IMAGES</text>
+  <text x="60" y="96" class="h1">From idea to validated biomarker — without task-specific training.</text>
+  <text x="60" y="124" class="h-sub">€4 000 total. Zero fine-tuning. Interpretable concepts, not black-box embeddings.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="1880" height="120" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="208" class="stage-tag" fill="#8a5a4a">INPUT  ·  STRUCTURED WSI OBJECT  🧫</text>
+    <text x="80" y="240" class="annot">GrandQC (tissue segmentation)  +  HoverNeXt (cell detection)  already applied</text>
+    <text x="80" y="266" class="annot" fill="#5c5c66">a clean WSI with per-tissue / per-cell metadata for the agent to query</text>
+    <text x="1900" y="262" text-anchor="end" class="emoji">📦</text>
+  </g>
+
+  
+  
+  
+
+  <g>
+    <rect x="60" y="320" width="360" height="440" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <circle cx="100" cy="362" r="22" fill="#4a6a8a"></circle>
+    <text x="100" y="370" text-anchor="middle" class="stage-num">1</text>
+    <text x="132" y="352" class="stage-tag" fill="#4a6a8a">STAGE 1  ·  IDEA GENERATION  💡</text>
+    <text x="132" y="380" class="stage-title">model: o1</text>
+    <text x="80" y="430" class="annot" font-weight="700">propose morphological concepts</text>
+    <text x="80" y="450" class="annot">e.g. &#34;ratio of immune cells to</text>
+    <text x="80" y="470" class="annot">fibroblasts at tumour-stroma interface&#34;</text>
+
+    <text x="80" y="514" class="annot" font-weight="700" fill="#4a6a8a">SPEED  🎯</text>
+    <text x="80" y="538" class="stat" fill="#4a6a8a">500 ideas</text>
+    <text x="80" y="566" class="annot">in 2 h 19 min</text>
+
+    <text x="80" y="654" class="annot" font-style="italic" fill="#5c5c66">LLM as a morphologist</text>
+    <text x="80" y="676" class="annot" font-style="italic" fill="#5c5c66">with infinite curiosity.</text>
+    <text x="400" y="730" text-anchor="end" class="emoji">💡</text>
+  </g>
+  <line x1="425" y1="540" x2="435" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="440" y="320" width="360" height="440" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <circle cx="480" cy="362" r="22" fill="#2c8a4f"></circle>
+    <text x="480" y="370" text-anchor="middle" class="stage-num">2</text>
+    <text x="512" y="352" class="stage-tag" fill="#2c8a4f">STAGE 2  ·  CODE GENERATION  💻</text>
+    <text x="512" y="380" class="stage-title">model: Claude Sonnet 3.5</text>
+    <text x="460" y="430" class="annot" font-weight="700">translate each concept to Python</text>
+    <text x="460" y="450" class="annot">extract quantitative parameters</text>
+    <text x="460" y="470" class="annot">from the WSI object</text>
+
+    <text x="460" y="514" class="annot" font-weight="700" fill="#2c8a4f">CODE REVIEW AGENT</text>
+    <text x="460" y="538" class="annot">retries failed scripts  ·  up to 3×</text>
+    <text x="460" y="558" class="annot" fill="#5c5c66">syntax fix  ·  missing import  ·  type</text>
+
+    <text x="460" y="654" class="annot" font-style="italic" fill="#5c5c66">code is the substrate;</text>
+    <text x="460" y="676" class="annot" font-style="italic" fill="#5c5c66">the agent edits it like a collaborator.</text>
+    <text x="780" y="730" text-anchor="end" class="emoji">⌨</text>
+  </g>
+  <line x1="805" y1="540" x2="815" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="820" y="320" width="360" height="440" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <circle cx="860" cy="362" r="22" fill="#c95a2a"></circle>
+    <text x="860" y="370" text-anchor="middle" class="stage-num">3</text>
+    <text x="892" y="352" class="stage-tag" fill="#c95a2a">STAGE 3  ·  EXECUTION  🏃</text>
+    <text x="892" y="380" class="stage-title">run Python at scale</text>
+    <text x="840" y="430" class="annot" font-weight="700">apply across all slides</text>
+    <text x="840" y="450" class="annot">distributed Python  ·  cached results</text>
+
+    <text x="840" y="500" class="annot" font-weight="700" fill="#c95a2a">SCALE  📊</text>
+    <text x="840" y="524" class="stat" fill="#c95a2a">5 400+ slides</text>
+    <text x="840" y="552" class="annot">18 cohorts</text>
+    <text x="840" y="580" class="annot">2 368 raw parameters extracted</text>
+
+    <text x="840" y="654" class="annot" font-style="italic" fill="#5c5c66">brute force, but interpretably so.</text>
+    <text x="840" y="676" class="annot" font-style="italic" fill="#5c5c66">each parameter has a name.</text>
+    <text x="1160" y="730" text-anchor="end" class="emoji">⚡</text>
+  </g>
+  <line x1="1185" y1="540" x2="1195" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="1200" y="320" width="360" height="440" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <circle cx="1240" cy="362" r="22" fill="#6b4e8a"></circle>
+    <text x="1240" y="370" text-anchor="middle" class="stage-num">4</text>
+    <text x="1272" y="352" class="stage-tag" fill="#6b4e8a">STAGE 4  ·  VERIFICATION  ✅</text>
+    <text x="1272" y="380" class="stage-title">filter down to signal</text>
+    <text x="1220" y="430" class="annot" font-weight="700">Pearson decorrelation</text>
+    <text x="1220" y="450" class="annot">removes redundant parameters</text>
+
+    <g transform="translate(1220,478)">
+      <rect x="0" y="0" width="60" height="40" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="30" y="26" text-anchor="middle" class="annot" font-weight="700" fill="#6b4e8a">2 368</text>
+      <text x="80" y="26" class="annot">→</text>
+      <rect x="100" y="0" width="60" height="40" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="130" y="26" text-anchor="middle" class="annot" font-weight="700" fill="#6b4e8a">1 115</text>
+      <text x="180" y="26" class="annot">→</text>
+      <rect x="200" y="0" width="60" height="40" rx="6" fill="#ffffff" stroke="#6b4e8a"></rect>
+      <text x="230" y="26" text-anchor="middle" class="annot" font-weight="700" fill="#6b4e8a">379</text>
+    </g>
+    <text x="1220" y="554" class="annot" fill="#5c5c66">raw → decorrelated → biology-filtered</text>
+
+    <text x="1220" y="654" class="annot" font-style="italic" fill="#5c5c66">2 368 ideas collapse to 379 verified</text>
+    <text x="1220" y="676" class="annot" font-style="italic" fill="#5c5c66">parameters worth modelling on.</text>
+    <text x="1540" y="730" text-anchor="end" class="emoji">🔬</text>
+  </g>
+  <line x1="1565" y1="540" x2="1575" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="1580" y="320" width="360" height="440" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <circle cx="1620" cy="362" r="22" fill="#b8902c"></circle>
+    <text x="1620" y="370" text-anchor="middle" class="stage-num">5</text>
+    <text x="1652" y="352" class="stage-tag" fill="#7a5b13">STAGE 5  ·  PREDICTIVE MODEL  📈</text>
+    <text x="1652" y="380" class="stage-title">XGBoost on top features</text>
+    <text x="1600" y="430" class="annot" font-weight="700">final outputs</text>
+
+    <text x="1600" y="466" class="annot" font-weight="700" fill="#7a5b13">CRC MSI</text>
+    <text x="1600" y="488" class="stat" fill="#7a5b13">AUROC 0.933</text>
+
+    <text x="1600" y="528" class="annot" font-weight="700" fill="#7a5b13">BRCA subtype</text>
+    <text x="1600" y="550" class="stat" fill="#7a5b13">AUROC 0.898</text>
+
+    <text x="1600" y="594" class="annot" font-weight="700" fill="#7a5b13">LUAD evolution</text>
+    <text x="1600" y="616" class="annot">641 directional chains from static H&amp;E</text>
+
+    <text x="1600" y="660" class="annot" font-style="italic" fill="#5c5c66">classic ML on agent-derived features  →</text>
+    <text x="1600" y="680" class="annot" font-style="italic" fill="#5c5c66">interpretable, auditable predictions.</text>
+    <text x="1920" y="730" text-anchor="end" class="emoji">🩺</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="800" width="1880" height="270" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="830" class="stage-tag" fill="#a14854">WHY THIS MATTERS</text>
+    <text x="80" y="868" class="key" fill="#a14854">€ 4 000 total compute  ·  zero task-specific training  ·  every feature is a named morphological concept.</text>
+
+    <text x="80" y="910" class="annot" font-weight="700">contrast with end-to-end deep learning</text>
+    <text x="80" y="932" class="annot">a fine-tuned CNN learns a black-box embedding that may match SPARK on AUROC  —  but doesn&#39;t tell you <tspan font-style="italic">which</tspan> morphology drove the prediction.</text>
+
+    <text x="80" y="978" class="annot" font-weight="700">the temporal discovery on LUAD</text>
+    <text x="80" y="1000" class="annot">SPARK reconstructed 641 directional progression chains from <tspan font-style="italic">static</tspan> H&amp;E using agent-derived concepts. Tumour evolution without longitudinal sampling.</text>
+
+    <text x="80" y="1042" class="annot" font-style="italic" fill="#5c5c66">the system itself is open-ended  —  add a new cohort, get a new biomarker, with the same agent loop.</text>
+  </g>
+</svg>

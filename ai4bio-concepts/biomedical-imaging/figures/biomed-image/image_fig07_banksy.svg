@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  BANKSY  ·  λ TURNS CELL TYPING INTO DOMAIN SEGMENTATION</text>
+  <text x="60" y="96" class="h1">One slider. Three different clustering tasks.</text>
+  <text x="60" y="124" class="h-sub">λ controls the cell-vs-neighbourhood balance. λ = 0 ignores tissue context; λ = 1 ignores cell identity; in-between is the sweet spot.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+
+  
+  <g>
+    <rect x="60" y="180" width="610" height="720" rx="14" fill="#ffffff" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <text x="80" y="208" class="panel-tag" fill="#4a6a8a">PANEL 1  ·  CELL-TYPING MODE  🧬</text>
+    <text x="80" y="244" class="panel-title">λ  =  0</text>
+    <text x="80" y="272" class="annot">only the cell&#39;s own expression matters</text>
+
+    
+    <g transform="translate(80,300)">
+      <rect x="0" y="0" width="540" height="380" rx="10" fill="#e3edf6" opacity="0.4"></rect>
+      
+      
+      <circle cx="60" cy="80" r="14" fill="#4a6a8a"></circle>
+      <circle cx="120" cy="100" r="14" fill="#c95a2a"></circle>
+      <circle cx="180" cy="80" r="14" fill="#4a6a8a"></circle>
+      <circle cx="80" cy="160" r="14" fill="#2c8a4f"></circle>
+      <circle cx="140" cy="150" r="14" fill="#4a6a8a"></circle>
+      <circle cx="200" cy="160" r="14" fill="#c95a2a"></circle>
+
+      
+      <circle cx="340" cy="80" r="14" fill="#4a6a8a"></circle>
+      <circle cx="400" cy="100" r="14" fill="#c95a2a"></circle>
+      <circle cx="460" cy="80" r="14" fill="#4a6a8a"></circle>
+      <circle cx="360" cy="160" r="14" fill="#2c8a4f"></circle>
+      <circle cx="420" cy="150" r="14" fill="#4a6a8a"></circle>
+      <circle cx="480" cy="160" r="14" fill="#c95a2a"></circle>
+
+      
+      <circle cx="60" cy="260" r="14" fill="#c95a2a"></circle>
+      <circle cx="140" cy="280" r="14" fill="#4a6a8a"></circle>
+      <circle cx="200" cy="260" r="14" fill="#2c8a4f"></circle>
+      <circle cx="340" cy="260" r="14" fill="#c95a2a"></circle>
+      <circle cx="420" cy="280" r="14" fill="#4a6a8a"></circle>
+      <circle cx="480" cy="260" r="14" fill="#2c8a4f"></circle>
+
+      
+      <rect x="20" y="30" width="220" height="240" rx="14" fill="none" stroke="#8a8275" stroke-width="1.4" stroke-dasharray="5 4"></rect>
+      <rect x="300" y="30" width="220" height="240" rx="14" fill="none" stroke="#8a8275" stroke-width="1.4" stroke-dasharray="5 4"></rect>
+      <text x="130" y="356" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">niche A</text>
+      <text x="410" y="356" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">niche B</text>
+    </g>
+
+    <text x="80" y="720" class="key" fill="#4a6a8a">colour  =  transcriptional identity</text>
+    <text x="80" y="744" class="annot">a 🔵 cell in niche A looks identical to a 🔵 in niche B</text>
+    <text x="80" y="788" class="annot" font-style="italic" fill="#5c5c66">standard scRNA-seq clustering, applied in space.</text>
+    <text x="80" y="836" class="emoji">🧬</text>
+    <text x="120" y="836" class="annot" font-weight="700">use for</text>
+    <text x="80" y="858" class="annot">batch-correction style cell-type calls</text>
+  </g>
+
+  
+  <g>
+    <rect x="690" y="180" width="610" height="720" rx="14" fill="#ffffff" stroke="#b8902c" stroke-width="1.8"></rect>
+    <text x="710" y="208" class="panel-tag" fill="#7a5b13">PANEL 2  ·  BALANCED  ⚖</text>
+    <text x="710" y="244" class="panel-title">λ  =  0.5</text>
+    <text x="710" y="272" class="annot">cell expression + Gabor-filtered neighbourhood context</text>
+
+    <g transform="translate(710,300)">
+      <rect x="0" y="0" width="540" height="380" rx="10" fill="#fff7d9" opacity="0.5"></rect>
+      
+      <circle cx="60" cy="80" r="14" fill="#4a6a8a" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="120" cy="100" r="14" fill="#c95a2a" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="180" cy="80" r="14" fill="#4a6a8a" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="80" cy="160" r="14" fill="#2c8a4f" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="140" cy="150" r="14" fill="#4a6a8a" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="200" cy="160" r="14" fill="#c95a2a" stroke="#b8902c" stroke-width="3"></circle>
+
+      
+      <circle cx="340" cy="80" r="14" fill="#4a6a8a" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="400" cy="100" r="14" fill="#c95a2a" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="460" cy="80" r="14" fill="#4a6a8a" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="360" cy="160" r="14" fill="#2c8a4f" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="420" cy="150" r="14" fill="#4a6a8a" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="480" cy="160" r="14" fill="#c95a2a" stroke="#6b4e8a" stroke-width="3"></circle>
+
+      <circle cx="60" cy="260" r="14" fill="#c95a2a" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="140" cy="280" r="14" fill="#4a6a8a" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="200" cy="260" r="14" fill="#2c8a4f" stroke="#b8902c" stroke-width="3"></circle>
+      <circle cx="340" cy="260" r="14" fill="#c95a2a" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="420" cy="280" r="14" fill="#4a6a8a" stroke="#6b4e8a" stroke-width="3"></circle>
+      <circle cx="480" cy="260" r="14" fill="#2c8a4f" stroke="#6b4e8a" stroke-width="3"></circle>
+
+      <rect x="20" y="30" width="220" height="240" rx="14" fill="none" stroke="#b8902c" stroke-width="1.6" stroke-dasharray="5 4"></rect>
+      <rect x="300" y="30" width="220" height="240" rx="14" fill="none" stroke="#6b4e8a" stroke-width="1.6" stroke-dasharray="5 4"></rect>
+      <text x="130" y="356" text-anchor="middle" class="annot" font-style="italic" fill="#b8902c">niche A</text>
+      <text x="410" y="356" text-anchor="middle" class="annot" font-style="italic" fill="#6b4e8a">niche B</text>
+    </g>
+
+    <text x="710" y="720" class="key" fill="#7a5b13">colour  +  border  =  identity × niche</text>
+    <text x="710" y="744" class="annot">a 🔵 in niche A is now distinguishable from a 🔵 in niche B</text>
+    <text x="710" y="788" class="annot" font-style="italic" fill="#5c5c66">cell-type-in-context  —  the typical recommended default.</text>
+    <text x="710" y="836" class="emoji">⚖</text>
+    <text x="750" y="836" class="annot" font-weight="700">use for</text>
+    <text x="710" y="858" class="annot">finding state-specific subtypes (e.g., exhausted vs naive T cells)</text>
+  </g>
+
+  
+  <g>
+    <rect x="1320" y="180" width="620" height="720" rx="14" fill="#ffffff" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="1340" y="208" class="panel-tag" fill="#2c8a4f">PANEL 3  ·  DOMAIN-SEGMENTATION  🗺</text>
+    <text x="1340" y="244" class="panel-title">λ  =  1</text>
+    <text x="1340" y="272" class="annot">neighbourhood context dominates; cell identity subordinated</text>
+
+    <g transform="translate(1340,300)">
+      <rect x="0" y="0" width="560" height="380" rx="10" fill="#dfeede" opacity="0.4"></rect>
+      
+      <circle cx="60" cy="80" r="14" fill="#b8902c"></circle>
+      <circle cx="120" cy="100" r="14" fill="#b8902c"></circle>
+      <circle cx="180" cy="80" r="14" fill="#b8902c"></circle>
+      <circle cx="80" cy="160" r="14" fill="#b8902c"></circle>
+      <circle cx="140" cy="150" r="14" fill="#b8902c"></circle>
+      <circle cx="200" cy="160" r="14" fill="#b8902c"></circle>
+      <circle cx="60" cy="260" r="14" fill="#b8902c"></circle>
+      <circle cx="140" cy="280" r="14" fill="#b8902c"></circle>
+      <circle cx="200" cy="260" r="14" fill="#b8902c"></circle>
+
+      
+      <circle cx="360" cy="80" r="14" fill="#6b4e8a"></circle>
+      <circle cx="420" cy="100" r="14" fill="#6b4e8a"></circle>
+      <circle cx="480" cy="80" r="14" fill="#6b4e8a"></circle>
+      <circle cx="380" cy="160" r="14" fill="#6b4e8a"></circle>
+      <circle cx="440" cy="150" r="14" fill="#6b4e8a"></circle>
+      <circle cx="500" cy="160" r="14" fill="#6b4e8a"></circle>
+      <circle cx="360" cy="260" r="14" fill="#6b4e8a"></circle>
+      <circle cx="440" cy="280" r="14" fill="#6b4e8a"></circle>
+      <circle cx="500" cy="260" r="14" fill="#6b4e8a"></circle>
+
+      <rect x="20" y="30" width="220" height="240" rx="14" fill="#b8902c" opacity="0.15"></rect>
+      <rect x="300" y="30" width="220" height="240" rx="14" fill="#6b4e8a" opacity="0.15"></rect>
+      <text x="130" y="356" text-anchor="middle" class="annot" font-style="italic" fill="#b8902c">tissue domain 1</text>
+      <text x="410" y="356" text-anchor="middle" class="annot" font-style="italic" fill="#6b4e8a">tissue domain 2</text>
+    </g>
+
+    <text x="1340" y="720" class="key" fill="#2c8a4f">colour  =  tissue domain</text>
+    <text x="1340" y="744" class="annot">cortical layers, tumour vs stroma — domain identity wins</text>
+    <text x="1340" y="788" class="annot" font-style="italic" fill="#5c5c66">individual cell calls disappear into the niche label.</text>
+    <text x="1340" y="836" class="emoji">🗺</text>
+    <text x="1380" y="836" class="annot" font-weight="700">use for</text>
+    <text x="1340" y="858" class="annot">cortical layer / tumour-stroma / fibrotic-zone segmentation</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="930" width="1880" height="140" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="960" class="panel-tag" fill="#7a5b13">λ  CONTROLS THE CELL-vs-NEIGHBOURHOOD BALANCE  🎚</text>
+
+    <g transform="translate(80,990)">
+      <line x1="0" y1="20" x2="1820" y2="20" stroke="#8a8275" stroke-width="3"></line>
+      <circle cx="100" cy="20" r="14" fill="#4a6a8a"></circle>
+      <text x="100" y="56" text-anchor="middle" class="annot" font-weight="700">λ = 0</text>
+      <text x="100" y="76" text-anchor="middle" class="annot" fill="#5c5c66">cell typing</text>
+
+      <circle cx="910" cy="20" r="14" fill="#b8902c"></circle>
+      <text x="910" y="56" text-anchor="middle" class="annot" font-weight="700">λ = 0.5</text>
+      <text x="910" y="76" text-anchor="middle" class="annot" fill="#5c5c66">balanced (default)</text>
+
+      <circle cx="1720" cy="20" r="14" fill="#2c8a4f"></circle>
+      <text x="1720" y="56" text-anchor="middle" class="annot" font-weight="700">λ = 1</text>
+      <text x="1720" y="76" text-anchor="middle" class="annot" fill="#5c5c66">domain segmentation</text>
+    </g>
+    <text x="1900" y="1058" text-anchor="end" class="annot" font-style="italic" fill="#5c5c66">one model, one parameter  ·  scales to 2 M cells.</text>
+  </g>
+</svg>

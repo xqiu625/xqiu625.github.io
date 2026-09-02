@@ -1,0 +1,191 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE SEGMENTATION-ERROR COMPOUNDING PROBLEM  ·  WHY YOU NEED CELLADMIX</text>
+  <text x="60" y="96" class="h1">A few mis-assigned transcripts become a published &#34;discovery&#34;.</text>
+  <text x="60" y="124" class="h-sub">Run cellAdmix (or equivalent) BEFORE any spatial DE, LR, or multicellular-program analysis. This is the single most important pitfall in the module.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+
+  
+  <g>
+    <rect x="60" y="180" width="460" height="600" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.6"></rect>
+    <circle cx="100" cy="222" r="20" fill="#c95a2a"></circle>
+    <text x="100" y="230" text-anchor="middle" class="step-num">1</text>
+    <text x="132" y="212" class="step-tag" fill="#c95a2a">SEGMENTATION  ✂</text>
+    <text x="132" y="238" class="step-title">tumour vs fibroblast, slightly wrong boundary</text>
+
+    <g transform="translate(80,270)">
+      <rect x="0" y="0" width="420" height="280" rx="10" fill="#ffffff" stroke="#c95a2a" stroke-width="1"></rect>
+      
+      <circle cx="120" cy="140" r="80" fill="#a14854" opacity="0.30" stroke="#a14854" stroke-width="2"></circle>
+      <text x="120" y="146" text-anchor="middle" class="annot" font-weight="700" fill="#a14854">tumour</text>
+      <text x="120" y="162" text-anchor="middle" class="annot" fill="#a14854">KRT19, KRT8</text>
+      <g>
+        <circle cx="80" cy="100" r="3" fill="#a14854"></circle>
+        <circle cx="100" cy="160" r="3" fill="#a14854"></circle>
+        <circle cx="140" cy="130" r="3" fill="#a14854"></circle>
+        <circle cx="160" cy="170" r="3" fill="#a14854"></circle>
+        <circle cx="120" cy="180" r="3" fill="#a14854"></circle>
+        
+        <circle cx="220" cy="130" r="3" fill="#a14854"></circle>
+        <circle cx="240" cy="150" r="3" fill="#a14854"></circle>
+      </g>
+
+      
+      <ellipse cx="280" cy="140" rx="80" ry="60" fill="#2c8a4f" opacity="0.30" stroke="#2c8a4f" stroke-width="2"></ellipse>
+      <text x="290" y="200" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">fibroblast</text>
+
+      
+      <path d="M 200 80 Q 215 140, 200 200" fill="none" stroke="#5c5c66" stroke-width="2" stroke-dasharray="5 4"></path>
+      <text x="220" y="76" class="annot" font-weight="700" fill="#5c5c66">true boundary</text>
+
+      <path d="M 220 80 Q 235 140, 220 200" fill="none" stroke="#a14854" stroke-width="2"></path>
+      <text x="280" y="252" class="annot" font-weight="700" fill="#a14854">drawn boundary  →  leak  ⚠</text>
+    </g>
+
+    <text x="80" y="600" class="annot">even Baysor and ProSeg leave residual leakage</text>
+    <text x="80" y="624" class="annot">a few tumour transcripts end up in fibroblast space</text>
+    <text x="80" y="664" class="annot" font-style="italic" fill="#5c5c66">pixel-level error  →  cell-level identity error</text>
+    <text x="80" y="744" class="key" fill="#c95a2a">scale: ~ 5 % per cell  ⚠</text>
+  </g>
+
+  
+  <line x1="530" y1="450" x2="555" y2="450" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="565" y="180" width="460" height="600" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="1.6"></rect>
+    <circle cx="605" cy="222" r="20" fill="#a14854"></circle>
+    <text x="605" y="230" text-anchor="middle" class="step-num">2</text>
+    <text x="637" y="212" class="step-tag" fill="#a14854">DOWNSTREAM DE  📊</text>
+    <text x="637" y="238" class="step-title">fibroblast appears to &#34;express&#34; KRT19, KRT8</text>
+
+    <g transform="translate(585,270)">
+      <rect x="0" y="0" width="420" height="280" rx="10" fill="#ffffff" stroke="#a14854" stroke-width="1"></rect>
+      <text x="20" y="36" class="annot" font-weight="700">DE analysis says</text>
+
+      
+      <g transform="translate(40,60)">
+        <line x1="0" y1="180" x2="340" y2="180" stroke="#a14854"></line>
+        <line x1="0" y1="0" x2="0" y2="180" stroke="#a14854"></line>
+        <text x="170" y="200" text-anchor="middle" class="annot" fill="#5c5c66">log fold change</text>
+
+        <circle cx="80" cy="120" r="4" fill="#8a8275"></circle>
+        <circle cx="120" cy="100" r="4" fill="#8a8275"></circle>
+        <circle cx="160" cy="90" r="4" fill="#8a8275"></circle>
+
+        
+        <circle cx="240" cy="40" r="7" fill="#a14854"></circle>
+        <text x="252" y="44" class="annot" font-weight="700" fill="#a14854">KRT19  ✸</text>
+
+        <circle cx="280" cy="60" r="7" fill="#a14854"></circle>
+        <text x="292" y="64" class="annot" font-weight="700" fill="#a14854">KRT8  ✸</text>
+
+        <text x="240" y="20" class="annot" font-style="italic" fill="#a14854">p &lt; 1e-6</text>
+      </g>
+    </g>
+
+    <text x="585" y="600" class="key" fill="#a14854">researcher interprets:</text>
+    <text x="585" y="624" class="annot" font-style="italic">&#34;tumour-zone fibroblasts acquire</text>
+    <text x="585" y="644" class="annot" font-style="italic">epithelial markers&#34;  📝</text>
+    <text x="585" y="688" class="annot" font-style="italic" fill="#5c5c66">a plausible-sounding story</text>
+    <text x="585" y="708" class="annot" font-style="italic" fill="#5c5c66">that is entirely an artifact.</text>
+    <text x="585" y="744" class="key" fill="#a14854">false signal  ❌</text>
+  </g>
+
+  
+  <line x1="1035" y1="450" x2="1060" y2="450" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="1070" y="180" width="460" height="600" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.6"></rect>
+    <circle cx="1110" cy="222" r="20" fill="#6b4e8a"></circle>
+    <text x="1110" y="230" text-anchor="middle" class="step-num">3</text>
+    <text x="1142" y="212" class="step-tag" fill="#6b4e8a">PUBLISHED FINDING  📜</text>
+    <text x="1142" y="238" class="step-title">artifact compounds across analyses</text>
+
+    <g transform="translate(1090,270)">
+      <rect x="0" y="0" width="420" height="280" rx="10" fill="#ffffff" stroke="#6b4e8a" stroke-width="1"></rect>
+
+      <text x="20" y="36" class="annot" font-weight="700">multicellular-program scan  (DIALOGUE / scITD)</text>
+      <text x="20" y="62" class="annot">~ <tspan font-weight="700">25 %</tspan>  of top factors driven by admixture</text>
+
+      <line x1="20" y1="84" x2="400" y2="84" stroke="#cfc5dd"></line>
+
+      <text x="20" y="110" class="annot" font-weight="700">ligand-receptor inference</text>
+      <text x="20" y="136" class="annot">macrophage → fibroblast pairs that shouldn&#39;t exist</text>
+      <text x="20" y="160" class="mono" fill="#a14854">P  =  7.7 × 10⁻⁵   ⚠</text>
+
+      <line x1="20" y1="184" x2="400" y2="184" stroke="#cfc5dd"></line>
+
+      <text x="20" y="210" class="annot" font-weight="700">downstream consequences</text>
+      <text x="20" y="234" class="annot">new &#34;tumour-stroma reprogramming&#34; hypothesis</text>
+      <text x="20" y="254" class="annot">candidate therapeutic targets proposed</text>
+    </g>
+
+    <text x="1090" y="600" class="key" fill="#6b4e8a">a few mis-assigned reads  →</text>
+    <text x="1090" y="624" class="annot">a multi-cell &#34;biology&#34;  →</text>
+    <text x="1090" y="644" class="annot">a therapeutic-target candidate</text>
+    <text x="1090" y="688" class="annot" font-style="italic" fill="#5c5c66">none of which actually exists.</text>
+    <text x="1090" y="744" class="key" fill="#a14854">false discovery cascade  🔥</text>
+  </g>
+
+  
+  <line x1="1540" y1="450" x2="1565" y2="450" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="1575" y="180" width="365" height="600" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="2"></rect>
+    <circle cx="1615" cy="222" r="20" fill="#2c8a4f"></circle>
+    <text x="1615" y="230" text-anchor="middle" class="step-num">4</text>
+    <text x="1647" y="212" class="step-tag" fill="#2c8a4f">CELLADMIX CLEANUP  🧽</text>
+    <text x="1647" y="238" class="step-title">flag &amp; reassign leaks</text>
+
+    <g transform="translate(1595,270)">
+      <rect x="0" y="0" width="330" height="280" rx="10" fill="#ffffff" stroke="#2c8a4f" stroke-width="1"></rect>
+      <text x="20" y="36" class="annot" font-weight="700">①  NMF on subcellular neighbourhood</text>
+      <text x="20" y="58" class="annot">composition vectors per transcript</text>
+
+      <text x="20" y="94" class="annot" font-weight="700">②  identify &#34;foreign&#34; transcripts</text>
+      <text x="20" y="116" class="annot">those whose context doesn&#39;t match host cell</text>
+
+      <text x="20" y="152" class="annot" font-weight="700">③  CRF reassigns them</text>
+      <text x="20" y="174" class="annot">to the cell they most plausibly came from</text>
+
+      <text x="20" y="216" class="annot" font-weight="700">result  ·  before / after</text>
+      <text x="20" y="240" class="annot" fill="#a14854">before:  KRT19  ✸  in fibroblast</text>
+      <text x="20" y="260" class="annot" fill="#2c8a4f">after:    KRT19  cleared  ✓</text>
+    </g>
+
+    <text x="1595" y="600" class="key" fill="#2c8a4f">false DE signal disappears  ✅</text>
+    <text x="1595" y="624" class="annot">ligand-receptor false positives drop</text>
+    <text x="1595" y="644" class="annot">multicellular programs survive QC</text>
+    <text x="1595" y="688" class="annot" font-style="italic" fill="#5c5c66">always run BEFORE downstream analysis.</text>
+    <text x="1595" y="744" class="key" fill="#2c8a4f">budget for upstream QC  🛡</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="800" width="1880" height="270" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="830" class="step-tag" fill="#a14854">⚠  THE PITFALL</text>
+    <text x="80" y="864" class="key" fill="#a14854">run cellAdmix (or equivalent) BEFORE any spatial DE, LR, or multicellular-program analysis.</text>
+
+    <text x="80" y="912" class="annot" font-weight="700">why it matters</text>
+    <text x="80" y="934" class="annot">~ 5 % per-cell admixture  →  ~ 25 % of multicellular factors are artifacts</text>
+    <text x="80" y="954" class="annot">false ligand-receptor calls publish unchallenged when no upstream QC is in place</text>
+
+    <text x="80" y="990" class="annot" font-weight="700">when to apply</text>
+    <text x="80" y="1012" class="annot">Visium HD  ·  MERFISH  ·  Xenium  ·  CosMx  ·  any subcellular-resolution platform</text>
+
+    <text x="80" y="1052" class="annot" font-style="italic" fill="#5c5c66">if you can&#39;t audit segmentation quality, your downstream story may be one of the 25 %.</text>
+  </g>
+</svg>

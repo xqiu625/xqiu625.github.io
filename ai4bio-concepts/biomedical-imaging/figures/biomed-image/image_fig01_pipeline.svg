@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THE BIOMEDICAL IMAGING PIPELINE  ·  RAW PIXELS → CLINICAL INFERENCE</text>
+  <text x="60" y="96" class="h1">Five sub-tasks. Each one inherits the errors of the one before it.</text>
+  <text x="60" y="124" class="h-sub">Segmentation feeds classification feeds modality prediction feeds generation feeds multi-agent diagnosis.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="190" width="360" height="700" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <circle cx="100" cy="232" r="22" fill="#4a6a8a"></circle>
+    <text x="100" y="240" text-anchor="middle" class="stage-num">1</text>
+    <text x="132" y="222" class="stage-tag" fill="#4a6a8a">STAGE 1</text>
+    <text x="132" y="248" class="stage-title">Segment  ✂</text>
+    <text x="80" y="290" class="emoji">🔬</text>
+    <text x="80" y="324" class="annot">per-pixel labelling of nuclei, cells, organelles</text>
+    <text x="80" y="358" class="annot" font-weight="700">tools</text>
+    <text x="80" y="380" class="annot">Cellpose  ·  gradient flows</text>
+    <text x="80" y="400" class="annot">StarDist  ·  star-convex polygons</text>
+    <text x="80" y="420" class="annot">CellSAM  ·  SAM-style prompts</text>
+    <text x="80" y="440" class="annot">Baysor  ·  transcript-based</text>
+    <text x="80" y="490" class="annot" font-style="italic" fill="#5c5c66">&#34;where are the cells?&#34;</text>
+    <text x="80" y="540" class="key" fill="#4a6a8a">output  ·  cell masks</text>
+    <text x="80" y="836" class="emoji">🧱</text>
+    <text x="80" y="876" class="annot" font-style="italic" fill="#a14854">errors here propagate to every later stage.</text>
+  </g>
+  <line x1="425" y1="540" x2="435" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="440" y="190" width="360" height="700" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <circle cx="480" cy="232" r="22" fill="#2c8a4f"></circle>
+    <text x="480" y="240" text-anchor="middle" class="stage-num">2</text>
+    <text x="512" y="222" class="stage-tag" fill="#2c8a4f">STAGE 2</text>
+    <text x="512" y="248" class="stage-title">Classify  🏷</text>
+    <text x="460" y="290" class="emoji">🧑‍⚕️</text>
+    <text x="460" y="324" class="annot">segmented cells coloured by type</text>
+    <text x="460" y="346" class="annot" fill="#5c5c66">T cell · macrophage · tumour cell · …</text>
+    <text x="460" y="386" class="annot" font-weight="700">tools</text>
+    <text x="460" y="408" class="annot">StarDist + classification head</text>
+    <text x="460" y="428" class="annot">PaSCient  ·  attention-MIL for WSI</text>
+    <text x="460" y="478" class="annot" font-style="italic" fill="#5c5c66">&#34;what kind of cell is each one?&#34;</text>
+    <text x="460" y="540" class="key" fill="#2c8a4f">output  ·  per-cell labels</text>
+    <text x="460" y="836" class="emoji">🟢🔴🟣</text>
+    <text x="460" y="876" class="annot" font-style="italic" fill="#5c5c66">label quality bounded by Stage 1 quality.</text>
+  </g>
+  <line x1="805" y1="540" x2="815" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="820" y="190" width="360" height="700" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <circle cx="860" cy="232" r="22" fill="#c95a2a"></circle>
+    <text x="860" y="240" text-anchor="middle" class="stage-num">3</text>
+    <text x="892" y="222" class="stage-tag" fill="#c95a2a">STAGE 3</text>
+    <text x="892" y="248" class="stage-title">Predict modality  🔮</text>
+    <text x="840" y="290" class="emoji">🖼️ → 🧬</text>
+    <text x="840" y="324" class="annot">H&amp;E image patch  →  molecular readout</text>
+    <text x="840" y="346" class="annot" fill="#5c5c66">&#34;see morphology, predict transcriptome&#34;</text>
+    <text x="840" y="386" class="annot" font-weight="700">resolution ladder</text>
+    <text x="840" y="408" class="annot">ST-Net  →  spot-level (100 µm)</text>
+    <text x="840" y="428" class="annot">OmiCLIP  →  cross-organ joint embed</text>
+    <text x="840" y="448" class="annot">HEX  →  per-protein, single-cell</text>
+    <text x="840" y="498" class="annot" font-style="italic" fill="#5c5c66">&#34;what would the omics show?&#34;</text>
+    <text x="840" y="540" class="key" fill="#c95a2a">output  ·  predicted expression</text>
+    <text x="840" y="836" class="emoji">📊</text>
+  </g>
+  <line x1="1185" y1="540" x2="1195" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="1200" y="190" width="360" height="700" rx="14" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.8"></rect>
+    <circle cx="1240" cy="232" r="22" fill="#6b4e8a"></circle>
+    <text x="1240" y="240" text-anchor="middle" class="stage-num">4</text>
+    <text x="1272" y="222" class="stage-tag" fill="#6b4e8a">STAGE 4</text>
+    <text x="1272" y="248" class="stage-title">Generate  🪄</text>
+    <text x="1220" y="290" class="emoji">⚪ → 🟢</text>
+    <text x="1220" y="324" class="annot">control cell → predicted perturbed cell</text>
+    <text x="1220" y="346" class="annot" fill="#5c5c66">in-silico perturbation imagery</text>
+    <text x="1220" y="386" class="annot" font-weight="700">tools</text>
+    <text x="1220" y="408" class="annot">IMPA  ·  perturbation image translation</text>
+    <text x="1220" y="428" class="annot">MolPhenix  ·  molecule → cell painting</text>
+    <text x="1220" y="478" class="annot" font-style="italic" fill="#5c5c66">&#34;what would the drug do to this cell?&#34;</text>
+    <text x="1220" y="540" class="key" fill="#6b4e8a">output  ·  synthetic images</text>
+    <text x="1220" y="836" class="emoji">🧪</text>
+  </g>
+  <line x1="1565" y1="540" x2="1575" y2="540" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  <g>
+    <rect x="1580" y="190" width="360" height="700" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <circle cx="1620" cy="232" r="22" fill="#b8902c"></circle>
+    <text x="1620" y="240" text-anchor="middle" class="stage-num">5</text>
+    <text x="1652" y="222" class="stage-tag" fill="#b8902c">STAGE 5</text>
+    <text x="1652" y="248" class="stage-title">Multi-agent diagnose  👥</text>
+    <text x="1600" y="290" class="emoji">🤖🧠</text>
+    <text x="1600" y="324" class="annot">LLM agents orchestrate the whole pipeline</text>
+    <text x="1600" y="346" class="annot" fill="#5c5c66">propose · code · execute · verify · model</text>
+    <text x="1600" y="386" class="annot" font-weight="700">flagship</text>
+    <text x="1600" y="408" class="annot">SPARK  ·  generate-code-verify</text>
+    <text x="1600" y="428" class="annot">5 400+ patient WSIs  ·  €4 K total</text>
+    <text x="1600" y="478" class="annot" font-style="italic" fill="#5c5c66">&#34;is this patient MSI? what&#39;s the subtype?&#34;</text>
+    <text x="1600" y="540" class="key" fill="#b8902c">output  ·  biomarker  +  prediction</text>
+    <text x="1600" y="836" class="emoji">🩺</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="910" width="1880" height="170" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="940" class="stage-tag" fill="#a14854">⚠  ERRORS COMPOUND DOWNSTREAM</text>
+    <text x="80" y="974" class="key" fill="#a14854">every stage inherits the errors of the one before.</text>
+    <text x="80" y="1006" class="annot">a 5 % segmentation error becomes a 15 % transcript-admixture error becomes a false multicellular-program call becomes a wrong drug-target hypothesis.</text>
+    <text x="80" y="1032" class="annot">budget for upstream QC  —  cellAdmix-style cleanup before any DE, LR, or program analysis.</text>
+    <text x="80" y="1064" class="annot" font-style="italic" fill="#5c5c66">the pipeline is only as honest as its weakest stage.</text>
+  </g>
+</svg>

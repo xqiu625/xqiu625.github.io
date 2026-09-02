@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  THREE MULTI-AGENT VERIFICATION ARCHITECTURES</text>
+  <text x="60" y="96" class="h1">GeneAgent  ·  CASSIA  ·  CyteType.</text>
+  <text x="60" y="124" class="h-sub">Same problem (don&#39;t hallucinate). Different shapes — simple loop, calibrated pipeline, evidence-heavy comparator.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  <line x1="687" y1="170" x2="687" y2="900" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+  <line x1="1313" y1="170" x2="1313" y2="900" stroke="#e5dfcf" stroke-width="1" stroke-dasharray="6 5"></line>
+
+  
+  <g>
+    <text x="80" y="200" class="col-tag" fill="#c95a2a">SIMPLEST</text>
+    <text x="80" y="232" class="col-title">GeneAgent</text>
+    <text x="80" y="256" class="col-sub">4 stages in a linear loop  ·  per-claim verdicts</text>
+
+    <g>
+      <rect x="60" y="280" width="600" height="60" rx="10" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="80" y="304" class="stage">①  Generate</text>
+      <text x="80" y="324" class="stage-sub">GPT-4 produces a free-text annotation with named terms</text>
+    </g>
+    <line x1="360" y1="346" x2="360" y2="370" stroke="#c95a2a" stroke-width="2" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="60" y="376" width="600" height="90" rx="10" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="80" y="400" class="stage">②  Verify  ·  18 DBs, 4 APIs</text>
+      <text x="80" y="420" class="stage-sub">GO · KEGG · Reactome · NCBI Gene · PubMed · STRING · CORUM · …</text>
+      <text x="80" y="442" class="stage-sub">each claim labeled  Supported  /  Partially  /  Refuted  /  Unknown</text>
+    </g>
+    <line x1="360" y1="472" x2="360" y2="496" stroke="#c95a2a" stroke-width="2" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="60" y="502" width="600" height="60" rx="10" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.4"></rect>
+      <text x="80" y="526" class="stage">③  Modify</text>
+      <text x="80" y="546" class="stage-sub">refuted / unknown claims rewritten or removed</text>
+    </g>
+    <line x1="360" y1="568" x2="360" y2="592" stroke="#c95a2a" stroke-width="2" marker-end="url(#ar)"></line>
+
+    <g>
+      <rect x="60" y="598" width="600" height="60" rx="10" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="80" y="622" class="stage">④  Summarise</text>
+      <text x="80" y="642" class="stage-sub">cleaned, DB-grounded gene-set annotation</text>
+    </g>
+
+    <text x="80" y="700" class="col-tag" fill="#c95a2a">OUTPUT</text>
+    <text x="80" y="724" class="stage" fill="#c95a2a">DB-grounded annotation  ·  −56 % hallucination</text>
+    <text x="80" y="744" class="stage-sub">44 % → 19.3 % unmatched terms on the GeneAgent test set</text>
+
+    <text x="80" y="788" class="col-tag" fill="#c95a2a">WHEN TO PICK</text>
+    <text x="80" y="812" class="stage-sub">you need a zero-hallucination guarantee on a single artefact</text>
+    <text x="80" y="832" class="stage-sub">latency budget allows a verification loop</text>
+  </g>
+
+  
+  <g>
+    <text x="708" y="200" class="col-tag" fill="#4a6a8a">MOST MODULAR</text>
+    <text x="708" y="232" class="col-title">CASSIA</text>
+    <text x="708" y="256" class="col-sub">5 sequential agents + reflection loop + 4 optional plug-ins</text>
+
+    <g>
+      <rect x="687" y="280" width="600" height="42" rx="8" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.2"></rect>
+      <text x="707" y="308" class="stage">①  Annotation</text>
+    </g>
+    <line x1="987" y1="324" x2="987" y2="344" stroke="#4a6a8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="687" y="350" width="600" height="42" rx="8" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.2"></rect>
+      <text x="707" y="378" class="stage">②  Validation   <tspan class="stage-sub">(↻ reflection ≤ 3×)</tspan></text>
+    </g>
+    <line x1="987" y1="394" x2="987" y2="414" stroke="#4a6a8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    
+    <path d="M 1287 372 C 1330 372, 1330 300, 1287 300" fill="none" stroke="#a14854" stroke-width="1.4" stroke-dasharray="4 3"></path>
+
+    <g>
+      <rect x="687" y="420" width="600" height="42" rx="8" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.2"></rect>
+      <text x="707" y="448" class="stage">③  Formatting   <tspan class="stage-sub">(Cell Ontology)</tspan></text>
+    </g>
+    <line x1="987" y1="464" x2="987" y2="484" stroke="#4a6a8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="687" y="490" width="600" height="42" rx="8" fill="#fff7d9" stroke="#b8902c" stroke-width="1.4"></rect>
+      <text x="707" y="518" class="stage">④  Quality scoring   <tspan class="stage-sub">(0 – 100)</tspan></text>
+    </g>
+    <line x1="987" y1="534" x2="987" y2="554" stroke="#4a6a8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="687" y="560" width="600" height="42" rx="8" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="707" y="588" class="stage">⑤  Reporting</text>
+    </g>
+
+    
+    <text x="707" y="636" class="col-tag" fill="#4a6a8a">PLUG-IN MODULES (OPTIONAL)</text>
+    <g transform="translate(707,648)">
+      <rect x="0" y="0" width="140" height="32" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="70" y="20" text-anchor="middle" class="stage-sub" font-weight="700" fill="#4a6a8a">RAG</text>
+      <rect x="148" y="0" width="140" height="32" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="218" y="20" text-anchor="middle" class="stage-sub" font-weight="700" fill="#4a6a8a">Boost</text>
+      <rect x="296" y="0" width="140" height="32" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="366" y="20" text-anchor="middle" class="stage-sub" font-weight="700" fill="#4a6a8a">Subcluster</text>
+      <rect x="444" y="0" width="140" height="32" rx="6" fill="#ffffff" stroke="#4a6a8a"></rect>
+      <text x="514" y="20" text-anchor="middle" class="stage-sub" font-weight="700" fill="#4a6a8a">UQ</text>
+    </g>
+
+    <text x="707" y="724" class="col-tag" fill="#4a6a8a">OUTPUT</text>
+    <text x="707" y="748" class="stage" fill="#4a6a8a">annotation + calibrated 0–100 confidence</text>
+    <text x="707" y="768" class="stage-sub">scores &gt; 90 ≈ 98 % correct; scores &lt; 75 catch most failures</text>
+
+    <text x="707" y="800" class="col-tag" fill="#4a6a8a">WHEN TO PICK</text>
+    <text x="707" y="824" class="stage-sub">downstream code needs a number to threshold on</text>
+    <text x="707" y="844" class="stage-sub">you want plug-in modules for boost / subclustering / UQ</text>
+  </g>
+
+  
+  <g>
+    <text x="1334" y="200" class="col-tag" fill="#6b4e8a">MOST EVIDENCE-HEAVY</text>
+    <text x="1334" y="232" class="col-title">CyteType</text>
+    <text x="1334" y="256" class="col-sub">5 agents testing competing hypotheses against full expression + 8 DBs</text>
+
+    <g>
+      <rect x="1313" y="280" width="620" height="42" rx="8" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.2"></rect>
+      <text x="1333" y="308" class="stage">①  Contextualizer  <tspan class="stage-sub">tissue / disease / cohort</tspan></text>
+    </g>
+    <line x1="1623" y1="324" x2="1623" y2="344" stroke="#6b4e8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="1313" y="350" width="620" height="42" rx="8" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.2"></rect>
+      <text x="1333" y="378" class="stage">②  Annotator  <tspan class="stage-sub">proposes competing hypotheses</tspan></text>
+    </g>
+    <line x1="1623" y1="394" x2="1623" y2="414" stroke="#6b4e8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="1313" y="420" width="620" height="60" rx="8" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.2"></rect>
+      <text x="1333" y="446" class="stage">③  Reviewer  ·  expression-profile evaluator</text>
+      <text x="1333" y="466" class="stage-sub">tests each hypothesis vs the full marker-gene profile + enrichment</text>
+    </g>
+    <line x1="1623" y1="482" x2="1623" y2="502" stroke="#6b4e8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="1313" y="508" width="620" height="60" rx="8" fill="#ebe5f0" stroke="#6b4e8a" stroke-width="1.2"></rect>
+      <text x="1333" y="534" class="stage">④  Literature &amp; Clinical  ·  8 external DBs</text>
+      <text x="1333" y="554" class="stage-sub">PanglaoDB · CellMarker · OMIM · DisGeNET · GO · KEGG · Reactome · STRING</text>
+    </g>
+    <line x1="1623" y1="570" x2="1623" y2="590" stroke="#6b4e8a" stroke-width="1.6" marker-end="url(#ar)"></line>
+    <g>
+      <rect x="1313" y="596" width="620" height="42" rx="8" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.4"></rect>
+      <text x="1333" y="624" class="stage">⑤  Summariser  <tspan class="stage-sub">+ heterogeneity flag + evidence trail</tspan></text>
+    </g>
+
+    <text x="1334" y="700" class="col-tag" fill="#6b4e8a">OUTPUT</text>
+    <text x="1334" y="724" class="stage" fill="#6b4e8a">annotation + heterogeneity flag + full evidence trail</text>
+    <text x="1334" y="744" class="stage-sub">heterogeneity flag predicts annotation accuracy at F = 23.88</text>
+
+    <text x="1334" y="788" class="col-tag" fill="#6b4e8a">WHEN TO PICK</text>
+    <text x="1334" y="812" class="stage-sub">contested labels  ·  audit trail is required for downstream use</text>
+    <text x="1334" y="832" class="stage-sub">competing-hypothesis comparison is part of the deliverable</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="920" width="1880" height="160" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="950" class="col-tag" fill="#7a5b13">THE SHARED LESSON</text>
+    <text x="80" y="984" class="key" fill="#7a5b13">All three work across multiple LLM backbones — the architecture is the moat, not the model.</text>
+    <text x="80" y="1014" class="mono">CyteType proves Kimi K2 reaches ≈ 95 % of GPT-5 performance when wrapped in the same 5-agent pipeline.</text>
+    <text x="80" y="1042" class="mono">→ swap the LLM cartridge, the architecture keeps the gains.</text>
+    <text x="80" y="1070" class="mono" fill="#5c5c66" font-style="italic">A pipeline almost always lifts a model. The reverse is rarely true.</text>
+  </g>
+</svg>

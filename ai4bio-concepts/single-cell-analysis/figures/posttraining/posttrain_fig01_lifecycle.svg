@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  PRETRAINING IS THE SUBSTRATE, POST-TRAINING IS THE TOOL</text>
+  <text x="60" y="96" class="h1">The full lifecycle of a biological foundation model.</text>
+  <text x="60" y="124" class="h-sub">Two phases. Different physics, different bottlenecks, different teams now own each side.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <text x="80" y="200" class="phase-tag" fill="#8a8275">LEFT PHASE  ·  PRETRAINING</text>
+  <text x="80" y="234" class="phase-title" fill="#8a8275">Self-supervised on raw biological text.</text>
+
+  <g>
+    <rect x="60" y="260" width="780" height="280" rx="14" fill="#efeae0" stroke="#8a8275" stroke-width="1.6" stroke-dasharray="6 4"></rect>
+    <text x="80" y="288" class="layer-tag" fill="#8a8275">INPUT  ·  MILLIONS – BILLIONS OF SAMPLES</text>
+    <g transform="translate(80,310)">
+      <rect x="0" y="0" width="220" height="32" rx="6" fill="#ffffff" stroke="#8a8275"></rect>
+      <text x="110" y="22" text-anchor="middle" class="pill" font-weight="700">scRNA-seq atlases</text>
+      <rect x="240" y="0" width="180" height="32" rx="6" fill="#ffffff" stroke="#8a8275"></rect>
+      <text x="330" y="22" text-anchor="middle" class="pill" font-weight="700">UniRef50</text>
+      <rect x="440" y="0" width="180" height="32" rx="6" fill="#ffffff" stroke="#8a8275"></rect>
+      <text x="530" y="22" text-anchor="middle" class="pill" font-weight="700">whole genomes</text>
+      <rect x="640" y="0" width="120" height="32" rx="6" fill="#ffffff" stroke="#8a8275"></rect>
+      <text x="700" y="22" text-anchor="middle" class="pill" font-weight="700">PubMed</text>
+    </g>
+
+    <text x="80" y="380" class="layer-tag" fill="#8a8275">SELF-SUPERVISED OBJECTIVES</text>
+    <text x="80" y="404" class="annot">masked LM  ·  contrastive  ·  autoregressive  ·  diffusion</text>
+
+    <text x="80" y="448" class="layer-tag" fill="#8a8275">OUTPUT</text>
+    <text x="80" y="476" class="layer-name">Raw foundation model</text>
+    <text x="80" y="498" class="annot" font-style="italic" fill="#5c5c66">powerful but generic; not task-ready</text>
+    <text x="80" y="520" class="annot" font-style="italic" fill="#5c5c66">strong embeddings, weak instructions</text>
+  </g>
+
+  
+  <g>
+    <line x1="60" y1="612" x2="840" y2="612" stroke="#8a8275" stroke-width="2" stroke-dasharray="6 4"></line>
+    <polygon points="60,612 76,604 76,620" fill="#8a8275"></polygon>
+    <text x="450" y="600" text-anchor="middle" class="era-tag" fill="#8a8275">WHERE THE ACTION WAS  ·  2022 – 2024</text>
+    <text x="450" y="640" text-anchor="middle" class="annot" fill="#8a8275">scaling laws, more cells, more parameters — capability gains came from this phase</text>
+  </g>
+
+  
+  <line x1="860" y1="400" x2="920" y2="400" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="860" y="630" width="280" height="180" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="1000" y="660" text-anchor="middle" class="era-tag" fill="#7a5b13">THE SHIFT</text>
+    <text x="1000" y="692" text-anchor="middle" class="phase-title" fill="#7a5b13">&gt; 10 %</text>
+    <text x="1000" y="716" text-anchor="middle" class="annot" fill="#7a5b13">of pretraining cost</text>
+    <text x="1000" y="740" text-anchor="middle" class="annot" fill="#5c5c66">post-training compute on</text>
+    <text x="1000" y="758" text-anchor="middle" class="annot" fill="#5c5c66">DeepSeek-V3.2  —  and growing</text>
+    <text x="1000" y="788" text-anchor="middle" class="annot" font-style="italic" fill="#5c5c66">budget follows the action</text>
+  </g>
+
+  
+  <text x="1160" y="200" class="phase-tag" fill="#c95a2a">RIGHT PHASE  ·  POST-TRAINING</text>
+  <text x="1160" y="234" class="phase-title">Six recipe layers turn the model into a tool.</text>
+
+  <g>
+    <rect x="1140" y="260" width="800" height="320" rx="14" fill="#fbe6d8" stroke="#c95a2a" stroke-width="1.8"></rect>
+    <text x="1160" y="288" class="layer-tag" fill="#c95a2a">THE STACK (PICK FROM, NOT THROUGH)</text>
+
+    <g transform="translate(1160,302)">
+      <rect x="0" y="0" width="760" height="36" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="14" y="22" class="layer-name">①  SFT  /  domain adaptation</text>
+      <text x="320" y="22" class="annot" fill="#5c5c66">scGPT-Protocol, DANCE, TIME-LLM, CodonFM</text>
+
+      <rect x="0" y="42" width="760" height="36" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="14" y="64" class="layer-name">②  PEFT</text>
+      <text x="320" y="64" class="annot" fill="#5c5c66">scPEFT, PEFT-PLM, ColabSaprot</text>
+
+      <rect x="0" y="84" width="760" height="36" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="14" y="106" class="layer-name">③  RL elicitation</text>
+      <text x="320" y="106" class="annot" fill="#5c5c66">Cell-o1, Gene-R1, ProteinRL</text>
+
+      <rect x="0" y="126" width="760" height="36" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="14" y="148" class="layer-name">④  multi-agent verification</text>
+      <text x="320" y="148" class="annot" fill="#5c5c66">GeneAgent, CASSIA, CyteType, SPARK</text>
+
+      <rect x="0" y="168" width="760" height="36" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="14" y="190" class="layer-name">⑤  memory  &amp;  active learning</text>
+      <text x="320" y="190" class="annot" fill="#5c5c66">Mem0, DeMeo (closed-loop wet-lab)</text>
+
+      <rect x="0" y="210" width="760" height="36" rx="6" fill="#ffffff" stroke="#c95a2a"></rect>
+      <text x="14" y="232" class="layer-name">⑥  quantization  /  compression</text>
+      <text x="320" y="232" class="annot" fill="#5c5c66">Geneformer-Scaling (4-bit, r = 0.998)</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="1140" y="600" width="800" height="160" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <text x="1160" y="628" class="layer-tag" fill="#2c8a4f">OUTPUT  ·  DEPLOYED TOOL</text>
+    <g transform="translate(1160,644)">
+      <rect x="0" y="0" width="220" height="36" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="110" y="22" text-anchor="middle" class="pill" font-weight="700">cell annotator</text>
+      <rect x="240" y="0" width="220" height="36" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="350" y="22" text-anchor="middle" class="pill" font-weight="700">protein designer</text>
+      <rect x="480" y="0" width="280" height="36" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="620" y="22" text-anchor="middle" class="pill" font-weight="700">clinical assistant (AMIE)</text>
+
+      <rect x="0" y="46" width="220" height="36" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="110" y="68" text-anchor="middle" class="pill" font-weight="700">drug-target screen</text>
+      <rect x="240" y="46" width="220" height="36" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="350" y="68" text-anchor="middle" class="pill" font-weight="700">gene-set interpreter</text>
+      <rect x="480" y="46" width="280" height="36" rx="6" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <text x="620" y="68" text-anchor="middle" class="pill" font-weight="700">autonomous pathology (SPARK)</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <line x1="1140" y1="820" x2="1920" y2="820" stroke="#c95a2a" stroke-width="2.5"></line>
+    <polygon points="1920,820 1904,812 1904,828" fill="#c95a2a"></polygon>
+    <text x="1530" y="808" text-anchor="middle" class="era-tag" fill="#c95a2a">WHERE THE ACTION IS  ·  2025 – 2026</text>
+    <text x="1530" y="848" text-anchor="middle" class="annot" fill="#c95a2a">capability gains now come from the recipe layered on top of the foundation</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="900" width="1880" height="180" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1"></rect>
+    <text x="80" y="930" class="layer-tag" fill="#8a5a4a">THE PHASE TRANSITION</text>
+    <text x="80" y="964" class="key">Pretraining produces the substrate. Post-training produces the product.</text>
+    <text x="80" y="996" class="annot">Two completely different cost structures, completely different feedback loops, and increasingly different teams.</text>
+    <text x="80" y="1020" class="annot">The pretraining race is mostly run; the post-training race is just beginning — and that is where the next two years of biology will land.</text>
+    <text x="80" y="1054" class="annot" font-style="italic" fill="#5c5c66">If you are picking what to build, build on the right-hand side of this diagram.</text>
+  </g>
+</svg>

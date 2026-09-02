@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#5c5c66"></path>
+    </marker>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  CELLSAM  ·  PROMPTABLE SEGMENTATION FOR BIOLOGY</text>
+  <text x="60" y="96" class="h1">Generate the prompts, then let SAM do the segmenting.</text>
+  <text x="60" y="124" class="h-sub">A bio-specific detector replaces the human click. One model handles tissue, yeast, bacteria, H&amp;E.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+  <g>
+    <rect x="60" y="180" width="380" height="320" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="208" class="stage-tag" fill="#8a5a4a">INPUT  ·  ANY MODALITY  📥</text>
+    <text x="80" y="236" class="stage-title">tissue · yeast · bacteria · fluorescence</text>
+    <g transform="translate(80,260)">
+      <rect x="0" y="0" width="320" height="200" rx="10" fill="#fff7d9" stroke="#b8902c"></rect>
+      
+      <circle cx="50" cy="60" r="14" fill="#a14854" opacity="0.6"></circle>
+      <circle cx="100" cy="100" r="18" fill="#6b4e8a" opacity="0.6"></circle>
+      <ellipse cx="180" cy="70" rx="22" ry="12" fill="#2c8a4f" opacity="0.6"></ellipse>
+      <circle cx="240" cy="130" r="22" fill="#c95a2a" opacity="0.6"></circle>
+      <circle cx="280" cy="60" r="10" fill="#4a6a8a" opacity="0.6"></circle>
+      <ellipse cx="60" cy="160" rx="30" ry="10" fill="#2c8a4f" opacity="0.6"></ellipse>
+      <circle cx="170" cy="150" r="14" fill="#a14854" opacity="0.6"></circle>
+    </g>
+    <text x="80" y="486" class="annot" font-style="italic" fill="#5c5c66">no user clicks  ·  no per-modality model swap</text>
+  </g>
+
+  <line x1="455" y1="340" x2="495" y2="340" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="500" y="180" width="640" height="320" rx="14" fill="#e3edf6" stroke="#4a6a8a" stroke-width="1.8"></rect>
+    <circle cx="540" cy="222" r="22" fill="#4a6a8a"></circle>
+    <text x="540" y="230" text-anchor="middle" class="stage-num">1</text>
+    <text x="572" y="212" class="stage-tag" fill="#4a6a8a">STAGE 1  ·  CELLFINDER  🎯</text>
+    <text x="572" y="240" class="stage-title">lightweight detector proposes candidate cells</text>
+
+    <g transform="translate(520,260)">
+      <rect x="0" y="0" width="600" height="220" rx="10" fill="#ffffff" stroke="#4a6a8a"></rect>
+      
+      <circle cx="60" cy="60" r="14" fill="#a14854" opacity="0.4"></circle>
+      <rect x="40" y="40" width="40" height="40" fill="none" stroke="#4a6a8a" stroke-width="1.5" stroke-dasharray="3 2"></rect>
+
+      <circle cx="160" cy="110" r="18" fill="#6b4e8a" opacity="0.4"></circle>
+      <rect x="138" y="88" width="44" height="44" fill="none" stroke="#4a6a8a" stroke-width="1.5" stroke-dasharray="3 2"></rect>
+
+      <ellipse cx="270" cy="80" rx="22" ry="12" fill="#2c8a4f" opacity="0.4"></ellipse>
+      <rect x="244" y="64" width="52" height="32" fill="none" stroke="#4a6a8a" stroke-width="1.5" stroke-dasharray="3 2"></rect>
+
+      <circle cx="380" cy="140" r="22" fill="#c95a2a" opacity="0.4"></circle>
+      <rect x="354" y="114" width="52" height="52" fill="none" stroke="#4a6a8a" stroke-width="1.5" stroke-dasharray="3 2"></rect>
+
+      <circle cx="500" cy="80" r="14" fill="#4a6a8a" opacity="0.4"></circle>
+      <rect x="480" y="60" width="40" height="40" fill="none" stroke="#4a6a8a" stroke-width="1.5" stroke-dasharray="3 2"></rect>
+
+      <text x="300" y="200" text-anchor="middle" class="annot" font-weight="700" fill="#4a6a8a">bounding boxes  →  prompts</text>
+    </g>
+  </g>
+
+  <line x1="1155" y1="340" x2="1195" y2="340" stroke="#5c5c66" stroke-width="2.5" marker-end="url(#ar)"></line>
+
+  
+  <g>
+    <rect x="1200" y="180" width="740" height="320" rx="14" fill="#dfeede" stroke="#2c8a4f" stroke-width="1.8"></rect>
+    <circle cx="1240" cy="222" r="22" fill="#2c8a4f"></circle>
+    <text x="1240" y="230" text-anchor="middle" class="stage-num">2</text>
+    <text x="1272" y="212" class="stage-tag" fill="#2c8a4f">STAGE 2  ·  SAM (BIO-FINETUNED)  🧠</text>
+    <text x="1272" y="240" class="stage-title">each box → precise segmentation mask</text>
+
+    <g transform="translate(1220,260)">
+      <rect x="0" y="0" width="700" height="220" rx="10" fill="#ffffff" stroke="#2c8a4f"></rect>
+      <circle cx="60" cy="60" r="14" fill="#a14854" opacity="0.55" stroke="#2c8a4f" stroke-width="2"></circle>
+      <circle cx="170" cy="110" r="18" fill="#6b4e8a" opacity="0.55" stroke="#2c8a4f" stroke-width="2"></circle>
+      <ellipse cx="290" cy="80" rx="22" ry="12" fill="#2c8a4f" opacity="0.55" stroke="#2c8a4f" stroke-width="2"></ellipse>
+      <circle cx="420" cy="140" r="22" fill="#c95a2a" opacity="0.55" stroke="#2c8a4f" stroke-width="2"></circle>
+      <circle cx="560" cy="80" r="14" fill="#4a6a8a" opacity="0.55" stroke="#2c8a4f" stroke-width="2"></circle>
+
+      <text x="350" y="200" text-anchor="middle" class="annot" font-weight="700" fill="#2c8a4f">cell-level masks  ✅</text>
+    </g>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="540" width="1880" height="400" rx="14" fill="#ffffff" stroke="#d8d5cb" stroke-width="1.4"></rect>
+    <text x="80" y="572" class="stage-tag" fill="#8a5a4a">SAME MODEL  ·  DIFFERENT MODALITIES  🌍</text>
+
+    <g transform="translate(80,600)">
+      <rect x="0" y="0" width="440" height="160" rx="10" fill="#fbe6e6" stroke="#a14854"></rect>
+      <text x="20" y="28" class="stage-tag" fill="#a14854">TISSUE CELLS  🧫</text>
+      <text x="20" y="60" class="emoji">🧬</text>
+      <text x="60" y="60" class="annot">H&amp;E, IHC, IF</text>
+      <text x="20" y="90" class="annot" fill="#5c5c66">irregular nuclei, dense tissue</text>
+      <text x="20" y="124" class="annot" font-style="italic" fill="#5c5c66">solved well by CellSAM</text>
+
+      <rect x="460" y="0" width="440" height="160" rx="10" fill="#dfeede" stroke="#2c8a4f"></rect>
+      <text x="480" y="28" class="stage-tag" fill="#2c8a4f">YEAST  🍞</text>
+      <text x="480" y="60" class="emoji">🟢</text>
+      <text x="520" y="60" class="annot">small uniform ovoids</text>
+      <text x="480" y="90" class="annot" fill="#5c5c66">budding clusters</text>
+      <text x="480" y="124" class="annot" font-style="italic" fill="#5c5c66">solved well by CellSAM</text>
+
+      <rect x="920" y="0" width="440" height="160" rx="10" fill="#fbe6d8" stroke="#c95a2a"></rect>
+      <text x="940" y="28" class="stage-tag" fill="#c95a2a">BACTERIA  🦠</text>
+      <text x="940" y="60" class="emoji">🟧</text>
+      <text x="980" y="60" class="annot">rod / coccus mixed colonies</text>
+      <text x="940" y="90" class="annot" fill="#5c5c66">overlap-heavy</text>
+      <text x="940" y="124" class="annot" font-style="italic" fill="#5c5c66">solved well by CellSAM</text>
+
+      <rect x="1380" y="0" width="440" height="160" rx="10" fill="#e3edf6" stroke="#4a6a8a"></rect>
+      <text x="1400" y="28" class="stage-tag" fill="#4a6a8a">H&amp;E NUCLEI  🩸</text>
+      <text x="1400" y="60" class="emoji">🟣</text>
+      <text x="1440" y="60" class="annot">dense nuclear panel</text>
+      <text x="1400" y="90" class="annot" fill="#5c5c66">staining variability</text>
+      <text x="1400" y="124" class="annot" font-style="italic" fill="#5c5c66">solved well by CellSAM</text>
+    </g>
+
+    <line x1="80" y1="800" x2="1900" y2="800" stroke="#e5dfcf" stroke-width="1"></line>
+    <text x="80" y="830" class="annot" font-weight="700">why this generalises</text>
+    <text x="80" y="852" class="annot">CellFinder (bio-specific detection) + SAM (general object segmentation) = a separation of concerns that survives modality change.</text>
+    <text x="80" y="872" class="annot" font-style="italic" fill="#5c5c66">SAM brings shape priors from the natural-image world; CellFinder grounds them in biology.</text>
+    <text x="80" y="908" class="key" fill="#4a6a8a">one trained model  ·  no per-platform retraining for first-pass segmentation.</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="970" width="1880" height="100" rx="14" fill="#fbe6e6" stroke="#a14854" stroke-width="2"></rect>
+    <text x="80" y="998" class="stage-tag" fill="#a14854">⚠  THE FINE PRINT</text>
+    <text x="80" y="1032" class="key" fill="#a14854">&#34;zero-shot foundation model&#34;  ≠  no fine-tuning needed.</text>
+    <text x="80" y="1058" class="annot">still needs ~ 10 FOVs per new cell line for few-shot adaptation. Plan for it in your annotation budget.</text>
+  </g>
+</svg>

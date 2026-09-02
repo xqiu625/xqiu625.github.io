@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="20in" height="11in" viewBox="0 0 2000 1100" font-family="&#39;Helvetica Neue&#39;, Arial, sans-serif">
+  <defs>
+    <marker id="ax" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2a2a33"></path>
+    </marker>
+    <linearGradient id="rl-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a14854" stop-opacity="0.4"></stop>
+      <stop offset="100%" stop-color="#a14854" stop-opacity="0.8"></stop>
+    </linearGradient>
+    
+  </defs>
+  <rect width="2000" height="1100" fill="#f7f5f0"></rect>
+
+  <text x="60" y="56" class="eyebrow">FIGURE  |  POST-TRAINING TIMELINE  ·  CAPABILITY ACCUMULATION</text>
+  <text x="60" y="96" class="h1">2025 was the year the stack got built.</text>
+  <text x="60" y="124" class="h-sub">11 of 21 surveyed papers landed in 2025 — the year post-training went from a few recipes to a full stack.</text>
+  <line x1="60" y1="148" x2="1940" y2="148" stroke="#d8d5cb" stroke-width="1"></line>
+
+  
+
+  
+  <line x1="140" y1="220" x2="140" y2="800" stroke="#2a2a33" stroke-width="1.4"></line>
+  <text x="0" y="0" transform="translate(96,510) rotate(-90)" text-anchor="middle" class="layer-tag" fill="#2a2a33">CUMULATIVE POST-TRAINING CAPABILITIES  →</text>
+
+  
+  <line x1="140" y1="800" x2="1860" y2="800" stroke="#2a2a33" stroke-width="2" marker-end="url(#ax)"></line>
+  <g text-anchor="middle">
+    <text x="140" y="828" class="axis-tick">2017</text>
+    <text x="328" y="828" class="axis-tick">2018</text>
+    <text x="516" y="828" class="axis-tick">2019</text>
+    <text x="704" y="828" class="axis-tick">2020</text>
+    <text x="892" y="828" class="axis-tick">2021</text>
+    <text x="1080" y="828" class="axis-tick">2022</text>
+    <text x="1268" y="828" class="axis-tick">2023</text>
+    <text x="1456" y="828" class="axis-tick">2024</text>
+    <text x="1644" y="828" class="axis-tick">2025</text>
+    <text x="1832" y="828" class="axis-tick">2026</text>
+  </g>
+
+  
+
+  
+  <path d="M 140 800  L 140 770  L 1832 770  L 1832 800 Z" fill="#a14854" fill-opacity="0.55"></path>
+
+  
+  <path d="M 1268 770  L 1268 730  L 1832 730  L 1832 770 Z" fill="#c95a2a" fill-opacity="0.55"></path>
+
+  
+  <path d="M 1362 730  L 1362 670  L 1832 670  L 1832 730 Z" fill="#b8902c" fill-opacity="0.55"></path>
+
+  
+  <path d="M 1550 670  L 1550 570  L 1832 570  L 1832 670 Z" fill="#2c8a4f" fill-opacity="0.55"></path>
+
+  
+  <path d="M 1738 570  L 1738 430  L 1832 430  L 1832 570 Z" fill="#4a6a8a" fill-opacity="0.55"></path>
+
+  
+  <path d="M 1832 430  L 1832 330  L 1860 330  L 1860 430 Z" fill="#6b4e8a" fill-opacity="0.55"></path>
+
+  
+  <g>
+    <text x="1872" y="788" class="layer-tag" fill="#a14854">L1  PPO / REINVENT</text>
+    <text x="1872" y="804" class="annot" fill="#5c5c66">RL substrate (2017)</text>
+
+    <text x="1872" y="752" class="layer-tag" fill="#c95a2a">L2  ProteinRL</text>
+    <text x="1872" y="768" class="annot" fill="#5c5c66">bio RL fine-tune (2023)</text>
+
+    <text x="1872" y="700" class="layer-tag" fill="#b8902c">L3  PEFT for biology</text>
+    <text x="1872" y="716" class="annot" fill="#5c5c66">ESM2-LoRA, DANCE,</text>
+    <text x="1872" y="730" class="annot" fill="#5c5c66">TIME-LLM, CodonFM</text>
+
+    <text x="1872" y="620" class="layer-tag" fill="#2c8a4f">L4  SFT protocols + memory</text>
+    <text x="1872" y="636" class="annot" fill="#5c5c66">scGPT, Mem0,</text>
+    <text x="1872" y="650" class="annot" fill="#5c5c66">SpatialAgent, Cell-o1, C2S</text>
+
+    <text x="1872" y="500" class="layer-tag" fill="#4a6a8a">L5  PEFT systematics + verify</text>
+    <text x="1872" y="516" class="annot" fill="#5c5c66">scPEFT, GeneAgent, CASSIA,</text>
+    <text x="1872" y="530" class="annot" fill="#5c5c66">CyteType, ColabSaprot,</text>
+    <text x="1872" y="544" class="annot" fill="#5c5c66">DeMeo, Gene-R1</text>
+
+    <text x="1872" y="400" class="layer-tag" fill="#6b4e8a">L6  Clinical RCTs + agentic</text>
+    <text x="1872" y="416" class="annot" fill="#5c5c66">AMIE, Geneformer-Scaling,</text>
+    <text x="1872" y="430" class="annot" fill="#5c5c66">SPARK</text>
+  </g>
+
+  
+  <line x1="1550" y1="220" x2="1550" y2="800" stroke="#a14854" stroke-width="1.6" stroke-dasharray="6 4"></line>
+  <text x="1556" y="252" class="inflection" fill="#a14854">★  INFLECTION  ·  2025</text>
+  <text x="1556" y="278" class="annot" fill="#a14854">11 of 21 papers land in 2025</text>
+  <text x="1556" y="298" class="annot" fill="#5c5c66" font-style="italic">three new capability bands stack in a single year</text>
+
+  
+  <g>
+    
+    <circle cx="140" cy="770" r="6" fill="#a14854"></circle>
+    <text x="148" y="752" class="annot" font-weight="700" fill="#a14854">2017</text>
+    <text x="148" y="770" class="annot" fill="#5c5c66" font-size="11">PPO, REINVENT</text>
+
+    
+    <circle cx="1268" cy="730" r="6" fill="#c95a2a"></circle>
+    <text x="1192" y="712" class="annot" font-weight="700" fill="#c95a2a">2023</text>
+    <text x="1192" y="730" class="annot" fill="#5c5c66" font-size="11">ProteinRL — first bio RL fine-tune</text>
+
+    
+    <circle cx="1362" cy="670" r="6" fill="#b8902c"></circle>
+    <text x="1286" y="652" class="annot" font-weight="700" fill="#b8902c">2024 H1</text>
+    <text x="1286" y="670" class="annot" fill="#5c5c66" font-size="11">PEFT for biology lands</text>
+
+    
+    <circle cx="1550" cy="570" r="6" fill="#2c8a4f"></circle>
+    <text x="1462" y="548" class="annot" font-weight="700" fill="#2c8a4f">2025 H1</text>
+    <text x="1462" y="566" class="annot" fill="#5c5c66" font-size="11">SFT protocols, memory, spatial agents,</text>
+    <text x="1462" y="582" class="annot" fill="#5c5c66" font-size="11">RL reasoning all ship</text>
+
+    
+    <circle cx="1738" cy="430" r="6" fill="#4a6a8a"></circle>
+    <text x="1644" y="410" class="annot" font-weight="700" fill="#4a6a8a">2025 H2</text>
+    <text x="1644" y="428" class="annot" fill="#5c5c66" font-size="11">multi-agent verify, PEFT systematics,</text>
+    <text x="1644" y="444" class="annot" fill="#5c5c66" font-size="11">active learning, ecosystems, IT</text>
+
+    
+    <circle cx="1832" cy="330" r="6" fill="#6b4e8a"></circle>
+    <text x="1740" y="308" class="annot" font-weight="700" fill="#6b4e8a">2026</text>
+    <text x="1740" y="326" class="annot" fill="#5c5c66" font-size="11">clinical RCTs (AMIE), quantization-native</text>
+    <text x="1740" y="342" class="annot" fill="#5c5c66" font-size="11">FMs, agentic discovery (SPARK)</text>
+  </g>
+
+  
+  <g>
+    <rect x="60" y="880" width="1880" height="200" rx="14" fill="#fff7d9" stroke="#b8902c" stroke-width="2"></rect>
+    <text x="80" y="910" class="layer-tag" fill="#7a5b13">WHY 2025 EXPLODES</text>
+    <text x="80" y="944" class="key" fill="#7a5b13">All six layers existed somewhere before 2025 — but 2025 is when they started composing into stacks.</text>
+    <text x="80" y="976" class="annot">PEFT had been around for two years; multi-agent verification had been demonstrated in NLP; RL elicitation had Gene-R1 and Cell-o1 ready. What 2025 added was the practice of <tspan font-weight="700">stacking</tspan> them: PEFT + GRPO + verifier + memory.</text>
+    <text x="80" y="1008" class="annot">Each individual capability is older than the inflection — but the recipe-as-composition is new.</text>
+    <text x="80" y="1042" class="annot" font-style="italic" fill="#5c5c66">2026 layers (clinical RCTs, agentic discovery) start cashing the stack out into production.</text>
+    <text x="80" y="1070" class="annot" font-style="italic" fill="#5c5c66">The capability curve is no longer growing one layer at a time — it is growing in compositions.</text>
+  </g>
+</svg>
