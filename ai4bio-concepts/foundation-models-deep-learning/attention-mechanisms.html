@@ -1788,6 +1788,12 @@
                             <td>SE trained on 167M cells, ST on 100M+ perturbed cells; &gt;30% improvement in discriminating perturbation effects; identifies strong perturbations in cellular contexts unseen during training</td>
                         </tr>
                         <tr>
+                            <td><strong>STACK</strong> (Brixi et al., Arc Institute, 2026)</td>
+                            <td>Zero-shot perturbation prediction via in-context learning</td>
+                            <td>Tabular attention &mdash; within-cell (across genes) + cross-cell (across rows); no fine-tuning at inference</td>
+                            <td>Pretrained on 149M cells (Perturb Sapiens atlas); generalizes to unseen perturbations, donors, and tissues without weight updates by reading labeled context cells as table rows</td>
+                        </tr>
+                        <tr>
                             <td><strong>Sigmoid Attention for scFMs</strong> (2026)</td>
                             <td>Single-cell foundation model pre-training</td>
                             <td>Sigmoid replaces softmax in attention scoring</td>
