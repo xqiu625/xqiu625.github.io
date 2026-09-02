@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fine-tuning and adaptation of biological foundation models — full fine-tuning, LoRA, adapters, prefix tuning, zero-shot transfer, and task head design for scRNA-seq, genomics, and protein tasks">
+    <title>Fine-Tuning & Adaptation - AI4Bio Learning Hub</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: var(--sport-primary, #7A5FB8);
+            --primary-dark: var(--sport-dark, #3B276E);
+            --secondary: #f97316;
+            --accent: #8b5cf6;
+            --bg-start: #f0fdfa;
+            --bg-mid: #fff7ed;
+            --bg-end: #f0fdf4;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+            line-height: 1.7;
+            color: #1e293b;
+            margin: 0; padding: 0;
+            position: relative; overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(circle at 15% 40%, rgba(13,148,136,.10) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(249,115,22,.08) 0%, transparent 50%),
+                radial-gradient(circle at 55% 85%, rgba(139,92,246,.06) 0%, transparent 50%);
+            z-index: 0; pointer-events: none;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+        /* NAV */
+        nav { position: sticky; top: 0; z-index: 100; background: rgba(240,253,250,.90); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(13,148,136,.18); padding: 12px 0; }
+        nav .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+        nav ul li a { display: flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: .82rem; font-weight: 600; color: #334155; text-decoration: none; transition: all .2s; }
+        nav ul li a:hover { background: rgba(13,148,136,.12); color: var(--primary); }
+        .home-link { color: var(--primary) !important; }
+        .theme-toggle { background: none; border: 1.5px solid rgba(13,148,136,.3); border-radius: 20px; padding: 6px 14px; cursor: pointer; font-size: .8rem; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 6px; transition: all .2s; }
+        .theme-toggle:hover { background: rgba(13,148,136,.08); }
+
+        /* HEADER */
+        .header { text-align: center; padding: 64px 0 40px; }
+        .header h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 16px; }
+        .header .subtitle { font-size: 1.05rem; color: #475569; max-width: 720px; margin: 0 auto 28px; }
+        .stats-bar { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1; }
+        .stat-label { font-size: .78rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+
+        /* SECTIONS */
+        .content-section { background: rgba(255,255,255,.75); backdrop-filter: blur(8px); border: 1px solid rgba(13,148,136,.15); border-radius: 20px; padding: 40px 36px; margin-bottom: 28px; }
+        .content-section h2 { font-size: 1.5rem; font-weight: 800; color: var(--primary); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .content-section h3 { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 28px 0 10px; }
+        .content-section p { color: #334155; margin-bottom: 14px; }
+
+        /* STORY */
+        .story-box { background: linear-gradient(135deg,rgba(13,148,136,.06),rgba(249,115,22,.05)); border: 1.5px solid rgba(13,148,136,.22); border-radius: 16px; padding: 28px 32px; margin: 24px 0; }
+        .story-box h3 { color: var(--primary); margin-top: 0; }
+
+        /* DECISION BOX */
+        .decision-box { background: linear-gradient(135deg,rgba(249,115,22,.07),rgba(13,148,136,.05)); border: 1.5px solid rgba(249,115,22,.30); border-radius: 16px; padding: 22px 28px; margin: 20px 0; }
+        .decision-box h4 { color: var(--secondary); margin: 0 0 10px; font-size: 1rem; }
+
+        /* CONCEPT BLOCKS */
+        .lego-concept-block { background: rgba(255,255,255,.9); border: 1.5px solid rgba(13,148,136,.20); border-radius: 16px; padding: 28px 28px 24px; margin-bottom: 24px; transition: box-shadow .2s; }
+        .lego-concept-block:hover { box-shadow: 0 6px 28px rgba(13,148,136,.10); }
+        .concept-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+        .concept-number { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.1rem; color: white; flex-shrink: 0; background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .concept-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; }
+        .concept-subtitle { font-size: .85rem; color: #64748b; margin-top: 2px; }
+        .lego-svg-wrapper { margin: 18px 0; text-align: center; }
+        .lego-svg-wrapper svg { max-width: 100%; height: auto; border-radius: 10px; }
+        .concept-text { color: #334155; margin-bottom: 12px; }
+        .analogy-box { background: linear-gradient(135deg,rgba(13,148,136,.05),rgba(249,115,22,.04)); border-left: 4px solid var(--secondary); border-radius: 0 12px 12px 0; padding: 14px 18px; margin: 14px 0; font-size: .92rem; }
+        .analogy-box strong { color: var(--primary); }
+        .subtype-table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: 14px; }
+        .subtype-table th { background: rgba(13,148,136,.09); color: var(--primary); padding: 8px 12px; text-align: left; font-weight: 700; border-bottom: 2px solid rgba(13,148,136,.18); }
+        .subtype-table td { padding: 8px 12px; border-bottom: 1px solid rgba(13,148,136,.08); vertical-align: top; }
+        .subtype-table tr:last-child td { border-bottom: none; }
+        .subtype-table tr:nth-child(even) td { background: rgba(13,148,136,.03); }
+
+        /* PAPER CARDS */
+        .papers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 18px; margin-top: 18px; }
+        .paper-card { background: rgba(255,255,255,.9); border: 1.5px solid rgba(13,148,136,.18); border-radius: 14px; padding: 20px; transition: all .2s; }
+        .paper-card:hover { box-shadow: 0 5px 22px rgba(13,148,136,.12); transform: translateY(-2px); }
+        .paper-card h4 { font-size: .95rem; font-weight: 800; color: #1e293b; margin: 0 0 6px; }
+        .paper-card .meta { font-size: .8rem; color: #64748b; margin-bottom: 8px; }
+        .paper-card .tags { margin-bottom: 10px; }
+        .paper-card .summary { font-size: .85rem; color: #334155; margin-bottom: 10px; line-height: 1.55; }
+        .paper-card .links { display: flex; gap: 8px; flex-wrap: wrap; }
+        .paper-card .links a { display: flex; align-items: center; gap: 5px; padding: 5px 12px; border-radius: 16px; font-size: .78rem; font-weight: 700; text-decoration: none; background: rgba(13,148,136,.08); color: var(--primary); border: 1px solid rgba(13,148,136,.2); transition: all .2s; }
+        .paper-card .links a:hover { background: var(--primary); color: white; }
+
+        /* TAGS */
+        .tag { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .75rem; font-weight: 700; margin: 2px; }
+        .tag-full  { background: rgba(13,148,136,.12); color: #0f766e; }
+        .tag-peft  { background: rgba(249,115,22,.12); color: #c2410c; }
+        .tag-lora  { background: rgba(139,92,246,.12); color: #7c3aed; }
+        .tag-zero  { background: rgba(14,165,233,.12); color: #0369a1; }
+        .tag-head  { background: rgba(234,179,8,.14);  color: #92400e; }
+        .tag-bio   { background: rgba(5,150,105,.13);  color: #065f46; }
+
+        /* COMPARISON TABLE */
+        .comparison-table { width: 100%; border-collapse: collapse; font-size: .85rem; overflow-x: auto; }
+        .comparison-table th { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 10px 12px; text-align: left; font-weight: 700; }
+        .comparison-table td { padding: 9px 12px; border-bottom: 1px solid rgba(13,148,136,.10); vertical-align: top; }
+        .comparison-table tr:nth-child(even) td { background: rgba(13,148,136,.03); }
+        .comparison-table tr:hover td { background: rgba(13,148,136,.06); }
+        .table-wrap { overflow-x: auto; }
+
+        /* HIGHLIGHT */
+        .highlight-box { border: 1.5px solid rgba(13,148,136,.20); border-radius: 14px; padding: 20px 24px; margin: 16px 0; }
+        .highlight-box h4 { color: var(--primary); margin: 0 0 10px; font-size: 1rem; }
+
+        /* GUIDE STEPS */
+        .guide-step { display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+        .guide-step-num { width: 36px; height: 36px; border-radius: 50%; background: var(--primary); color: white; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .guide-step-content h4 { margin: 0 0 6px; color: #1e293b; }
+        .guide-step-content p  { margin: 0; font-size: .9rem; color: #475569; }
+
+        /* TASK HEAD GRID */
+        .task-head-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; margin-top: 16px; }
+        .task-head-card { background: rgba(255,255,255,.85); border: 1.5px solid rgba(13,148,136,.18); border-radius: 12px; padding: 16px 18px; }
+        .task-head-card h4 { margin: 0 0 8px; font-size: .9rem; font-weight: 800; color: var(--primary); }
+        .task-head-card p  { margin: 0; font-size: .83rem; color: #475569; line-height: 1.5; }
+
+        /* RELATED */
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 14px; margin-top: 16px; }
+        .related-card { background: rgba(255,255,255,.85); border: 1px solid rgba(13,148,136,.18); border-radius: 12px; padding: 16px; transition: all .2s; text-decoration: none; color: inherit; }
+        .related-card:hover { background: rgba(13,148,136,.06); border-color: var(--primary); transform: translateY(-2px); }
+        .related-card h4 { margin: 0 0 6px; font-size: .92rem; color: var(--primary); }
+        .related-card p  { margin: 0; font-size: .82rem; color: #64748b; }
+
+        /* FOOTER */
+        footer { text-align: center; padding: 40px 0; color: #64748b; font-size: .85rem; }
+        footer a { color: var(--primary); text-decoration: none; }
+
+        /* DARK MODE */
+        [data-theme="dark"] body { background: linear-gradient(135deg,#0c1f1e,#1a120a,#0d1f13); color: #e2e8f0; }
+        [data-theme="dark"] body::before { opacity: .4; }
+        [data-theme="dark"] nav { background: rgba(12,31,30,.92); border-color: rgba(13,148,136,.3); }
+        [data-theme="dark"] nav ul li a { color: #cbd5e1; }
+        [data-theme="dark"] .content-section { background: rgba(12,31,30,.65); border-color: rgba(13,148,136,.25); }
+        [data-theme="dark"] .content-section p, [data-theme="dark"] .concept-text { color: #cbd5e1; }
+        [data-theme="dark"] .lego-concept-block { background: rgba(12,31,30,.75); border-color: rgba(13,148,136,.3); }
+        [data-theme="dark"] .analogy-box { background: rgba(13,148,136,.08); }
+        [data-theme="dark"] .paper-card { background: rgba(12,31,30,.85); border-color: rgba(13,148,136,.3); }
+        [data-theme="dark"] .paper-card h4 { color: #e2e8f0; }
+        [data-theme="dark"] .paper-card .summary { color: #cbd5e1; }
+        [data-theme="dark"] .task-head-card { background: rgba(12,31,30,.75); border-color: rgba(13,148,136,.28); }
+        [data-theme="dark"] .related-card { background: rgba(12,31,30,.7); border-color: rgba(13,148,136,.3); }
+        [data-theme="dark"] .related-card p { color: #94a3b8; }
+        /* ===== CASEWORK BANNER + STORY (LEGO retrofit, 02 Model) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#2a1a52 0%,#3B276E 55%,#4a3488 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(59,39,110,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #C9B7EE; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #e6ddf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: var(--sport-soft, #fbf7ff); border: 1.5px solid var(--sport-pale, #f4ecfa); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #3B276E); border-left: 4px solid var(--sport-primary, #7A5FB8); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #f4ecfa); border-left: 5px solid var(--sport-primary, #7A5FB8); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(59,39,110,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(59,39,110,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); }
+        .library-card h4 { color: var(--sport-dark, #3B276E); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #3B276E); background: var(--sport-pale, #f4ecfa); border: 1px dashed var(--sport-secondary, #C9B7EE); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #7A5FB8); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #7A5FB8); font-size: .95em; clear: both; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#f4ecfa); box-shadow: 0 10px 28px rgba(59,39,110,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #b9a5f0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(122,95,184,.15); border-color: rgba(185,165,240,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #b9a5f0; }
+        [data-theme="dark"] .library-footnote { color: #b9a5f0; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); }
+        .content-figure figcaption { margin-top: 10px; font-size: 0.9em; line-height: 1.55; color: #5a6b7c; text-align: center; }
+        [data-theme="dark"] .content-figure figcaption { color: #9fb3a7; }
+    </style>
+    <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
+    <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
+</head>
+<body data-sport="model">
+
+<nav class="navbar">
+    <div class="container">
+        <ul class="navbar-nav">
+            <li><a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
+            <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
+            <li><a href="#lego-retrofit">🧱 Story</a></li>
+            <li><a href="#concepts"><i class="fas fa-cubes"></i> Concepts</a></li>
+            <li><a href="#task-heads"><i class="fas fa-plug"></i> Task Heads</a></li>
+            <li><a href="#papers"><i class="fas fa-file-alt"></i> Papers</a></li>
+            <li><a href="#guide"><i class="fas fa-map"></i> Guide</a></li>
+            <li><a href="#hands-on"><i class="fas fa-wrench"></i> Hands-on</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="container">
+    <!-- HEADER -->
+    <header class="header">
+        <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); margin-bottom: 18px;">AI4Bio Learning Hub · Field Guide</div>
+        <h1>&#x1F527; Fine-Tuning &amp; Adaptation of Biological Foundation Models</h1>
+        <p class="subtitle">
+            Full fine-tuning, LoRA, adapters, prefix tuning, zero-shot transfer, and task head design —
+            how to take a pretrained biological foundation model and make it work on your specific task.
+        </p>
+        <div class="stats-bar">
+            <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Adaptation Strategies</div></div>
+            <div class="stat-item"><div class="stat-number">18+</div><div class="stat-label">Biology Models</div></div>
+            <div class="stat-item"><div class="stat-number">6</div><div class="stat-label">Task Head Types</div></div>
+            <div class="stat-item"><div class="stat-number">2019–2026</div><div class="stat-label">Year Range</div></div>
+        </div>
+    </header>
+
+    <!-- CASEWORK BANNER (Model · LEGO lens) -->
+    <section class="casework-banner" aria-label="LEGO inspired fine-tuning casework">
+        <div class="casework-art">
+            <img src="../animations/rive-assets/stage-themes-v5/lego-retrofit-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu as a LEGO retrofit master swapping a castle tower top, installing an official add-on piece, and stress-testing the modified castle with a checklist">
+        </div>
+        <div class="casework-copy">
+            <div class="kicker">LEGO lens · fine-tuning</div>
+            <h2>城堡是现成的，换个塔尖就是新用途。</h2>
+            <p>Pretraining gives you the finished castle; fine-tuning is the retrofit. 最小的改装达成新用途是手艺，乱动承重墙是事故——full FT、LoRA、adapters 的区别，就是改装的尺度与风险。</p>
+        </div>
+    </section>
+
+    <!-- STORY LINE: the retrofit -->
+    <section class="content-section story-section" id="lego-retrofit">
+        <figure class="story-hero">
+            <img src="../animations/rive-assets/stage-themes-v5/lego-retrofit-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu LEGO master builder swapping the tower top of a finished castle for a new tower piece, an official add-on pack and a warning-marked load-bearing wall nearby">
+        </figure>
+        <h2>🧱 The Retrofit: Fine-Tuning in Six Jobs</h2>
+        <p class="story-quote">「城堡是现成的，换个塔尖就是新用途。」</p>
+        <p class="story-intro">The kit is already built — pretraining did the hard part. Fine-tuning is what comes next: adapt the finished castle to a new commission with the least structural risk. Six jobs from the retrofit workshop, re-read as fine-tuning methods.</p>
+        <div class="library-grid">
+            <div class="library-card">
+                <div class="book-meta">Job 1 · 现成的城堡 The castle is already built</div>
+                <h4>The pretrained base</h4>
+                <p class="plot">Nobody retrofits a brick pile. The whole point is that the castle already stands — arches, walls, proportions all learned. Your job is the commission, not the foundation.</p>
+                <p class="echo"><strong>Start from the checkpoint.</strong> Fine-tuning begins from pretrained weights: the general structure is free; you are buying adaptation, not construction. <a href="#story">See the paradigm ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Job 2 · 只换塔尖 Swap only the tower top</div>
+                <h4>Task heads &amp; last-layer tuning</h4>
+                <p class="plot">The hospital commission arrives. You pop the tower top off and snap a clinic tower on — ten bricks changed, a thousand untouched. Done by lunch.</p>
+                <p class="echo"><strong>Head tuning.</strong> Freeze the backbone, train only the task head: the cheapest retrofit, and often all a small dataset can safely buy. <a href="#task-heads">See task heads ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Job 3 · 官方改件包 The official add-on pack</div>
+                <h4>LoRA &amp; adapters</h4>
+                <p class="plot">The kit company sells a snap-on pack: one precisely shaped adapter piece per brick it touches, and not a single original brick moves. Swap the pack for the next commission; the castle underneath stays factory-perfect.</p>
+                <p class="echo"><strong>LoRA.</strong> Trainable low-rank pairs (ΔW = BA) injected beside frozen weights — ~0.1–1% of parameters, near-full quality, tasks switch by swapping adapters. <a href="#concepts">See LoRA ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Job 4 · 全堡逐块校 Retune every brick</div>
+                <h4>Full fine-tuning</h4>
+                <p class="plot">Some commissions won't accept snap-ons: every brick must be re-seated. With a warehouse of matching parts and a patient crew, the result is the closest possible fit — at the highest cost and the highest risk.</p>
+                <p class="echo"><strong>Full FT.</strong> Update all weights: best quality when data is sufficient, the wrong move when it isn't. <a href="#concepts">See full FT ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Job 5 · 别拆承重墙 Never touch load-bearing walls</div>
+                <h4>Catastrophic forgetting</h4>
+                <p class="plot">The apprentice removes one elegant arch to fit a door — and the tower sags. The castle's strength was never in the door; it was in everything he didn't think about.</p>
+                <p class="echo"><strong>Forgetting.</strong> Overwrite the pretrained representations with a small dataset and the model forgets how to stand. Early stopping and gradual unfreezing are how you quit before the walls crack. <a href="#concepts">See the warning ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Job 6 · 改装验收单 The retrofit inspection</div>
+                <h4>Evaluation</h4>
+                <p class="plot">The retrofit is not done when the builder says so — it is done when the inspector stops finding cracks. Every modified castle goes on the same stress bench as a new build.</p>
+                <p class="echo"><strong>Evaluate like it's new.</strong> Hold out a validation set from day one: the retrofit ships only when held-out performance confirms the castle still stands. <a href="#guide">See the guide ↓</a></p>
+            </div>
+        </div>
+        <figure class="content-figure comic-figure">
+            <img src="figures/lego-retrofit-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel LEGO retrofit comic: swapping only the castle tower top for a hospital tower; a small adapter piece snapping onto an existing brick with originals untouched; a builder with a hammer paused beside a cracked load-bearing wall; and the modified castle passing a stress test on the bench">
+            <figcaption><strong>The retrofit in four jobs.</strong> Swap the tower top (head tuning) · the official add-on pack (LoRA) · never touch load-bearing walls (catastrophic forgetting) · pass the stress test (evaluation).</figcaption>
+        </figure>
+        <p class="library-footnote">「不重砌，只改装；不动承重墙。」</p>
+    </section>
+
+    <!-- STORY -->
+    <section class="content-section" id="story">
+        <h2><i class="fas fa-book-open"></i> From Pretrained to Deployed</h2>
+        <div class="story-box">
+            <h3>Pretraining teaches a model to "understand" biology — but that's not a task</h3>
+            <p>
+                A foundation model pretrained on 30 million single cells (like scFoundation) has learned
+                a rich internal representation of gene expression patterns. But it cannot answer your
+                biology question out of the box: it doesn't know you want to predict cell type, it doesn't
+                know the labels in your dataset, and it wasn't optimized for your specific tissue or disease context.
+                <strong>Adaptation</strong> is the step that bridges pretraining and deployment.
+            </p>
+            <p>
+                The central tension in adaptation is <strong>plasticity vs. stability</strong>:
+                you want the model to adapt to your task (plasticity), but not forget what it learned
+                during pretraining (stability). Update too many parameters and you get
+                <em>catastrophic forgetting</em> — the pretrained representations are overwritten.
+                Update too few and the model doesn't adapt. The five strategies on this page navigate
+                this tradeoff at different points on the spectrum.
+            </p>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(185px,1fr)); gap:14px; margin-top:20px;">
+            <div class="highlight-box"><h4>&#x1F9E0; Full FT</h4><p style="font-size:.85rem;color:#475569;margin:0;">Update all weights. Best quality with sufficient data; risk of catastrophic forgetting.</p></div>
+            <div class="highlight-box"><h4>&#x1F9E9; LoRA</h4><p style="font-size:.85rem;color:#475569;margin:0;">Inject trainable low-rank matrices. ~0.1–1% of parameters. Near-full quality.</p></div>
+            <div class="highlight-box"><h4>&#x1F527; Adapters</h4><p style="font-size:.85rem;color:#475569;margin:0;">Small bottleneck modules inserted per layer. Modular, composable, parameter-efficient.</p></div>
+            <div class="highlight-box"><h4>&#x1F4DD; Prefix/Prompt</h4><p style="font-size:.85rem;color:#475569;margin:0;">Prepend learnable virtual tokens. Zero architectural change; backbone completely frozen.</p></div>
+            <div class="highlight-box"><h4>&#x26A1; Zero/Few-Shot</h4><p style="font-size:.85rem;color:#475569;margin:0;">No weight update at all. Read the task from input context (STACK/ORCA style).</p></div>
+        </div>
+    </section>
+
+    <!-- CONCEPTS -->
+    <section class="content-section" id="concepts">
+        <h2><i class="fas fa-cubes"></i> Visual Guide to Adaptation Strategies</h2>
+
+        <!-- CONCEPT 1: FULL FINE-TUNING -->
+        <div class="lego-concept-block" id="concept-full-ft">
+            <div class="concept-header">
+                <div class="concept-number">1</div>
+                <div>
+                    <div class="concept-title">Full Fine-Tuning</div>
+                    <div class="concept-subtitle">Update all model parameters on task-specific data — maximum flexibility, maximum risk</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+                    <defs>
+                        <linearGradient id="ftGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#f0fdfa"/><stop offset="100%" stop-color="#fff7ed"/>
+                        </linearGradient>
+                        <linearGradient id="trainedGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#0d9488"/><stop offset="100%" stop-color="#0f766e"/>
+                        </linearGradient>
+                        <linearGradient id="ftdGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/>
+                        </linearGradient>
+                        <marker id="arrowFT" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#0d9488"/>
+                        </marker>
+                        <marker id="arrowRed" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#ef4444"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="680" height="210" fill="url(#ftGrad)" rx="10"/>
+                    <!-- Pretrained model (before) -->
+                    <text x="155" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">Before: Pretrained Foundation Model</text>
+                    <rect x="30" y="32" width="250" height="130" rx="10" fill="rgba(13,148,136,0.08)" stroke="#0d9488" stroke-width="1.5"/>
+                    <!-- Layers (all teal = pretrained) -->
+                    <rect x="44" y="42" width="222" height="22" rx="5" fill="url(#trainedGrad)" opacity=".85"/>
+                    <text x="155" y="57" text-anchor="middle" font-size="9" font-weight="700" fill="white">Layer 1 — Attention + FFN (frozen weights θ)</text>
+                    <rect x="44" y="70" width="222" height="22" rx="5" fill="url(#trainedGrad)" opacity=".85"/>
+                    <text x="155" y="85" text-anchor="middle" font-size="9" font-weight="700" fill="white">Layer 2 — Attention + FFN (frozen weights θ)</text>
+                    <rect x="44" y="98" width="222" height="22" rx="5" fill="url(#trainedGrad)" opacity=".85"/>
+                    <text x="155" y="113" text-anchor="middle" font-size="9" font-weight="700" fill="white">Layer N — Attention + FFN (frozen weights θ)</text>
+                    <text x="155" y="136" text-anchor="middle" font-size="10" fill="#64748b">···</text>
+                    <rect x="44" y="144" width="222" height="22" rx="5" fill="rgba(200,200,200,0.6)" stroke="#9ca3af" stroke-width="1"/>
+                    <text x="155" y="159" text-anchor="middle" font-size="9" fill="#6b7280">No task head</text>
+                    <!-- Arrow -->
+                    <text x="310" y="90" text-anchor="middle" font-size="22" fill="#f97316">→</text>
+                    <text x="310" y="108" text-anchor="middle" font-size="9" fill="#c2410c" font-weight="700">train on</text>
+                    <text x="310" y="120" text-anchor="middle" font-size="9" fill="#c2410c" font-weight="700">task data</text>
+                    <!-- Fine-tuned model (after) -->
+                    <text x="530" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#c2410c">After: Fine-Tuned Model</text>
+                    <rect x="380" y="32" width="282" height="130" rx="10" fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="1.5"/>
+                    <rect x="394" y="42" width="254" height="22" rx="5" fill="url(#ftdGrad)" opacity=".85"/>
+                    <text x="521" y="57" text-anchor="middle" font-size="9" font-weight="700" fill="white">Layer 1 — ALL weights updated (θ → θ')</text>
+                    <rect x="394" y="70" width="254" height="22" rx="5" fill="url(#ftdGrad)" opacity=".85"/>
+                    <text x="521" y="85" text-anchor="middle" font-size="9" font-weight="700" fill="white">Layer 2 — ALL weights updated (θ → θ')</text>
+                    <rect x="394" y="98" width="254" height="22" rx="5" fill="url(#ftdGrad)" opacity=".85"/>
+                    <text x="521" y="113" text-anchor="middle" font-size="9" font-weight="700" fill="white">Layer N — ALL weights updated (θ → θ')</text>
+                    <text x="521" y="136" text-anchor="middle" font-size="10" fill="#64748b">···</text>
+                    <rect x="394" y="144" width="254" height="22" rx="5" fill="#0d9488"/>
+                    <text x="521" y="159" text-anchor="middle" font-size="9" font-weight="700" fill="white">Task Head — Linear / MLP (new, trained from scratch)</text>
+                    <!-- Catastrophic forgetting warning -->
+                    <text x="340" y="185" text-anchor="middle" font-size="10" fill="#ef4444" font-weight="700">&#x26A0; Catastrophic forgetting risk: pretrained representations may be overwritten if training data is small</text>
+                    <text x="340" y="200" text-anchor="middle" font-size="9" fill="#475569">Mitigation: low learning rate (1e-5 to 1e-4), early stopping, layer-wise learning rate decay (LLRD)</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                Full fine-tuning updates <strong>all parameters</strong> of the pretrained model plus a newly
+                added task head, using labeled data from the target task. Every gradient step modifies the
+                original pretrained weights θ → θ'. This gives the maximum expressiveness to fit the task,
+                but carries a real risk of <em>catastrophic forgetting</em>: if the labeled dataset is small
+                relative to the number of parameters, the model may overwrite the useful biological knowledge
+                it acquired during pretraining, resulting in worse generalization than a simpler adapter-based approach.
+            </p>
+            <p class="concept-text">
+                Three standard mitigations: (1) <strong>small learning rate</strong> (1e-5 instead of 1e-3)
+                slows how fast weights drift from their pretrained values; (2) <strong>layer-wise learning
+                rate decay (LLRD)</strong> applies a smaller learning rate to early layers (which encode
+                more general biological features) and a larger rate to later layers; (3) <strong>early
+                stopping on a held-out validation set</strong> catches the point before forgetting sets in.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> You have a master builder's finished set (pretrained model).
+                Full fine-tuning is like letting a new builder completely take over — they can change any
+                brick to build whatever they want (maximum flexibility), but if they're not experienced
+                enough (small dataset), they might accidentally dismantle the most structurally important
+                pieces while chasing a new design goal.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Variant</th><th>Key technique</th><th>Biology examples</th><th>When to use</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Standard Full FT</strong></td><td>Single LR for all layers</td><td>Geneformer cell type classification</td><td>Large labeled dataset (&gt;50k cells)</td></tr>
+                    <tr><td><strong>LLRD</strong></td><td>Smaller LR for early layers, larger for late</td><td>DNA-BERT variant effect; ESM2 tasks</td><td>Medium data; want to preserve low-level features</td></tr>
+                    <tr><td><strong>Gradual unfreezing</strong></td><td>Unfreeze layers one at a time from top down</td><td>ULMFiT-style genomics FT</td><td>Small data; maximum forgetting mitigation</td></tr>
+                    <tr><td><strong>Domain-adaptive FT</strong></td><td>First unsupervised FT on domain text, then task FT</td><td>BioMedBERT; PubMedBERT</td><td>Domain shift from pretraining data to task domain</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 2: LoRA -->
+        <div class="lego-concept-block" id="concept-lora">
+            <div class="concept-header">
+                <div class="concept-number">2</div>
+                <div>
+                    <div class="concept-title">LoRA — Low-Rank Adaptation</div>
+                    <div class="concept-subtitle">Freeze all original weights; inject trainable low-rank matrix pairs ΔW = BA into each attention layer</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+                    <defs>
+                        <linearGradient id="loraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#f5f3ff"/><stop offset="100%" stop-color="#f0fdfa"/>
+                        </linearGradient>
+                        <marker id="arrowL" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <polygon points="0 0, 6 3, 0 6" fill="#8b5cf6"/>
+                        </marker>
+                        <marker id="arrowLo" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <polygon points="0 0, 6 3, 0 6" fill="#0d9488"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="680" height="250" fill="url(#loraGrad)" rx="10"/>
+                    <!-- title -->
+                    <text x="200" y="22" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">LoRA modifies one weight matrix W (e.g., W_Q in self-attention)</text>
+                    <!-- W (frozen) -->
+                    <rect x="30" y="40" width="110" height="130" rx="8" fill="rgba(100,116,139,0.15)" stroke="#64748b" stroke-width="2"/>
+                    <text x="85" y="98" text-anchor="middle" font-size="22" font-weight="800" fill="#475569">W</text>
+                    <text x="85" y="120" text-anchor="middle" font-size="10" fill="#64748b">(d × d)</text>
+                    <text x="85" y="135" text-anchor="middle" font-size="9" fill="#64748b">frozen &#x1F512;</text>
+                    <text x="85" y="186" text-anchor="middle" font-size="9" fill="#475569">e.g. 768×768 = 590K params</text>
+                    <!-- plus -->
+                    <text x="162" y="112" text-anchor="middle" font-size="20" font-weight="800" fill="#0d9488">+</text>
+                    <!-- B matrix (narrow, vertical) -->
+                    <rect x="185" y="40" width="36" height="130" rx="6" fill="#8b5cf6"/>
+                    <text x="203" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="white">B</text>
+                    <text x="203" y="114" text-anchor="middle" font-size="8" fill="#ddd6fe">d×r</text>
+                    <!-- A matrix (wide, horizontal) -->
+                    <rect x="229" y="93" width="130" height="36" rx="6" fill="#8b5cf6"/>
+                    <text x="294" y="116" text-anchor="middle" font-size="10" font-weight="700" fill="white">A  (r×d)</text>
+                    <!-- rank junction marker (no box, no overlap) -->
+                    <text x="225" y="87" text-anchor="middle" font-size="10" font-weight="800" fill="#6d28d9">r</text>
+                    <text x="203" y="186" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">rank r = 4–64</text>
+                    <text x="294" y="142" text-anchor="middle" font-size="8" fill="#64748b">A random init · B zero init</text>
+                    <!-- equals -->
+                    <text x="383" y="112" text-anchor="middle" font-size="20" font-weight="800" fill="#475569">=</text>
+                    <!-- effective weight -->
+                    <rect x="408" y="40" width="110" height="130" rx="8" fill="rgba(13,148,136,0.15)" stroke="#0d9488" stroke-width="2"/>
+                    <text x="463" y="90" text-anchor="middle" font-size="13" font-weight="800" fill="#0f766e">W + BA</text>
+                    <text x="463" y="110" text-anchor="middle" font-size="10" fill="#64748b">effective weight</text>
+                    <text x="463" y="125" text-anchor="middle" font-size="9" fill="#64748b">same shape as W</text>
+                    <text x="463" y="143" text-anchor="middle" font-size="9" font-weight="700" fill="#0f766e">merged at inference</text>
+                    <text x="463" y="156" text-anchor="middle" font-size="8" fill="#64748b">→ zero inference overhead</text>
+                    <text x="463" y="186" text-anchor="middle" font-size="9" fill="#0d9488">same 768×768, faster forward</text>
+                    <!-- scaling box -->
+                    <rect x="545" y="40" width="125" height="130" rx="8" fill="rgba(249,115,22,0.08)" stroke="rgba(249,115,22,0.3)"/>
+                    <text x="607" y="62" text-anchor="middle" font-size="10" font-weight="700" fill="#c2410c">Scaling: α/r</text>
+                    <text x="607" y="82" text-anchor="middle" font-size="9" fill="#475569">h = Wx + (α/r)·BAx</text>
+                    <text x="607" y="98" text-anchor="middle" font-size="9" fill="#475569">α = scaling factor</text>
+                    <text x="607" y="114" text-anchor="middle" font-size="9" fill="#475569">larger r → more capacity</text>
+                    <text x="607" y="130" text-anchor="middle" font-size="9" fill="#475569">smaller r → more regularization</text>
+                    <text x="607" y="150" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c">Apply to: Q, V (minimal)</text>
+                    <text x="607" y="164" text-anchor="middle" font-size="9" font-weight="700" fill="#c2410c">or Q, K, V, O, FFN</text>
+                    <!-- trainable params box (below B/A, no overlap) -->
+                    <rect x="185" y="196" width="174" height="40" rx="8" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.3)"/>
+                    <text x="272" y="212" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">Trainable: 2·768·8 = 12,288 (vs 590K)</text>
+                    <text x="272" y="226" text-anchor="middle" font-size="8" fill="#64748b">~2% of W; merged after training</text>
+                    <!-- bottom note -->
+                    <text x="340" y="246" text-anchor="middle" font-size="9" fill="#64748b">LoRA storage: save only B, A per task — switch tasks by swapping ΔW = BA</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                LoRA (Hu et al., 2022) freezes all original model parameters and injects a pair of trainable
+                low-rank matrices <strong>B (d×r)</strong> and <strong>A (r×d)</strong> in parallel with each
+                weight matrix W (typically in the query and value projections of each attention layer).
+                The effective weight update is ΔW = BA, where rank r ≪ d (typically 4–64 vs. d=768–4096).
+                B is initialized to zero (so ΔW = 0 at the start of training — the model begins exactly
+                at its pretrained state) and A is initialized randomly.
+            </p>
+            <p class="concept-text">
+                The key practical advantage beyond parameter count: <strong>at inference time, BA is merged
+                back into W</strong>, so there is zero architectural change and zero inference overhead.
+                To switch tasks, you swap out a small ΔW matrix (a few MB) rather than reloading the full
+                model (tens of GB). This makes LoRA ideal for multi-task biological foundation models
+                where you need the same backbone for cell type annotation, trajectory inference, and
+                perturbation prediction simultaneously.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> LoRA is like adding a small, precisely shaped adapter piece
+                on top of an existing brick (W), rather than replacing the brick itself. The adapter
+                changes how the brick connects to the next level, but the original brick is unchanged and
+                the structure still looks the same from the outside. Switch tasks by swapping the adapter
+                — no need to dismantle and rebuild.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Variant</th><th>Key change</th><th>Use case</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>LoRA</strong> (Hu 2022)</td><td>Baseline: low-rank ΔW = BA per layer</td><td>Foundation for most biology PEFT work</td></tr>
+                    <tr><td><strong>QLoRA</strong> (Dettmers 2023)</td><td>4-bit quantized frozen backbone + LoRA in fp16</td><td>Large protein/genomic LMs on single GPU</td></tr>
+                    <tr><td><strong>DoRA</strong> (Liu 2024)</td><td>Decompose W into magnitude + direction; LoRA the direction</td><td>Better stability on smaller biology datasets</td></tr>
+                    <tr><td><strong>rsLoRA</strong></td><td>Scale α by 1/√r instead of 1/r</td><td>More stable training with large r</td></tr>
+                    <tr><td><strong>LoKr / LoHa</strong></td><td>Kronecker / Hadamard parameterization</td><td>Specialized dense layers; protein structure heads</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 3: ADAPTERS -->
+        <div class="lego-concept-block" id="concept-adapters">
+            <div class="concept-header">
+                <div class="concept-number">3</div>
+                <div>
+                    <div class="concept-title">Adapter Layers</div>
+                    <div class="concept-subtitle">Insert small bottleneck modules inside each transformer block — modular, composable, task-specific</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 680 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+                    <defs>
+                        <linearGradient id="adGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fff7ed"/><stop offset="100%" stop-color="#f0fdfa"/>
+                        </linearGradient>
+                        <marker id="arrowAD" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <polygon points="0 0, 6 3, 0 6" fill="#0d9488"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="680" height="220" fill="url(#adGrad)" rx="10"/>
+                    <!-- Standard transformer block (left) -->
+                    <text x="155" y="18" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Standard Transformer Block</text>
+                    <rect x="30" y="28" width="250" height="170" rx="10" fill="rgba(100,116,139,0.07)" stroke="#94a3b8" stroke-width="1.5"/>
+                    <!-- Attention -->
+                    <rect x="55" y="40" width="200" height="32" rx="6" fill="#64748b"/>
+                    <text x="155" y="60" text-anchor="middle" font-size="10" font-weight="700" fill="white">Multi-Head Self-Attention (frozen)</text>
+                    <!-- Add & Norm -->
+                    <rect x="55" y="80" width="200" height="20" rx="4" fill="rgba(100,116,139,0.4)"/>
+                    <text x="155" y="94" text-anchor="middle" font-size="9" fill="white">Add &amp; Norm</text>
+                    <!-- FFN -->
+                    <rect x="55" y="108" width="200" height="32" rx="6" fill="#64748b"/>
+                    <text x="155" y="128" text-anchor="middle" font-size="10" font-weight="700" fill="white">Feed-Forward Network (frozen)</text>
+                    <!-- Add & Norm 2 -->
+                    <rect x="55" y="148" width="200" height="20" rx="4" fill="rgba(100,116,139,0.4)"/>
+                    <text x="155" y="162" text-anchor="middle" font-size="9" fill="white">Add &amp; Norm</text>
+                    <!-- Arrow between blocks -->
+                    <text x="308" y="115" text-anchor="middle" font-size="22" fill="#f97316">→</text>
+                    <text x="308" y="133" text-anchor="middle" font-size="9" fill="#c2410c" font-weight="700">add adapter</text>
+                    <!-- Adapter block (right) -->
+                    <text x="510" y="18" text-anchor="middle" font-size="10" font-weight="700" fill="#0f766e">With Adapter (Houlsby / Pfeiffer variants)</text>
+                    <rect x="348" y="28" width="318" height="180" rx="10" fill="rgba(13,148,136,0.07)" stroke="#0d9488" stroke-width="1.5"/>
+                    <!-- Attention (frozen) -->
+                    <rect x="365" y="40" width="200" height="28" rx="6" fill="#64748b" opacity=".85"/>
+                    <text x="465" y="58" text-anchor="middle" font-size="9" font-weight="700" fill="white">Self-Attention (frozen &#x1F512;)</text>
+                    <!-- Adapter after attention (Houlsby) -->
+                    <rect x="573" y="40" width="84" height="52" rx="6" fill="#0d9488"/>
+                    <text x="615" y="58" text-anchor="middle" font-size="9" font-weight="700" fill="white">Adapter A</text>
+                    <text x="615" y="70" text-anchor="middle" font-size="8" fill="#ccfbf1">down → act → up</text>
+                    <text x="615" y="82" text-anchor="middle" font-size="8" fill="#99f6e4">&#x2193;(d→m) &#x2191;(m→d)</text>
+                    <line x1="565" y1="58" x2="573" y2="58" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arrowAD)"/>
+                    <!-- Add & Norm -->
+                    <rect x="365" y="76" width="200" height="16" rx="3" fill="rgba(100,116,139,0.4)"/>
+                    <text x="465" y="88" text-anchor="middle" font-size="8" fill="white">Add &amp; Norm</text>
+                    <!-- FFN (frozen) -->
+                    <rect x="365" y="100" width="200" height="28" rx="6" fill="#64748b" opacity=".85"/>
+                    <text x="465" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="white">FFN (frozen &#x1F512;)</text>
+                    <!-- Adapter after FFN (Pfeiffer only) -->
+                    <rect x="573" y="100" width="84" height="40" rx="6" fill="#f97316"/>
+                    <text x="615" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="white">Adapter B</text>
+                    <text x="615" y="130" text-anchor="middle" font-size="8" fill="#fed7aa">(Pfeiffer variant)</text>
+                    <line x1="565" y1="114" x2="573" y2="114" stroke="#f97316" stroke-width="1.5" marker-end="url(#arrowAD)"/>
+                    <!-- Add & Norm 2 -->
+                    <rect x="365" y="136" width="200" height="16" rx="3" fill="rgba(100,116,139,0.4)"/>
+                    <text x="465" y="148" text-anchor="middle" font-size="8" fill="white">Add &amp; Norm</text>
+                    <!-- Bottleneck detail -->
+                    <rect x="365" y="160" width="278" height="36" rx="6" fill="rgba(13,148,136,0.10)" stroke="rgba(13,148,136,0.3)"/>
+                    <text x="504" y="178" text-anchor="middle" font-size="9" font-weight="700" fill="#0f766e">Adapter bottleneck: Linear(d→m) → GELU → Linear(m→d) + residual</text>
+                    <text x="504" y="191" text-anchor="middle" font-size="8" fill="#475569">m ≈ 64-256 (vs d=768-4096) ← trainable; all other params frozen</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                Adapter layers (Houlsby et al., 2019) insert small <strong>bottleneck modules</strong>
+                inside each transformer block: a down-projection Linear(d→m), a nonlinearity (GELU),
+                and an up-projection Linear(m→d), plus a residual connection. The bottleneck dimension m
+                is much smaller than d (typically 64–256 vs. 768–4096), so the total trainable parameters
+                are &lt;2% of the backbone. <strong>Everything else is frozen.</strong>
+            </p>
+            <p class="concept-text">
+                The key advantage over LoRA: adapters are inherently <strong>modular and composable</strong>.
+                You can stack multiple adapters per layer (one for cell type, one for disease state), mix and
+                match them at inference time, or remove adapters entirely without touching the backbone.
+                The <strong>Pfeiffer variant</strong> (only one adapter after the FFN, not two) achieves
+                near-identical performance with half the adapter parameters.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> Adapters are like <em>extension ports</em> on a LEGO
+                Technic hub — the hub (pretrained model) has official connection points where you can
+                plug in specialized modules (adapters for different sensors, motors, or tools). Each
+                module is small and interchangeable; you can run two modules in parallel or swap them
+                without rebuilding the hub.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Adapter variant</th><th>Insertion point</th><th>Params</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Houlsby (Serial)</strong></td><td>After attention + after FFN</td><td>~3.6% baseline</td><td>Original; slight inference cost</td></tr>
+                    <tr><td><strong>Pfeiffer</strong></td><td>After FFN only</td><td>~1.8%</td><td>Preferred: same quality, fewer params</td></tr>
+                    <tr><td><strong>Parallel Adapter</strong></td><td>Side-path parallel to attention</td><td>~2%</td><td>No sequential depth increase; faster inference</td></tr>
+                    <tr><td><strong>AdapterFusion</strong></td><td>Attention over multiple task adapters</td><td>Varies</td><td>Multi-task: combine task-specific adapters for a new task</td></tr>
+                    <tr><td><strong>MAD-X (cross-lingual)</strong></td><td>Language adapter + task adapter stacked</td><td>~3–4%</td><td>Adapted for multi-species genomics transfer</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 4: PREFIX / PROMPT TUNING -->
+        <div class="lego-concept-block" id="concept-prefix">
+            <div class="concept-header">
+                <div class="concept-number">4</div>
+                <div>
+                    <div class="concept-title">Prefix Tuning &amp; Prompt Tuning</div>
+                    <div class="concept-subtitle">Prepend learnable virtual tokens — backbone completely frozen, zero architectural change</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+                    <defs>
+                        <linearGradient id="prGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#fdf4ff"/><stop offset="100%" stop-color="#f0fdf4"/>
+                        </linearGradient>
+                        <marker id="arrowPR" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <polygon points="0 0, 6 3, 0 6" fill="#8b5cf6"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="680" height="200" fill="url(#prGrad)" rx="10"/>
+                    <!-- Input sequence -->
+                    <text x="340" y="18" text-anchor="middle" font-size="10" font-weight="700" fill="#475569">Input to frozen transformer</text>
+                    <!-- Prefix tokens (learnable) -->
+                    <rect x="20" y="28" width="72" height="38" rx="7" fill="#8b5cf6"/>
+                    <text x="56" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="white">P&#x2081;</text>
+                    <text x="56" y="58" text-anchor="middle" font-size="8" fill="#ddd6fe">virtual</text>
+                    <rect x="96" y="28" width="72" height="38" rx="7" fill="#8b5cf6"/>
+                    <text x="132" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="white">P&#x2082;</text>
+                    <text x="132" y="58" text-anchor="middle" font-size="8" fill="#ddd6fe">virtual</text>
+                    <rect x="172" y="28" width="72" height="38" rx="7" fill="#7c3aed" opacity=".75"/>
+                    <text x="208" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="white">P&#x2083;</text>
+                    <text x="208" y="58" text-anchor="middle" font-size="8" fill="#ddd6fe">virtual</text>
+                    <!-- Separator -->
+                    <line x1="252" y1="28" x2="252" y2="66" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,3"/>
+                    <!-- Real tokens -->
+                    <rect x="260" y="28" width="72" height="38" rx="7" fill="#0d9488"/>
+                    <text x="296" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="white">Gene1</text>
+                    <text x="296" y="58" text-anchor="middle" font-size="8" fill="#ccfbf1">real token</text>
+                    <rect x="336" y="28" width="72" height="38" rx="7" fill="#0d9488"/>
+                    <text x="372" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="white">Gene2</text>
+                    <text x="372" y="58" text-anchor="middle" font-size="8" fill="#ccfbf1">real token</text>
+                    <rect x="412" y="28" width="72" height="38" rx="7" fill="#0d9488" opacity=".75"/>
+                    <text x="448" y="46" text-anchor="middle" font-size="9" font-weight="700" fill="white">GeneN</text>
+                    <text x="448" y="58" text-anchor="middle" font-size="8" fill="#ccfbf1">real token</text>
+                    <text x="502" y="50" text-anchor="middle" font-size="14" fill="#9ca3af">···</text>
+                    <!-- Annotations -->
+                    <rect x="20" y="74" width="224" height="22" rx="5" fill="rgba(139,92,246,0.12)" stroke="rgba(139,92,246,0.3)"/>
+                    <text x="132" y="89" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">Prefix (learnable; ~100–1000 tokens)</text>
+                    <rect x="260" y="74" width="310" height="22" rx="5" fill="rgba(13,148,136,0.10)" stroke="rgba(13,148,136,0.3)"/>
+                    <text x="415" y="89" text-anchor="middle" font-size="9" font-weight="700" fill="#0f766e">Real input tokens (unchanged)</text>
+                    <!-- Difference between prefix and prompt tuning -->
+                    <text x="340" y="115" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">Prefix Tuning vs. Prompt Tuning</text>
+                    <rect x="20" y="124" width="300" height="60" rx="8" fill="rgba(139,92,246,0.07)" stroke="rgba(139,92,246,0.25)"/>
+                    <text x="170" y="143" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">Prefix Tuning (Li &amp; Liang 2021)</text>
+                    <text x="170" y="158" text-anchor="middle" font-size="8.5" fill="#475569">Virtual prefix prepended at EVERY layer's K, V</text>
+                    <text x="170" y="173" text-anchor="middle" font-size="8.5" fill="#475569">Reparameterized via MLP (more stable); more expressive</text>
+                    <rect x="340" y="124" width="320" height="60" rx="8" fill="rgba(13,148,136,0.07)" stroke="rgba(13,148,136,0.25)"/>
+                    <text x="500" y="143" text-anchor="middle" font-size="9" font-weight="700" fill="#0f766e">Prompt Tuning (Lester 2021)</text>
+                    <text x="500" y="158" text-anchor="middle" font-size="8.5" fill="#475569">Virtual tokens prepended at INPUT layer only</text>
+                    <text x="500" y="173" text-anchor="middle" font-size="8.5" fill="#475569">Simpler; works best at model scale ≥ 10B</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                Prefix and prompt tuning make <strong>zero changes to the model architecture or weights</strong>.
+                Instead, they prepend a small set of learnable "virtual token" embeddings to the input sequence.
+                These virtual tokens are not real biological tokens — they don't correspond to genes or amino
+                acids. They are optimized by gradient descent to "steer" the frozen backbone toward the target
+                task, working through the model's own attention mechanism.
+            </p>
+            <p class="concept-text">
+                <strong>Prefix tuning</strong> (more powerful) injects trainable keys and values at every
+                transformer layer, giving each layer its own task-specific context. <strong>Prompt tuning</strong>
+                (simpler) only modifies the input, relying on the model to propagate the task signal through
+                its layers via attention. For biology: prefix tuning is better for small biology datasets;
+                prompt tuning only approaches adapter/LoRA quality at very large model scales (&gt;10B parameters).
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> Prefix tuning is like attaching a small instruction booklet
+                <em>to the front of the brick pile</em> before the builder starts. The builder (frozen model)
+                reads this special header first and adjusts their building strategy accordingly — without
+                any of the actual bricks in the pile being changed. The booklet pages are what you train;
+                the bricks are untouched.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Method</th><th>Where trained tokens are added</th><th>Trainable params</th><th>Best for</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Prefix Tuning</strong></td><td>Every layer K, V (via MLP reparameterization)</td><td>&lt;0.1%</td><td>Small labeled data; want complete backbone preservation</td></tr>
+                    <tr><td><strong>Prompt Tuning</strong></td><td>Input layer only</td><td>&lt;0.01%</td><td>Very large models; multi-task serving</td></tr>
+                    <tr><td><strong>P-Tuning v2</strong></td><td>Every layer, no reparameterization</td><td>&lt;0.1%</td><td>Sequence labeling (per-token prediction); stronger than prompt tuning</td></tr>
+                    <tr><td><strong>InstructBio-style</strong></td><td>Natural language prefix (handcrafted)</td><td>0 (frozen)</td><td>Zero-shot; when you have a strong instruction-tuned model</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 5: ZERO-SHOT / FEW-SHOT -->
+        <div class="lego-concept-block" id="concept-zeroshot">
+            <div class="concept-header">
+                <div class="concept-number">5</div>
+                <div>
+                    <div class="concept-title">Zero-Shot &amp; Few-Shot Transfer</div>
+                    <div class="concept-subtitle">No weight update — read the task from input context (in-context learning) or from pretraining knowledge</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;">
+                    <defs>
+                        <linearGradient id="zsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ecfdf5"/><stop offset="100%" stop-color="#eff6ff"/>
+                        </linearGradient>
+                        <marker id="arrowZS" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                            <polygon points="0 0, 6 3, 0 6" fill="#0d9488"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="680" height="200" fill="url(#zsGrad)" rx="10"/>
+                    <!-- Left: Zero-Shot -->
+                    <rect x="18" y="16" width="290" height="170" rx="10" fill="rgba(13,148,136,0.06)" stroke="#0d9488" stroke-width="1.5"/>
+                    <text x="163" y="36" text-anchor="middle" font-size="10" font-weight="700" fill="#0f766e">Zero-Shot</text>
+                    <!-- Frozen model -->
+                    <rect x="36" y="46" width="256" height="40" rx="7" fill="#64748b"/>
+                    <text x="164" y="64" text-anchor="middle" font-size="10" font-weight="700" fill="white">Frozen Foundation Model</text>
+                    <text x="164" y="78" text-anchor="middle" font-size="8" fill="#e2e8f0">no gradient, no task labels, no update</text>
+                    <!-- Input -->
+                    <rect x="36" y="96" width="256" height="32" rx="6" fill="rgba(13,148,136,0.15)" stroke="#0d9488"/>
+                    <text x="164" y="112" text-anchor="middle" font-size="9" font-weight="700" fill="#0f766e">Query cell / sequence only</text>
+                    <text x="164" y="123" text-anchor="middle" font-size="8" fill="#475569">[rank-ordered gene tokens]</text>
+                    <!-- Output -->
+                    <line x1="164" y1="128" x2="164" y2="148" stroke="#0d9488" stroke-width="1.5" marker-end="url(#arrowZS)"/>
+                    <rect x="36" y="148" width="256" height="28" rx="6" fill="#0d9488"/>
+                    <text x="164" y="162" text-anchor="middle" font-size="9" font-weight="700" fill="white">Embedding / prediction from pretraining</text>
+                    <text x="164" y="174" text-anchor="middle" font-size="8" fill="#ccfbf1">Geneformer: cell type from CLS embedding (kNN)</text>
+                    <!-- Right: Few-Shot / ICL -->
+                    <rect x="374" y="16" width="290" height="170" rx="10" fill="rgba(59,130,246,0.06)" stroke="#3b82f6" stroke-width="1.5"/>
+                    <text x="519" y="36" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">Few-Shot / In-Context Learning (ICL)</text>
+                    <!-- Frozen model -->
+                    <rect x="392" y="46" width="254" height="40" rx="7" fill="#64748b"/>
+                    <text x="519" y="64" text-anchor="middle" font-size="10" font-weight="700" fill="white">Frozen Foundation Model</text>
+                    <text x="519" y="78" text-anchor="middle" font-size="8" fill="#e2e8f0">STACK / Orca / GPT-style decoder</text>
+                    <!-- ICL input -->
+                    <rect x="392" y="96" width="254" height="44" rx="6" fill="rgba(59,130,246,0.12)" stroke="#3b82f6"/>
+                    <text x="519" y="111" text-anchor="middle" font-size="9" font-weight="700" fill="#1d4ed8">Context: k labeled examples + query</text>
+                    <text x="519" y="123" text-anchor="middle" font-size="8" fill="#475569">[cell₁,label₁], [cell₂,label₂], ..., [query, ?]</text>
+                    <text x="519" y="134" text-anchor="middle" font-size="8" fill="#475569">STACK: treats each cell as a row of tabular data</text>
+                    <!-- Output -->
+                    <line x1="519" y1="140" x2="519" y2="148" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arrowZS)"/>
+                    <rect x="392" y="148" width="254" height="28" rx="6" fill="#3b82f6"/>
+                    <text x="519" y="162" text-anchor="middle" font-size="9" font-weight="700" fill="white">Predicted label for query cell</text>
+                    <text x="519" y="174" text-anchor="middle" font-size="8" fill="#bfdbfe">no gradient — pattern from context only</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                Zero-shot and few-shot transfer require <strong>no weight updates at all</strong>.
+                In <strong>zero-shot</strong>, a pretrained model is directly applied to a new task, relying on
+                the knowledge acquired during pretraining: Geneformer can predict cell type by embedding a query
+                cell and running a kNN search over labeled reference cells — no task-specific training is needed.
+                ESM2 can predict variant pathogenicity by comparing the log-likelihood of the wild-type vs.
+                mutant sequence.
+            </p>
+            <p class="concept-text">
+                <strong>In-context learning (few-shot)</strong> is a stronger form, primarily available in
+                large decoder-based models: the model reads a few labeled examples as part of the input context
+                and uses the pattern to predict the label for a new query. <strong>STACK</strong> (Arc Institute,
+                2026) extends this to single-cell biology — treating each cell as a "row" in a tabular context
+                and predicting perturbation responses from a handful of reference cells in the same input.
+                No gradient, no labeled training data pipeline, no fine-tuning infrastructure required.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> Zero-shot is handing the master builder (frozen model) a brand
+                new bag of bricks and saying "build what you know how to build" — they do the best they can
+                with their existing skills. Few-shot is showing them three photos of what you want first:
+                "here are three examples of what the finished model should look like — now build me a fourth."
+                No new training is needed in either case.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Method</th><th>Labels needed</th><th>Biology examples</th><th>When it works best</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Zero-shot embedding + kNN</strong></td><td>Reference atlas only</td><td>Geneformer cell type, scGPT zero-shot</td><td>Good pretrained representation; query is in-distribution</td></tr>
+                    <tr><td><strong>Zero-shot log-likelihood</strong></td><td>None</td><td>ESM2 variant effect, DNABERT-2 motif</td><td>Masked LM; predict masked tokens at mutation site</td></tr>
+                    <tr><td><strong>Few-shot ICL</strong></td><td>k=5–50 labeled examples in context</td><td>STACK, Orca, BioMedGPT</td><td>Large decoder model; tabular or token-level prediction</td></tr>
+                    <tr><td><strong>Linear probe</strong></td><td>Small labeled set; frozen backbone</td><td>All biology FMs benchmark</td><td>Fast baseline before committing to full FT/PEFT</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- TASK HEAD DESIGN -->
+    <section class="content-section" id="task-heads">
+        <h2><i class="fas fa-plug"></i> Task Head Design</h2>
+        <p>
+            The <strong>task head</strong> is the output module attached to the frozen or fine-tuned backbone.
+            Its design is determined by the biological task: what tokens to pool, what architecture to use,
+            and what loss to train with. Getting the task head wrong is a common source of poor performance
+            even when the backbone is excellent.
+        </p>
+        <div class="task-head-grid">
+            <div class="task-head-card">
+                <h4><i class="fas fa-tag"></i> Cell Type Classification</h4>
+                <p><strong>Input:</strong> CLS token embedding or mean-pool of all gene tokens.<br>
+                <strong>Head:</strong> Linear(d → n_classes) + softmax.<br>
+                <strong>Loss:</strong> Cross-entropy.<br>
+                <strong>Examples:</strong> Geneformer, scGPT, scFoundation cell annotation.</p>
+            </div>
+            <div class="task-head-card">
+                <h4><i class="fas fa-dna"></i> Gene Expression Prediction</h4>
+                <p><strong>Input:</strong> Per-token embeddings (one per gene).<br>
+                <strong>Head:</strong> Linear(d → 1) per token → predicted expression value.<br>
+                <strong>Loss:</strong> MSE / Poisson NLL / negative binomial NLL.<br>
+                <strong>Examples:</strong> Masked gene prediction, scBERT imputation.</p>
+            </div>
+            <div class="task-head-card">
+                <h4><i class="fas fa-flask"></i> Perturbation Response</h4>
+                <p><strong>Input:</strong> Mean-pool of perturbed gene tokens.<br>
+                <strong>Head:</strong> MLP(d → d_genes) → full gene expression vector.<br>
+                <strong>Loss:</strong> MSE on differentially expressed genes (optionally weighted).<br>
+                <strong>Examples:</strong> scGPT perturbation fine-tuning, GEARS output head.</p>
+            </div>
+            <div class="task-head-card">
+                <h4><i class="fas fa-project-diagram"></i> Gene Regulatory Network</h4>
+                <p><strong>Input:</strong> Pair of gene token embeddings (geneᵢ, geneⱼ).<br>
+                <strong>Head:</strong> Bilinear(dᵢ, dⱼ → 1) or MLP on concatenation.<br>
+                <strong>Loss:</strong> Binary cross-entropy (edge / no-edge).<br>
+                <strong>Examples:</strong> scGPT GRN, Geneformer network inference.</p>
+            </div>
+            <div class="task-head-card">
+                <h4><i class="fas fa-atom"></i> Variant Effect (Genomics)</h4>
+                <p><strong>Input:</strong> Log-likelihood difference at masked position (no head needed for zero-shot).<br>
+                <strong>Head for FT:</strong> Linear on CLS or masked token → pathogenicity score.<br>
+                <strong>Loss:</strong> BCE on ClinVar labels / MSE on fitness.<br>
+                <strong>Examples:</strong> ESM2, DNABERT-2, Nucleotide Transformer.</p>
+            </div>
+            <div class="task-head-card">
+                <h4><i class="fas fa-cube"></i> Protein Structure (per-residue)</h4>
+                <p><strong>Input:</strong> All residue token embeddings from ESM2.<br>
+                <strong>Head:</strong> Contact prediction: outer product → 2D map → ResNet. Or ESMFold full structure module.<br>
+                <strong>Loss:</strong> FAPE (frame-aligned point error) / contact BCE.<br>
+                <strong>Examples:</strong> ESMFold, SaProt, ProteinMPNN.</p>
+            </div>
+        </div>
+        <div class="decision-box" style="margin-top:20px;">
+            <h4><i class="fas fa-lightbulb"></i> What tokens to pool? — The three canonical choices</h4>
+            <table class="subtype-table" style="margin:0;">
+                <thead><tr><th>Pooling strategy</th><th>How</th><th>Best for</th><th>Avoid when</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>CLS token</strong></td><td>Return the embedding of a special [CLS] token prepended to input</td><td>Sequence-level labels (cell type, disease)</td><td>Model not pretrained with CLS objective</td></tr>
+                    <tr><td><strong>Mean pooling</strong></td><td>Average all token embeddings</td><td>Robust general-purpose; works for encoder-only and decoder-only</td><td>Very long sequences (padding dilutes signal)</td></tr>
+                    <tr><td><strong>Per-token</strong></td><td>Keep all token embeddings; predict per position</td><td>Gene-level prediction; variant effect; sequence labeling</td><td>You only need one output per input</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- KEY PAPERS -->
+    <section class="content-section" id="papers">
+        <h2><i class="fas fa-file-alt"></i> Key Papers</h2>
+
+        <h3>Foundational PEFT Methods</h3>
+        <div class="papers-grid">
+            <div class="paper-card">
+                <h4>LoRA: Low-Rank Adaptation of Large Language Models</h4>
+                <div class="meta">Hu et al. | ICLR 2022</div>
+                <div class="tags"><span class="tag tag-lora">LoRA</span></div>
+                <div class="summary">Introduces low-rank decomposition ΔW = BA as a parameter-efficient alternative to full fine-tuning, with zero inference overhead. Demonstrated on GPT-3 and becomes the dominant PEFT method for biology foundation models post-2022.</div>
+                <div class="links">
+                    <a href="https://arxiv.org/abs/2106.09685" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://github.com/microsoft/LoRA" target="_blank"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>Adapter-Based Extension of BERT for Multi-Task NLP</h4>
+                <div class="meta">Houlsby et al. | ICML 2019</div>
+                <div class="tags"><span class="tag tag-peft">Adapter</span></div>
+                <div class="summary">Proposes the bottleneck adapter module inserted per transformer layer. Achieves near-full fine-tuning performance with ~3.6% additional parameters. Foundational for all adapter-based biology transfer approaches.</div>
+                <div class="links">
+                    <a href="https://arxiv.org/abs/1902.00751" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>Prefix-Tuning: Optimizing Continuous Prompts for Generation</h4>
+                <div class="meta">Li &amp; Liang | ACL 2021</div>
+                <div class="tags"><span class="tag tag-peft">Prefix Tuning</span></div>
+                <div class="summary">Prepends trainable "virtual" prefix vectors to every transformer layer's key and value matrices. Backbone is completely frozen. Achieves comparable performance to fine-tuning on low-data regimes with &lt;0.1% trainable parameters.</div>
+                <div class="links">
+                    <a href="https://arxiv.org/abs/2101.00190" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>QLoRA: Efficient Finetuning of Quantized LLMs</h4>
+                <div class="meta">Dettmers et al. | NeurIPS 2023</div>
+                <div class="tags"><span class="tag tag-lora">QLoRA</span></div>
+                <div class="summary">Combines 4-bit NF4 quantization of the frozen backbone with LoRA adapters in bf16. Enables fine-tuning of 65B-parameter models on a single GPU. Critical for applying large protein or genomic foundation models in resource-constrained settings.</div>
+                <div class="links">
+                    <a href="https://arxiv.org/abs/2305.14314" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://github.com/artidoro/qlora" target="_blank"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top:28px;">Biology Foundation Model Adaptation</h3>
+        <div class="papers-grid">
+            <div class="paper-card">
+                <h4>Geneformer: Transfer Learning Enables Predictions in Network Biology</h4>
+                <div class="meta">Theodoris et al. | Nature 2023</div>
+                <div class="tags"><span class="tag tag-bio">scRNA</span><span class="tag tag-full">Fine-tuning</span></div>
+                <div class="summary">Pretrained on 29.9M single cells; fine-tuned for cell type classification, gene dosage sensitivity prediction, and in silico perturbation. Demonstrates that rank-based tokenization + masked gene modeling enables powerful zero-shot and fine-tuned cell representations.</div>
+                <div class="links">
+                    <a href="https://doi.org/10.1038/s41586-023-06139-9" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank"><i class="fas fa-robot"></i> Model</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>scGPT: Toward Building a Foundation Model for Single-Cell Multi-omics</h4>
+                <div class="meta">Cui et al. | Nature Methods 2024</div>
+                <div class="tags"><span class="tag tag-bio">scRNA</span><span class="tag tag-full">Fine-tuning</span></div>
+                <div class="summary">Generative decoder-based foundation model pretrained on 33M cells; fine-tuned for cell annotation, perturbation response, and GRN inference. Shows that a unified pretraining objective can transfer across multiple downstream biology tasks via task head attachment.</div>
+                <div class="links">
+                    <a href="https://doi.org/10.1038/s41592-024-02201-0" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://github.com/bowang-lab/scGPT" target="_blank"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>ESMFold: Language Models of Protein Sequences at the Scale of the Known Universe</h4>
+                <div class="meta">Lin et al. | Science 2023</div>
+                <div class="tags"><span class="tag tag-bio">Protein</span><span class="tag tag-full">Full FT (structure module)</span></div>
+                <div class="summary">Attaches a full structure prediction module (Evoformer-inspired) to a frozen ESM2 backbone as a task head. The backbone is largely frozen; the structure module (trained from scratch) constitutes the "fine-tuning." Predicts 3D structure in ~0.5s without MSA.</div>
+                <div class="links">
+                    <a href="https://doi.org/10.1126/science.ade2574" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://github.com/facebookresearch/esm" target="_blank"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>DNABERT-2: Efficient Foundation Model for Multi-Species Genome</h4>
+                <div class="meta">Zhou et al. | ICLR 2024</div>
+                <div class="tags"><span class="tag tag-bio">Genomics</span><span class="tag tag-full">Fine-tuning</span></div>
+                <div class="summary">Replaces k-mer tokenization with BPE for efficient multi-species genomic language modeling. Fine-tuning with full FT + LLRD achieves SOTA on promoter prediction, splice site detection, and transcription factor binding across 28 genome understanding benchmarks.</div>
+                <div class="links">
+                    <a href="https://arxiv.org/abs/2306.15006" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://github.com/MAGICS-LAB/DNABERT_2" target="_blank"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>STACK: In-Context Learning for Single-Cell Perturbation Prediction</h4>
+                <div class="meta">Arc Institute | bioRxiv 2026</div>
+                <div class="tags"><span class="tag tag-zero">Zero-Shot / ICL</span><span class="tag tag-bio">scRNA</span></div>
+                <div class="summary">Treats each cell as a row in a tabular context window and uses true in-context learning (no gradient, no fine-tuning) for perturbation response prediction. Pretrained on Perturb-Sapiens (149M cells); outperforms supervised models on zero-shot combinatorial perturbations.</div>
+                <div class="links">
+                    <a href="https://doi.org/10.64898/2026.01.09.698608v1" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                </div>
+            </div>
+            <div class="paper-card">
+                <h4>scFoundation: Large-Scale Single-Cell Foundation Model toward Universal Embedding</h4>
+                <div class="meta">Hao et al. | Nature Methods 2024</div>
+                <div class="tags"><span class="tag tag-bio">scRNA</span><span class="tag tag-full">Fine-tuning</span><span class="tag tag-peft">Adapter</span></div>
+                <div class="summary">Pretrained on 50M cells; demonstrates that read-depth-aware tokenization + asymmetric encoder-decoder architecture provides transferable cell embeddings. Fine-tuning with a lightweight adapter head achieves SOTA on drug response prediction, spatial deconvolution, and developmental trajectory.</div>
+                <div class="links">
+                    <a href="https://doi.org/10.1038/s41592-024-02305-7" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                    <a href="https://github.com/biomap-research/scFoundation" target="_blank"><i class="fab fa-github"></i> Code</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARISON TABLE -->
+    <section class="content-section" id="comparison">
+        <h2><i class="fas fa-table"></i> Strategy Comparison</h2>
+        <div class="table-wrap">
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Property</th>
+                        <th>Full Fine-Tuning</th>
+                        <th>LoRA</th>
+                        <th>Adapters</th>
+                        <th>Prefix / Prompt</th>
+                        <th>Zero / Few-Shot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Trainable params</strong></td><td>100%</td><td>0.1–1%</td><td>0.5–2%</td><td>&lt;0.1%</td><td>0%</td></tr>
+                    <tr><td><strong>Labeled data needed</strong></td><td>Large (&gt;50k)</td><td>Small–medium (1k+)</td><td>Small–medium</td><td>Very small (100+)</td><td>None (or k=5–50)</td></tr>
+                    <tr><td><strong>GPU memory</strong></td><td>High (full gradient)</td><td>Medium (QLoRA: very low)</td><td>Medium</td><td>Low</td><td>Very low (inference only)</td></tr>
+                    <tr><td><strong>Catastrophic forgetting</strong></td><td>High risk</td><td>Low risk</td><td>Low risk</td><td>None (backbone frozen)</td><td>None</td></tr>
+                    <tr><td><strong>Performance ceiling</strong></td><td>Highest (usually)</td><td>Near-full</td><td>Near-full</td><td>Moderate</td><td>Task-dependent; can be surprisingly strong</td></tr>
+                    <tr><td><strong>Multi-task serving</strong></td><td>Separate model per task</td><td>Swap LoRA weights (few MB)</td><td>Swap adapter weights</td><td>Swap prefix tokens</td><td>Same model for all tasks</td></tr>
+                    <tr><td><strong>Inference overhead</strong></td><td>None (merged)</td><td>None (merged at deploy)</td><td>Small (&lt;5ms)</td><td>Small (extra token length)</td><td>None</td></tr>
+                    <tr><td><strong>Architectural change</strong></td><td>+ task head only</td><td>+ LoRA matrices (merged)</td><td>+ bottleneck modules</td><td>None</td><td>None</td></tr>
+                    <tr><td><strong>Biology examples</strong></td><td>Geneformer, scGPT, DNABERT-2</td><td>ESM2+LoRA, protein design</td><td>scFoundation adapter head</td><td>Research; BioMedGPT prefix</td><td>STACK, Geneformer kNN, ESM2 variant zero-shot</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PRACTICAL GUIDE -->
+    <section class="content-section" id="guide">
+        <h2><i class="fas fa-map"></i> Decision Guide — Which Strategy for My Task?</h2>
+        <div class="guide-step">
+            <div class="guide-step-num">1</div>
+            <div class="guide-step-content">
+                <h4>Do you have labeled data at all?</h4>
+                <p><strong>No labeled data</strong> → Zero-shot (ESM2 variant log-likelihood, Geneformer kNN, STACK ICL). A linear probe on frozen embeddings is a fast sanity check.<br>
+                <strong>&lt;500 examples</strong> → Prefix tuning or LoRA with very small r (4–8).<br>
+                <strong>500–10k</strong> → LoRA (r=16–32) or adapter layers.<br>
+                <strong>&gt;50k</strong> → Full fine-tuning with LLRD is competitive; LoRA still often preferred for multi-task scenarios.</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">2</div>
+            <div class="guide-step-content">
+                <h4>How many tasks do you need to serve from the same backbone?</h4>
+                <p><strong>One task</strong> → Full fine-tuning or LoRA both work; pick based on data size and GPU budget.<br>
+                <strong>Multiple tasks</strong> → LoRA or adapters: keep one backbone, swap lightweight task modules (a few hundred MB vs. tens of GB per full model). AdapterFusion enables learning a new task from existing task adapters without forgetting any of them.</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">3</div>
+            <div class="guide-step-content">
+                <h4>Is your task very different from the pretraining domain?</h4>
+                <p><strong>In-distribution</strong> (e.g., fine-tune scGPT for a new tissue in the same species) → LoRA r=8 is usually sufficient. Zero-shot embedding may already work.<br>
+                <strong>Domain shift</strong> (e.g., fine-tune a human-trained model for plant genomics) → Full fine-tuning with domain-adaptive pretraining first (a few epochs of unsupervised MLM on plant sequences), then task fine-tuning. LoRA with larger r (32–64) also helps close the gap.</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">4</div>
+            <div class="guide-step-content">
+                <h4>What's your compute and deployment constraint?</h4>
+                <p><strong>Single GPU ≤ 24GB VRAM</strong> → QLoRA (4-bit quantized backbone + LoRA adapters) is the standard approach for models &gt;7B parameters.<br>
+                <strong>Inference latency is critical</strong> → Merge LoRA into backbone before deployment (zero overhead). Avoid adapters (small but nonzero overhead). Prefix tuning increases sequence length (slightly slower attention).<br>
+                <strong>Model must be frozen for regulatory/compliance reasons</strong> → Prefix tuning or zero-shot only.</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">5</div>
+            <div class="guide-step-content">
+                <h4>Quick diagnostic: run a linear probe first</h4>
+                <p>Before committing to fine-tuning: freeze the backbone entirely and train only a linear layer on the embeddings. If linear probe accuracy is already &gt;90% of your target, LoRA or adapter will close the remaining gap cheaply. If linear probe accuracy is near chance level, the pretrained representations are not transferable — consider full fine-tuning or a different base model entirely.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HANDS ON -->
+    <section class="content-section" id="hands-on">
+        <h2><i class="fas fa-wrench"></i> Hands-On Resources</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:16px;">
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> Hugging Face PEFT Library</h4>
+                <p style="font-size:.88rem;color:#475569;margin:0 0 10px;">Official LoRA, AdaLoRA, IA³, prefix tuning, and adapter implementations for any HuggingFace model. Covers Geneformer, ESM2, and most biology FMs on the Hub.</p>
+                <a href="https://huggingface.co/docs/peft" target="_blank" rel="noopener" style="color:var(--primary);font-size:.85rem;font-weight:700;">huggingface.co/docs/peft ↗</a>
+            </div>
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> Geneformer Fine-Tuning Tutorial</h4>
+                <p style="font-size:.88rem;color:#475569;margin:0 0 10px;">Official tutorial for full fine-tuning of Geneformer for cell type classification and network inference. Includes layer-wise learning rate decay schedule.</p>
+                <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank" rel="noopener" style="color:var(--primary);font-size:.85rem;font-weight:700;">huggingface.co/ctheodoris/Geneformer ↗</a>
+            </div>
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> scGPT Fine-Tuning Notebooks</h4>
+                <p style="font-size:.88rem;color:#475569;margin:0 0 10px;">End-to-end notebooks for cell annotation, perturbation, and GRN fine-tuning. Includes task head design patterns for each biology task.</p>
+                <a href="https://github.com/bowang-lab/scGPT/tree/main/tutorials" target="_blank" rel="noopener" style="color:var(--primary);font-size:.85rem;font-weight:700;">github.com/bowang-lab/scGPT/tutorials ↗</a>
+            </div>
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> ESM2 + LoRA for Protein Tasks</h4>
+                <p style="font-size:.88rem;color:#475569;margin:0 0 10px;">Community LoRA fine-tuning scripts for ESM2 on variant effect, thermostability, and functional annotation. Shows how to apply QLoRA to 650M / 3B ESM2 on a single A100.</p>
+                <a href="https://github.com/facebookresearch/esm" target="_blank" rel="noopener" style="color:var(--primary);font-size:.85rem;font-weight:700;">github.com/facebookresearch/esm ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELATED MODULES -->
+    <section class="content-section">
+        <h2><i class="fas fa-project-diagram"></i> Related Modules</h2>
+        <div class="related-grid">
+            <a href="pretraining.html" class="related-card">
+                <h4><i class="fas fa-brain"></i> Pretraining Strategies</h4>
+                <p>The upstream step — how foundation models are trained before adaptation (MLM, CLM, contrastive, multi-task pretraining objectives).</p>
+            </a>
+            <a href="transformer-architecture.html" class="related-card">
+                <h4><i class="fas fa-drafting-compass"></i> Transformer Architecture</h4>
+                <p>The backbone being adapted — encoder-only, decoder-only, encoder-decoder, and where LoRA/adapters are inserted.</p>
+            </a>
+            <a href="tokenization-strategies.html" class="related-card">
+                <h4><i class="fas fa-puzzle-piece"></i> Tokenization Strategies</h4>
+                <p>How biological data (gene expression, sequences) is converted to tokens before entering the pretrained model.</p>
+            </a>
+            <a href="perturbation-prediction_modeling.html" class="related-card">
+                <h4><i class="fas fa-vial"></i> Perturbation Prediction</h4>
+                <p>A key downstream task that foundation models are fine-tuned for — connecting adaptation methods to a concrete biology outcome.</p>
+            </a>
+            <a href="generative-models.html" class="related-card">
+                <h4><i class="fas fa-magic"></i> Generative Models</h4>
+                <p>VAE / diffusion / flow matching models that are sometimes used as the pretrained backbone (e.g., scVI for cVAE fine-tuning).</p>
+            </a>
+        </div>
+    </section>
+</main>
+
+<footer style="text-align: center;">
+    <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+    <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
+    <p style="font-size: 0.85em; margin-top: 12px; opacity: 0.7;">Created 2026 · Updated September 2026</p>
+    <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">&#x1F512; Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>&copy; 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome &mdash; see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
+</footer>
+
+
+</body>
+</html>
