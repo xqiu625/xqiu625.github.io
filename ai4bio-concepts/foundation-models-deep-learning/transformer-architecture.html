@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Transformer architecture for biological AI — encoder, decoder, encoder-decoder designs, transformer blocks, and positional encoding in single-cell and genomic models">
+    <title>Transformer Architecture - AI4Bio Learning Hub</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-KSMFMG4TD5');
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: var(--sport-primary, #7A5FB8);
+            --secondary: #8b78c7;
+            --accent: #0ea5e9;
+            --bg-start: #f0f4ff;
+            --bg-mid: #eef2ff;
+            --bg-end: #e8edff;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-mid) 50%, var(--bg-end) 100%);
+            line-height: 1.7;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: '';
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(99,102,241,.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(37,99,235,.10) 0%, transparent 50%),
+                radial-gradient(circle at 60% 80%, rgba(14,165,233,.08) 0%, transparent 50%);
+            z-index: 0; pointer-events: none;
+        }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+        /* ── NAV ── */
+        nav {
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(240,244,255,.88); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(99,102,241,.18);
+            padding: 12px 0;
+        }
+        nav .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+        nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 6px; flex-wrap: wrap; }
+        nav ul li a {
+            display: flex; align-items: center; gap: 6px;
+            padding: 6px 14px; border-radius: 20px; font-size: .82rem; font-weight: 600;
+            color: #334155; text-decoration: none; transition: all .2s;
+        }
+        nav ul li a:hover { background: rgba(37,99,235,.12); color: var(--primary); }
+        .home-link { color: var(--primary) !important; }
+
+        /* ── HEADER ── */
+        .header {
+            text-align: center; padding: 64px 0 40px;
+        }
+        .header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+        .header .subtitle { font-size: 1.05rem; color: #475569; max-width: 720px; margin: 0 auto 28px; }
+        .stats-bar { display: flex; justify-content: center; gap: 32px; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1; }
+        .stat-label { font-size: .78rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+
+        /* ── SECTIONS ── */
+        .content-section {
+            background: rgba(255,255,255,.75); backdrop-filter: blur(8px);
+            border: 1px solid rgba(99,102,241,.15); border-radius: 20px;
+            padding: 40px 36px; margin-bottom: 28px;
+        }
+        .content-section h2 {
+            font-size: 1.5rem; font-weight: 800; color: var(--primary);
+            margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+        }
+        .content-section h3 { font-size: 1.15rem; font-weight: 700; color: #1e293b; margin: 28px 0 10px; }
+        .content-section p { color: #334155; margin-bottom: 14px; }
+
+        /* ── STORY BOX ── */
+        .story-box {
+            background: linear-gradient(135deg, rgba(37,99,235,.06), rgba(99,102,241,.06));
+            border: 1.5px solid rgba(99,102,241,.22); border-radius: 16px;
+            padding: 28px 32px; margin: 24px 0;
+        }
+        .story-box h3 { color: var(--secondary); margin-top: 0; }
+
+        /* ── CONCEPT BLOCKS ── */
+        .lego-concept-block {
+            background: rgba(255,255,255,.9);
+            border: 1.5px solid rgba(99,102,241,.20); border-radius: 16px;
+            padding: 28px 28px 24px; margin-bottom: 24px;
+            transition: box-shadow .2s;
+        }
+        .lego-concept-block:hover { box-shadow: 0 6px 28px rgba(37,99,235,.10); }
+        .concept-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+        .concept-number {
+            width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; font-weight: 800; font-size: 1.1rem; color: white; flex-shrink: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        .concept-title { font-size: 1.1rem; font-weight: 800; color: #1e293b; }
+        .concept-subtitle { font-size: .85rem; color: #64748b; margin-top: 2px; }
+        .lego-svg-wrapper { margin: 18px 0; text-align: center; }
+        .lego-svg-wrapper svg { max-width: 100%; height: auto; border-radius: 10px; }
+        .concept-text { color: #334155; margin-bottom: 12px; }
+        .analogy-box {
+            background: linear-gradient(135deg,rgba(37,99,235,.05),rgba(99,102,241,.05));
+            border-left: 4px solid var(--accent); border-radius: 0 12px 12px 0;
+            padding: 14px 18px; margin: 14px 0; font-size: .92rem;
+        }
+        .analogy-box strong { color: var(--primary); }
+        .subtype-table { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: 14px; }
+        .subtype-table th {
+            background: rgba(37,99,235,.08); color: var(--primary);
+            padding: 8px 12px; text-align: left; font-weight: 700;
+            border-bottom: 2px solid rgba(37,99,235,.18);
+        }
+        .subtype-table td { padding: 8px 12px; border-bottom: 1px solid rgba(99,102,241,.10); vertical-align: top; }
+        .subtype-table tr:last-child td { border-bottom: none; }
+        .subtype-table tr:nth-child(even) td { background: rgba(99,102,241,.04); }
+
+        /* ── COMPARISON TABLE ── */
+        .comparison-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+        .comparison-table th {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white; padding: 10px 14px; text-align: left; font-weight: 700;
+        }
+        .comparison-table td { padding: 10px 14px; border-bottom: 1px solid rgba(99,102,241,.12); vertical-align: top; }
+        .comparison-table tr:nth-child(even) td { background: rgba(99,102,241,.04); }
+        .comparison-table tr:hover td { background: rgba(37,99,235,.07); }
+
+        /* ── TAGS ── */
+        .tag {
+            display: inline-block; padding: 3px 10px; border-radius: 12px;
+            font-size: .75rem; font-weight: 700; margin: 2px;
+        }
+        .tag-encoder { background: rgba(37,99,235,.12); color: #1d4ed8; }
+        .tag-decoder { background: rgba(14,165,233,.12); color: #0369a1; }
+        .tag-encdec  { background: rgba(99,102,241,.12); color: #4338ca; }
+        .tag-ssm     { background: rgba(20,184,166,.12); color: #0f766e; }
+        .tag-hybrid  { background: rgba(245,158,11,.12); color: #b45309; }
+
+        /* ── HIGHLIGHT BOXES ── */
+        .highlight-box {
+            border: 1.5px solid rgba(37,99,235,.20); border-radius: 14px;
+            padding: 20px 24px; margin: 16px 0;
+        }
+        .highlight-box h4 { color: var(--primary); margin: 0 0 10px; font-size: 1rem; }
+
+        /* ── PRACTICAL GUIDE ── */
+        .guide-step {
+            display: flex; gap: 16px; align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .guide-step-num {
+            width: 36px; height: 36px; border-radius: 50%; background: var(--primary);
+            color: white; font-weight: 800; display: flex; align-items: center;
+            justify-content: center; flex-shrink: 0; font-size: .95rem;
+        }
+        .guide-step-content h4 { margin: 0 0 6px; color: #1e293b; }
+        .guide-step-content p  { margin: 0; font-size: .9rem; color: #475569; }
+
+        /* ── RELATED MODULES ── */
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 14px; margin-top: 16px; }
+        .related-card {
+            background: rgba(255,255,255,.85); border: 1px solid rgba(99,102,241,.18);
+            border-radius: 12px; padding: 16px; transition: all .2s;
+            text-decoration: none; color: inherit;
+        }
+        .related-card:hover { background: rgba(37,99,235,.06); border-color: var(--primary); transform: translateY(-2px); }
+        .related-card h4 { margin: 0 0 6px; font-size: .92rem; color: var(--primary); }
+        .related-card p  { margin: 0; font-size: .82rem; color: #64748b; }
+
+        /* ── FOOTER ── */
+        footer { text-align: center; padding: 40px 0; color: #64748b; font-size: .85rem; }
+        footer a { color: var(--primary); text-decoration: none; }
+
+        /* ── DARK MODE ── */
+        [data-theme="dark"] body { background: linear-gradient(135deg,#0f172a,#1e1b4b,#0c1445); color: #e2e8f0; }
+        [data-theme="dark"] body::before { opacity: .4; }
+        [data-theme="dark"] nav { background: rgba(15,23,42,.9); border-color: rgba(99,102,241,.3); }
+        [data-theme="dark"] nav ul li a { color: #cbd5e1; }
+        [data-theme="dark"] .content-section { background: rgba(30,27,75,.6); border-color: rgba(99,102,241,.25); }
+        [data-theme="dark"] .content-section p, [data-theme="dark"] .concept-text { color: #cbd5e1; }
+        [data-theme="dark"] .lego-concept-block { background: rgba(30,27,75,.7); border-color: rgba(99,102,241,.3); }
+        [data-theme="dark"] .analogy-box { background: rgba(37,99,235,.08); }
+        [data-theme="dark"] .subtype-table td, [data-theme="dark"] .comparison-table td { color: #cbd5e1; }
+        [data-theme="dark"] .story-box { background: rgba(37,99,235,.08); }
+        [data-theme="dark"] .related-card { background: rgba(30,27,75,.7); border-color: rgba(99,102,241,.3); }
+        [data-theme="dark"] .related-card p { color: #94a3b8; }
+        [data-theme="dark"] .stat-label { color: #94a3b8; }
+        [data-theme="dark"] .header .subtitle { color: #94a3b8; }
+
+        /* ===== CASEWORK BANNER + STORY (LEGO power brick, 02 Model) ===== */
+        .casework-banner { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 30px; align-items: center; background: linear-gradient(135deg,#2a1a52 0%,#3B276E 55%,#4a3488 100%); border-radius: 16px; padding: 34px 38px; margin: 0 0 25px; box-shadow: 0 8px 30px rgba(59,39,110,.35); }
+        .casework-banner img { width: 100%; height: auto; display: block; filter: drop-shadow(0 1rem 2rem rgba(0,0,0,.3)); }
+        .casework-banner .kicker { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .74em; letter-spacing: .14em; text-transform: uppercase; color: #C9B7EE; }
+        .casework-banner h2 { color: #fff; font-size: clamp(1.5rem,3vw,2.15rem); line-height: 1.16; margin: 12px 0 14px; font-weight: 700; border: 0; padding: 0; }
+        .casework-banner p { color: #e6ddf7; line-height: 1.75; margin: 0; font-size: .98em; }
+        .story-section { background: var(--sport-soft, #fbf7ff); border: 1.5px solid var(--sport-pale, #f4ecfa); }
+        .story-quote { font-size: 1.15em; font-weight: 700; color: var(--sport-dark, #3B276E); border-left: 4px solid var(--sport-primary, #7A5FB8); padding-left: 16px; margin: 6px 0 14px; }
+        .story-intro { max-width: 82ch; line-height: 1.75; }
+        .library-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin: 24px 0 6px; }
+        .library-card { background: #fff; border: 1px solid var(--sport-pale, #f4ecfa); border-left: 5px solid var(--sport-primary, #7A5FB8); border-radius: 8px; padding: 20px; box-shadow: 2px 2px 0 rgba(59,39,110,.10); transition: transform .25s ease, box-shadow .25s ease; }
+        .library-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 rgba(59,39,110,.15); }
+        .library-card .book-meta { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .72em; letter-spacing: .1em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); }
+        .library-card h4 { color: var(--sport-dark, #3B276E); font-style: italic; margin: 6px 0 10px; font-size: 1.08em; }
+        .library-card .plot { font-size: .9em; line-height: 1.65; margin: 0 0 10px; }
+        .library-card .echo { font-size: .88em; line-height: 1.6; color: var(--sport-dark, #3B276E); background: var(--sport-pale, #f4ecfa); border: 1px dashed var(--sport-secondary, #C9B7EE); border-radius: 8px; padding: 10px 12px; margin: 0; }
+        .library-card .echo a { color: var(--sport-primary, #7A5FB8); font-weight: 700; text-decoration: none; }
+        .library-card .echo a:hover { text-decoration: underline; }
+        .library-footnote { margin: 18px 0 0; font-style: italic; color: var(--sport-primary, #7A5FB8); font-size: .95em; }
+        .story-hero { float: right; width: min(240px,32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--sport-pale,#f4ecfa); box-shadow: 0 10px 28px rgba(59,39,110,.22); }
+        .story-hero img { width: 100%; height: auto; display: block; }
+        @media (max-width:900px) { .casework-banner { grid-template-columns: 1fr; padding: 26px 24px; } }
+        @media (max-width:768px) { .story-hero { float: none; width: min(320px,82%); margin: 0 auto 18px; } }
+        [data-theme="dark"] .story-section { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .story-quote { color: #e6edf3; }
+        [data-theme="dark"] .library-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.14); border-left-color: #b9a5f0; box-shadow: none; }
+        [data-theme="dark"] .library-card h4 { color: #c9b7ee; }
+        [data-theme="dark"] .library-card .plot { color: #c9d1d9; }
+        [data-theme="dark"] .library-card .echo { color: #e6edf3; background: rgba(122,95,184,.15); border-color: rgba(185,165,240,.3); }
+        [data-theme="dark"] .library-card .book-meta { color: #b9a5f0; }
+        [data-theme="dark"] .library-footnote { color: #b9a5f0; }
+        [data-theme="dark"] .story-hero { border-color: rgba(255,255,255,.16); }
+        .content-figure { margin: 24px 0; clear: both; }
+        .content-figure.comic-figure { max-width: 560px; margin-left: auto; margin-right: auto; }
+        .content-figure img { width: 100%; height: auto; display: block; border-radius: 12px; background: #fff; border: 1px solid var(--sport-pale,#f4ecfa); }
+        .content-figure figcaption { margin-top: 10px; font-size: 0.9em; line-height: 1.55; color: #5a6b7c; text-align: center; }
+        [data-theme="dark"] .content-figure figcaption { color: #9fb3a7; }
+
+        /* ── THEME TOGGLE ── */
+        .theme-toggle {
+            background: none; border: 1.5px solid rgba(99,102,241,.3); border-radius: 20px;
+            padding: 6px 14px; cursor: pointer; font-size: .8rem; font-weight: 700;
+            color: var(--primary); display: flex; align-items: center; gap: 6px;
+            transition: all .2s;
+        }
+        .theme-toggle:hover { background: rgba(37,99,235,.08); }
+    </style>
+    <link rel="stylesheet" href="../../theme.css" data-theme-asset="css">
+    <script src="../../theme.js" data-theme-asset="js"></script>
+    <link rel="stylesheet" href="../sport-themes.css">
+</head>
+<body data-sport="model">
+
+<nav class="navbar">
+    <div class="container">
+        <ul class="navbar-nav">
+            <li><a href="https://xqiu625.github.io/ai4bio-concepts/" class="home-link"><i class="fas fa-book"></i> Back to Learning Hub</a></li>
+            <li><a href="https://xqiu625.github.io/"><i class="fas fa-home"></i> Homepage</a></li>
+            <li><a href="#lego-powerbrick">🧱 Story</a></li>
+            <li><a href="#concepts"><i class="fas fa-cubes"></i> Concepts</a></li>
+            <li><a href="#applications"><i class="fas fa-flask"></i> Applications</a></li>
+            <li><a href="#guide"><i class="fas fa-map"></i> Guide</a></li>
+            <li><a href="#hands-on"><i class="fas fa-wrench"></i> Hands-on</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="container">
+    <header class="header">
+        <div style="font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 11.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sport-primary, #7A5FB8); margin-bottom: 18px;">AI4Bio Learning Hub · Field Guide</div>
+        <h1>&#x1F3D7; Transformer Architecture for Biology</h1>
+        <p class="subtitle">
+            From the original Attention Is All You Need to the zoo of encoder, decoder, and hybrid designs powering
+            single-cell, genomic, and protein foundation models — the blueprint behind the biology.
+        </p>
+        <div class="stats-bar">
+            <div class="stat-item"><div class="stat-number">5</div><div class="stat-label">Core Architectures</div></div>
+            <div class="stat-item"><div class="stat-number">20+</div><div class="stat-label">Biology Models</div></div>
+            <div class="stat-item"><div class="stat-number">4</div><div class="stat-label">Biological Domains</div></div>
+            <div class="stat-item"><div class="stat-number">2017–2026</div><div class="stat-label">Year Range</div></div>
+        </div>
+    </header>
+
+    <!-- CASEWORK BANNER (Model · LEGO lens) -->
+    <section class="casework-banner" aria-label="LEGO inspired transformer architecture casework">
+        <div class="casework-art">
+            <img src="../animations/rive-assets/stage-themes-v5/lego-powerbrick-three-poses.webp" width="1672" height="941" loading="eager" decoding="async" alt="Healshu as a LEGO power brick specialist holding a sealed power brick to the light, pointing at a golden driveshaft inside a cutaway brick, and snapping a power brick onto a studded rail">
+        </div>
+        <div class="casework-copy">
+            <div class="kicker">LEGO lens · transformer architecture</div>
+            <h2>一块标准动力砖，叠出任意深的机器。</h2>
+            <p>Every LEGO machine that moves runs on the same sealed power brick. 给它图纸它能读（encoder），给它半成品它能接着拼（decoder），两组对讲一联动就是整条装配线——transformer 的全部型号，都是这一块砖的不同排布。</p>
+        </div>
+    </section>
+
+    <!-- STORY LINE: the power brick -->
+    <section class="content-section story-section" id="lego-powerbrick">
+        <figure class="story-hero">
+            <img src="../animations/rive-assets/stage-themes-v5/lego-powerbrick-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu LEGO master builder at a workbench with a transparent cutaway power brick showing the gearbox, motor, driveshaft, and regulator inside, a row of identical machines behind">
+        </figure>
+        <h2>🧱 The Power Brick: Transformer Architecture in Six Parts</h2>
+        <p class="story-quote">「一块标准动力砖，叠出任意深的机器。」</p>
+        <p class="story-intro">Open any motorized LEGO set and you find the same sealed power brick: gearbox, motor, driveshaft, regulator. Transformer architecture is that brick for sequence models — one standard module, wired in different ways to become encoders, decoders, and full encoder–decoder lines. Six parts from the datasheet, re-read as architecture.</p>
+        <div class="library-grid">
+            <div class="library-card">
+                <div class="book-meta">Part 1 · 标准动力砖 The sealed power brick</div>
+                <h4>The transformer block</h4>
+                <p class="plot">The genius is not any single part — it is that the whole brick is sealed and standard. Snap one into a crane, snap ten into a factory line: same brick, any machine.</p>
+                <p class="echo"><strong>The block.</strong> Self-attention + FFN + residuals + norms, packaged as one reusable module. Stacked N times, it scales from a toy to a factory. <a href="#concept-block">See the block ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Part 2 · 变速箱分动力 The gearbox</div>
+                <h4>Self-attention</h4>
+                <p class="plot">Inside the brick, the gearbox decides which gears bite how hard: the tower gear needs torque now, the decorative antenna can wait. Every rotation is re-routed on the fly.</p>
+                <p class="echo"><strong>Attention.</strong> Each position re-weights how much it listens to every other position — torque allocation, recomputed per token. <a href="#concept-block">See attention ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Part 3 · 直通传动轴 The direct driveshaft</div>
+                <h4>Residual connections</h4>
+                <p class="plot">Deep in a long machine, power dies gear by gear. The brick carries a straight shaft that bypasses the gearbox entirely — full torque, delivered untouched to the far end.</p>
+                <p class="echo"><strong>Residuals.</strong> x + F(x): the input flows through unmodified, so gradients and signals survive a hundred layers without stalling. <a href="#concept-block">See why deep works ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Part 4 · 稳压器 The voltage regulator</div>
+                <h4>Layer normalization</h4>
+                <p class="plot">Stack fifty bricks and small voltage wobbles compound into brownouts. The regulator at each brick's output clamps the power to spec — every stage, every time.</p>
+                <p class="echo"><strong>LayerNorm.</strong> Each sublayer's output is re-standardized, keeping deep stacks stable and trainable. <a href="#concept-block">See normalization ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Part 5 · 轨道上的编号螺柱 Numbered studs on the rail</div>
+                <h4>Positional encoding</h4>
+                <p class="plot">The power brick itself is order-blind — it treats a row of gears as a bag. The rail underneath carries numbered studs, so position one and position nine are never confused.</p>
+                <p class="echo"><strong>Position.</strong> Self-attention has no sense of order; positions are injected (sinusoids, learned, or rotary), so "gene A before gene B" means something. <a href="#concepts">See position ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Part 6 · 两组动力组对讲 Two bricks on the radio</div>
+                <h4>Encoder–decoder</h4>
+                <p class="plot">One brick reads the blueprint and radios a summary; the other builds, asking questions as it goes. The radio link between them is the whole assembly line.</p>
+                <p class="echo"><strong>Cross-attention.</strong> The encoder compresses the input sequence; the decoder generates while querying it. Encoder-only (BERT-style) reads; decoder-only (GPT-style) builds. <a href="#concepts">See the variants ↓</a></p>
+            </div>
+        </div>
+        <figure class="content-figure comic-figure">
+            <img src="figures/lego-powerbrick-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel LEGO power brick comic: the same sealed power brick snapped into a crane, a car, and a factory arm; a gearbox routing torque to the gears that need it; a golden driveshaft glowing at full strength through a very long machine while geared paths dim; and two power bricks on a rail, one reading a blueprint and beaming a summary while the other builds">
+            <figcaption><strong>The power brick in four plays.</strong> One brick, any machine (the standard module) · torque where it counts (self-attention) · the shaft that never dies (residual connections) · two bricks on the radio (encoder–decoder).</figcaption>
+        </figure>
+        <p class="library-footnote">「图纸能读，半成品能续——一块砖的全部排布，就是 transformer 的全部型号。」</p>
+    </section>
+
+    <!-- STORY -->
+    <section class="content-section" id="story">
+        <h2><i class="fas fa-book-open"></i> The Blueprint Story</h2>
+        <div class="story-box">
+            <h3>Why architecture matters as much as the training objective</h3>
+            <p>
+                You can have the perfect tokenization strategy and the right pretraining objective, but if the
+                architecture routes information incorrectly, the model cannot learn what you need it to learn.
+                The architecture decides three things: <strong>which tokens can see which other tokens</strong>
+                (attention mask), <strong>how information is transformed</strong> at each layer (the transformer
+                block), and <strong>what positional information</strong> the model receives about token order
+                or biological coordinates.
+            </p>
+            <p>
+                In biology, this translates to concrete design choices: an encoder-only model sees the whole gene
+                expression profile at once (good for classification), a decoder generates one gene at a time
+                (good for simulation), and an encoder-decoder translates one biological state to another
+                (perturbation prediction, cross-species transfer). Getting this choice wrong is not a minor
+                performance hit — it changes what the model can and cannot represent.
+            </p>
+        </div>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:14px; margin-top:20px;">
+            <div class="highlight-box">
+                <h4>&#x1F4D6; Encoder-Only</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0;">Bidirectional context. Best for <strong>understanding / representation</strong>. Geneformer, DNABERT-2, ESM2.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>&#x270F; Decoder-Only</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0;">Causal / autoregressive. Best for <strong>generation &amp; simulation</strong>. TranscriptFormer, scGPT.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>&#x21C4; Encoder-Decoder</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0;">Source → Target. Best for <strong>seq-to-seq translation</strong>. T5, some perturbation models.</p>
+            </div>
+            <div class="highlight-box">
+                <h4>&#x1F300; SSM / Hybrid</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0;">Sub-quadratic. Best for <strong>very long genomic sequences</strong>. Mamba, Hyena, Evo 2.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONCEPTS -->
+    <section class="content-section" id="concepts">
+        <h2><i class="fas fa-cubes"></i> Visual Guide to Architectures</h2>
+
+        <!-- CONCEPT 1: TRANSFORMER BLOCK -->
+        <div class="lego-concept-block" id="concept-block">
+            <div class="concept-header">
+                <div class="concept-number">1</div>
+                <div>
+                    <div class="concept-title">The Transformer Block — Universal Module</div>
+                    <div class="concept-subtitle">LayerNorm · Multi-Head Attention · FFN · Residual Connection</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:620px;">
+                    <defs>
+                        <marker id="arrowB" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#2563eb"/>
+                        </marker>
+                        <linearGradient id="bgBlockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#dbeafe"/>
+                            <stop offset="100%" stop-color="#ede9fe"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- background -->
+                    <rect x="0" y="0" width="620" height="200" fill="url(#bgBlockGrad)" rx="10"/>
+                    <!-- INPUT -->
+                    <rect x="10" y="80" width="64" height="40" rx="8" fill="#2563eb"/>
+                    <text x="42" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="white">Input</text>
+                    <!-- arrow -->
+                    <line x1="74" y1="100" x2="96" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <!-- LAYER NORM 1 -->
+                    <rect x="98" y="80" width="74" height="40" rx="8" fill="#6366f1"/>
+                    <text x="135" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="white">Layer</text>
+                    <text x="135" y="113" text-anchor="middle" font-size="10" font-weight="700" fill="white">Norm</text>
+                    <!-- arrow -->
+                    <line x1="172" y1="100" x2="194" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <!-- MHA -->
+                    <rect x="196" y="72" width="100" height="56" rx="8" fill="#0ea5e9"/>
+                    <text x="246" y="98" text-anchor="middle" font-size="10" font-weight="700" fill="white">Multi-Head</text>
+                    <text x="246" y="112" text-anchor="middle" font-size="10" font-weight="700" fill="white">Attention</text>
+                    <!-- arrow -->
+                    <line x1="296" y1="100" x2="316" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <!-- ADD 1 -->
+                    <circle cx="330" cy="100" r="14" fill="white" stroke="#2563eb" stroke-width="2"/>
+                    <text x="330" y="105" text-anchor="middle" font-size="14" font-weight="900" fill="#2563eb">+</text>
+                    <!-- residual 1 -->
+                    <path d="M 42 80 Q 42 50 330 50 Q 330 80 330 86" stroke="#2563eb" stroke-width="1.5" stroke-dasharray="5,3" fill="none"/>
+                    <text x="186" y="44" text-anchor="middle" font-size="9" fill="#64748b">residual</text>
+                    <!-- arrow -->
+                    <line x1="344" y1="100" x2="364" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <!-- LAYER NORM 2 -->
+                    <rect x="366" y="80" width="74" height="40" rx="8" fill="#6366f1"/>
+                    <text x="403" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="white">Layer</text>
+                    <text x="403" y="113" text-anchor="middle" font-size="10" font-weight="700" fill="white">Norm</text>
+                    <!-- arrow -->
+                    <line x1="440" y1="100" x2="460" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <!-- FFN -->
+                    <rect x="462" y="80" width="64" height="40" rx="8" fill="#7c3aed"/>
+                    <text x="494" y="99" text-anchor="middle" font-size="10" font-weight="700" fill="white">FFN</text>
+                    <text x="494" y="113" text-anchor="middle" font-size="9" fill="#c4b5fd">(2-layer)</text>
+                    <!-- arrow -->
+                    <line x1="526" y1="100" x2="546" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <!-- ADD 2 -->
+                    <circle cx="560" cy="100" r="14" fill="white" stroke="#2563eb" stroke-width="2"/>
+                    <text x="560" y="105" text-anchor="middle" font-size="14" font-weight="900" fill="#2563eb">+</text>
+                    <!-- residual 2 -->
+                    <path d="M 330 114 Q 330 155 560 155 Q 560 115 560 115" stroke="#6366f1" stroke-width="1.5" stroke-dasharray="5,3" fill="none"/>
+                    <text x="445" y="172" text-anchor="middle" font-size="9" fill="#64748b">residual</text>
+                    <!-- arrow to output -->
+                    <line x1="574" y1="100" x2="600" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrowB)"/>
+                    <text x="608" y="105" text-anchor="middle" font-size="10" fill="#1e293b">Out</text>
+                    <!-- labels -->
+                    <text x="310" y="190" text-anchor="middle" font-size="10" fill="#475569">One transformer block = LayerNorm → MHA → Residual + LayerNorm → FFN → Residual</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                Every transformer in biology — from BERT to GPT to AlphaFold2 — is built by stacking this same module
+                repeatedly (6×, 12×, 24× ...). The block has two sub-layers: Multi-Head Attention (which lets tokens
+                talk to each other) and a Feed-Forward Network (which transforms each token independently). Both are
+                wrapped with <strong>Layer Normalization</strong> and a <strong>residual connection</strong> that adds the
+                input directly to the sub-layer output. The residual is what allows very deep networks to train stably.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> Think of the transformer block as a <em>universal LEGO adapter brick</em>.
+                Every LEGO creation uses the same adapter regardless of what it's building — a spaceship or a castle.
+                The MHA is the part that checks how each brick connects to every other brick in the build; the FFN is
+                the part that reshapes each individual brick. The residual is the guarantee that you can always
+                snap the original brick back on if the reshaping goes wrong.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Variant</th><th>What changes</th><th>When to use</th><th>Bio example</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Post-LN</strong> (original)</td><td>LayerNorm after residual add</td><td>Original BERT/GPT; needs careful LR warmup</td><td>Original Transformer (Vaswani 2017)</td></tr>
+                    <tr><td><strong>Pre-LN</strong></td><td>LayerNorm before each sub-layer</td><td>More stable training; default in modern models</td><td>Geneformer, scGPT, most 2022+ models</td></tr>
+                    <tr><td><strong>Parallel FFN+Attn</strong></td><td>FFN and MHA run simultaneously</td><td>Faster training at scale; ~15% throughput gain</td><td>GPT-J, some large protein models</td></tr>
+                    <tr><td><strong>SwiGLU FFN</strong></td><td>Gated linear unit replaces ReLU</td><td>Better representation learning per param</td><td>LLaMA, ESM3, many 2024+ FMs</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 2: ENCODER-ONLY -->
+        <div class="lego-concept-block" id="concept-encoder">
+            <div class="concept-header">
+                <div class="concept-number">2</div>
+                <div>
+                    <div class="concept-title">Encoder-Only Architecture</div>
+                    <div class="concept-subtitle">Bidirectional self-attention — every token sees every other token</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 580 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;">
+                    <defs>
+                        <linearGradient id="encGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#dbeafe"/><stop offset="100%" stop-color="#ede9fe"/>
+                        </linearGradient>
+                        <marker id="arrowE" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#2563eb"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="580" height="210" fill="url(#encGrad)" rx="10"/>
+                    <!-- Input tokens -->
+                    <text x="290" y="22" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">INPUT TOKENS</text>
+                    <rect x="30" y="30" width="80" height="34" rx="8" fill="#2563eb"/><text x="70" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="white">Gene A</text>
+                    <rect x="135" y="30" width="80" height="34" rx="8" fill="#2563eb"/><text x="175" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="white">Gene B</text>
+                    <rect x="240" y="30" width="80" height="34" rx="8" fill="#2563eb"/><text x="280" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="white">Gene C</text>
+                    <rect x="345" y="30" width="80" height="34" rx="8" fill="#2563eb"/><text x="385" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="white">Gene D</text>
+                    <rect x="450" y="30" width="80" height="34" rx="8" fill="#2563eb"/><text x="490" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="white">Gene E</text>
+                    <!-- Bidirectional attention arrows (selected for clarity) -->
+                    <line x1="110" y1="47" x2="135" y2="47" stroke="#0ea5e9" stroke-width="1.5" marker-end="url(#arrowE)"/>
+                    <line x1="135" y1="52" x2="110" y2="52" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arrowE)"/>
+                    <line x1="215" y1="47" x2="240" y2="47" stroke="#0ea5e9" stroke-width="1.5" marker-end="url(#arrowE)"/>
+                    <line x1="240" y1="52" x2="215" y2="52" stroke="#6366f1" stroke-width="1.5" marker-end="url(#arrowE)"/>
+                    <!-- Long-range arrows -->
+                    <path d="M 70 30 Q 175 10 280 30" stroke="#0ea5e9" stroke-width="1.5" fill="none" marker-end="url(#arrowE)"/>
+                    <path d="M 280 30 Q 385 10 490 30" stroke="#0ea5e9" stroke-width="1.5" fill="none" marker-end="url(#arrowE)"/>
+                    <path d="M 70 28 Q 280 -2 490 28" stroke="#6366f1" stroke-width="1" stroke-dasharray="4,3" fill="none"/>
+                    <!-- Stacked layers label -->
+                    <rect x="20" y="80" width="540" height="40" rx="8" fill="rgba(37,99,235,0.08)" stroke="rgba(37,99,235,0.25)" stroke-width="1.5"/>
+                    <text x="290" y="100" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="700">N × Transformer Blocks (each sees full bidirectional context)</text>
+                    <text x="290" y="114" text-anchor="middle" font-size="10" fill="#64748b">All pairs of tokens can attend to each other at every layer</text>
+                    <!-- Output tokens -->
+                    <text x="290" y="142" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">OUTPUT REPRESENTATIONS</text>
+                    <rect x="30" y="150" width="80" height="34" rx="8" fill="#6366f1"/><text x="70" y="172" text-anchor="middle" font-size="10" font-weight="700" fill="white">Rep A</text>
+                    <rect x="135" y="150" width="80" height="34" rx="8" fill="#6366f1"/><text x="175" y="172" text-anchor="middle" font-size="10" font-weight="700" fill="white">Rep B</text>
+                    <rect x="240" y="150" width="80" height="34" rx="8" fill="#6366f1"/><text x="280" y="172" text-anchor="middle" font-size="10" font-weight="700" fill="white">Rep C</text>
+                    <rect x="345" y="150" width="80" height="34" rx="8" fill="#6366f1"/><text x="385" y="172" text-anchor="middle" font-size="10" font-weight="700" fill="white">Rep D</text>
+                    <rect x="450" y="150" width="80" height="34" rx="8" fill="#6366f1"/><text x="490" y="172" text-anchor="middle" font-size="10" font-weight="700" fill="white">Rep E</text>
+                    <text x="290" y="200" text-anchor="middle" font-size="9" fill="#94a3b8">Each representation is contextualized by ALL other tokens</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                In an encoder-only model, every token can attend to every other token in <em>both</em> directions —
+                past and future. The output is a dense representation of each input token that encodes its
+                meaning <strong>in context of the whole sequence</strong>. This is ideal whenever the task requires
+                understanding a complete biological entity: classifying a cell type, scoring a gene's regulatory
+                importance, or embedding a protein for downstream search.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> A LEGO expert who lays out <em>all</em> the bricks on a table and
+                examines every brick in the context of every other brick simultaneously — before deciding what anything
+                means. Gene A's representation knows about Gene E because the expert could see them both at the same time.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Variant</th><th>Pretraining objective</th><th>Key biology models</th><th>Typical task</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>BERT-style MLM</strong></td><td>Predict masked tokens (15%)</td><td>DNABERT, DNABERT-2, scBERT, ESM1</td><td>Classification, embeddings</td></tr>
+                    <tr><td><strong>Gene-rank encoding</strong></td><td>Rank by expression → MLM on rank tokens</td><td>Geneformer</td><td>Network dosage sensitivity, cell type annotation</td></tr>
+                    <tr><td><strong>Protein LM</strong></td><td>MLM on amino acid sequences</td><td>ESM2, ProtBERT, Ankh</td><td>Structure prediction, function classification</td></tr>
+                    <tr><td><strong>Whole-genome</strong></td><td>MLM on overlapping k-mers</td><td>Nucleotide Transformer, HyenaDNA (encoder variant)</td><td>Variant effect, regulatory grammar</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 3: DECODER-ONLY -->
+        <div class="lego-concept-block" id="concept-decoder">
+            <div class="concept-header">
+                <div class="concept-number">3</div>
+                <div>
+                    <div class="concept-title">Decoder-Only Architecture</div>
+                    <div class="concept-subtitle">Causal self-attention — each token sees only tokens to its left</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 580 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:580px;">
+                    <defs>
+                        <linearGradient id="decGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                            <stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#dbeafe"/>
+                        </linearGradient>
+                        <marker id="arrowD" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#0ea5e9"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="580" height="210" fill="url(#decGrad)" rx="10"/>
+                    <!-- Causal mask grid -->
+                    <text x="290" y="22" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">CAUSAL ATTENTION (each token sees only past tokens)</text>
+                    <!-- tokens -->
+                    <rect x="30" y="32" width="72" height="32" rx="7" fill="#0ea5e9"/><text x="66" y="53" text-anchor="middle" font-size="10" font-weight="700" fill="white">Gene 1</text>
+                    <rect x="122" y="32" width="72" height="32" rx="7" fill="#0ea5e9"/><text x="158" y="53" text-anchor="middle" font-size="10" font-weight="700" fill="white">Gene 2</text>
+                    <rect x="214" y="32" width="72" height="32" rx="7" fill="#0ea5e9"/><text x="250" y="53" text-anchor="middle" font-size="10" font-weight="700" fill="white">Gene 3</text>
+                    <rect x="306" y="32" width="72" height="32" rx="7" fill="#0ea5e9"/><text x="342" y="53" text-anchor="middle" font-size="10" font-weight="700" fill="white">Gene 4</text>
+                    <!-- next token (generated) -->
+                    <rect x="398" y="32" width="72" height="32" rx="7" fill="white" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="5,3"/>
+                    <text x="434" y="53" text-anchor="middle" font-size="10" font-weight="700" fill="#0ea5e9">Gene 5?</text>
+                    <!-- Arrows: causal left-to-right only -->
+                    <line x1="102" y1="48" x2="122" y2="48" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowD)"/>
+                    <line x1="194" y1="48" x2="214" y2="48" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowD)"/>
+                    <line x1="286" y1="48" x2="306" y2="48" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowD)"/>
+                    <line x1="378" y1="48" x2="398" y2="48" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowD)"/>
+                    <!-- long-range causal arrows -->
+                    <path d="M 66 32 Q 158 15 250 32" stroke="#2563eb" stroke-width="1.2" fill="none" marker-end="url(#arrowD)"/>
+                    <path d="M 66 30 Q 250 5 342 30" stroke="#2563eb" stroke-width="1" stroke-dasharray="4,3" fill="none"/>
+                    <!-- blocked arrows (cannot see future) -->
+                    <line x1="250" y1="48" x2="160" y2="48" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <text x="205" y="44" text-anchor="middle" font-size="9" fill="#ef4444">✗ blocked</text>
+                    <!-- layer stack -->
+                    <rect x="20" y="80" width="540" height="38" rx="8" fill="rgba(14,165,233,0.08)" stroke="rgba(14,165,233,0.25)" stroke-width="1.5"/>
+                    <text x="290" y="99" text-anchor="middle" font-size="11" fill="#1e293b" font-weight="700">N × Transformer Blocks (causal mask — upper triangle = -∞)</text>
+                    <text x="290" y="112" text-anchor="middle" font-size="10" fill="#64748b">Token at position i can only attend to positions ≤ i</text>
+                    <!-- Generation process -->
+                    <text x="290" y="142" text-anchor="middle" font-size="11" fill="#475569" font-weight="600">AUTOREGRESSIVE GENERATION</text>
+                    <rect x="20" y="150" width="250" height="34" rx="8" fill="rgba(37,99,235,0.08)" stroke="rgba(37,99,235,0.2)"/>
+                    <text x="145" y="172" text-anchor="middle" font-size="10" fill="#334155">Context: [BOS][Gene1][Gene2][Gene3]</text>
+                    <line x1="272" y1="167" x2="305" y2="167" stroke="#0ea5e9" stroke-width="2" marker-end="url(#arrowD)"/>
+                    <rect x="307" y="150" width="245" height="34" rx="8" fill="rgba(14,165,233,0.10)" stroke="rgba(14,165,233,0.3)"/>
+                    <text x="430" y="168" text-anchor="middle" font-size="10" fill="#0369a1" font-weight="700">P(next gene | context) → sample</text>
+                    <text x="290" y="200" text-anchor="middle" font-size="9" fill="#94a3b8">Repeat until EOS token — generates a complete gene expression profile</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                A decoder-only model applies a <strong>causal mask</strong>: token at position <em>i</em> can only
+                attend to positions 1 … <em>i</em>, never to future positions. This makes the model naturally
+                autoregressive — it can generate sequences token by token. For single-cell biology, "generating"
+                means sampling a plausible gene expression profile one gene at a time, or predicting what happens
+                next in a developmental trajectory. Confusingly, scGPT uses a decoder-only architecture despite
+                its "GPT" name primarily being used for masked pretraining — check the attention mask, not the name.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> A LEGO builder who is <em>assembling a set step by step, cover page closed</em>.
+                At step 5, they know what steps 1–4 looked like, but not step 6. They must predict the next brick
+                from what they've placed so far — exactly how a language model generates the next token.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Model</th><th>Biological token</th><th>Generation task</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>scGPT</strong></td><td>Gene name + expression bin</td><td>Cell generation, perturbation</td><td>Uses condition tokens; despite name, some tasks use bidirectional pretraining</td></tr>
+                    <tr><td><strong>TranscriptFormer</strong></td><td>Gene ID (rank-ordered)</td><td>Trajectory simulation</td><td>RoPE positional; trained on 112M cells</td></tr>
+                    <tr><td><strong>Cell2Sentence</strong></td><td>Gene name as word</td><td>Chat-style cell queries</td><td>Converts expression to English-like sentences</td></tr>
+                    <tr><td><strong>Evo 2</strong></td><td>Single nucleotide</td><td>Whole-genome generation</td><td>SSM-based (not strictly attention decoder); 1M+ context</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 4: ENCODER-DECODER -->
+        <div class="lego-concept-block" id="concept-encdec">
+            <div class="concept-header">
+                <div class="concept-number">4</div>
+                <div>
+                    <div class="concept-title">Encoder-Decoder Architecture</div>
+                    <div class="concept-subtitle">Source → Encoded context → Target — cross-attention bridges the two</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 600 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;">
+                    <defs>
+                        <linearGradient id="edGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#ede9fe"/><stop offset="100%" stop-color="#dbeafe"/>
+                        </linearGradient>
+                        <marker id="arrowED" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#7c3aed"/>
+                        </marker>
+                        <marker id="arrowCross" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+                            <polygon points="0 0, 7 3.5, 0 7" fill="#f59e0b"/>
+                        </marker>
+                    </defs>
+                    <rect x="0" y="0" width="600" height="230" fill="url(#edGrad)" rx="10"/>
+                    <!-- ENCODER side -->
+                    <rect x="10" y="16" width="250" height="88" rx="10" fill="rgba(99,102,241,0.10)" stroke="rgba(99,102,241,0.35)" stroke-width="1.5"/>
+                    <text x="135" y="32" text-anchor="middle" font-size="11" font-weight="700" fill="#6366f1">ENCODER (bidirectional)</text>
+                    <rect x="22" y="42" width="66" height="28" rx="6" fill="#6366f1"/><text x="55" y="61" text-anchor="middle" font-size="9" font-weight="700" fill="white">Source 1</text>
+                    <rect x="97" y="42" width="66" height="28" rx="6" fill="#6366f1"/><text x="130" y="61" text-anchor="middle" font-size="9" font-weight="700" fill="white">Source 2</text>
+                    <rect x="172" y="42" width="66" height="28" rx="6" fill="#6366f1"/><text x="205" y="61" text-anchor="middle" font-size="9" font-weight="700" fill="white">Source 3</text>
+                    <text x="135" y="94" text-anchor="middle" font-size="9" fill="#64748b">Contextualized encoder states</text>
+                    <!-- Arrow from encoder to cross-attention -->
+                    <line x1="260" y1="60" x2="310" y2="115" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrowCross)"/>
+                    <text x="295" y="90" font-size="9" fill="#b45309" font-weight="700">cross-attn</text>
+                    <!-- DECODER side -->
+                    <rect x="340" y="100" width="250" height="100" rx="10" fill="rgba(37,99,235,0.10)" stroke="rgba(37,99,235,0.35)" stroke-width="1.5"/>
+                    <text x="465" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">DECODER (causal + cross-attention)</text>
+                    <rect x="352" y="126" width="66" height="28" rx="6" fill="#2563eb"/><text x="385" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="white">Target 1</text>
+                    <rect x="427" y="126" width="66" height="28" rx="6" fill="#2563eb"/><text x="460" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="white">Target 2</text>
+                    <rect x="502" y="126" width="66" height="28" rx="6" fill="white" stroke="#2563eb" stroke-width="2" stroke-dasharray="4,3"/><text x="535" y="145" text-anchor="middle" font-size="9" font-weight="700" fill="#2563eb">Target 3?</text>
+                    <text x="465" y="190" text-anchor="middle" font-size="9" fill="#64748b">Attends causally to targets + fully to encoder outputs</text>
+                    <!-- Biology example -->
+                    <rect x="10" y="170" width="310" height="50" rx="8" fill="rgba(245,158,11,0.08)" stroke="rgba(245,158,11,0.25)" stroke-width="1.5"/>
+                    <text x="165" y="190" text-anchor="middle" font-size="10" fill="#92400e" font-weight="700">Biology use case example</text>
+                    <text x="165" y="205" text-anchor="middle" font-size="9" fill="#78350f">Encoder: control cell expression</text>
+                    <text x="165" y="218" text-anchor="middle" font-size="9" fill="#78350f">Decoder: generates perturbed cell state</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                The encoder-decoder architecture (T5 / BART family) separates two concerns: the encoder reads and
+                summarizes the <strong>source</strong> sequence with full bidirectional attention; the decoder generates
+                the <strong>target</strong> sequence token-by-token while additionally attending to the encoder's outputs
+                via <strong>cross-attention</strong>. This is the natural structure for translation tasks in biology:
+                translating a control cell state to a perturbed state, translating a DNA sequence to its protein,
+                or translating a human gene to its mouse ortholog.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> A LEGO instruction-translator: one expert reads a French instruction
+                set (encoder — full bidirectional context over the source), then a second expert builds the English
+                equivalent one step at a time (decoder — causal generation), periodically glancing at the French
+                expert's summary notes (cross-attention) to stay aligned with the source meaning.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Model</th><th>Source</th><th>Target</th><th>Cross-attention role</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>T5 / Flan-T5</strong></td><td>Corrupted text</td><td>Original text</td><td>Decoder queries encoder span representations</td></tr>
+                    <tr><td><strong>Enformer (hybrid)</strong></td><td>DNA sequence (200kb)</td><td>Regulatory track values</td><td>Transformer encoder for sequence, prediction head for targets</td></tr>
+                    <tr><td><strong>scELMo (concept)</strong></td><td>Control cell profile</td><td>Perturbed cell profile</td><td>Causal perturbation-conditioned decoding</td></tr>
+                    <tr><td><strong>AlphaFold2 (partial)</strong></td><td>MSA + pair features</td><td>3D coordinates</td><td>Evoformer encodes; structure module decodes into 3D</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- CONCEPT 5: POSITIONAL ENCODING -->
+        <div class="lego-concept-block" id="concept-position">
+            <div class="concept-header">
+                <div class="concept-number">5</div>
+                <div>
+                    <div class="concept-title">Positional Encoding</div>
+                    <div class="concept-subtitle">How the model knows "where" each token is — or whether order matters at all</div>
+                </div>
+            </div>
+            <div class="lego-svg-wrapper">
+                <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:600px;">
+                    <defs>
+                        <linearGradient id="posGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#ede9fe"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="0" y="0" width="600" height="200" fill="url(#posGrad)" rx="10"/>
+                    <!-- Column 1: Absolute -->
+                    <rect x="14" y="10" width="165" height="180" rx="8" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.25)" stroke-width="1.5"/>
+                    <text x="96" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#2563eb">Absolute (sinusoidal)</text>
+                    <rect x="26" y="40" width="50" height="24" rx="5" fill="#2563eb"/><text x="51" y="57" text-anchor="middle" font-size="9" fill="white">pos=1</text>
+                    <rect x="82" y="40" width="50" height="24" rx="5" fill="#2563eb"/><text x="107" y="57" text-anchor="middle" font-size="9" fill="white">pos=2</text>
+                    <rect x="26" y="72" width="50" height="24" rx="5" fill="#3b82f6"/><text x="51" y="89" text-anchor="middle" font-size="9" fill="white">pos=3</text>
+                    <rect x="82" y="72" width="50" height="24" rx="5" fill="#3b82f6"/><text x="107" y="89" text-anchor="middle" font-size="9" fill="white">pos=4</text>
+                    <text x="96" y="115" text-anchor="middle" font-size="9" fill="#475569">Fixed sin/cos vectors</text>
+                    <text x="96" y="128" text-anchor="middle" font-size="9" fill="#475569">added to embeddings</text>
+                    <text x="96" y="148" text-anchor="middle" font-size="9" fill="#0369a1" font-weight="600">BERT, original Transformer</text>
+                    <text x="96" y="162" text-anchor="middle" font-size="9" fill="#475569">No length extrapolation</text>
+                    <text x="96" y="178" text-anchor="middle" font-size="9" fill="#475569">beyond training length</text>
+                    <!-- Column 2: RoPE -->
+                    <rect x="210" y="10" width="175" height="180" rx="8" fill="rgba(99,102,241,0.07)" stroke="rgba(99,102,241,0.25)" stroke-width="1.5"/>
+                    <text x="298" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#6366f1">RoPE</text>
+                    <circle cx="250" cy="75" r="26" fill="none" stroke="#6366f1" stroke-width="2"/>
+                    <line x1="250" y1="75" x2="272" y2="65" stroke="#6366f1" stroke-width="2"/>
+                    <line x1="250" y1="75" x2="228" y2="55" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="3,2"/>
+                    <text x="278" y="60" font-size="8" fill="#6366f1">pos=1</text>
+                    <text x="218" y="52" font-size="8" fill="#0ea5e9">pos=2</text>
+                    <circle cx="348" cy="75" r="26" fill="none" stroke="#6366f1" stroke-width="2"/>
+                    <line x1="348" y1="75" x2="370" y2="58" stroke="#6366f1" stroke-width="2"/>
+                    <text x="374" y="56" font-size="8" fill="#6366f1">pos=3</text>
+                    <text x="298" y="115" text-anchor="middle" font-size="9" fill="#475569">Rotate Q,K vectors by</text>
+                    <text x="298" y="128" text-anchor="middle" font-size="9" fill="#475569">angle ∝ position</text>
+                    <text x="298" y="148" text-anchor="middle" font-size="9" fill="#4338ca" font-weight="600">LLaMA, Geneformer v2</text>
+                    <text x="298" y="162" text-anchor="middle" font-size="9" fill="#475569">TranscriptFormer, ESM3</text>
+                    <text x="298" y="178" text-anchor="middle" font-size="9" fill="#475569">Length extrapolation ✓</text>
+                    <!-- Column 3: No position / set-based -->
+                    <rect x="410" y="10" width="178" height="180" rx="8" fill="rgba(14,165,233,0.07)" stroke="rgba(14,165,233,0.25)" stroke-width="1.5"/>
+                    <text x="498" y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#0369a1">No Position / Set</text>
+                    <rect x="422" y="42" width="50" height="24" rx="5" fill="#0ea5e9"/><text x="447" y="59" text-anchor="middle" font-size="9" fill="white">Gene A</text>
+                    <rect x="480" y="42" width="50" height="24" rx="5" fill="#0ea5e9"/><text x="505" y="59" text-anchor="middle" font-size="9" fill="white">Gene B</text>
+                    <line x1="447" y1="66" x2="447" y2="78" stroke="#0ea5e9" stroke-width="1"/>
+                    <line x1="505" y1="66" x2="505" y2="78" stroke="#0ea5e9" stroke-width="1"/>
+                    <rect x="422" y="80" width="108" height="24" rx="5" fill="rgba(14,165,233,0.15)" stroke="#0ea5e9"/>
+                    <text x="476" y="97" text-anchor="middle" font-size="9" fill="#0369a1">Same (no order)</text>
+                    <text x="498" y="120" text-anchor="middle" font-size="9" fill="#475569">Order-invariant: genes</text>
+                    <text x="498" y="133" text-anchor="middle" font-size="9" fill="#475569">have no "position"</text>
+                    <text x="498" y="148" text-anchor="middle" font-size="9" fill="#0369a1" font-weight="600">scBERT, Geneformer</text>
+                    <text x="498" y="162" text-anchor="middle" font-size="9" fill="#475569">State, STACK (cell-level)</text>
+                    <text x="498" y="178" text-anchor="middle" font-size="9" fill="#475569">No positional bias ✓</text>
+                </svg>
+            </div>
+            <p class="concept-text">
+                Attention itself is <strong>permutation-invariant</strong> — shuffle the tokens and the attention
+                scores change but the mechanism doesn't know they were shuffled. Positional encoding injects
+                order information. In DNA, position matters enormously (base 500 and base 5000 have different
+                regulatory contexts). In scRNA-seq, gene <em>order</em> is largely arbitrary — what matters
+                is the set of expressed genes and their relative levels — so many single-cell models
+                deliberately omit positional encoding or use gene-rank-based alternatives.
+            </p>
+            <div class="analogy-box">
+                <strong>LEGO analogy:</strong> Positional encoding is the <em>slot number</em> printed on each
+                LEGO baseplate. For DNA, the slot number (genomic coordinate) is critical — brick 1000 connects
+                to brick 1001, not brick 5000. For gene expression, the "slot" is arbitrary — it doesn't matter
+                whether Gene A is the first or the fifth column in the expression matrix; what matters is its value
+                relative to the other genes.
+            </div>
+            <table class="subtype-table">
+                <thead><tr><th>Strategy</th><th>How it works</th><th>Extrapolates?</th><th>Best for</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Sinusoidal</strong></td><td>Fixed sin/cos at each position; added to embeddings</td><td>No</td><td>Text; original transformer</td></tr>
+                    <tr><td><strong>Learned absolute</strong></td><td>Trainable position embedding table</td><td>No</td><td>BERT (≤512 tokens)</td></tr>
+                    <tr><td><strong>RoPE</strong></td><td>Rotate Q,K by position-dependent angle; encodes relative distance in attention score</td><td>Partial (NTK scaling)</td><td>LLMs, genomic FMs, long sequences</td></tr>
+                    <tr><td><strong>ALiBi</strong></td><td>Add linear bias −m·|i−j| to attention score; no learned params</td><td>Yes</td><td>Long sequences; BLOOMZ, some DNA models</td></tr>
+                    <tr><td><strong>None (set-based)</strong></td><td>No position signal; model treats input as unordered set</td><td>N/A</td><td>scRNA gene sets; cell-level tokenization (State, STACK)</td></tr>
+                    <tr><td><strong>Gene-rank</strong></td><td>Encode rank in expression, not sequence position</td><td>N/A</td><td>Geneformer — rank 1 = most expressed</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- APPLICATIONS -->
+    <section class="content-section" id="applications">
+        <h2><i class="fas fa-flask"></i> Key Models in Biology by Architecture</h2>
+        <h3>Single-Cell Genomics</h3>
+        <table class="comparison-table">
+            <thead><tr><th>Model</th><th>Architecture</th><th>Pretraining</th><th>Scale</th><th>Key use</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Geneformer</strong> (Theodoris 2023, Nature)</td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM on rank-ordered genes</td><td>30M cells</td><td>Network dosage sensitivity, cell annotation</td></tr>
+                <tr><td><strong>scBERT</strong></td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM on expression bins</td><td>1M+ cells</td><td>Cell type classification; Performer (linear attn)</td></tr>
+                <tr><td><strong>scGPT</strong> (Wang 2024, Nature Methods)</td><td><span class="tag tag-decoder">Decoder</span></td><td>CLM + masked gene modeling</td><td>33M cells</td><td>Cell generation, perturbation, multi-omics</td></tr>
+                <tr><td><strong>TranscriptFormer</strong> (2025)</td><td><span class="tag tag-decoder">Decoder</span></td><td>CLM (gene rank order)</td><td>112M cells</td><td>Trajectory inference, generation; RoPE</td></tr>
+                <tr><td><strong>State</strong> (Brixi et al., Arc 2025)</td><td><span class="tag tag-encoder">Set Encoder</span></td><td>SE: reconstruction; ST: paired perturbation</td><td>167M + 100M cells</td><td>Perturbation response; cell-as-token</td></tr>
+                <tr><td><strong>STACK</strong> (Brixi et al., Arc 2026)</td><td><span class="tag tag-decoder">Tabular</span></td><td>Tabular in-context learning</td><td>149M cells</td><td>Zero-shot perturbation; ICL at inference</td></tr>
+                <tr><td><strong>Nicheformer</strong> (2025, Nat Methods)</td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM + spatial masking</td><td>Large spatial + scRNA</td><td>Spatial transcriptomics; niche-aware embeddings</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top:28px;">Genomic Sequence Models</h3>
+        <table class="comparison-table">
+            <thead><tr><th>Model</th><th>Architecture</th><th>Context length</th><th>Tokenization</th><th>Key use</th></tr></thead>
+            <tbody>
+                <tr><td><strong>DNABERT-2</strong> (Zhou 2023)</td><td><span class="tag tag-encoder">Encoder</span></td><td>512 tokens</td><td>BPE on DNA</td><td>Variant effect, regulatory element classification</td></tr>
+                <tr><td><strong>Nucleotide Transformer</strong> (2023)</td><td><span class="tag tag-encoder">Encoder</span></td><td>6-mer k-mer tokens</td><td>6-mer overlapping</td><td>Multi-species regulatory prediction</td></tr>
+                <tr><td><strong>Enformer</strong> (DeepMind 2021)</td><td><span class="tag tag-hybrid">Hybrid CNN+Enc</span></td><td>200kb</td><td>Single-nucleotide</td><td>Regulatory track prediction from sequence</td></tr>
+                <tr><td><strong>HyenaDNA</strong> (2023)</td><td><span class="tag tag-ssm">SSM</span></td><td>1M bases</td><td>Single-nucleotide</td><td>Long-range genomic dependencies</td></tr>
+                <tr><td><strong>Evo 2</strong> (Brixi et al. 2025)</td><td><span class="tag tag-ssm">SSM (StripedHyena)</span></td><td>1M+ bases</td><td>Single-nucleotide</td><td>Whole-genome generation, variant scoring</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top:28px;">Protein Models</h3>
+        <table class="comparison-table">
+            <thead><tr><th>Model</th><th>Architecture</th><th>Pretraining</th><th>Scale</th><th>Key use</th></tr></thead>
+            <tbody>
+                <tr><td><strong>ESM2</strong> (Lin et al. 2023, Science)</td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM on AA sequences</td><td>Up to 15B params, 250M seqs</td><td>Structure prediction (ESMFold), function</td></tr>
+                <tr><td><strong>ESM3</strong> (Hayes et al. 2024)</td><td><span class="tag tag-hybrid">Multi-modal Enc</span></td><td>Sequence + structure + function masking</td><td>98B params</td><td>Protein generation, design, reasoning</td></tr>
+                <tr><td><strong>AlphaFold2</strong> (Jumper et al. 2021)</td><td><span class="tag tag-encdec">Enc (Evoformer) + Decoder</span></td><td>Structure supervised</td><td>—</td><td>3D structure prediction from sequence</td></tr>
+                <tr><td><strong>ProteinMPNN</strong> (Dauparas et al. 2022)</td><td><span class="tag tag-decoder">Decoder-like</span></td><td>Sequence design on fixed backbones</td><td>—</td><td>Inverse folding: backbone → sequence</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- COMPARISON -->
+    <section class="content-section" id="comparison">
+        <h2><i class="fas fa-table"></i> Architecture Comparison &amp; Trade-offs</h2>
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Encoder-Only</th>
+                    <th>Decoder-Only</th>
+                    <th>Encoder-Decoder</th>
+                    <th>SSM / Hybrid</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td><strong>Attention mask</strong></td><td>Bidirectional (all pairs)</td><td>Causal (left only)</td><td>Enc: bidirectional; Dec: causal + cross</td><td>Varies; often sub-quadratic</td></tr>
+                <tr><td><strong>Primary output</strong></td><td>Contextual embeddings</td><td>Next-token distribution</td><td>Sequence of target tokens</td><td>Long-range sequence representations</td></tr>
+                <tr><td><strong>Best biological task</strong></td><td>Classification, representation, zero-shot scoring</td><td>Generation, simulation, in-context learning</td><td>Seq-to-seq translation, perturbation prediction</td><td>Very long DNA/RNA sequences (&gt;100kb)</td></tr>
+                <tr><td><strong>Complexity</strong></td><td>O(n²) attention</td><td>O(n²) attention</td><td>O(n·m) enc + O(m²) dec</td><td>O(n) or O(n log n)</td></tr>
+                <tr><td><strong>Fine-tuning paradigm</strong></td><td>Append classification head</td><td>Prompt / instruction tuning</td><td>Seq-to-seq fine-tuning</td><td>Same as encoder or decoder</td></tr>
+                <tr><td><strong>Biology models</strong></td><td>Geneformer, ESM2, DNABERT-2</td><td>scGPT, TranscriptFormer, STACK</td><td>T5, Enformer, AlphaFold2 (partial)</td><td>Evo 2, HyenaDNA, Hyena-DNA</td></tr>
+                <tr><td><strong>Key limitation</strong></td><td>Cannot generate; requires task head</td><td>Left-to-right order assumption may not fit biology</td><td>More complex; slower inference</td><td>Less interpretable; hardware-specific</td></tr>
+            </tbody>
+        </table>
+
+        <h3 style="margin-top:28px;">Depth vs Width: How stacking changes behavior</h3>
+        <table class="comparison-table">
+            <thead><tr><th>Depth (layers)</th><th>What is learned</th><th>Biology analogy</th></tr></thead>
+            <tbody>
+                <tr><td>Early layers (1–4)</td><td>Local syntax, token-level features</td><td>Identifying individual gene expression levels, codon-level patterns</td></tr>
+                <tr><td>Middle layers (4–8)</td><td>Compositional features, sub-structure</td><td>Gene modules, regulatory motifs, secondary structure elements</td></tr>
+                <tr><td>Late layers (8+)</td><td>Task-relevant, global context</td><td>Cell type identity, pathway activation states, 3D protein contacts</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- PRACTICAL GUIDE -->
+    <section class="content-section" id="guide">
+        <h2><i class="fas fa-map"></i> Practical Architecture Selection Guide</h2>
+        <div class="guide-step">
+            <div class="guide-step-num">1</div>
+            <div class="guide-step-content">
+                <h4>Define your biological question first</h4>
+                <p>Is the task about <strong>understanding</strong> (classifying, scoring, representing) or <strong>generating</strong> (simulating, designing, predicting a new sequence)? Understanding → encoder-only. Generating → decoder-only. Both → encoder-decoder or decoder with conditioning.</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">2</div>
+            <div class="guide-step-content">
+                <h4>Does biological order matter for your tokens?</h4>
+                <p>DNA/protein sequences: yes, use positional encoding (RoPE for long sequences). scRNA gene sets: usually no, omit or use gene-rank encoding. Single cells in a population: no — treat as a set (State, STACK model).</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">3</div>
+            <div class="guide-step-content">
+                <h4>Check sequence length against O(n²) budget</h4>
+                <p>If your input exceeds ~4,000–8,000 tokens, pure attention becomes expensive. Options: sliding window attention (Longformer style), linear attention (Performer / scBERT), or switch to SSM (HyenaDNA, Evo 2) for very long genomic sequences (&gt;50kb).</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">4</div>
+            <div class="guide-step-content">
+                <h4>Choose a pretrained model before training from scratch</h4>
+                <p>For scRNA: start from Geneformer or scGPT. For DNA: DNABERT-2 (&lt;1kb) or Nucleotide Transformer (multi-species). For protein: ESM2 (structure) or ESM3 (multimodal). Training from scratch requires tens of millions of samples and weeks of GPU time — almost always unnecessary for biology.</p>
+            </div>
+        </div>
+        <div class="guide-step">
+            <div class="guide-step-num">5</div>
+            <div class="guide-step-content">
+                <h4>Use the minimal architecture that solves the task</h4>
+                <p>A 6-layer encoder is often sufficient for cell type annotation. A 24-layer decoder is overkill for a 5-class classification task. Larger models require more data to avoid overfitting; smaller fine-tuned models often outperform larger frozen ones on small biological datasets.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- HANDS-ON -->
+    <section class="content-section" id="hands-on">
+        <h2><i class="fas fa-wrench"></i> Hands-On Resources</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap:16px;">
+            <div class="highlight-box">
+                <h4><i class="fas fa-book"></i> Illustrated Transformer</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0 0 10px;">Jay Alammar's visual walkthrough of the encoder-decoder architecture — start here for the block diagram.</p>
+                <a href="https://jalammar.github.io/illustrated-transformer/" target="_blank" rel="noopener" style="color:var(--primary); font-size:.85rem; font-weight:700;">jalammar.github.io ↗</a>
+            </div>
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> Geneformer Fine-Tuning</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0 0 10px;">Official Hugging Face notebook for fine-tuning Geneformer on cell type classification with your own scRNA data.</p>
+                <a href="https://huggingface.co/ctheodoris/Geneformer" target="_blank" rel="noopener" style="color:var(--primary); font-size:.85rem; font-weight:700;">huggingface.co/ctheodoris ↗</a>
+            </div>
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> scGPT Tutorial</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0 0 10px;">End-to-end notebook covering scGPT tokenization, pretraining, and cell annotation — decoder-only in practice.</p>
+                <a href="https://github.com/bowang-lab/scGPT" target="_blank" rel="noopener" style="color:var(--primary); font-size:.85rem; font-weight:700;">github.com/bowang-lab/scGPT ↗</a>
+            </div>
+            <div class="highlight-box">
+                <h4><i class="fas fa-code"></i> ESM2 Protein Embeddings</h4>
+                <p style="font-size:.88rem; color:#475569; margin:0 0 10px;">Extract residue-level and protein-level embeddings from ESM2 — the encoder-only gold standard for proteins.</p>
+                <a href="https://github.com/facebookresearch/esm" target="_blank" rel="noopener" style="color:var(--primary); font-size:.85rem; font-weight:700;">github.com/facebookresearch/esm ↗</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- RELATED MODULES -->
+    <section class="content-section">
+        <h2><i class="fas fa-project-diagram"></i> Related Modules</h2>
+        <div class="related-grid">
+            <a href="tokenization-strategies.html" class="related-card">
+                <h4><i class="fas fa-tags"></i> Tokenization Strategies</h4>
+                <p>How biological data (genes, nucleotides, amino acids) is converted into tokens before the architecture processes them.</p>
+            </a>
+            <a href="attention-mechanisms.html" class="related-card">
+                <h4><i class="fas fa-network-wired"></i> Attention Mechanisms</h4>
+                <p>The core MHA, cross-attention, and graph attention operators that live inside every transformer block.</p>
+            </a>
+            <a href="pretraining.html" class="related-card">
+                <h4><i class="fas fa-graduation-cap"></i> Pretraining Strategies</h4>
+                <p>MLM, CLM, and multi-task objectives that determine what the architecture learns during unsupervised pretraining.</p>
+            </a>
+            <a href="generative-models.html" class="related-card">
+                <h4><i class="fas fa-magic"></i> Generative Models</h4>
+                <p>VAE, diffusion, and flow matching architectures for cell generation, protein design, and perturbation prediction.</p>
+            </a>
+            <a href="perturbation-prediction_modeling.html" class="related-card">
+                <h4><i class="fas fa-vial"></i> Perturbation Prediction</h4>
+                <p>GEARS, scGPT, State, and STACK — transformer architectures applied to predicting cellular responses.</p>
+            </a>
+        </div>
+    </section>
+</main>
+
+<footer style="text-align: center;">
+    <p style="font-size: 1.1em;">Part of the <a href="https://xqiu625.github.io/ai4bio-concepts/">AI4Bio Learning Hub</a> by Xinru Qiu</p>
+    <p style="margin-top: 10px;"><a href="https://github.com/xqiu625">GitHub</a> | <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> | <a href="mailto:xinru.reina.qiu@gmail.com">Email</a></p>
+    <p style="font-size: 0.85em; margin-top: 12px; opacity: 0.7;">Created 2026 · Updated September 2026</p>
+    <p style="font-size: 0.85em; margin-top: 15px; opacity: 0.75;">&#x1F512; Privacy: This site uses Google Analytics to improve content. No personal data is collected.<br>&copy; 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome &mdash; see <a href="https://xqiu625.github.io/licensing.html" style="color:inherit;">licensing</a>.</p>
+</footer>
+
+
+</body>
+</html>
