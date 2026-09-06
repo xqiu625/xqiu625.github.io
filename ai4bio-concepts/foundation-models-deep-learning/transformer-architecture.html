@@ -296,62 +296,66 @@
         </div>
         <div class="casework-copy">
             <div class="kicker">LEGO lens · transformer architecture</div>
-            <h2>一块标准动力砖，叠出任意深的机器。</h2>
-            <p>Every LEGO machine that moves runs on the same sealed power brick. 给它图纸它能读（encoder），给它半成品它能接着拼（decoder），两组对讲一联动就是整条装配线——transformer 的全部型号，都是这一块砖的不同排布。</p>
+            <h2>电池盒、电线、马达、齿轮组、结构框架——拼出会思考的机器。</h2>
+            <p>Every motorized LEGO build runs on the same five-part power unit: battery box, wires, motor, gears, frame. Transformer architecture is the same kit for sequence models — an input embedding to supply "energy," residual connections to wire the layers together, self-attention as the motor, a feed-forward network as the gearbox, and layer norm as the frame that keeps the whole build from rattling apart.</p>
         </div>
     </section>
 
-    <!-- STORY LINE: the power brick -->
+    <!-- STORY LINE: the LEGO power unit -->
     <section class="content-section story-section" id="lego-powerbrick">
         <figure class="story-hero">
             <img src="../animations/rive-assets/stage-themes-v5/lego-powerbrick-hero.webp" width="1400" height="1400" loading="lazy" decoding="async" alt="Healshu LEGO master builder at a workbench with a transparent cutaway power brick showing the gearbox, motor, driveshaft, and regulator inside, a row of identical machines behind">
         </figure>
-        <h2>🧱 The Power Brick: Transformer Architecture in Six Parts</h2>
-        <p class="story-quote">「一块标准动力砖，叠出任意深的机器。」</p>
-        <p class="story-intro">Open any motorized LEGO set and you find the same sealed power brick: gearbox, motor, driveshaft, regulator. Transformer architecture is that brick for sequence models — one standard module, wired in different ways to become encoders, decoders, and full encoder–decoder lines. Six parts from the datasheet, re-read as architecture.</p>
+        <h2>🧱 The LEGO Power Unit: Transformer Architecture, Part by Part</h2>
+        <p class="story-quote">「不同的零件，各司其职；组合在一起，才有强大的动力。」</p>
+        <p class="story-intro">Open any LEGO Power Functions set and five parts fall out: a battery box, wires, a motor, a set of gears, and a Technic frame to hold it all together. Each does exactly one job, and none of them move a vehicle alone. Line them up next to a transformer block and the correspondence is one-to-one — same idea, different world.</p>
         <div class="library-grid">
             <div class="library-card">
-                <div class="book-meta">Part 1 · 标准动力砖 The sealed power brick</div>
-                <h4>The transformer block</h4>
-                <p class="plot">The genius is not any single part — it is that the whole brick is sealed and standard. Snap one into a crane, snap ten into a factory line: same brick, any machine.</p>
-                <p class="echo"><strong>The block.</strong> Self-attention + FFN + residuals + norms, packaged as one reusable module. Stacked N times, it scales from a toy to a factory. <a href="#concept-block">See the block ↓</a></p>
+                <div class="book-meta">Part 1 · 电池盒 Battery box</div>
+                <h4>Input embedding</h4>
+                <p class="plot">The battery box supplies electricity — without it, nothing in the build has any power to move at all. It's the first thing you snap in, before any other part matters.</p>
+                <p class="echo"><strong>Input embedding.</strong> token / gene / cell → embedding vector. Converts the raw outside world (text, gene expression) into a vector the model can compute on — the "energy" that feeds the whole network. <a href="#concept-block">See input embedding ↓</a></p>
             </div>
             <div class="library-card">
-                <div class="book-meta">Part 2 · 变速箱分动力 The gearbox</div>
+                <div class="book-meta">Part 2 · 电线 Wires</div>
+                <h4>Residual connection</h4>
+                <p class="plot">Wires carry power from one unit to the next and link the pieces together — a "shortcut" so current from the battery box reaches the motor no matter how the build is arranged in between.</p>
+                <p class="echo"><strong>Residual connections.</strong> Carries information from one layer straight to the next, a shortcut that keeps signal from being lost as it passes through deep stacks. <a href="#concept-block">See residuals ↓</a></p>
+            </div>
+            <div class="library-card">
+                <div class="book-meta">Part 3 · 马达 Motor</div>
                 <h4>Self-attention</h4>
-                <p class="plot">Inside the brick, the gearbox decides which gears bite how hard: the tower gear needs torque now, the decorative antenna can wait. Every rotation is re-routed on the fly.</p>
-                <p class="echo"><strong>Attention.</strong> Each position re-weights how much it listens to every other position — torque allocation, recomputed per token. <a href="#concept-block">See attention ↓</a></p>
+                <p class="plot">The motor turns electricity into motion — the core driving force of the whole build. Everything downstream depends on what the motor decides to do with the power it's given.</p>
+                <p class="echo"><strong>Self-attention.</strong> Lets every position interact with every other position, deciding what to "pay attention to" — the core dynamic force of a Transformer. <a href="#concept-block">See attention ↓</a></p>
             </div>
             <div class="library-card">
-                <div class="book-meta">Part 3 · 直通传动轴 The direct driveshaft</div>
-                <h4>Residual connections</h4>
-                <p class="plot">Deep in a long machine, power dies gear by gear. The brick carries a straight shaft that bypasses the gearbox entirely — full torque, delivered untouched to the far end.</p>
-                <p class="echo"><strong>Residuals.</strong> x + F(x): the input flows through unmodified, so gradients and signals survive a hundred layers without stalling. <a href="#concept-block">See why deep works ↓</a></p>
+                <div class="book-meta">Part 4 · 齿轮组 Gears</div>
+                <h4>Feed-forward network (MLP)</h4>
+                <p class="plot">The gear train regulates speed and torque, controlling exactly how the motor's output actually reaches the wheels.</p>
+                <p class="echo"><strong>Feed-forward network.</strong> Linear → Activation → Linear. Applies a non-linear transform to the attention output, boosting the model's representational power — accelerating and regulating the flow of information. <a href="#concept-block">See the FFN ↓</a></p>
             </div>
             <div class="library-card">
-                <div class="book-meta">Part 4 · 稳压器 The voltage regulator</div>
+                <div class="book-meta">Part 5 · 结构框架 Technic frame</div>
                 <h4>Layer normalization</h4>
-                <p class="plot">Stack fifty bricks and small voltage wobbles compound into brownouts. The regulator at each brick's output clamps the power to spec — every stage, every time.</p>
-                <p class="echo"><strong>LayerNorm.</strong> Each sublayer's output is re-standardized, keeping deep stacks stable and trainable. <a href="#concept-block">See normalization ↓</a></p>
+                <p class="plot">The frame holds every part in its place and keeps the overall structure steady — without it, the whole assembly would rattle apart under its own vibration.</p>
+                <p class="echo"><strong>Layer normalization.</strong> Stabilizes every layer's output so the signal never blows up or vanishes, letting the whole model run steadily. <a href="#concept-block">See normalization ↓</a></p>
             </div>
             <div class="library-card">
-                <div class="book-meta">Part 5 · 轨道上的编号螺柱 Numbered studs on the rail</div>
-                <h4>Positional encoding</h4>
-                <p class="plot">The power brick itself is order-blind — it treats a row of gears as a bag. The rail underneath carries numbered studs, so position one and position nine are never confused.</p>
-                <p class="echo"><strong>Position.</strong> Self-attention has no sense of order; positions are injected (sinusoids, learned, or rotary), so "gene A before gene B" means something. <a href="#concepts">See position ↓</a></p>
-            </div>
-            <div class="library-card">
-                <div class="book-meta">Part 6 · 两组动力组对讲 Two bricks on the radio</div>
-                <h4>Encoder–decoder</h4>
-                <p class="plot">One brick reads the blueprint and radios a summary; the other builds, asking questions as it goes. The radio link between them is the whole assembly line.</p>
-                <p class="echo"><strong>Cross-attention.</strong> The encoder compresses the input sequence; the decoder generates while querying it. Encoder-only (BERT-style) reads; decoder-only (GPT-style) builds. <a href="#concepts">See the variants ↓</a></p>
+                <div class="book-meta">Part 6 · 完整乐高动力模型 The complete power model</div>
+                <h4>Transformer block × N</h4>
+                <p class="plot">All the units working together drive the vehicle forward. Pull out any single part and the whole build stalls — no wires, no motor, no motion.</p>
+                <p class="echo"><strong>Transformer.</strong> Self-attention → Add &amp; Norm → Feed-forward → Add &amp; Norm, stacked N times: input tokens go in, meaningful output representations come out. <a href="#concept-block">See the full block ↓</a></p>
             </div>
         </div>
+        <figure class="content-figure">
+            <img src="figures/lego-power-unit-mapping.webp" width="1312" height="1199" loading="lazy" decoding="async" alt="Three-column table mapping the LEGO Power Unit to Transformer Architecture: battery box to input embedding, wires to residual connection, motor to self-attention, gears to feed-forward network (MLP), Technic frame to layer normalization, and the complete LEGO power model to the full Transformer Block times N, with a one-to-one correspondence and role explained for each row">
+            <figcaption><strong>The one-to-one mapping.</strong> 乐高动力单元 (LEGO Power Unit) → Transformer Architecture → 对应关系与作用 (correspondence &amp; role) — the reference diagram the six parts above are drawn from.</figcaption>
+        </figure>
         <figure class="content-figure comic-figure">
             <img src="figures/lego-powerbrick-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel LEGO power brick comic: the same sealed power brick snapped into a crane, a car, and a factory arm; a gearbox routing torque to the gears that need it; a golden driveshaft glowing at full strength through a very long machine while geared paths dim; and two power bricks on a rail, one reading a blueprint and beaming a summary while the other builds">
-            <figcaption><strong>The power brick in four plays.</strong> One brick, any machine (the standard module) · torque where it counts (self-attention) · the shaft that never dies (residual connections) · two bricks on the radio (encoder–decoder).</figcaption>
+            <figcaption><strong>The power unit in four plays.</strong> Battery box in, energy for everything (input embedding) · wires linking every unit (residual connections) · the motor as core drive (self-attention) · gears regulating the output (feed-forward network) — held together by the frame (layer norm).</figcaption>
         </figure>
-        <p class="library-footnote">「图纸能读，半成品能续——一块砖的全部排布，就是 transformer 的全部型号。」</p>
+        <p class="library-footnote">Same idea. Different world. LEGO builds cars. Transformers build intelligence.</p>
     </section>
 
     <!-- STORY -->
@@ -494,6 +498,10 @@
                     <tr><td><strong>SwiGLU FFN</strong></td><td>Gated linear unit replaces ReLU</td><td>Better representation learning per param</td><td>LLaMA, ESM3, many 2024+ FMs</td></tr>
                 </tbody>
             </table>
+            <figure class="content-figure">
+                <img src="figures/lego-block-variant-mapping.webp" width="1312" height="1199" loading="lazy" decoding="async" alt="Three-column table comparing four Transformer block variants through a LEGO Power Unit wiring lens: Post-LN wires the frame (layer norm) after the residual add; Pre-LN wires the frame before the motor; Parallel FFN+Attn runs the motor and gear-train off the same splitter simultaneously; SwiGLU FFN adds a gate lever to the gear-train that lets a controlled fraction of power through">
+                <figcaption><strong>Same block, four wiring diagrams.</strong> 乐高动力单元接线方式 (LEGO Power Unit Wiring) vs Transformer Block Variant vs 作用与特点 (Role &amp; Intuition) — Post-LN, Pre-LN, Parallel FFN+Attn, and SwiGLU FFN, side by side.</figcaption>
+            </figure>
         </div>
 
         <!-- CONCEPT 2: ENCODER-ONLY -->
@@ -646,6 +654,10 @@
                     <tr><td><strong>Evo 2</strong></td><td>Single nucleotide</td><td>Whole-genome generation</td><td>SSM-based (not strictly attention decoder); 1M+ context</td></tr>
                 </tbody>
             </table>
+            <figure class="content-figure">
+                <img src="figures/lego-decoder-variant-mapping.webp" width="1312" height="1199" loading="lazy" decoding="async" alt="Three-column table comparing four decoder-only variants through a LEGO Power Unit lens: scGPT places one gene-brick at a time with a condition-tag brick steering direction; TranscriptFormer builds along a rail with a rotating dial (RoPE) under each brick; Cell2Sentence uses bricks printed with English gene-name words; Evo 2 replaces the motor and gears with a continuous conveyor-belt drive (state space model) for very long nucleotide sequences">
+                <figcaption><strong>Same motor, four builds.</strong> 马达怎么造车 (How the Motor Builds) vs Decoder Variant vs 作用与特点 (Role &amp; Intuition) — scGPT, TranscriptFormer, Cell2Sentence, and Evo 2, side by side.</figcaption>
+            </figure>
         </div>
 
         <!-- CONCEPT 4: ENCODER-DECODER -->
@@ -807,6 +819,10 @@
                     <tr><td><strong>Gene-rank</strong></td><td>Encode rank in expression, not sequence position</td><td>N/A</td><td>Geneformer — rank 1 = most expressed</td></tr>
                 </tbody>
             </table>
+            <figure class="content-figure">
+                <img src="figures/lego-positional-variant-mapping.webp" width="1223" height="1286" loading="lazy" decoding="async" alt="Three-column table comparing six positional encoding variants through a LEGO Power Unit rail lens: Sinusoidal is a fixed factory-painted wave stripe capped at the training length; Learned absolute is numbered tags memorized during training with the same cap; RoPE is a rotating dial under each brick encoding relative angle and extrapolating past training length; ALiBi is a friction ramp that decays connection strength linearly with distance and has no learned parameters; None (set-based) is a bag of loose bricks with no rail at all; Gene-rank sorts bricks by expression strength rather than physical slot number">
+                <figcaption><strong>Same rail, six ways to mark it.</strong> 轨道怎么标位置 (How the Rail Marks Position) vs Positional Encoding Variant vs 作用与特点 (Role &amp; Intuition) — Sinusoidal, Learned absolute, RoPE, ALiBi, None (set-based), and Gene-rank, side by side.</figcaption>
+            </figure>
         </div>
     </section>
 
