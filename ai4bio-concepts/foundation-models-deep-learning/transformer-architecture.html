@@ -574,6 +574,7 @@
                     <tr><td><strong>Protein LM</strong></td><td>MLM on amino acid sequences</td><td>ESM2, ProtBERT, Ankh</td><td>Structure prediction, function classification</td></tr>
                     <tr><td><strong>Whole-genome</strong></td><td>MLM on overlapping k-mers</td><td>Nucleotide Transformer, HyenaDNA (encoder variant)</td><td>Variant effect, regulatory grammar</td></tr>
                     <tr><td><strong>Protein-embedding tokens</strong></td><td>Predict whether a sampled protein was expressed in the cell</td><td>UCE (Rosen/Roohani et al. 2026, <em>Nature</em>)</td><td>Cross-species zero-shot cell embedding, atlas building</td></tr>
+                    <tr><td><strong>Tabular / set attention</strong></td><td>Rectangular gene-block masking, reconstructed across a whole cell set</td><td>STACK (Dong et al. 2026, bioRxiv)</td><td>In-context perturbation &amp; donor prediction; <em>Perturb Sapiens</em> atlas</td></tr>
                 </tbody>
             </table>
             <div class="highlight-box" style="margin-top:16px;">
@@ -593,6 +594,32 @@
                     rat, chicken, even <em>Drosophila</em> — with no fine-tuning, and this zero-shot embedding
                     space is what powers the paper's 36M-cell Integrated Mega-scale Atlas (IMA).
                 </p>
+            </div>
+            <div class="highlight-box" style="margin-top:16px;">
+                <h4>&#x1F9EC; Case study: STACK's cells-as-context tabular attention</h4>
+                <p style="font-size:.9rem; color:#475569; margin:0 0 8px;">
+                    <strong>STACK</strong> (Dong et al. 2026, bioRxiv, Arc Institute) is pretrained on 149M cells
+                    from scBaseCount, the largest single-cell collection assembled to date. Its tokenizer first
+                    compresses each cell's full gene expression vector into a fixed 100 "gene module tokens"
+                    via a single learned projection — no fixed gene vocabulary, no rank ordering. The real
+                    innovation is the <strong>tabular transformer block</strong>: each layer runs intra-cellular
+                    attention (a cell's 100 tokens attending to each other) <em>and</em> inter-cellular attention
+                    (the same token slot compared across every cell in the batch), so cells are never encoded
+                    in isolation — they're encoded as a table, rows and columns both attending.
+                </p>
+                <p style="font-size:.9rem; color:#475569; margin:0;">
+                    Pretraining masks a rectangular block of genes across the <em>entire</em> cell set at once and
+                    reconstructs it through a probabilistic MLP decoder. That same cross-cell wiring is what
+                    enables in-context learning at inference: concatenate a few "prompt" cells representing a
+                    condition (a drug, a donor) with unlabeled "query" cells, and the query cells' predicted
+                    expression shifts toward that condition with zero fine-tuning — the basis for <em>Perturb
+                    Sapiens</em>, the first whole-organism atlas of perturbed human cells (892 perturbations,
+                    40 cell types, 28 tissues).
+                </p>
+                <figure class="content-figure" style="margin-top:18px;">
+                    <img src="figures/lego-stack-module-mapping.webp" width="1199" height="1312" loading="lazy" decoding="async" alt="Three-column table mapping the LEGO Power Unit to STACK's architecture: a battery-module compressor packs any number of genes into 100 standardized tokens; a shared diagnostic rack holds a whole batch of cells as one context; intra-car and inter-car wiring represent intra-cellular and inter-cellular attention in a tabular transformer block; a rectangular tarp masks the same gene block across every car for pretraining; demo cars showing a treated condition lend their voltage to blank query cars for in-context counterfactual inference; and the whole-showroom catalog represents the Perturb Sapiens atlas across 892 perturbations, 40 cell types, and 28 tissues">
+                    <figcaption><strong>Cars parked together teach each other.</strong> 乐高动力单元怎么互相借电 (How LEGO Power Units Borrow Power From Each Other) vs STACK Module vs 作用与特点 (Role &amp; Intuition) — tokenizer, shared cell-set rack, intra-/inter-cell wiring, rectangular masking, in-context inference, and the Perturb Sapiens catalog, side by side.</figcaption>
+                </figure>
             </div>
         </div>
 
@@ -884,8 +911,8 @@
                 <tr><td><strong>scBERT</strong></td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM on expression bins</td><td>1M+ cells</td><td>Cell type classification; Performer (linear attn)</td></tr>
                 <tr><td><strong>scGPT</strong> (Wang 2024, Nature Methods)</td><td><span class="tag tag-decoder">Decoder</span></td><td>CLM + masked gene modeling</td><td>33M cells</td><td>Cell generation, perturbation, multi-omics</td></tr>
                 <tr><td><strong>TranscriptFormer</strong> (2025)</td><td><span class="tag tag-decoder">Decoder</span></td><td>CLM (gene rank order)</td><td>112M cells</td><td>Trajectory inference, generation; RoPE</td></tr>
-                <tr><td><strong>State</strong> (Brixi et al., Arc 2025)</td><td><span class="tag tag-encoder">Set Encoder</span></td><td>SE: reconstruction; ST: paired perturbation</td><td>167M + 100M cells</td><td>Perturbation response; cell-as-token</td></tr>
-                <tr><td><strong>STACK</strong> (Brixi et al., Arc 2026)</td><td><span class="tag tag-decoder">Tabular</span></td><td>Tabular in-context learning</td><td>149M cells</td><td>Zero-shot perturbation; ICL at inference</td></tr>
+                <tr><td><strong>State</strong> (Adduri et al. 2025, Arc Institute)</td><td><span class="tag tag-encoder">Set Encoder</span></td><td>SE: reconstruction; ST: paired perturbation</td><td>167M + 100M cells</td><td>Perturbation response; cell-as-token</td></tr>
+                <tr><td><strong>STACK</strong> (Dong et al. 2026, bioRxiv, Arc Institute)</td><td><span class="tag tag-encoder">Tabular Set Encoder</span></td><td>Rectangular gene masking; intra-/inter-cell attention (non-causal) + MLP decoder</td><td>149M cells (scBaseCount)</td><td>In-context counterfactual perturbation/donor prediction; built <em>Perturb Sapiens</em> atlas</td></tr>
                 <tr><td><strong>Nicheformer</strong> (2025, Nat Methods)</td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM + spatial masking</td><td>Large spatial + scRNA</td><td>Spatial transcriptomics; niche-aware embeddings</td></tr>
                 <tr><td><strong>UCE</strong> (Rosen/Roohani et al. 2026, Nature)</td><td><span class="tag tag-encoder">Encoder</span></td><td>Masked "was gene expressed?" on ESM2 protein-embedding tokens</td><td>36M cells, 8 species</td><td>Zero-shot cross-species embedding; Integrated Mega-scale Atlas</td></tr>
                 <tr><td><strong>scPRINT-2</strong> (Kalfon et al. 2026, bioRxiv)</td><td><span class="tag tag-hybrid">Encoder + gen. decoder</span></td><td>Denoising (ZiNB) + cell-label + gene-network multitask</td><td>350M cells, 16 organisms</td><td>Expression imputation, counterfactual generation, GRN inference</td></tr>
@@ -935,7 +962,7 @@
                 <tr><td><strong>Best biological task</strong></td><td>Classification, representation, zero-shot scoring</td><td>Generation, simulation, in-context learning</td><td>Seq-to-seq translation, perturbation prediction</td><td>Very long DNA/RNA sequences (&gt;100kb)</td></tr>
                 <tr><td><strong>Complexity</strong></td><td>O(n²) attention</td><td>O(n²) attention</td><td>O(n·m) enc + O(m²) dec</td><td>O(n) or O(n log n)</td></tr>
                 <tr><td><strong>Fine-tuning paradigm</strong></td><td>Append classification head</td><td>Prompt / instruction tuning</td><td>Seq-to-seq fine-tuning</td><td>Same as encoder or decoder</td></tr>
-                <tr><td><strong>Biology models</strong></td><td>Geneformer, ESM2, DNABERT-2</td><td>scGPT, TranscriptFormer, STACK</td><td>T5, Enformer, AlphaFold2 (partial)</td><td>Evo 2, HyenaDNA, Hyena-DNA</td></tr>
+                <tr><td><strong>Biology models</strong></td><td>Geneformer, ESM2, State, STACK</td><td>scGPT, TranscriptFormer</td><td>T5, Enformer, AlphaFold2 (partial)</td><td>Evo 2, HyenaDNA, Hyena-DNA</td></tr>
                 <tr><td><strong>Key limitation</strong></td><td>Cannot generate; requires task head</td><td>Left-to-right order assumption may not fit biology</td><td>More complex; slower inference</td><td>Less interpretable; hardware-specific</td></tr>
             </tbody>
         </table>
