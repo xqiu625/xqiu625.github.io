@@ -573,8 +573,27 @@
                     <tr><td><strong>Gene-rank encoding</strong></td><td>Rank by expression → MLM on rank tokens</td><td>Geneformer</td><td>Network dosage sensitivity, cell type annotation</td></tr>
                     <tr><td><strong>Protein LM</strong></td><td>MLM on amino acid sequences</td><td>ESM2, ProtBERT, Ankh</td><td>Structure prediction, function classification</td></tr>
                     <tr><td><strong>Whole-genome</strong></td><td>MLM on overlapping k-mers</td><td>Nucleotide Transformer, HyenaDNA (encoder variant)</td><td>Variant effect, regulatory grammar</td></tr>
+                    <tr><td><strong>Protein-embedding tokens</strong></td><td>Predict whether a sampled protein was expressed in the cell</td><td>UCE (Rosen/Roohani et al. 2026, <em>Nature</em>)</td><td>Cross-species zero-shot cell embedding, atlas building</td></tr>
                 </tbody>
             </table>
+            <div class="highlight-box" style="margin-top:16px;">
+                <h4>&#x1F9EC; Case study: UCE's genome-agnostic tokenizer</h4>
+                <p style="font-size:.9rem; color:#475569; margin:0 0 8px;">
+                    <strong>Universal Cell Embedding (UCE)</strong> is a 33-layer, 650M-parameter encoder trained
+                    self-supervised on 36M cells spanning 8 species (CellXGene corpus). Its trick isn't in the
+                    attention mechanism — it's in the token itself. Instead of a learned per-gene embedding table
+                    (which only knows genes seen during training), each gene token <em>is</em> its ESM2 protein-language-model
+                    embedding, with genes grouped by chromosome and sorted by genomic location, then sampled
+                    with replacement weighted by expression level. The masked objective is binary, not regression:
+                    "was protein G<sub>p</sub> expressed in cell C?"
+                </p>
+                <p style="font-size:.9rem; color:#475569; margin:0;">
+                    Because any gene's identity is defined by what its protein <em>looks like</em> rather than an
+                    arbitrary vocabulary index, UCE embeds species it never trained on — green monkey, naked mole
+                    rat, chicken, even <em>Drosophila</em> — with no fine-tuning, and this zero-shot embedding
+                    space is what powers the paper's 36M-cell Integrated Mega-scale Atlas (IMA).
+                </p>
+            </div>
         </div>
 
         <!-- CONCEPT 3: DECODER-ONLY -->
@@ -728,8 +747,32 @@
                     <tr><td><strong>Enformer (hybrid)</strong></td><td>DNA sequence (200kb)</td><td>Regulatory track values</td><td>Transformer encoder for sequence, prediction head for targets</td></tr>
                     <tr><td><strong>scELMo (concept)</strong></td><td>Control cell profile</td><td>Perturbed cell profile</td><td>Causal perturbation-conditioned decoding</td></tr>
                     <tr><td><strong>AlphaFold2 (partial)</strong></td><td>MSA + pair features</td><td>3D coordinates</td><td>Evoformer encodes; structure module decodes into 3D</td></tr>
+                    <tr><td><strong>scPRINT-2</strong> (Kalfon et al. 2026, bioRxiv)</td><td>Noised/masked gene expression + gene &amp; cell metadata</td><td>Denoised expression, cell embedding, counterfactual expression</td><td>Graph-based encoder feeds an "XPressor" head; a decoder conditions on it for imputation and counterfactual (what-if) generation</td></tr>
                 </tbody>
             </table>
+            <div class="highlight-box" style="margin-top:16px;">
+                <h4>&#x1F52C; Case study: scPRINT-2's additive benchmark</h4>
+                <p style="font-size:.9rem; color:#475569; margin:0 0 8px;">
+                    <strong>scPRINT-2</strong> (successor to scPRINT-1) is pretrained on 350M cells across 16
+                    organisms and 300+ tissues — currently the largest published scFM training corpus. Its more
+                    interesting contribution, though, is methodological: rather than proposing one more
+                    architecture in isolation, the authors build an <strong>additive benchmark</strong> — a
+                    "gymnasium" of 42 training runs that switches individual design choices on and off (Post-LN
+                    vs. Pre-LN-style normalization placement, ZiNB vs. MSE reconstruction loss, masked-and-binned
+                    tokens like scGPT vs. continuous log1p expression, contrastive InfoNCE/CCE vs. denoising
+                    objectives) and measures the effect of each swap on denoising, batch correction, cell-type
+                    prediction, and gene-network inference. It's the same question the LEGO wiring comparison
+                    above asks about Post-LN/Pre-LN/Parallel/SwiGLU — just run as a controlled experiment across
+                    an entire model family instead of four hand-picked variants.
+                </p>
+                <p style="font-size:.9rem; color:#475569; margin:0;">
+                    The winning combination becomes scPRINT-2: a graph-based encoder paired with a generative
+                    "XPressor" module and decoder, which is what lets an otherwise encoder-flavored scFM also do
+                    expression imputation and counterfactual reasoning ("what would this cell's expression look
+                    like under condition X?") — blurring the encoder-only / encoder-decoder line the same way
+                    AlphaFold2 does above.
+                </p>
+            </div>
         </div>
 
         <!-- CONCEPT 5: POSITIONAL ENCODING -->
@@ -840,6 +883,8 @@
                 <tr><td><strong>State</strong> (Brixi et al., Arc 2025)</td><td><span class="tag tag-encoder">Set Encoder</span></td><td>SE: reconstruction; ST: paired perturbation</td><td>167M + 100M cells</td><td>Perturbation response; cell-as-token</td></tr>
                 <tr><td><strong>STACK</strong> (Brixi et al., Arc 2026)</td><td><span class="tag tag-decoder">Tabular</span></td><td>Tabular in-context learning</td><td>149M cells</td><td>Zero-shot perturbation; ICL at inference</td></tr>
                 <tr><td><strong>Nicheformer</strong> (2025, Nat Methods)</td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM + spatial masking</td><td>Large spatial + scRNA</td><td>Spatial transcriptomics; niche-aware embeddings</td></tr>
+                <tr><td><strong>UCE</strong> (Rosen/Roohani et al. 2026, Nature)</td><td><span class="tag tag-encoder">Encoder</span></td><td>Masked "was gene expressed?" on ESM2 protein-embedding tokens</td><td>36M cells, 8 species</td><td>Zero-shot cross-species embedding; Integrated Mega-scale Atlas</td></tr>
+                <tr><td><strong>scPRINT-2</strong> (Kalfon et al. 2026, bioRxiv)</td><td><span class="tag tag-hybrid">Encoder + gen. decoder</span></td><td>Denoising (ZiNB) + cell-label + gene-network multitask</td><td>350M cells, 16 organisms</td><td>Expression imputation, counterfactual generation, GRN inference</td></tr>
             </tbody>
         </table>
 
