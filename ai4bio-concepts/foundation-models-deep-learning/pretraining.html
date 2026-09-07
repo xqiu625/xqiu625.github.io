@@ -503,7 +503,7 @@
                 <figcaption><strong>Figure 4</strong><span class="fig-title">Model landscape — scale vs downstream flexibility.</span> Pretraining scale on the x-axis, downstream usage mode on the y-axis. Bigger doesn't always mean more flexible — architecture and objective decide vertical position. A 27B C2S-Scale and a 149M STACK reach different downstream regimes than a 316M Geneformer of similar size.</figcaption>
             </figure>
 
-            <h3>scRNA Foundation Models (11)</h3>
+            <h3>scRNA Foundation Models (13)</h3>
             <p>BERT-style and decoder-only LMs pretrained on tens to hundreds of millions of single cells. Tokenisation is the key design axis — rank values, masked counts, or cell sentences.</p>
 
             <figure class="module-figure">
@@ -581,6 +581,23 @@
                 </article>
 
                 <article class="paper-card">
+                    <h4>scGPT: toward building a foundation model for single-cell multi-omics using generative AI</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">Nat Methods</span> <span class="meta-badge type-badge">Generative transformer, binned values</span>
+                    </div>
+                    <p class="paper-description">scGPT adapts generative-pretraining-transformer-style masked attention to non-sequential single-cell data, jointly learning gene and cell embeddings from 33M normal human cells (CELLxGENE, 51 organs/tissues, 441 studies). Gene tokens, binned expression values, and condition tokens (modality, batch, perturbation) are fed through stacked transformer blocks with a specialised generative attention mask, then fine-tuned per task.</p>
+                    <ul class="key-contributions">
+                        <li>Cell-type annotation precision &gt;0.8 for most types on a multiple-sclerosis dataset (~0.85 accuracy); outperformed all compared methods on accuracy, precision, recall, and macro-F1 in cross-disease generalisation (tumour-infiltrating myeloid)</li>
+                        <li>Batch correction AvgBIO score 0.821 on PBMC 10k &mdash; 5&ndash;10% higher than compared integration methods</li>
+                        <li>Outperformed GEARS and a linear-regression baseline on Pearson correlation for genetic perturbation-response prediction across all three benchmark datasets</li>
+                        <li>Zero-shot gene-network discovery: attention maps and gene embeddings recover known HLA class I/II clustering without fine-tuning</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1038/s41592-024-02201-0" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/bowang-lab/scGPT" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
                     <h4>Scaling Dense Representations for Single Cell with Transcriptome-Scale Context</h4>
                     <div class="paper-meta">
                         <span class="meta-badge year-badge">2024</span> <span class="meta-badge journal-badge">NeurIPS Workshop</span> <span class="meta-badge type-badge">Dense transformer</span>
@@ -641,6 +658,22 @@
                     </ul>
                     <div class="paper-links">
                         <a href="https://doi.org/10.64898/2025.12.11.693702" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://github.com/cantinilab/scPRINT-2" target="_blank"><i class="fab fa-github"></i> Code</a>
+                    </div>
+                </article>
+
+                <article class="paper-card">
+                    <h4>Predicting cellular responses to perturbation across diverse contexts with State</h4>
+                    <div class="paper-meta">
+                        <span class="meta-badge year-badge">2025</span> <span class="meta-badge journal-badge">bioRxiv</span> <span class="meta-badge type-badge">Set-attention transformer</span>
+                    </div>
+                    <p class="paper-description">STATE (Arc Institute) is a two-module virtual-cell model: a State Embedding (SE) transformer pretrained on 167M observational cells maps any cell's transcriptome to a single embedding, and a State Transition (ST) transformer pretrained on 100M+ perturbation-paired cells applies bidirectional self-attention across sets of these embeddings to predict how a cell population shifts under a perturbation.</p>
+                    <ul class="key-contributions">
+                        <li>First model to consistently outperform simple linear baselines across cellular contexts; beats baselines (CPA, scVI, scGPT) on Pearson correlation of predicted vs. observed perturbation effects by 63% (Tahoe-100M), 47% (Parse-PBMC), 5% (Replogle-Nadig)</li>
+                        <li>State embeddings outperform scFoundation, scGPT, UCE, and TranscriptFormer embeddings on intrinsic and extrinsic perturbation-classification metrics, with a 6% absolute accuracy gain in the extrinsic (ST-predicted) setting</li>
+                        <li>Zero-shot: pretraining ST+SE on Tahoe-100M then fine-tuning on a query dataset lets it rank never-perturbed cell contexts by effect size &mdash; no perturbation data for that context seen during training</li>
+                    </ul>
+                    <div class="paper-links">
+                        <a href="https://doi.org/10.1101/2025.06.26.661135" target="_blank"><i class="fas fa-file-alt"></i> Paper</a> <a href="https://arcinstitute.org/tools/state" target="_blank"><i class="fas fa-external-link-alt"></i> Arc Institute</a>
                     </div>
                 </article>
 
