@@ -673,11 +673,11 @@
                     <div class="stat-label">Tokenization Strategies</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">14</span>
+                    <span class="stat-number">23</span>
                     <div class="stat-label">Curated Papers</div>
                 </div>
                 <div class="stat-item">
-                    <span class="stat-number">2021&ndash;2025</span>
+                    <span class="stat-number">2021&ndash;2026</span>
                     <div class="stat-label">Publication Years</div>
                 </div>
                 <div class="stat-item">
@@ -2093,6 +2093,24 @@
                 </div>
             </div>
 
+            <!-- Full-Diagram Deep Dives: cell-as-token & multi-embedding tokens -->
+            <div class="content-section" id="deep-dive-diagrams">
+                <h2><i class="fas fa-diagram-project"></i> Full-Diagram Deep Dives</h2>
+                <p>Three of the strategies above don't reduce to a single hand-drawn LEGO panel &mdash; they combine multiple embeddings per token (scPRINT-2) or move the token itself up a level, from gene to whole cell (STATE, STACK). Full walkthroughs below.</p>
+
+                <div class="content-figure" id="concept-state">
+                    <img src="figures/state-tokenization-infographic.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="STATE tokenization diagram: Stage 1 State Embedding encoder compresses one cell's ~20,000-gene expression profile into a single cell-embedding token (pretrained on 167M observational cells); Stage 2 State Transition applies bidirectional set attention across a population of control and perturbation-context cell tokens to predict a perturbed embedding (pretrained on 100M perturbation-paired cells). Right column states the problem (gene-level tokenization can't model population-level shifts), solution (compress each cell to one vector, then attend across cells), and key benefit (perturbation prediction generalizes across cell types without retraining).">
+                </div>
+
+                <div class="content-figure" id="concept-scprint2">
+                    <img src="figures/scprint2-tokenization-infographic.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="scPRINT-2 tokenization diagram: each gene token is the sum of three embeddings &mdash; an ESM3 protein embedding (with a fine-tuning adaptor layer), an MLP encoding of continuous log-expression, and a genomic-location embedding &mdash; shown for an expressed gene G1 and an unexpressed/padding gene G2, then assembled into a 2,200-gene token sequence fed to the XPressor bidirectional transformer. Right column states the problem (a gene needs identity, level, and location, and none should be discarded), solution (sum three separate embeddings instead of picking one), and key benefit (upgrading ESM2&rarr;ESM3 with an adaptor beat learning gene tokens from scratch).">
+                </div>
+
+                <div class="content-figure" id="concept-stack">
+                    <img src="figures/stack-tokenization-infographic.webp" width="1536" height="1024" loading="lazy" decoding="async" alt="STACK tokenization diagram: the cell-by-gene expression matrix is treated as a table, with within-row attention across genes (co-expression) and across-row attention across cells (comparing cell states), pretrained on 149M cells from the Perturb Sapiens corpus. At inference, labeled context rows (e.g. a control-cell row paired with its drug-treated row) are prepended so the model reads the control-to-perturbed pattern and applies it to a new query cell with no gradient update. Right column states the problem (models can't predict genuinely new conditions without retraining), solution (tabular attention plus in-context example rows), and key benefit (zero-shot perturbation prediction used to build the Perturb Sapiens atlas).">
+                </div>
+            </div>
+
             <!-- Key Papers Section -->
             <div class="content-section" id="papers">
                 <h2>Key Papers Implementing These Strategies</h2>
@@ -2443,7 +2461,7 @@
                         </div>
                         <div class="innovation-box">
                             <h5>Tokenization Strategy</h5>
-                            <p>Cell-as-token: each cell's full transcriptome (gene identities + expression values) is compressed into one embedding vector by SE &mdash; the gene-level tokens are upstream inputs to that encoder, not the model's sequence elements. ST then applies set attention across a batch of such cell vectors, treating each cell embedding as a "token" in the context of the cell population. Granularity is one level up from every gene-level strategy on this page.</p>
+                            <p>Cell-as-token: each cell's full transcriptome (gene identities + expression values) is compressed into one embedding vector by SE &mdash; the gene-level tokens are upstream inputs to that encoder, not the model's sequence elements. ST then applies set attention across a batch of such cell vectors, treating each cell embedding as a "token" in the context of the cell population. Granularity is one level up from every gene-level strategy on this page. <a href="#concept-state">See the full diagram &darr;</a></p>
                         </div>
                         <p><strong>Scale:</strong> 167M observational + 100M perturbation cells | <strong>Context:</strong> Set-based (variable cell count) | <strong>Params:</strong> not disclosed</p>
                         <div class="links">
@@ -2466,12 +2484,172 @@
                         </div>
                         <div class="innovation-box">
                             <h5>Tokenization Strategy</h5>
-                            <p>Tabular cell-as-token: the input is a cell &times; gene matrix, not a sequence of gene tokens. Within-cell attention (along gene columns) captures co-expression; across-cell attention (along the row dimension) compares cell states. At inference, labeled context cells are appended as additional rows &mdash; the model treats them as "few-shot examples" read directly from the table, no gradient required. Pretrained on 149M cells from the Perturb Sapiens atlas.</p>
+                            <p>Tabular cell-as-token: the input is a cell &times; gene matrix, not a sequence of gene tokens. Within-cell attention (along gene columns) captures co-expression; across-cell attention (along the row dimension) compares cell states. At inference, labeled context cells are appended as additional rows &mdash; the model treats them as "few-shot examples" read directly from the table, no gradient required. Pretrained on 149M cells from the Perturb Sapiens atlas. <a href="#concept-stack">See the full diagram &darr;</a></p>
                         </div>
                         <p><strong>Scale:</strong> 149M cells (Perturb Sapiens atlas) | <strong>Context:</strong> Tabular (variable cell count &times; gene count) | <strong>Params:</strong> not disclosed</p>
                         <div class="links">
                             <a href="https://doi.org/10.64898/2026.01.09.698608" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                             <a href="https://arcinstitute.org/tools/stack" target="_blank"><i class="fas fa-globe"></i> Arc Institute</a>
+                        </div>
+                    </div>
+
+                    <!-- tGPT -->
+                    <div class="paper-card">
+                        <h4>tGPT: Generative Pretraining from Large-Scale Transcriptomes</h4>
+                        <div class="meta">Shen et al. | iScience 2023</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Autoregressive Transformer (GPT)</span>
+                            <span class="tag strategy">Rank-Based</span>
+                        </div>
+                        <div class="summary">
+                            Predates Geneformer's popularization of rank tokenization, but trains it causally rather than with masked language modeling &mdash; an early, widely-cited demonstration that a cell can be read as a rank-ordered "sentence" of genes even in a decoder-only, next-token-prediction setting.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Genes within a cell are sorted into a list by expression level, the same core move as Geneformer &mdash; no explicit expression-value token, magnitude lives in rank position. The model is then trained autoregressively (predict the next gene in the ranked list), closer to GPT-style pretraining than scBERT/Geneformer's BERT-style masking.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 22.3M cells | <strong>Context:</strong> not disclosed in this literature set | <strong>Params:</strong> not disclosed</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1016/j.isci.2023.106536" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                        </div>
+                    </div>
+
+                    <!-- CellPLM -->
+                    <div class="paper-card">
+                        <h4>CellPLM: Pre-training of Cell Language Model Beyond Single Cells</h4>
+                        <div class="meta">Wen et al. | bioRxiv 2023</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq + Spatial</span>
+                            <span class="tag architecture">Transformer</span>
+                            <span class="tag strategy">Cell-as-Token</span>
+                        </div>
+                        <div class="summary">
+                            First single-cell pretrained transformer to explicitly model cell&ndash;cell relationships within a tissue rather than only gene&ndash;gene relationships within a cell &mdash; the same "cell-as-token" move STATE and STACK make years later, here paired with spatial transcriptomics as a pretraining prior on which cells should end up nearby.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Inverts the usual gene-token paradigm &mdash; <strong>"cells as tokens, tissues as sentences"</strong>: each cell (itself encoded from its gene expression) becomes one token in a sequence of cells drawn from the same tissue or spatial neighborhood, letting the transformer attend across cells the way a language model attends across words. A learned Gaussian-mixture prior regularizes the cell-token embedding space to offset scRNA-seq's data scarcity relative to text corpora.</p>
+                        </div>
+                        <p><strong>Scale:</strong> not fully disclosed in this literature set | <strong>Context:</strong> gene tokens + cell-level batch structure | <strong>Params:</strong> not disclosed</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1101/2023.10.03.560734" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/OmicsML/CellPLM" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- GeneCompass -->
+                    <div class="paper-card">
+                        <h4>GeneCompass: Knowledge-Informed Cross-Species Foundation Model</h4>
+                        <div class="meta">Yang et al. | Cell Research 2024</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq (human + mouse)</span>
+                            <span class="tag architecture">BERT Encoder</span>
+                            <span class="tag strategy">Rank-Based + Knowledge Tokens</span>
+                        </div>
+                        <div class="summary">
+                            Cross-species (human + mouse) model that injects four kinds of prior biological knowledge &mdash; promoter sequence, gene family, co-expression, and gene regulatory relationships &mdash; directly into pretraining, rather than leaving the model to rediscover them purely from expression statistics. Pretrained on over 120M collected single-cell transcriptomes (101.8M after preprocessing).
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Rank-based gene tokenization in the Geneformer lineage, extended with parallel "prior-knowledge encodings" per gene &mdash; promoter-sequence, gene-family/ortholog, co-expression, and TF-target embeddings &mdash; summed alongside the expression-rank token, plus species tokens so a single shared vocabulary spans human and mouse genes via orthology mapping.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 101.8M cells (human + mouse) | <strong>Context:</strong> rank-based, Geneformer-style | <strong>Params:</strong> not disclosed</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41422-024-01034-y" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/xCompass-AI/GeneCompass" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scFoundation -->
+                    <div class="paper-card">
+                        <h4>scFoundation: Large-Scale Foundation Model on Single-Cell Transcriptomics</h4>
+                        <div class="meta">Hao et al. | Nature Methods 2024</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Asymmetric Transformer (xTrimoGene)</span>
+                            <span class="tag strategy">Read-Depth-Aware</span>
+                        </div>
+                        <div class="summary">
+                            Reference exemplar of Read-Depth-Aware tokenization (see the RDA strategy above). Pretrained on 50M cells across the full ~19,264-gene transcriptome &mdash; no highly-variable-gene subsetting &mdash; using the xTrimoGene architecture, whose asymmetric encoder-decoder skips non-expressed genes to keep genome-wide input tractable despite scRNA-seq's ~95% sparsity.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Each gene's continuous, unbinned expression is embedded directly (not ranked or binned), and two extra tokens &mdash; the cell's total read count and a target read count &mdash; are added alongside the gene tokens, letting the model be told at inference time what sequencing depth to "imagine" reading at. Trained with a mixed downsampling-and-masking objective rather than plain MLM; denoising happens only at the cell-embedding level, a design later contrasted against scPRINT's per-gene denoising.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 50M cells | <strong>Context:</strong> genome-wide (~19,264 genes) | <strong>Params:</strong> ~100M (xTrimoGene encoder-decoder)</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41592-024-02305-7" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/biomap-research/scFoundation" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- UCE -->
+                    <div class="paper-card">
+                        <h4>UCE: Universal Cell Embedding</h4>
+                        <div class="meta">Rosen, Roohani et al. | Nature 2026</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq (cross-species)</span>
+                            <span class="tag architecture">33-layer Transformer</span>
+                            <span class="tag strategy">Protein-Embedding Gene Tokens</span>
+                        </div>
+                        <div class="summary">
+                            Builds one "universal" embedding space across species with zero fine-tuning by representing every gene as its encoded protein rather than a learned, species-specific ID &mdash; so the same model can zero-shot embed a species it never trained on. Trained self-supervised (predict whether a sampled gene was expressed) on the 36M-cell Integrated Mega-scale Atlas (IMA) spanning 300+ datasets.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Each cell is a weighted, with-replacement sample of 1,024 of its expressed genes &mdash; higher-expression genes are sampled more often, so expression lives in sampling frequency rather than a value token. Each gene token is the ESM2 (15B-parameter protein language model) embedding of its encoded protein, not a learned lookup &mdash; genes and species absent from training still get a meaningful token via protein-sequence homology. Gene tokens are grouped by chromosome, ordered by genomic position, and delimited by chromosome-specific start/end tokens, with a prepended CLS token whose final-layer output becomes the cell embedding.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 36M cells (IMA), 300+ datasets, cross-species | <strong>Context:</strong> 1,024 sampled gene tokens | <strong>Params:</strong> 650M (33 layers, built on frozen ESM2-15B gene tokens)</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41586-026-10689-z" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/snap-stanford/UCE" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scPRINT -->
+                    <div class="paper-card">
+                        <h4>scPRINT: Pre-training on 50 Million Cells Allows Robust Gene Network Predictions</h4>
+                        <div class="meta">Kalfon et al. | Nature Communications 2025</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq</span>
+                            <span class="tag architecture">Bidirectional Transformer</span>
+                            <span class="tag strategy">Multi-Embedding Sum Tokens</span>
+                        </div>
+                        <div class="summary">
+                            Combines a denoising task, a bottleneck task (reconstructing expression from the cell embedding alone, with no gene-level input), and hierarchical label prediction so one model yields disentangled cell-type/disease/species embeddings and cell-specific gene regulatory networks read directly off its attention heads.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Each gene token is the <strong>sum of three embeddings</strong>: (1) an ESM2 protein embedding of the gene's identity &mdash; following UCE, this lets the model generalize to unseen genes and species &mdash; (2) an MLP encoding of the gene's continuous log-normalized expression (not binned or ranked, unlike scGPT/Geneformer), and (3) a genomic-location embedding. Pretrained on 2,200 randomly selected expressed genes per cell, padded with unexpressed genes when a cell has fewer &mdash; the padding lets a zero-inflated negative-binomial decoder learn to tell true biological zeros from sequencing dropout.</p>
+                        </div>
+                        <p><strong>Scale:</strong> 50M cells (cellxgene) | <strong>Context:</strong> 2,200 genes | <strong>Params:</strong> multiple scales released</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.1038/s41467-025-58699-1" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/cantinilab/scPRINT" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scPRINT-2 -->
+                    <div class="paper-card">
+                        <h4>scPRINT-2: Towards the Next Generation of Cell Foundation Models and Benchmarks</h4>
+                        <div class="meta">Kalfon et al. | bioRxiv 2026</div>
+                        <div class="tags">
+                            <span class="tag data-type">scRNA-seq (16 organisms)</span>
+                            <span class="tag architecture">XPressor Transformer</span>
+                            <span class="tag strategy">ESM3 Multi-Embedding Sum</span>
+                        </div>
+                        <div class="summary">
+                            An "additive benchmark" that adds one scFM design choice at a time &mdash; tokenization, loss, sampling, architecture &mdash; to isolate what actually helps, then bundles the winners into scPRINT-2, pretrained on a new 350M-cell, 16-organism corpus, the largest cross-organism scRNA-seq dataset assembled to date.
+                        </div>
+                        <div class="innovation-box">
+                            <h5>Tokenization Strategy</h5>
+                            <p>Keeps scPRINT-1's three-way summed gene token (identity + expression + genomic location) but upgrades the identity embedding from ESM2 to ESM3, adding a fine-tuning adaptor layer after mean-pooling the protein embedding &mdash; the paper reports this beats learning gene tokens from scratch. Adds variable-context-length training and KNN-averaged "meta-cell" augmentation, plus a cell-level XPressor sub-architecture that makes the model directly generative for expression imputation and counterfactual reasoning. <a href="#concept-scprint2">See the full diagram &darr;</a></p>
+                        </div>
+                        <p><strong>Scale:</strong> 350M cells, 16 organisms | <strong>Context:</strong> variable-length (data-augmented) | <strong>Params:</strong> not disclosed</p>
+                        <div class="links">
+                            <a href="https://doi.org/10.64898/2025.12.11.693702" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/cantinilab/scPRINT" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
                 </div>
@@ -2482,6 +2660,8 @@
                     <p>&middot; <strong>DNABERT-2</strong> (ICLR 2024) &mdash; BPE replaces fixed k-mer windows, eliminating overlapping-window redundancy and the fixed input-length ceiling (via ALiBi).</p>
                     <p>&middot; <strong>Cell-level tokenization paradigm</strong> (STACK + STATE, see the Side-by-Side comparison below) &mdash; the token graduates from "gene within a cell" to "cell within a set," attending across whole cell populations rather than genes within one cell.</p>
                     <p>&middot; <strong>VariantFormer</strong> (2025) &mdash; the first foundation model to predict tissue-specific gene expression directly from personalized diploid genomes.</p>
+                    <p>&middot; <strong>UCE</strong> (Nature 2026) &mdash; genes tokenized as ESM2 protein embeddings instead of learned IDs, giving zero-shot cross-species cell embeddings without fine-tuning.</p>
+                    <p>&middot; <strong>scPRINT / scPRINT-2</strong> (2025&ndash;2026) &mdash; summed identity+expression+location gene tokens (ESM2 &rarr; ESM3), scaling the pretraining corpus from 50M to 350M cells across 16 organisms via an additive, one-feature-at-a-time benchmark.</p>
                 </div>
             </div>
 
