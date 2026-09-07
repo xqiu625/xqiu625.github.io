@@ -574,7 +574,6 @@
                     <tr><td><strong>Protein LM</strong></td><td>MLM on amino acid sequences</td><td>ESM2, ProtBERT, Ankh</td><td>Structure prediction, function classification</td></tr>
                     <tr><td><strong>Whole-genome</strong></td><td>MLM on overlapping k-mers</td><td>Nucleotide Transformer, HyenaDNA (encoder variant)</td><td>Variant effect, regulatory grammar</td></tr>
                     <tr><td><strong>Protein-embedding tokens</strong></td><td>Predict whether a sampled protein was expressed in the cell</td><td>UCE (Rosen/Roohani et al. 2026, <em>Nature</em>)</td><td>Cross-species zero-shot cell embedding, atlas building</td></tr>
-                    <tr><td><strong>Tabular / set attention</strong></td><td>Rectangular gene-block masking, reconstructed across a whole cell set</td><td>STACK (Dong et al. 2026, bioRxiv)</td><td>In-context perturbation &amp; donor prediction; <em>Perturb Sapiens</em> atlas</td></tr>
                 </tbody>
             </table>
             <div class="highlight-box" style="margin-top:16px;">
@@ -594,32 +593,6 @@
                     rat, chicken, even <em>Drosophila</em> — with no fine-tuning, and this zero-shot embedding
                     space is what powers the paper's 36M-cell Integrated Mega-scale Atlas (IMA).
                 </p>
-            </div>
-            <div class="highlight-box" style="margin-top:16px;">
-                <h4>&#x1F9EC; Case study: STACK's cells-as-context tabular attention</h4>
-                <p style="font-size:.9rem; color:#475569; margin:0 0 8px;">
-                    <strong>STACK</strong> (Dong et al. 2026, bioRxiv, Arc Institute) is pretrained on 149M cells
-                    from scBaseCount, the largest single-cell collection assembled to date. Its tokenizer first
-                    compresses each cell's full gene expression vector into a fixed 100 "gene module tokens"
-                    via a single learned projection — no fixed gene vocabulary, no rank ordering. The real
-                    innovation is the <strong>tabular transformer block</strong>: each layer runs intra-cellular
-                    attention (a cell's 100 tokens attending to each other) <em>and</em> inter-cellular attention
-                    (the same token slot compared across every cell in the batch), so cells are never encoded
-                    in isolation — they're encoded as a table, rows and columns both attending.
-                </p>
-                <p style="font-size:.9rem; color:#475569; margin:0;">
-                    Pretraining masks a rectangular block of genes across the <em>entire</em> cell set at once and
-                    reconstructs it through a probabilistic MLP decoder. That same cross-cell wiring is what
-                    enables in-context learning at inference: concatenate a few "prompt" cells representing a
-                    condition (a drug, a donor) with unlabeled "query" cells, and the query cells' predicted
-                    expression shifts toward that condition with zero fine-tuning — the basis for <em>Perturb
-                    Sapiens</em>, the first whole-organism atlas of perturbed human cells (892 perturbations,
-                    40 cell types, 28 tissues).
-                </p>
-                <figure class="content-figure" style="margin-top:18px;">
-                    <img src="figures/lego-stack-module-mapping.webp" width="1199" height="1312" loading="lazy" decoding="async" alt="Three-column table mapping the LEGO Power Unit to STACK's architecture: a battery-module compressor packs any number of genes into 100 standardized tokens; a shared diagnostic rack holds a whole batch of cells as one context; intra-car and inter-car wiring represent intra-cellular and inter-cellular attention in a tabular transformer block; a rectangular tarp masks the same gene block across every car for pretraining; demo cars showing a treated condition lend their voltage to blank query cars for in-context counterfactual inference; and the whole-showroom catalog represents the Perturb Sapiens atlas across 892 perturbations, 40 cell types, and 28 tissues">
-                    <figcaption><strong>Cars parked together teach each other.</strong> 乐高动力单元怎么互相借电 (How LEGO Power Units Borrow Power From Each Other) vs STACK Module vs 作用与特点 (Role &amp; Intuition) — tokenizer, shared cell-set rack, intra-/inter-cell wiring, rectangular masking, in-context inference, and the Perturb Sapiens catalog, side by side.</figcaption>
-                </figure>
             </div>
         </div>
 
@@ -775,6 +748,7 @@
                     <tr><td><strong>scELMo (concept)</strong></td><td>Control cell profile</td><td>Perturbed cell profile</td><td>Causal perturbation-conditioned decoding</td></tr>
                     <tr><td><strong>AlphaFold2 (partial)</strong></td><td>MSA + pair features</td><td>3D coordinates</td><td>Evoformer encodes; structure module decodes into 3D</td></tr>
                     <tr><td><strong>scPRINT-2</strong> (Kalfon et al. 2026, bioRxiv)</td><td>Noised/masked gene expression + gene &amp; cell metadata</td><td>Denoised expression, cell embedding, counterfactual expression</td><td>Graph-based encoder feeds an "XPressor" head; a decoder conditions on it for imputation and counterfactual (what-if) generation</td></tr>
+                    <tr><td><strong>STACK</strong> (Dong et al. 2026, bioRxiv)</td><td>Cell × gene expression matrix (a whole cell set, rectangular-masked)</td><td>Reconstructed masked expression; counterfactual query-cell expression</td><td>Bidirectional tabular encoder (intra-/inter-cell attention) feeds a reconstruction decoder — no causal mask anywhere</td></tr>
                 </tbody>
             </table>
             <div class="highlight-box" style="margin-top:16px;">
@@ -802,6 +776,48 @@
                 <figure class="content-figure" style="margin-top:18px;">
                     <img src="figures/lego-scprint2-module-mapping.webp" width="1312" height="1199" loading="lazy" decoding="async" alt="Three-column table mapping the LEGO Power Unit build process to scPRINT-2's architecture: a multi-battery input harness with mesh wiring for expression counts, protein sequence, gene location, and multiple cells feeding a graph-based encoder; the motor as the Transformer producing a contextualized representation; a turbocharger attachment (XPressor) splitting output into denoised expression and cell classification via sampling; a trailer hitch and build-arm decoder that assembles a counterfactual car by filling in missing bricks for imputation; and a gymnasium test rig where 42 additive configurations (dropout, classifier size, MVC, XPressor, tokenizer) are switched on and off to find the best-performing combination">
                     <figcaption><strong>Same power unit, tested attachment by attachment.</strong> 乐高动力单元如何拼出 scPRINT-2 (How the LEGO Power Unit Builds scPRINT-2) vs scPRINT-2 Module vs 作用与特点 (Role &amp; Intuition) — multi-battery graph input, motor/Transformer, XPressor turbocharger, decoder build-arm, and the 42-configuration gymnasium test rig, side by side.</figcaption>
+                </figure>
+            </div>
+            <div class="highlight-box" style="margin-top:16px;">
+                <h4>&#x1F9EC; Case study: STACK's mask is not GPT's mask</h4>
+                <p style="font-size:.9rem; color:#475569; margin:0 0 8px;">
+                    <strong>STACK</strong> (Dong et al. 2026, bioRxiv, Arc Institute; pretrained on 149M cells from
+                    scBaseCount) is officially an <strong>encoder-decoder</strong> model, not an encoder-only one.
+                    A learned tokenizer first compresses each cell's expression vector into 100 gene-module
+                    tokens; a <strong>tabular transformer encoder</strong> then runs intra-cellular attention
+                    (a cell's own tokens) and inter-cellular attention (the same token slot compared across every
+                    cell in the set) — fully bidirectional, no causal mask anywhere — before a reconstruction
+                    <strong>decoder</strong> maps the resulting latent representations back to expression space.
+                </p>
+                <p style="font-size:.9rem; color:#475569; margin:0 0 8px;">
+                    The part that's easy to conflate: STACK does use masking and does have a decoder, but neither
+                    is the GPT kind. GPT's causal mask is an <em>information-flow constraint</em> — token 3
+                    physically cannot see tokens 4, 5, 6 because they don't exist yet at that generation step.
+                    STACK's rectangular mask is a <em>corruption objective</em> — a block of genes is hidden
+                    across every cell in the set simultaneously, and the model reconstructs it using every other
+                    visible gene in every cell, in both directions, all at once.
+                </p>
+                <table class="subtype-table" style="margin:10px 0;">
+                    <thead><tr><th></th><th>STACK rectangular mask</th><th>GPT causal mask</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Hides</strong></td><td>A subset of input genes</td><td>Future tokens</td></tr>
+                        <tr><td><strong>Purpose</strong></td><td>Reconstruction / representation learning</td><td>Next-token generation</td></tr>
+                        <tr><td><strong>Attention</strong></td><td>Bidirectional, across cells and modules</td><td>Left-to-right only</td></tr>
+                        <tr><td><strong>Decoder type</strong></td><td>Reconstruction decoder</td><td>Autoregressive decoder</td></tr>
+                        <tr><td><strong>Output</strong></td><td>Masked values reconstructed at once</td><td>Token 1 → token 2 → token 3 …</td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size:.9rem; color:#475569; margin:0;">
+                    <strong>LEGO version:</strong> the rectangular tarp in the diagram below covers battery
+                    modules 40–60 on <em>every</em> car at once, and the repair crew reconstructs them from
+                    whatever else is visible — that's STACK. GPT is a different kind of restriction entirely:
+                    it's not covering part of a finished car with a tarp, it's forbidding the engineer building
+                    car 3 from looking at cars 4, 5, and 6 because they haven't been built yet. Same word
+                    ("mask"), two unrelated mechanisms — one is corruption-and-repair, the other is a build order.
+                </p>
+                <figure class="content-figure" style="margin-top:18px;">
+                    <img src="figures/lego-stack-module-mapping.webp" width="1312" height="1199" loading="lazy" decoding="async" alt="Three-column table mapping the LEGO Power Unit to STACK's encoder-decoder architecture: a battery-module compressor learns to pack any number of genes into 100 standardized tokens; a shared diagnostic rack holds a whole cell set as one context; intra-car and inter-car wiring represent intra-cellular and inter-cellular bidirectional attention in a tabular transformer encoder; a rectangular mask covers the same gene modules across every cell for masked-reconstruction pretraining via a decoder; demo cells showing a treated condition lend their state to blank query cells for in-context counterfactual inference with no retraining; and the whole-showroom catalog represents the Perturb Sapiens atlas across cytokine, drug, cell-type, and tissue combinations">
+                    <figcaption><strong>Cars parked together teach each other.</strong> 乐高动力单元怎么互相借电 —— STACK (How LEGO Power Units Borrow Power From Each Other) vs STACK Module vs 作用与特点 (Role &amp; Intuition) — learned tokenization, shared cell-set rack, bidirectional intra-/inter-cell encoder attention, masked-reconstruction pretraining, in-context inference, and the Perturb Sapiens catalog, side by side.</figcaption>
                 </figure>
             </div>
         </div>
@@ -912,7 +928,7 @@
                 <tr><td><strong>scGPT</strong> (Wang 2024, Nature Methods)</td><td><span class="tag tag-decoder">Decoder</span></td><td>CLM + masked gene modeling</td><td>33M cells</td><td>Cell generation, perturbation, multi-omics</td></tr>
                 <tr><td><strong>TranscriptFormer</strong> (2025)</td><td><span class="tag tag-decoder">Decoder</span></td><td>CLM (gene rank order)</td><td>112M cells</td><td>Trajectory inference, generation; RoPE</td></tr>
                 <tr><td><strong>State</strong> (Adduri et al. 2025, Arc Institute)</td><td><span class="tag tag-encoder">Set Encoder</span></td><td>SE: reconstruction; ST: paired perturbation</td><td>167M + 100M cells</td><td>Perturbation response; cell-as-token</td></tr>
-                <tr><td><strong>STACK</strong> (Dong et al. 2026, bioRxiv, Arc Institute)</td><td><span class="tag tag-encoder">Tabular Set Encoder</span></td><td>Rectangular gene masking; intra-/inter-cell attention (non-causal) + MLP decoder</td><td>149M cells (scBaseCount)</td><td>In-context counterfactual perturbation/donor prediction; built <em>Perturb Sapiens</em> atlas</td></tr>
+                <tr><td><strong>STACK</strong> (Dong et al. 2026, bioRxiv, Arc Institute)</td><td><span class="tag tag-encdec">Tabular Encoder-Decoder</span></td><td>Rectangular gene masking across a cell set; bidirectional intra-/inter-cell attention + reconstruction decoder</td><td>149M cells (scBaseCount)</td><td>In-context counterfactual perturbation/donor prediction; built <em>Perturb Sapiens</em> atlas</td></tr>
                 <tr><td><strong>Nicheformer</strong> (2025, Nat Methods)</td><td><span class="tag tag-encoder">Encoder</span></td><td>MLM + spatial masking</td><td>Large spatial + scRNA</td><td>Spatial transcriptomics; niche-aware embeddings</td></tr>
                 <tr><td><strong>UCE</strong> (Rosen/Roohani et al. 2026, Nature)</td><td><span class="tag tag-encoder">Encoder</span></td><td>Masked "was gene expressed?" on ESM2 protein-embedding tokens</td><td>36M cells, 8 species</td><td>Zero-shot cross-species embedding; Integrated Mega-scale Atlas</td></tr>
                 <tr><td><strong>scPRINT-2</strong> (Kalfon et al. 2026, bioRxiv)</td><td><span class="tag tag-hybrid">Encoder + gen. decoder</span></td><td>Denoising (ZiNB) + cell-label + gene-network multitask</td><td>350M cells, 16 organisms</td><td>Expression imputation, counterfactual generation, GRN inference</td></tr>
@@ -962,7 +978,7 @@
                 <tr><td><strong>Best biological task</strong></td><td>Classification, representation, zero-shot scoring</td><td>Generation, simulation, in-context learning</td><td>Seq-to-seq translation, perturbation prediction</td><td>Very long DNA/RNA sequences (&gt;100kb)</td></tr>
                 <tr><td><strong>Complexity</strong></td><td>O(n²) attention</td><td>O(n²) attention</td><td>O(n·m) enc + O(m²) dec</td><td>O(n) or O(n log n)</td></tr>
                 <tr><td><strong>Fine-tuning paradigm</strong></td><td>Append classification head</td><td>Prompt / instruction tuning</td><td>Seq-to-seq fine-tuning</td><td>Same as encoder or decoder</td></tr>
-                <tr><td><strong>Biology models</strong></td><td>Geneformer, ESM2, State, STACK</td><td>scGPT, TranscriptFormer</td><td>T5, Enformer, AlphaFold2 (partial)</td><td>Evo 2, HyenaDNA, Hyena-DNA</td></tr>
+                <tr><td><strong>Biology models</strong></td><td>Geneformer, ESM2, State</td><td>scGPT, TranscriptFormer</td><td>T5, Enformer, AlphaFold2 (partial), STACK</td><td>Evo 2, HyenaDNA, Hyena-DNA</td></tr>
                 <tr><td><strong>Key limitation</strong></td><td>Cannot generate; requires task head</td><td>Left-to-right order assumption may not fit biology</td><td>More complex; slower inference</td><td>Less interpretable; hardware-specific</td></tr>
             </tbody>
         </table>
