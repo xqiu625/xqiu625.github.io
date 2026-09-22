@@ -773,6 +773,17 @@
                 </li>
             </ul>
 
+            <div class="highlight-box">
+                <h4>⚠️ Integration ≠ batch correction ≠ modality prediction ≠ label transfer</h4>
+                <p>The list above bundles several genuinely different problems under one word. Keeping them apart clarifies what a given method actually does and what output to expect:</p>
+                <ul>
+                    <li><strong>Batch correction</strong> — removing technical variation <em>within one modality</em> measured across experiments/labs (Harmony, BBKNN). No second modality involved.</li>
+                    <li><strong>Modality prediction / imputation</strong> — predicting an unmeasured layer from a measured one (e.g. protein from RNA). The output is a synthetic profile, not a joint embedding.</li>
+                    <li><strong>Label transfer</strong> — propagating cell-type annotations from a reference to a query; often a byproduct of integration, not the integration itself.</li>
+                    <li><strong>Multi-omics integration</strong> — combining genuinely different molecular layers from the same or related cells. Its output can be a <em>joint embedding</em>, a <em>joint graph</em>, a <em>cross-modal mapping</em>, an <em>imputed modality</em>, or a set of <em>aligned distributions</em> — the right output depends on the question, not just on the input data.</li>
+                </ul>
+            </div>
+
             <h3>Integration Paradigms <a href="https://www.nature.com/articles/s41592-025-02737-9" target="_blank">(Fu, Shaliu, et al. Nature Methods, 2025)</a>, <a href="https://www.nature.com/articles/s41592-025-02856-3" target="_blank">(Liu, Chunlei, et al. Nature Methods, 2025)</a></h3>
 
 <p>According to the benchmark papers, there are <strong>six major multi-omics integration paradigms</strong>:</p>
@@ -1225,7 +1236,7 @@
                         <p><strong>Key Directions:</strong></p>
                         <ul>
                             <li><strong>Unified training APIs:</strong> scvi-tools consolidates scVI, totalVI, MultiVI, and scANVI behind one shared training loop, reducing the cost of trying multiple paradigms on the same dataset.</li>
-                            <li><strong>Pretrained embeddings as integration features:</strong> foundation-model embeddings (e.g. Nicheformer, scGPT) increasingly replace per-dataset PCA as the shared space integration methods align into, rather than being computed fresh for each project.</li>
+                            <li><strong>Pretrained embeddings as integration features:</strong> foundation-model embeddings (e.g. Nicheformer, scGPT) are increasingly evaluated as reusable integration features alongside dataset-specific PCA/LSI representations — not as a proven default replacement. Benchmarks (including this hub's own 5-FM comparison) show FM embeddings do not automatically outperform PCA, so the choice remains empirical per dataset/task.</li>
                             <li><strong>MOSCOT matures as a general OT backbone:</strong> the same optimal-transport framework now spans trajectory, spatial, and cross-modal matching tasks that previously needed separate tools.</li>
                             <li><strong>Unified multi-modal containers:</strong> MuData and spatialdata converge toward a stable on-disk format spanning RNA+ATAC+protein+spatial in one structure.</li>
                         </ul>
@@ -1307,14 +1318,16 @@
                 </div>
             </div>
 
-            <h3>By Scale Capability</h3>
+            <h3>By Computational Profile</h3>
             <div class="highlight-box">
-                <h4>Scalability Tiers</h4>
+                <h4>Computational Profile, Not a Fixed Capacity Ceiling</h4>
+                <p>Cell-count tiers below are <strong>approximate, reported orders of magnitude</strong> from published benchmarks — not an inherent capacity of the method. Actual scaling depends heavily on feature count, GPU/RAM available, batch size, and implementation details. A more useful lens is each method's computational profile:</p>
                 <ul>
-                    <li><strong>Small Scale (&lt;10K cells):</strong> MOFA+, DIABLO, mixOmics - ideal for pilot studies</li>
-                    <li><strong>Medium Scale (10K-100K cells):</strong> Seurat WNN, totalVI, MultiVI - standard analyses</li>
-                    <li><strong>Large Scale (100K-1M cells):</strong> Concerto, SIMBA, scBridge - atlas construction</li>
-                    <li><strong>Atlas Scale (&gt;1M cells):</strong> Foundation models (scGPT, CellWhisperer), SnapATAC2 - population studies</li>
+                    <li><strong>CPU-only, no training (MOFA+, DIABLO, mixOmics):</strong> factorization on the full matrix; comfortable to ~10K cells on a laptop, but memory-bound as feature count grows.</li>
+                    <li><strong>Trainable, CPU or single GPU (Seurat WNN, totalVI, MultiVI):</strong> WNN needs no GPU; totalVI/MultiVI train faster on GPU but run on CPU too — reported comfortably to ~10K&ndash;100K cells.</li>
+                    <li><strong>GPU-preferred, mini-batch training (Concerto, SIMBA, scBridge):</strong> scales sublinearly via mini-batching; reported to ~100K&ndash;1M cells given sufficient GPU memory.</li>
+                    <li><strong>Pretrained + fine-tune/inference only (foundation models: scGPT, CellWhisperer, Nicheformer):</strong> the expensive step (pretraining on &gt;1M cells) is amortized once; per-dataset inference/fine-tuning cost is what actually matters for a new project, and out-of-sample mapping (no retraining needed) is often the bigger practical advantage than raw cell count.</li>
+                    <li><strong>Scalable specialized algorithms, not pretrained (SnapATAC2, SIMBA):</strong> no pretraining step — these are trained fresh per dataset, but engineered (efficient data structures, GPU-accelerated linear algebra) to scale to atlas-size inputs directly; don't confuse "handles &gt;1M cells" with "foundation model."</li>
                 </ul>
             </div>
         </section>
@@ -1390,8 +1403,8 @@
                         <span class="meta-badge type-badge">VAE-based</span>
                     </div>
                     <div class="paper-description">
-                        Variational autoencoder for integrating RNA and protein measurements. Models technical effects 
-                        including batch, background noise, and protein zero-inflation.
+                        Variational autoencoder for integrating RNA and protein measurements. Models batch effects, RNA count noise, 
+                        and protein foreground/background components.
                     </div>
                     <div class="paper-highlights">
                         <strong>Capabilities:</strong>
@@ -1429,9 +1442,9 @@
                     <div class="paper-highlights">
                         <strong>Features:</strong>
                         <ul>
-                            <li>Handles RNA+ADT+ATAC combinations</li>
+                            <li>Handles paired and unpaired RNA + ATAC measurements, including mosaic datasets with missing modalities</li>
                             <li>Missing modality imputation</li>
-                            <li>Spatial deconvolution capabilities</li>
+                            <li>Joint latent representation and modality-specific generation for RNA + ATAC</li>
                         </ul>
                     </div>
                     <div class="paper-links">
@@ -2461,7 +2474,7 @@
                         <td><strong>MultiVI</strong></td>
                         <td>2023</td>
                         <td>Mosaic</td>
-                        <td>RNA+ADT+ATAC</td>
+                        <td>RNA+ATAC (paired or unpaired)</td>
                         <td>~100K cells</td>
                         <td>VAE-based; missing modality imputation</td>
                     </tr>
@@ -2571,6 +2584,55 @@
                 </tbody>
             </table>
 
+            <h3>🎯 From Scientific Question to Method</h3>
+            <p>34 landmark papers are a lot to hold at once. The table below compresses them back into the question that actually matters when starting a project: what am I asking, what object do I need as output, and which approach typically produces it?</p>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Scientific question</th>
+                        <th>Desired output object</th>
+                        <th>Typical approach</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Same CITE-seq cell — RNA + ADT should jointly define cell state</td>
+                        <td>Weighted joint neighbor graph</td>
+                        <td>WNN</td>
+                    </tr>
+                    <tr>
+                        <td>RNA + ADT, but protein has ambient background needing denoising</td>
+                        <td>Probabilistic joint latent</td>
+                        <td>totalVI</td>
+                    </tr>
+                    <tr>
+                        <td>RNA/ATAC partially paired — some cells missing one modality</td>
+                        <td>Joint latent + per-cell imputation</td>
+                        <td>MultiVI (mosaic)</td>
+                    </tr>
+                    <tr>
+                        <td>RNA and ATAC measured in genuinely different cells, no shared modality</td>
+                        <td>Cross-modal alignment</td>
+                        <td>GLUE / SCOT / related (diagonal)</td>
+                    </tr>
+                    <tr>
+                        <td>Map dissociated scRNA-seq cells onto a tissue section</td>
+                        <td>Cell → space mapping</td>
+                        <td>Tangram / optimal-transport approaches</td>
+                    </tr>
+                    <tr>
+                        <td>Perturbation response with no cell-level correspondence before/after</td>
+                        <td>Distribution-to-distribution mapping</td>
+                        <td>CellOT / optimal transport</td>
+                    </tr>
+                    <tr>
+                        <td>Just need RNA differential expression</td>
+                        <td><strong>No joint integration needed</strong></td>
+                        <td>Modality-specific statistical model (see "When not to integrate" below)</td>
+                    </tr>
+                </tbody>
+            </table>
+
         
         </section>
 
@@ -2581,13 +2643,18 @@
             <h3>Choosing the Right Method: Decision Framework</h3>
             <div class="highlight-box">
                 <h4>Step 1: Identify Your Data Structure</h4>
+                <p style="margin-top:-6px;">The real question isn't "is there more than one batch" — it's <strong>cell correspondence</strong> (are modalities measured on the same cells?) crossed with <strong>modality/feature overlap</strong> (do datasets share modalities, features, or a bridge?).</p>
                 <ul>
-                    <li><strong>All cells have all modalities?</strong> → Vertical integration </li>
-                    <li><strong>Different batches, different modalities?</strong> → Diagonal </li>
-                    <li><strong>Mixed modality availability?</strong> → Mosaic </li>
-                    <li><strong>Multiple batches, all modalities?</strong> → Cross </li>
-                    <li><strong>Spatial data?</strong> → Spatial methods </li>
-                    <li><strong>Perturbation data?</strong> → Perturbation-aware </li>
+                    <li><strong>Are modalities measured on the same cells?</strong>
+                        <ul>
+                            <li><strong>Yes, in every cell</strong> → Vertical integration (paired)</li>
+                            <li><strong>Yes, in some cells / some modalities missing per cell</strong> → Mosaic integration</li>
+                            <li><strong>No — different cells per modality, no shared modality</strong> → Diagonal integration (aligned via shared features/cell types or a bridge dataset)</li>
+                        </ul>
+                    </li>
+                    <li><strong>All modalities present in every batch, but multiple batches/labs with technical variation?</strong> → Cross integration. Per Liu et al. (2025)'s formal definition, this is the case where "all data modalities are present in each of all batches in a dataset" — it is <em>not</em> the same as single-modality batch correction (see the box above): the method must remove technical variation from the <em>joint multi-modal profile</em> while keeping the cross-modal relationships within each cell intact, not just align one modality's embedding.</li>
+                    <li><strong>Spatial data?</strong> → Spatial methods — itself vertical (paired profile + coordinate at every spot) or mosaic (partial modality coverage across sections)</li>
+                    <li><strong>Perturbation data?</strong> → Perturbation-aware — check cell correspondence across conditions the same way (paired before/after vs. unpaired distributions)</li>
                 </ul>
             </div>
 
@@ -2611,14 +2678,23 @@
 
 
             <h3>Common Pitfalls & Best Practices</h3>
+
+            <div class="highlight-box">
+                <h4>🚫 When <em>not</em> to integrate</h4>
+                <p><strong>Do not integrate merely to obtain a prettier UMAP.</strong> If the actual goal is modality-specific differential expression (RNA DE), differential accessibility (ATAC DA), or any per-modality statistical test, keep the original modality-specific count data and statistical model — a joint latent space or joint graph is the wrong tool for that question and can bias the test. Joint embeddings/graphs earn their place for representation learning, clustering, cell-type annotation, and cross-modality matching — not as a default preprocessing step for every downstream analysis.</p>
+            </div>
+
             <ul>
                 <li>
-                    <strong>Data Quality First:</strong> Ensure proper preprocessing (UMI counts &gt;500, doublet removal, 
-                    quality control). Use standard pipelines (Scanpy, Seurat). Bad data → bad integration.
+                    <strong>Data Quality First:</strong> Ensure appropriate cell calling, modality-specific QC, doublet handling, and 
+                    contamination assessment before integration &mdash; avoid universal hard thresholds; QC cutoffs should 
+                    reflect assay, sequencing depth, and dataset structure. Use standard pipelines (Scanpy, Seurat). Bad data → bad integration.
                 </li>
                 <li>
-                    <strong>Modality-Specific Normalization:</strong> Each modality needs appropriate normalization 
-                    (RNA: log-normalization, ATAC: TF-IDF, Protein: ADTnorm/DSB). Don't use RNA normalization for ATAC!
+                    <strong>Modality- and model-specific preprocessing:</strong> RNA, ATAC, and protein have different measurement 
+                    distributions, and preprocessing must match both the assay and the downstream model. For example, WNN 
+                    commonly uses log-normalized RNA, TF-IDF/LSI for ATAC, and CLR/DSB for ADT, whereas generative models 
+                    such as totalVI/MultiVI expect their own specified count-level inputs rather than those pre-derived features.
                 </li>
                 <li>
                     <strong>Evaluation Metrics Matter:</strong> Use multiple complementary metrics (ARI, NMI, ASW for clustering; 
@@ -2729,7 +2805,7 @@
                     <span style="background:#12362c;border:1px solid #2f6f5e;border-radius:8px;color:#7fdcc4;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">per_cell_weights</span>
                     <span style="color:#7a7f86;">&#8230;</span>
                 </div>
-                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">model-free &middot; per-cell weights &middot; late fusion &middot; interpretable &middot; no imputation</div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">non-generative &middot; per-cell weights &middot; late fusion &middot; interpretable &middot; no imputation</div>
             </div>
             <!-- divider -->
             <div style="width:1px;border-left:1px dashed #3c424a;margin:6px 2px;align-self:stretch;"></div>
@@ -2758,7 +2834,7 @@
                 <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">generative &middot; one latent &middot; early fusion &middot; imputes &amp; denoises &middot; batch-aware</div>
             </div>
         </div>
-        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The root decision is <strong style="color:#5ec2a8;">fuse graphs after separate embeddings</strong> vs <strong style="color:#d6a44f;">learn one joint latent from raw counts</strong>. WNN is model-free and hands you an interpretable per-cell weight showing which modality drives each cell, but it does no denoising or imputation; totalVI/MultiVI is probabilistic — it denoises, imputes missing modalities, and corrects batch — at the cost of training a model. Both assume <em>paired</em> cells; for unpaired / diagonal data (different cells per modality) you need anchor transfer, GLUE, or LIGER instead.</p>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The root decision is <strong style="color:#5ec2a8;">fuse graphs after separate embeddings</strong> vs <strong style="color:#d6a44f;">learn one joint latent from raw counts</strong>. WNN is non-generative and hands you an interpretable per-cell weight showing which modality drives each cell, but it does no denoising or imputation; totalVI/MultiVI is probabilistic — it denoises, imputes missing modalities, and corrects batch — at the cost of training a model. WNN and totalVI both assume <em>paired</em> cells (the same cell measured in every modality). MultiVI generalizes beyond the fully paired case: some cells may have RNA only, some ATAC only, and some both — it natively handles paired, unpaired, or mixed modality availability (mosaic integration), and can infer/impute the unobserved RNA or ATAC modality within its supported RNA&ndash;ATAC setting. For fully diagonal data (no cell overlap and no shared modality at all) you still need anchor transfer, GLUE, or LIGER.</p>
     </div>
 </section>
 
@@ -2777,7 +2853,7 @@ pip install scvi-tools scanpy muon mudata
                 <ul>
                     <li><strong>CITE-seq <code>AnnData</code></strong> — RNA counts in <code>adata.X</code>, protein (ADT) counts in <code>adata.obsm["protein_counts"]</code></li>
                     <li><strong>10x Multiome <code>MuData</code></strong> — <code>mdata["rna"]</code> (genes) + <code>mdata["atac"]</code> (peaks), the <em>same</em> cells in both</li>
-                    <li><strong>Paired requirement</strong> — totalVI, MultiVI, and WNN all need the same cells measured across modalities</li>
+                    <li><strong>Pairing requirement varies by method</strong> — WNN and totalVI need the same cells measured in every modality (paired). MultiVI is designed for mosaic RNA/ATAC data — paired, unpaired, or a mix of RNA/ATAC availability across cells — and can infer/impute the unobserved RNA or ATAC modality within that supported RNA&ndash;ATAC setting.</li>
                     <li><strong>Joint latent</strong> — written to <code>adata.obsm["X_totalVI"]</code> / <code>["X_multivi"]</code> for neighbors + UMAP</li>
                     <li><strong>Batch key</strong> — <code>adata.obs["batch"]</code> (donor / lane) for the model to correct</li>
                 </ul>
@@ -2808,15 +2884,18 @@ sc.pp.neighbors(adata, use_rep="X_totalVI"); sc.tl.umap(adata)</code></pre>
 
 # RNA + ATAC (10x Multiome) instead of CITE-seq -> MultiVI:
 # amvi = scvi.data.organize_multiome_anndatas(adata_paired, adata_rna, adata_atac)
-# scvi.model.MULTIVI.setup_anndata(amvi, batch_key="modality")
+# MultiVI's batch_key must hold the modality-availability label ("paired"/"expression"/"accessibility")
+# added by organize_multiome_anndatas -- this is required by the model's architecture, not a
+# stand-in for donor/lane batch. Real technical batch goes in categorical_covariate_keys instead:
+# scvi.model.MULTIVI.setup_anndata(amvi, batch_key="modality", categorical_covariate_keys=["donor"])
 # mvi = scvi.model.MULTIVI(amvi, n_genes=n_g, n_regions=n_r); mvi.train()</code></pre>
                 <h3>Common pitfalls &amp; tips</h3>
                 <ul>
-                    <li><strong>Paired vs unpaired.</strong> totalVI / MultiVI / WNN require the <em>same</em> cells in every modality; for different cells per modality (diagonal integration) use Seurat anchor transfer, GLUE, or LIGER.</li>
+                    <li><strong>Paired vs mosaic vs diagonal.</strong> WNN and totalVI require the <em>same</em> cells in every modality. MultiVI is built for mosaic data — paired, unpaired, or mixed RNA/ATAC availability across cells — so it does not require full pairing. For fully diagonal data (no cell overlap, no shared modality at all) use Seurat anchor transfer, GLUE, or LIGER instead.</li>
                     <li><strong>Never concatenate raw features and PCA.</strong> RNA counts, protein ADT, and sparse binary ATAC peaks live on wildly different scales — naive concatenation lets one modality dominate the embedding.</li>
                     <li><strong>Protein has ambient background.</strong> ADT counts include background binding; totalVI models it explicitly, so don't preprocess protein like RNA (use CLR for WNN, raw counts for totalVI).</li>
-                    <li><strong>ATAC needs its own preprocessing.</strong> TF-IDF / binarization and peak calling come first; feeding raw peak counts into an RNA-style model is wrong.</li>
-                    <li><strong>Correct batch <em>and</em> modality.</strong> Donor / lane batch effects exist within each modality — set the batch key, not just the modality label.</li>
+                    <li><strong>ATAC preprocessing is model-specific.</strong> The classical WNN/LSI pipeline needs peak calling then TF-IDF/binarization before use. Generative models have their own input contract instead: MultiVI takes ATAC as its own count/binary-accessibility likelihood term and should not be fed pre-computed LSI/TF-IDF features meant for the WNN route — check what each model expects rather than assuming one preprocessing recipe fits all.</li>
+                    <li><strong>Modality-availability label vs. technical batch are not the same.</strong> For MultiVI, <code>batch_key</code> must hold the modality-availability indicator (paired/expression/accessibility) — that's required by the model's architecture, not a stand-in for donor/lane batch. Pass real technical batch effects via <code>categorical_covariate_keys</code> instead, so both are corrected.</li>
                     <li><strong>Inspect the WNN weights.</strong> The per-cell modality weights are interpretable; a modality with no signal in some cells should get a low weight — check them to catch a broken or empty modality.</li>
                 </ul>
         </section>
