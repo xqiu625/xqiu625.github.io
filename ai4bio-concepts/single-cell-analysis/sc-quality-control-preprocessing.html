@@ -254,7 +254,24 @@
             </div>
 
             <!-- Statistics -->
-            
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">20</span>
+                    <div class="stat-label">Curated Methods</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">8</span>
+                    <div class="stat-label">QC Categories</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">2018&ndash;2026</span>
+                    <div class="stat-label">Years Covered</div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">3</span>
+                    <div class="stat-label">Perturb-seq Tools</div>
+                </div>
+            </div>
             <p class="curation-note">Last reviewed: July 2026 · Inclusion: maintained, benchmarked, or widely cited methods · Found an issue? <a href="https://github.com/xqiu625" target="_blank" rel="noopener noreferrer">Suggest a fix on GitHub</a></p>
 
             <!-- CASE-FILE BANNER (Measure · Agatha Christie lens) -->
@@ -269,33 +286,237 @@
                     and some are lying: two witnesses sharing one identity, evidence contaminated at the scene,
                     witnesses who never existed, and dramatic structure that is technique, not biology.
                     Archive the clues (QC metrics), cross-examine the witnesses (cells and genes),
-                    remove the red herrings (doublets, ambient RNA, batch artifacts) — and only then let the surviving
-                    biological signals enter the model.</p>
+                    identify the doublets and contamination, diagnose technical batch structure, and account for it
+                    appropriately downstream — batch is modeled and integrated, not simply deleted — and only then let
+                    the surviving biological signals enter the model.</p>
                 </div>
             </section>
 
             <div class="main-content-wrapper">
                 <details class="toc-sidebar" id="tocSidebar" open>
                     <summary class="toc-title">Contents</summary>
-                    <a href="#and-then-there-were-some">And Then There Were Some</a>
-                    <a href="#pipelines">Core QC Pipelines</a>
-                    <a href="#doublets">Doublet Detection</a>
-                    <a href="#ambient">Ambient RNA Removal</a>
-                    <a href="#feature-selection">Feature Selection</a>
-                    <a href="#foundation">Foundation Models</a>
-                    <a href="#metacell">Metacell &amp; Stats</a>
-                    <a href="#repositories">Data Repositories</a>
-                    <a href="#compare">SoupX vs DecontX</a>
-                    <a href="#quick-ref">Quick Reference</a>
-                    <a href="#hands-on">Hands-on Practice</a>
+                    <div style="color:#005a9c; font-weight:800; font-size:.74em; text-transform:uppercase; letter-spacing:.06em; margin:4px 0 2px;">Part I &middot; How QC Works</div>
+                    <a href="#canonical-order">1. Canonical QC Workflow</a>
+                    <a href="#provenance">2. Data &amp; Provenance</a>
+                    <a href="#cell-calling">3. Cell Calling</a>
+                    <a href="#demultiplexing">4. Demultiplexing</a>
+                    <a href="#pipelines">5. Gate 1 — Cell Quality</a>
+                    <a href="#doublets">6. Gate 2 — Doublets</a>
+                    <a href="#ambient">7. Ambient RNA</a>
+                    <a href="#annotation-extraction">8. Annotation &amp; Lineage Extraction</a>
+                    <a href="#benchmark-freeze">9. Benchmark / Analysis Assembly</a>
+                    <a href="#feature-selection">10. Downstream Preprocessing</a>
+                    <a href="#foundation">11. Foundation Models</a>
+                    <a href="#perturbseq">12. Perturb-seq Special Cases</a>
+                    <div style="color:#005a9c; font-weight:800; font-size:.74em; text-transform:uppercase; letter-spacing:.06em; margin:14px 0 2px;">Part II &middot; Method Library</div>
+                    <a href="#repositories">13. Method Library</a>
+                    <a href="#hands-on">14. Hands-on Practice</a>
                 </details>
                 <div class="content-area">
 
+            <!-- CANONICAL QC ORDER -->
+            <section class="content-section" id="canonical-order">
+                <h2><i class="fas fa-sitemap"></i> Canonical QC Order</h2>
+                <div class="highlight-box">
+                    <p style="margin:0;"><strong>Method catalog order &ne; execution order.</strong> The sections below this one are organized as a <em>method taxonomy</em> — grouped by what a tool does, not by when it runs. The backbone below is the actual dependency graph: which population and which count representation each step is allowed to consume. Skipping straight to "Doublet Detection" or "Ambient RNA" without this backbone is the single most common way a QC pipeline gets its execution order wrong.</p>
+                </div>
+
+                <h3>The dependency graph</h3>
+                <p>The pipeline is not strictly serial. Background-info-based ambient correction (SoupX-style, which needs the empty-droplet soup profile) and the cell-QC chain (cell calling &rarr; demultiplex &rarr; Gate 1 &rarr; Gate 2) are two <strong>parallel inputs</strong> that only converge at the ambient-correction step — treating the whole thing as one straight line is what makes "just run steps in card order" feel plausible when it isn't.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.5;margin:14px 0;"><code>                  raw droplets
+                       │
+              ┌────────┴────────┐
+              │                 │
+       background info       cell calling
+       (empty-droplet /         │
+        soup profile)      demultiplex
+              │                 │
+              │              Gate 1
+              │                 │
+              │              Gate 2
+              │                 │
+              └──────┐   ┌──────┘
+                     ↓   ↓
+               ambient correction
+                     │
+               final annotation
+                     │
+               lineage extraction
+                     │
+               benchmark freeze
+                     │
+          ┌──────────┼──────────┐
+          ↓          ↓          ↓
+         PCA         FM         DE</code></pre>
+                <p style="color:#5a6b7c; font-size:.9em; margin-top:-4px;">(CellBender is deliberately <em>not</em> on this graph — see "The CellBender branch" below; it replaces the entire left-hand "cell calling → demultiplex → Gate 1 → Gate 2" chain plus the "background info" input with one joint step.)</p>
+
+                <h3>Same graph, as a linear walk-through</h3>
+                <p>Useful for reading top-to-bottom in plain language, but remember: this reads as one line only because it picks a single path through the branching graph above — it is not evidence that every step is a hard serial dependency on the one before it.</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.55;margin:14px 0;"><code>RAW DATA
+│
+├─ FASTQ / raw droplet counts
+│
+▼
+PROVENANCE
+capture · channel · donor · sample
+│
+▼
+CELL CALLING
+Is the barcode a cell?
+│
+▼
+DEMULTIPLEXING
+SNG · DBL · AMB
+│
+▼
+GATE 1
+mild low-quality-cell QC
+counts ↓ · genes ↓ · mito ↑
+│
+▼
+GATE 2
+per-capture doublet scoring
+raw counts · full lineage context
+│
+▼
+DOUBLET DECISION FREEZE
+confirmed → remove
+unknown → retain + flag
+│
+▼
+AMBIENT CORRECTION
+per capture · full lineage context
+raw counts preserved
+│
+▼
+FINAL ANNOTATION
+harmonize lineage labels
+│
+▼
+LINEAGE EXTRACTION
+Platelet / Monocyte / target population
+│
+▼
+BENCHMARK FREEZE
+same cells across models
+│
+├──────── PCA preprocessing
+├──────── FM A preprocessing
+├──────── FM B preprocessing
+└──────── statistical-analysis preprocessing</code></pre>
+
+                <div class="highlight-box">
+                    <h4>Why this order?</h4>
+                    <ul style="margin:0;">
+                        <li>Cell calling precedes cell QC because empty droplets are not low-quality cells — they are not cells at all.</li>
+                        <li>Mild Gate 1 precedes doublet detection because extreme low-information cells distort transcriptomic neighborhoods, while aggressive upper-tail filtering can erase doublets.</li>
+                        <li>Doublet handling precedes DecontX because multiplets represent genuine cellular mixtures rather than ambient RNA.</li>
+                        <li>Final lineage extraction follows artifact modeling so doublet and ambient models retain the full capture context.</li>
+                    </ul>
+                </div>
+
+                <p>Gate 1 stays deliberately mild for two reasons that pull in opposite directions: too little Gate 1 lets extreme low-information cells distort the PCA/kNN geometry the doublet detector relies on; too much Gate 1 (especially on the upper tail) pre-deletes the very doublets Gate 2 is meant to catch. High counts/high genes are Gate-2 diagnostic evidence, not a Gate-1 deletion rule.</p>
+
+                <div style="background:linear-gradient(135deg,#f5fbff 0%,#dceef8 100%); border:1.5px solid #005a9c; border-radius:10px; padding:16px 20px; margin:20px 0;">
+                    <p style="margin:0; color:#003b68; font-weight:700;">A metric is evidence. A decision is a policy applied to evidence.</p>
+                    <p style="margin:8px 0 0; color:#4a463b; font-size:.93em;">A count, a MAD distance, a Scrublet score, a contamination fraction — these are <em>diagnostics</em>. They become a <em>decision</em> only after an explicit, named policy is applied (<code>gate1_pass</code>, <code>confirmed_doublet</code>, <code>final_qc_pass</code>). The most common QC bug in tutorials — including earlier versions of this one — is jumping straight from metric to deletion (<code>adata[metric &lt; threshold]</code>) with no named decision column in between. The Hands-on section below models the evidence &rarr; decision separation explicitly.</p>
+                </div>
+
+                <h3>The CellBender branch</h3>
+                <p>CellBender does not slot into the same pipeline position as DecontX/SoupX — it is a clearly separate <strong>alternate branch off "raw droplets"</strong> in the dependency graph above, not a stage merged into the main chain. It replaces conventional cell calling and ambient correction only — <strong>not</strong> demultiplexing or Gate 1, which still run downstream of it:</p>
+                <div class="highlight-box">
+                    <p style="margin:0;"><strong>CellBender path:</strong> raw droplets &rarr; CellBender joint cell/background inference &rarr; demultiplexing if applicable &rarr; Gate 1 &rarr; Gate 2 &rarr; final annotation. CellBender collapses conventional cell calling + ambient correction into one joint step; it does not bypass demultiplexing or Gate 1.</p>
+                </div>
+                <div class="workflow-diagram">
+                    <div class="workflow-steps">
+                        <span class="workflow-step">Raw droplets</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step" style="border-color:#8a5a1c;color:#8a5a1c;">CellBender: joint cell/background inference</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Demultiplexing if applicable</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Gate 1</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Gate 2</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Final annotation</span>
+                    </div>
+                </div>
+                <p>versus the conventional path: <span class="flow-node" style="display:inline-block;">Cell Ranger filtered matrix &rarr; demultiplexing &rarr; Gate 1 &rarr; Gate 2 &rarr; DecontX/SoupX</span>. Treat these as two alternative branches, not interchangeable steps in one universal order — running CellBender <em>and then</em> DecontX on its output double-corrects for ambient RNA.</p>
+
+                <h3>Why ambient correction follows doublet handling, not the reverse</h3>
+                <p>A doublet and an ambient-contaminated singlet are different generative models, and conflating them motivates the wrong step order:</p>
+                <ul>
+                    <li><strong>Doublet:</strong> <code>X<sub>i</sub> &asymp; X<sub>A</sub> + X<sub>B</sub></code> — both components are real cells captured together.</li>
+                    <li><strong>Ambient contamination:</strong> <code>X<sub>i</sub> &asymp; (1&minus;&epsilon;)X<sub>A</sub> + &epsilon;X<sub>soup</sub></code> — the second component is extracellular background, not a second cell.</li>
+                </ul>
+                <p>If DecontX (or SoupX) runs before doublet detection, a real doublet's second-cell signal can be misattributed to background contamination, and the corrected counts handed to the doublet detector no longer reflect the original capture geometry. For the DecontX-oriented workflow used here, doublet decisions are frozen before decontamination; SoupX and CellBender have method-specific dependencies described separately — SoupX's soup estimation draws on the raw, unfiltered droplet pool rather than obeying this same doublets-then-ambient ordering.</p>
+
+                <h3>What matrix, cells, and grouping go where</h3>
+                <div style="overflow-x:auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr><th>Step</th><th>Cells</th><th>Matrix</th><th>Grouping</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Cell calling</td><td>candidate barcodes</td><td>raw integer counts</td><td>capture</td></tr>
+                            <tr><td>Demultiplexing</td><td>called cells</td><td>assay-specific (genotype/HTO)</td><td>capture</td></tr>
+                            <tr><td>Gate 1</td><td>called / demuxed cells</td><td>raw integer counts</td><td>capture &plusmn; broad lineage</td></tr>
+                            <tr><td>Scrublet / scDblFinder</td><td>Gate-1 retained, <strong>all lineages</strong></td><td>raw integer counts</td><td><strong>capture / channel</strong></td></tr>
+                            <tr><td>Doublet decision</td><td>same population</td><td>score + method-status flags</td><td>capture</td></tr>
+                            <tr><td>DecontX / SoupX</td><td>confirmed-doublets removed, all lineages</td><td>raw counts &rarr; corrected counts</td><td>capture</td></tr>
+                            <tr><td>Final lineage annotation</td><td>QC-retained</td><td>corrected / appropriate expression</td><td>cohort / capture</td></tr>
+                            <tr><td>Lineage extraction (e.g. Platelet-only)</td><td>annotated cells</td><td>corrected / appropriate expression</td><td>lineage</td></tr>
+                            <tr><td>FM / model preprocessing</td><td>final benchmark cells</td><td>model-specific representation</td><td>model</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>Two rules follow directly from this table: <strong>do not subset to the target lineage before Scrublet or DecontX</strong> unless the method specifically requires it (a monocyte is not a QC failure just because the final benchmark is platelet-only — it is valid background context for artifact modeling), and <strong>the unit of QC (capture/channel) and the unit of inference (donor/patient) can differ</strong> — cell QC determines which measurements are trustworthy, it does not turn cells into independent biological replicates.</p>
+            </section>
+
+            <!-- DATA & PROVENANCE -->
+            <section class="content-section" id="provenance">
+                <h2><i class="fas fa-fingerprint"></i> Data &amp; Provenance</h2>
+                <p><strong>Stage 0 — identity mapping.</strong> Before any QC decision, every barcode needs a resolved chain of custody. At minimum, store:</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:14px 18px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>barcode &rarr; capture_id &rarr; channel_id &rarr; sample_id &rarr; donor_id &rarr; multiplexing_status &rarr; source_matrix &rarr; count_layer</code></pre>
+                <p>This is especially important for public datasets, where several of these stages may already be baked into the deposited matrix and cannot be reconstructed after the fact.</p>
+
+                <h3>Public-cohort provenance audit</h3>
+                <p>For every external cohort, audit what was already done upstream before deciding what you need to (re)do. The governing principle: <strong>start from the earliest recoverable stage; never pretend an unavailable upstream stage was reconstructed.</strong></p>
+                <div style="overflow-x:auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr><th>Stage</th><th>Available?</th><th>Already done upstream?</th><th>Re-done by us?</th><th>Evidence</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Raw droplets</td><td>yes / no</td><td>&mdash;</td><td>&mdash;</td><td>raw_feature_bc_matrix present?</td></tr>
+                            <tr><td>Cell calling</td><td>yes / no</td><td>authors / us</td><td>yes / no</td><td>filtered matrix cell count vs. paper</td></tr>
+                            <tr><td>Demultiplexing</td><td>yes / no</td><td>authors / us</td><td>yes / no</td><td>SNG/DBL/AMB column present?</td></tr>
+                            <tr><td>Basic QC</td><td>known / unknown</td><td>authors</td><td>yes / no</td><td>methods section thresholds, if stated</td></tr>
+                            <tr><td>Doublet handling</td><td>yes / no</td><td>authors / us</td><td>yes / no</td><td>doublet_score / predicted_doublet column present?</td></tr>
+                            <tr><td>Ambient correction</td><td>yes / no</td><td>authors / us</td><td>yes / no</td><td>decontX/SoupX layer or contamination column present?</td></tr>
+                            <tr><td>Raw integer counts retained</td><td>yes / no</td><td>&mdash;</td><td>&mdash;</td><td><code>adata.X</code> or a layer is verified non-negative, integer-like</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>If cell calling was performed upstream and only a filtered matrix was deposited, say so explicitly rather than treating the filtered matrix as though it were raw droplets. Re-running doublet detection on a public deposit that has <em>already</em> had doublets removed is a distinct methodological decision — not a routine rerun — because the residual doublet population and its expected rate are no longer the same as an unfiltered capture.</p>
+            </section>
+
+            <!-- CELL CALLING -->
+            <section class="content-section" id="cell-calling">
+                <h2><i class="fas fa-user-check"></i> Cell Calling</h2>
+                <p>Cell calling answers one question: <code>barcode &rarr; cell or not-cell</code>. It precedes cell-level QC — a barcode with almost no transcripts is not a low-quality cell, it is an empty droplet that never held a cell (see <a href="#and-then-there-were-some">Guest 10 · Empty Droplets &amp; Cell Calling</a> in the parable below). Conventional cell calling (CellRanger's default, EmptyDrops-style methods) operates on the raw droplet matrix and outputs the filtered/called matrix that Gate 1 then consumes. <strong>CellBender</strong> replaces this step with a joint cell-calling + ambient-correction model — see the <a href="#canonical-order">CellBender branch</a> in the Canonical QC Workflow above; the two are alternative branches, not sequential steps.</p>
+            </section>
+
+            <!-- DEMULTIPLEXING -->
+            <section class="content-section" id="demultiplexing">
+                <h2><i class="fas fa-users"></i> Demultiplexing</h2>
+                <p>For genetically or hashtag-multiplexed captures, demultiplexing resolves each called cell to one of three states before any transcriptome-based doublet detection runs:</p>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:14px 18px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>called cells &rarr; donor assignment &rarr; SNG (singlet) · DBL (cross-donor doublet) · AMB (ambiguous)</code></pre>
+                <p>This step matters for Scrublet/scDblFinder calibration, not just sample bookkeeping: if genotype/HTO demultiplexing has already removed cross-donor doublets, the residual doublet prevalence a transcriptome-based detector should expect is no longer the raw loading-chart rate —</p>
+                <p style="text-align:center;"><code>P(doublet | survived demultiplexing) &ne; P(doublet)</code></p>
+                <p>Scrublet should not be taught, or run, as though it always sees the original, unfiltered doublet population.</p>
+            </section>
 
             <!-- AND THEN THERE WERE SOME · And Then There Were None parable -->
             <section class="content-section" id="and-then-there-were-some">
                 <h2><i class="fas fa-book-open"></i> And Then There Were Some · Ten Guests</h2>
-                <p>Agatha Christie's <em>And Then There Were None</em> (1939): ten guests on Soldier Island, judged one by one against a nursery rhyme. Here each guest stands for one quality-control theme: ten ways the analysis can die on the island, and ten ways to prevent it. <em>(Classic-novel spoilers inside.)</em></p>
+                <p>Agatha Christie's <em>And Then There Were None</em> (1939): ten guests on Soldier Island, judged one by one against a nursery rhyme. Here each guest stands for one quality-control theme — a failure mode, not a step in a pipeline. <strong>The ten guests are failure modes, not workflow order</strong>: see the <a href="#canonical-order">Canonical QC Order</a> section above for the actual execution sequence. <em>(Classic-novel spoilers inside.)</em></p>
                 <figure class="story-figure">
                     <img src="figures/and-then-there-were-some-qc-comic.webp" width="1254" height="1254" loading="lazy" decoding="async" alt="Comic retelling of And Then There Were None as a single-cell QC parable: ten guests arrive on the island and are eliminated one by one, each standing for a quality-control failure mode">
                     <figcaption>Ten guests, ten ways an analysis dies on the island — the quality-control parable in one panel.</figcaption>
@@ -327,9 +548,9 @@
                     </div>
                     <div class="library-card">
                         <div class="book-meta">Guest 5 · Everyone hides a crime</div>
-                        <h4>Contamination Cells Removal</h4>
-                        <p class="plot">Each guest was lured to the island because of a hidden past — none of them truly belongs in polite company, and the host knows it.</p>
-                        <p class="echo"><strong>Off the team sheet.</strong> Identify and remove cells that do not truly belong to the target population before they lead to misleading biological conclusions.</p>
+                        <h4>Off-Target / Non-Target Lineage Cells</h4>
+                        <p class="plot">Each guest was lured to the island because of a hidden past — but a guest with a past is not automatically the killer. Most of them simply don't belong in <em>this</em> story.</p>
+                        <p class="echo"><strong>Wrong story, not a bad witness.</strong> A monocyte is not a QC failure just because the target population is platelets — it's a valid cell that belongs to a different lineage. This extraction happens <em>late</em>, after doublet handling and ambient correction, using the full-lineage context; it is not a generic early QC step, and it should never be confused with ambient (molecular) contamination.</p>
                     </div>
                     <div class="library-card">
                         <div class="book-meta">Guest 6 · The elimination</div>
@@ -368,7 +589,8 @@
 
             <!-- CATEGORY 1: Core QC Pipelines -->
             <section class="content-section" id="pipelines">
-                <h2><i class="fas fa-cogs"></i> Core QC Pipelines & Frameworks</h2>
+                <h2><i class="fas fa-cogs"></i> Gate 1 — Cell Quality & QC Pipelines</h2>
+                <p style="color:#5a6b7c; font-size:.92em; margin:-8px 0 18px;">Gate 1 is the mild, capture-aware cell-quality pass described in the <a href="#canonical-order">Canonical QC Workflow</a>: lower-tail counts/genes, upper-tail mito — diagnostics first, a named <code>gate1_pass</code> decision second. The frameworks below implement Gate-1-style filtering (and more) end-to-end.</p>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
                     <strong>Goal:</strong> "I need a comprehensive, end-to-end quality control workflow that handles multiple QC tasks in a unified framework."
@@ -413,10 +635,10 @@
 
             <!-- CATEGORY 2: Doublet Detection -->
             <section class="content-section" id="doublets">
-                <h2><i class="fas fa-clone"></i> Doublet Detection</h2>
+                <h2><i class="fas fa-clone"></i> Gate 2 — Doublet Detection</h2>
                 <div style="background:linear-gradient(135deg,#f5fbff 0%,#ffffff 100%); border:2px solid #005a9c; border-radius:12px; padding:26px; margin:0 0 24px;">
                     <h4 style="text-align:center; color:#003b68; margin:0 0 4px; font-size:1.18em;">What a doublet is — and how simulation catches it</h4>
-                    <p style="text-align:center; color:#5a6b7c; font-size:0.9em; margin:0 0 16px;">Two cells captured in one droplet share a barcode, so they look like a single cell with a blended profile. Detectors spot them by simulating artificial doublets and asking which real cells resemble them.</p>
+                    <p style="text-align:center; color:#5a6b7c; font-size:0.9em; margin:0 0 16px;">Two cells captured in one droplet share a barcode, so they look like a single cell with a blended profile. Detectors spot them by simulating artificial doublets and asking which real cells resemble them. Detection is easier for <strong>heterotypic</strong> doublets (two different cell types) than <strong>homotypic</strong> ones (two cells of the same type look like one, only bigger) — so a low predicted-doublet rate does not imply a low true physical multiplet rate.</p>
                     <svg viewBox="0 0 900 290" style="width:100%; height:auto; font-family:'Manrope',sans-serif;">
                         <defs><marker id="dbA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#005a9c"/></marker></defs>
                         <!-- droplet capture -->
@@ -437,9 +659,9 @@
                         <g font-family="'IBM Plex Mono',monospace" font-size="10">
                             <rect x="330" y="56" width="200" height="22" rx="3" fill="#eaf3fc" stroke="#4A90D9"/><text x="340" y="71" fill="#2c5aa0">T-cell genes: CD3D ▮▮▮</text>
                             <rect x="330" y="84" width="200" height="22" rx="3" fill="#fdecec" stroke="#e74c3c"/><text x="340" y="99" fill="#c0392b">B-cell genes: MS4A1 ▮▮▮</text>
-                            <rect x="330" y="116" width="200" height="26" rx="3" fill="#fff7c9" stroke="#003b68" stroke-width="1.5"/><text x="340" y="133" fill="#005a9c">BOTH high — impossible for</text>
+                            <rect x="330" y="116" width="200" height="26" rx="3" fill="#fff7c9" stroke="#003b68" stroke-width="1.5"/><text x="340" y="133" fill="#005a9c">BOTH high — unexpected hybrid</text>
                         </g>
-                        <text x="430" y="160" text-anchor="middle" font-size="10.5" fill="#5a6b7c">one real cell type</text>
+                        <text x="430" y="160" text-anchor="middle" font-size="10.5" fill="#5a6b7c">consistent with a potential doublet</text>
 
                         <line x1="540" y1="100" x2="602" y2="100" stroke="#005a9c" stroke-width="2" marker-end="url(#dbA)"/>
 
@@ -456,7 +678,7 @@
                         <text x="800" y="180" text-anchor="middle" font-size="9.5" fill="#005a9c">simulated doublets</text>
                         <text x="775" y="78" text-anchor="middle" font-size="9" fill="#c0392b">flagged</text>
                     </svg>
-                    <p style="text-align:center; color:#666; margin:14px 0 0; font-size:0.92em;"><strong style="color:#005a9c;">Key insight:</strong> tools like Scrublet and DoubletFinder generate synthetic doublets by averaging random pairs of real cells, embed everything together, and score each real cell by how many simulated doublets sit nearby. Cells in dense simulated-doublet neighborhoods are flagged and removed before analysis.</p>
+                    <p style="text-align:center; color:#666; margin:14px 0 0; font-size:0.92em;"><strong style="color:#005a9c;">Key insight:</strong> tools like Scrublet and DoubletFinder generate synthetic doublets by combining profiles from pairs of observed cells, embed everything together, and score each real cell by how many simulated doublets sit nearby. Cells in dense simulated-doublet neighborhoods are <em>flagged</em> — the flag then feeds a separate freeze/removal decision, not an automatic deletion.</p>
                 </div>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
@@ -501,12 +723,34 @@
                             <a href="https://github.com/swolock/scrublet" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
+                    <!-- scDblFinder -->
+                    <div class="paper-card" id="method-scdblfinder">
+                        <h4>scDblFinder</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2022</span>
+                            <span class="meta-badge doublet-badge">Doublet Detection</span>
+                            <span class="meta-badge journal-badge">F1000Research</span>
+                        </div>
+                        <p class="paper-description">
+                            Bioconductor doublet detector that performed strongly in comparative benchmarks across multiple human and mouse datasets. Uses a random forest classifier on cluster-aware simulated doublets — sampling cell pairs in proportion to observed cell-type frequencies — which handles imbalanced compositions better than uniform-random simulation. Native SingleCellExperiment integration, automatic parameter tuning, and multi-sample batch support provide convenient multi-sample handling in Bioconductor single-cell workflows.
+                        </p>
+                        <ul class="key-contributions">
+                            <li>Strong AUPRC in head-to-head benchmarks across diverse tissue types — but relative performance vs. DoubletFinder/Scrublet varies with tissue composition, homotypic burden, and capture size, so treat this as one strong option for R/Bioconductor users rather than a universal ranking</li>
+                            <li>Cluster-aware simulation: proportional sampling from each cluster avoids the detection bias of rare cell-type doublets that afflicts uniform-random methods</li>
+                            <li>Multi-sample mode: <code>scDblFinder(sce, samples="sample_id")</code> runs each sample independently then pools scores — essential for batch QC</li>
+                        </ul>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.12688/f1000research.73600.2" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://bioconductor.org/packages/scDblFinder" class="paper-link" target="_blank"><i class="fas fa-cube"></i> Bioconductor</a>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- CATEGORY 3: Ambient RNA & Contamination Removal -->
             <section class="content-section" id="ambient">
                 <h2><i class="fas fa-broom"></i> Ambient RNA & Contamination Removal</h2>
+                <p style="color:#5a6b7c; font-size:.92em; margin:-8px 0 18px;">SoupX/DecontX-style ambient correction runs on the <strong>doublet-cleared</strong>, full-lineage population — see <a href="#canonical-order">why ambient correction follows doublet handling</a>. CellBender is a separate branch that jointly performs cell calling and ambient correction on the raw droplet matrix; it is not interchangeable with running DecontX on an already cell-called matrix.</p>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
                     <strong>Goal:</strong> "I need to remove cell-free RNA contamination (soup) from droplet-based single-cell data to improve signal-to-noise ratio."
@@ -539,11 +783,33 @@
                             <span class="meta-badge journal-badge">Genome Biology</span>
                         </div>
                         <p class="paper-description">
-                            Bayesian method for decontamination using variational inference. Models each cell's expression as a mixture of native and contaminating RNA. Provides uncertainty estimates and works without clustering pre-requisites.
+                            Bayesian method for decontamination using variational inference. Models each cell's expression as a mixture of native and contaminating RNA, and estimates a per-cell contamination fraction and corrected counts. Can infer latent cell populations rather than requiring externally supplied clustering as a mandatory preprocessing step — though cluster labels can also be supplied if available.
                         </p>
                         <div class="paper-links">
                             <a href="https://doi.org/10.1186/s13059-020-02050-0" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
                             <a href="https://github.com/campbio/celda" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- CellBender -->
+                    <div class="paper-card" id="method-cellbender">
+                        <h4>CellBender</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2023</span>
+                            <span class="meta-badge ambient-badge">Ambient RNA</span>
+                            <span class="meta-badge journal-badge">Nat Methods</span>
+                        </div>
+                        <p class="paper-description">
+                            PyTorch VAE with negative-binomial likelihood that jointly infers the true expression profile of each cell and the ambient RNA contamination fraction from the raw unfiltered droplet matrix. Unlike SoupX and DecontX, CellBender simultaneously performs cell calling (distinguishing real cells from empty droplets) and ambient correction in a single pass — an attractive joint-modeling approach when raw unfiltered droplets are available and joint cell/background inference is appropriate. Used in several large-scale single-cell processing workflows.
+                        </p>
+                        <ul class="key-contributions">
+                            <li>Removes 30–70 % of ambient contamination in high-soup datasets; substantially improves cell-type marker specificity and reduces spurious DE calls</li>
+                            <li>Joint cell-calling + ambient removal: no pre-clustering or empty-droplet pre-filtering required; outputs a corrected, cell-called count matrix directly</li>
+                            <li>GPU-accelerated inference (~30 min for 50 K cells on a single GPU); CPU mode available; <code>cellbender remove-background</code> CLI integrates directly with 10x output directories</li>
+                        </ul>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41592-023-01943-7" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/broadinstitute/CellBender" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
                         </div>
                     </div>
 
@@ -585,6 +851,7 @@
             <!-- CATEGORY 4: Feature Selection & Dimensionality Reduction -->
             <section class="content-section" id="feature-selection">
                 <h2><i class="fas fa-filter"></i> Feature Selection & Dimensionality Reduction</h2>
+                <p style="color:#5a6b7c; font-size:.92em; margin:-8px 0 18px;"><strong>Layer III — downstream preprocessing, not cell QC.</strong> These methods select or transform <em>features</em> for a QC-retained population; they are not a substitute for the identity/QC steps in the <a href="#canonical-order">Canonical QC Order</a>. See also <a href="#metacell">Metacell &amp; Statistical Methods</a> below, which sits in the same downstream layer.</p>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
                     <strong>Goal:</strong> "I need to select informative features or reduce dimensionality while preserving biological signal for downstream analysis."
@@ -630,6 +897,7 @@
             <!-- CATEGORY 5: Foundation Models -->
             <section class="content-section" id="foundation">
                 <h2><i class="fas fa-brain"></i> Foundation Models for Single-Cell Analysis</h2>
+                <p style="color:#5a6b7c; font-size:.92em; margin:-8px 0 18px;"><strong>Layer III — downstream preprocessing, not a QC stage.</strong> Foundation models consume the same QC-retained biological cells that any other analysis does; a model's own input contract (tokenization, normalization) runs <em>after</em> the canonical identity/QC backbone, never before it decides which cells pass QC.</p>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
                     <strong>Goal:</strong> "I want to leverage large pre-trained models for zero-shot or transfer learning capabilities in quality control and preprocessing tasks."
@@ -721,9 +989,19 @@
                 </div>
             </section>
 
+            <!-- PART II DIVIDER -->
+            <section class="casework-banner" style="grid-template-columns:1fr; text-align:center;" aria-label="Part II begins: Method Library">
+                <div class="casework-copy">
+                    <div class="kicker">Part II begins</div>
+                    <h2>You've read the dependency graph. Now here's the catalog.</h2>
+                    <p>Everything above — the Canonical QC Workflow, Provenance, Cell Calling, Demultiplexing, Gate 1, Gate 2, Ambient RNA, Annotation &amp; Lineage Extraction, Benchmark Freeze, Downstream Preprocessing, Foundation Models, and Perturb-seq — was Part I: <strong>how QC works</strong>, and when each step runs relative to the others. Everything from here on, including the method cards you already passed inside those sections above (SCTK, Scrublet, DoubletFinder, scDblFinder, SoupX, DecontX, CellBender, DELVE, SnapATAC2, scPRINT, SIGnature, and the rest), is Part II: a <strong>reference library</strong>. A method card tells you what a tool does — not when to run it. For "when," go back to Part I.</p>
+                </div>
+            </section>
+
             <!-- CATEGORY 7: Data Repositories -->
             <section class="content-section" id="repositories">
                 <h2><i class="fas fa-database"></i> Data Repositories & Standardization</h2>
+                <p style="color:#5a6b7c; font-size:.92em; margin:-8px 0 18px;">Part of the Method Library — for a full index of every method on this page including the ones above (doublets, ambient RNA, features, foundation models), see the <a href="#quick-ref">Quick Reference: Choosing the Right Tool</a> section further down the page.</p>
                 <div class="category-intro">
                     <i class="fas fa-quote-left"></i>
                     <strong>Goal:</strong> "I need access to large-scale, uniformly processed single-cell datasets or want to standardize my data processing pipeline."
@@ -750,13 +1028,304 @@
                 </div>
             </section>
 
+
+            <!-- CATEGORY: Perturb-seq QC -->
+            <section class="content-section" id="perturbseq">
+                <h2><i class="fas fa-crosshairs"></i> Perturb-seq QC — CRISPR Screen-Specific</h2>
+                <div class="category-intro">
+                    <i class="fas fa-quote-left"></i>
+                    <strong>Goal:</strong> "I am running a CRISPR perturbation screen (Perturb-seq, CROP-seq, or Perturb-CITE-seq) and need QC steps beyond the standard scRNA-seq pipeline — especially guide assignment quality, perturbation coverage, and knockdown efficiency."
+                </div>
+
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:14px 18px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>STANDARD scRNA QC
+       &darr;
+QC-retained cells
+       &darr;
+PERTURBATION-SPECIFIC QC
+guide identity &middot; coverage &middot; efficacy &middot; escape status &middot; control quality
+       &darr;
+perturbation inference</code></pre>
+
+                <h3>Why standard scRNA-seq QC is necessary but not sufficient</h3>
+                <p>Perturbation-specific QC <strong>extends</strong> the standard pipeline — it does not replace or reorder it. The same QC principles apply, but thresholds must remain experiment-aware and must not erase genuine perturbation-induced phenotypes: a perturbation can legitimately alter RNA content, mitochondrial programs, and cell state, so a threshold tuned on unperturbed data can wrongly delete a real perturbation effect. Every barcode still needs to pass Gate 1/Gate 2/ambient checks first. What changes is that each surviving cell additionally carries a <em>perturbation identity</em>: which guide RNA(s) it received. Poor perturbation QC inflates both false negatives (real effects missed because escape cells dilute the signal) and false positives (guide-unrelated technical variation misread as a perturbation effect). The five challenges below are unique to CRISPR-based designs and require targeted QC steps that standard pipelines do not implement.</p>
+
+                <figure class="story-figure">
+                    <img src="figures/perturbseq-qc-four-panel-comic.webp" width="1600" height="1600" loading="lazy" decoding="async" alt="Four-panel Perturb-seq QC comic in the And Then There Were None style: mitochondrial filtering removes one cell, DoubletFinder exposes two cells in one droplet, guide identity checks remove unassigned or low-UMI cells, and failed knockdown validation leaves an empty UMAP">
+                    <figcaption>Perturb-seq QC as an island mystery: standard cell QC, doublet detection, guide assignment, and knockdown validation each remove a different kind of false witness before downstream analysis.</figcaption>
+                </figure>
+
+                <div class="library-grid">
+                    <div class="library-card">
+                        <div class="book-meta">Challenge 1 &middot; Guide assignment</div>
+                        <h4>Was the right guide called?</h4>
+                        <p class="plot">The feature barcode (FB) library captures guide RNA UMIs alongside gene UMIs. Cells with too few guide UMIs cannot be confidently assigned — these "unassigned" cells should be excluded from perturbation analysis but retained for NT-pool QC checks.</p>
+                        <p class="echo"><strong>Key metric: guide assignment rate.</strong> A low-rate sample often signals failed guide library capture or a mismatched sample index. Illustrative starting points only — &gt;85 % of QC-passing cells and a minimum guide UMI threshold of &ge;5 (Cell Ranger default, raised to &ge;10 in high-ambient experiments) — the right thresholds depend on assay chemistry, guide library, and sequencing depth; use the assay/caller-specific assignment model rather than a fixed cutoff.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Challenge 2 &middot; Multi-guide cells</div>
+                        <h4>One cell, two identities</h4>
+                        <p class="plot">In low-MOI designs (&lt;0.3), multi-guide calls are elevated evidence of a possible doublet — two cells sharing one barcode — but not a guaranteed one: guide-calling errors and ambient guide-RNA signal can also produce a multi-guide call. In high-MOI combinatorial screens, a single cell intentionally carries multiple guides. Standard doublet detectors cannot distinguish these cases from transcriptome data alone.</p>
+                        <p class="echo"><strong>Low-MOI design:</strong> treat &gt;1 called guide as evidence requiring interpretation alongside standard doublet detection, not an automatic doublet call on its own. <strong>High-MOI design:</strong> allow multi-guide cells, but verify each guide combination has enough representative cells (illustrative starting point: &ge;5) before testing interactions.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Challenge 3 &middot; Perturbation coverage</div>
+                        <h4>Do you have enough cells per guide?</h4>
+                        <p class="plot">Illustrative examples, not requirements: DE methods often need on the order of &ge;15&ndash;25 cells per guide for basic analysis, and &ge;50&ndash;100 cells per gene target (across multiple guides) for robust effect detection — but required power depends on effect size, dispersion, design, and the number of donors/cells, not a fixed count. Genome-scale screens at 3&ndash;5 cells/guide are common — those guides are underpowered and should be flagged as inconclusive rather than reported as non-hits.</p>
+                        <p class="echo"><strong>Action:</strong> after guide assignment and QC, compute coverage with <code>adata.obs["guide_id"].value_counts()</code>. The &lt;10-cell / &lt;20-cell flags below are heuristic starting points; get a principled, design-specific power estimate from SCEPTRE's <code>run_power_check()</code> rather than a fixed number.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Challenge 4 &middot; Knockdown efficiency</div>
+                        <h4>Did the guide actually silence the target?</h4>
+                        <p class="plot">Not all cells in a guide-assigned population achieve efficient silencing — "escape" cells express the target gene at near-normal levels despite carrying the guide. Pooling perturbed and escape cells dilutes effect sizes and generates a spurious intermediate phenotype between perturbed and NT.</p>
+                        <p class="echo"><strong>Knockdown score</strong> (a standardized effect size in SD units, <em>not</em> a percent reduction): (NT median &minus; guide median) / NT SD for the target gene (log1p-normalised). A score below roughly 0.5 SD is an illustrative heuristic for flagging guide inefficiency, not a fixed requirement. Use <strong>Mixscape</strong> to classify each cell's perturbation-response status within the guide pool — escape/non-perturbed cells are then excluded from the analysis population that assumes they were silenced, rather than discarding the entire guide or treating the classification as a blanket deletion rule.</p>
+                    </div>
+                    <div class="library-card">
+                        <div class="book-meta">Challenge 5 &middot; NT control quality</div>
+                        <h4>Are your controls actually unperturbed?</h4>
+                        <p class="plot">Non-targeting (NT) control cells are the baseline for every downstream comparison. If NT cells are contaminated by guide RNA ambient from the library prep, or if they cluster separately from untreated cells for a technical reason, every comparison built on them is biased.</p>
+                        <p class="echo"><strong>Three checks:</strong> (1) inspect whether NT-cell structure is associated with batch, using quantitative and design-based diagnostics alongside any embedding — a mixed-looking UMAP is not proof that batch was corrected, and separation is not proof that it wasn't. (2) NT cells should not have elevated doublet scores on average. (3) NT target-gene expression should match an untreated baseline. If batch is a relevant nuisance factor and is estimable separately from perturbation, include it as a covariate in the DE model; if a guide appears in only one batch, guide and batch are confounded and no statistical adjustment can separate them.</p>
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-table"></i> Perturb-seq QC Metrics at a Glance</h3>
+                <div style="overflow-x:auto;">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>QC Metric</th>
+                                <th>Standard scRNA-seq</th>
+                                <th>Perturb-seq Specific Action</th>
+                                <th>Target / Flag</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Cell QC (genes, counts, % mito)</td>
+                                <td><span class="yes-icon">&#10003;</span> MAD-based per sample</td>
+                                <td>Same — also run per perturbation group post-assignment to detect guide-specific QC artifacts</td>
+                                <td>Per-sample MAD thresholds</td>
+                            </tr>
+                            <tr>
+                                <td>Doublet detection</td>
+                                <td><span class="yes-icon">&#10003;</span> Scrublet / scDblFinder</td>
+                                <td>Rate may be elevated by high-throughput loading, not because it's Perturb-seq per se. Multi-guide cells confound standard detectors in high-MOI designs — validate separately</td>
+                                <td>Derive <code>expected_doublet_rate</code> from the actual loading/capture design, not a fixed number</td>
+                            </tr>
+                            <tr>
+                                <td>Guide assignment rate</td>
+                                <td><span class="no-icon">&#10007;</span> N/A</td>
+                                <td><span class="yes-icon">&#10003;</span> % cells with &ge;1 guide called above UMI threshold after standard QC</td>
+                                <td>Illustrative, not universal — use assay/caller-specific thresholds</td>
+                            </tr>
+                            <tr>
+                                <td>Multi-guide rate</td>
+                                <td><span class="no-icon">&#10007;</span> N/A</td>
+                                <td><span class="yes-icon">&#10003;</span> % cells with &gt;1 guide called (low-MOI = doublet proxy; high-MOI = expected)</td>
+                                <td>&lt;5 % in low-MOI; MOI-dependent in combinatorial</td>
+                            </tr>
+                            <tr>
+                                <td>Cells per perturbation</td>
+                                <td><span class="no-icon">&#10007;</span> N/A</td>
+                                <td><span class="yes-icon">&#10003;</span> Cell count per guide after all QC steps; track at each filtering stage</td>
+                                <td>Illustrative heuristics only (&ge;15 cells/guide; &ge;50/gene target; flag &lt;10) — get the real number from a design-specific power analysis</td>
+                            </tr>
+                            <tr>
+                                <td>Target gene knockdown score</td>
+                                <td><span class="no-icon">&#10007;</span> N/A</td>
+                                <td><span class="yes-icon">&#10003;</span> (NT median &minus; guide median) / NT SD for the target gene (log1p) — a standardized effect size in SD units</td>
+                                <td>Illustrative heuristic: &ge;0.5 SD (<em>not</em> "&ge;50 % reduction" — a different quantity); below this &rarr; Mixscape or exclude</td>
+                            </tr>
+                            <tr>
+                                <td>Escape / non-perturbed fraction</td>
+                                <td><span class="no-icon">&#10007;</span> N/A</td>
+                                <td><span class="yes-icon">&#10003;</span> % cells in guide pool classified as "NP" (not perturbed) by Mixscape LPS</td>
+                                <td>Report per guide; classification flags analysis population, not an automatic guide-wide exclusion</td>
+                            </tr>
+                            <tr>
+                                <td>NT control batch structure</td>
+                                <td><span class="no-icon">&#10007;</span> N/A</td>
+                                <td><span class="yes-icon">&#10003;</span> inspect NT-cell association with batch using quantitative + design-based diagnostics, not embedding mixing alone</td>
+                                <td>Diagnostic; adjust for batch in the DE model when estimable, not by declaring the embedding "fixed"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="paper-grid">
+                    <!-- Mixscape -->
+                    <div class="paper-card" id="method-mixscape">
+                        <h4>Mixscape (Seurat)</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2021</span>
+                            <span class="meta-badge" style="background:#005a9c;color:#fff;">Perturbation QC</span>
+                            <span class="meta-badge journal-badge">Nat Genetics</span>
+                        </div>
+                        <p class="paper-description">
+                            Seurat-native method for distinguishing cells that were truly perturbed from those that escaped silencing within the same guide-assigned population. Estimates a per-cell Local Perturbation Score (LPS) — a perturbation signature computed relative to local control-cell neighborhoods — then fits a Gaussian mixture model to classify cells as "perturbed", "NP" (non-perturbed / escape), or ambiguous. This classification defines which cells enter differential analysis as perturbed, substantially improving signal-to-noise in pooled CRISPR screens.
+                        </p>
+                        <ul class="key-contributions">
+                            <li>LPS is a per-cell knockdown proxy that is independent of target gene expression — works even for genes with sparse detection or high dropout</li>
+                            <li>Mixture model classification enables principled escape-cell exclusion from the perturbed analysis population without discarding the entire guide — a guide with 40 % escape cells still contributes the 60 % perturbed cells to DE testing</li>
+                            <li>Available as <code>RunMixscape()</code> + <code>MixscapeQC()</code> in Seurat v4+; also demonstrated on multimodal Perturb-CITE-seq (Frangieh et al., Nat Methods 2021)</li>
+                        </ul>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41588-021-00778-2" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://satijalab.org/seurat/articles/mixscape_vignette" class="paper-link" target="_blank"><i class="fas fa-book"></i> Vignette</a>
+                        </div>
+                    </div>
+
+                    <!-- SCEPTRE -->
+                    <div class="paper-card" id="method-sceptre">
+                        <h4>SCEPTRE</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2024</span>
+                            <span class="meta-badge" style="background:#005a9c;color:#fff;">Perturbation QC</span>
+                            <span class="meta-badge journal-badge">Nat Biotechnol</span>
+                        </div>
+                        <p class="paper-description">
+                            R framework designed specifically for the calibration and power challenges of single-cell CRISPR screens. Tests perturbation-to-gene associations while controlling for guide-cell technical covariates; provides calibration diagnostics and per-perturbation power estimates. The only tool that formalises power analysis at the guide level — identifying underpowered perturbations before downstream analysis rather than after, and distinguishing them from true non-hits.
+                        </p>
+                        <ul class="key-contributions">
+                            <li>Calibration-first testing: uses negative control guides to empirically calibrate the null distribution, controlling type I error regardless of model mis-specification or cell-type composition</li>
+                            <li>Per-perturbation power analysis: <code>run_power_check()</code> identifies underpowered guides (n &lt; required cells) before hypothesis testing and flags them for additional data collection</li>
+                            <li>Handles both low-MOI and high-MOI designs; supports paired on-target and distal guide&ndash;gene (eQTL-style) tests; scales to genome-wide screens (&gt;10,000 guides)</li>
+                        </ul>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41587-023-01893-7" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/timothy-barry/sceptre" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+
+                    <!-- scPerturb -->
+                    <div class="paper-card" id="method-scperturb">
+                        <h4>scPerturb</h4>
+                        <div class="paper-meta">
+                            <span class="meta-badge year-badge">2023</span>
+                            <span class="meta-badge" style="background:#005a9c;color:#fff;">Benchmark Dataset</span>
+                            <span class="meta-badge journal-badge">Nat Methods</span>
+                        </div>
+                        <p class="paper-description">
+                            Harmonized collection of 44 single-cell perturbation datasets (2.5 M+ cells) in standardized AnnData format with unified metadata fields: <code>perturbation</code>, <code>perturbation_type</code>, <code>dose_value</code>, <code>nperts</code>, and <code>perturbation_name</code>. Use as a benchmark reference to validate that your own guide assignment rates, coverage distributions, and effect sizes are within range of published experiments in the same cell type — providing a sanity check that is otherwise absent from single-experiment QC.
+                        </p>
+                        <ul class="key-contributions">
+                            <li>44 datasets spanning CRISPR KO, CRISPRi, drug treatments, and genetic variants across 32 cell types — the largest harmonized perturbation benchmark available</li>
+                            <li>E-score (perturbation strength) and D-score (dataset quality) metrics enable cross-study QC benchmarking without re-running analyses from scratch</li>
+                            <li>Ships with 10 tutorial notebooks for common analysis patterns; full dataset available at <a href="https://perturbdb.de" target="_blank" rel="noopener noreferrer">perturbdb.de</a></li>
+                        </ul>
+                        <div class="paper-links">
+                            <a href="https://doi.org/10.1038/s41592-023-02144-y" class="paper-link" target="_blank"><i class="fas fa-file-alt"></i> Paper</a>
+                            <a href="https://github.com/theislab/scPerturb" class="paper-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>Step-by-Step Perturb-seq QC Workflow</h4>
+                    <ol>
+                        <li><strong>Standard cell QC first — independently per sample/batch.</strong> Run MAD-based filtering on <code>n_genes_by_counts</code>, <code>total_counts</code>, and <code>pct_counts_mt</code> before any perturbation-level analysis. Remove QC-failed cells before computing guide assignment statistics — including them inflates the "unassigned" rate artificially.</li>
+                        <li><strong>Doublet detection with an expected rate derived from the actual loading design.</strong> High-throughput Perturb-seq loading (8,000&ndash;20,000 cells per channel) can push the doublet rate up, but that follows from the loading/capture design, not from "being Perturb-seq" — derive <code>expected_doublet_rate</code> from your own 10x loading chart, not a fixed universal number. In multi-guide high-MOI designs, validate that doublet calls are not systematically enriched in multi-guide cells before removing them — the two signals are confounded.</li>
+                        <li><strong>Call guides from the feature barcode (FB) matrix.</strong> Cell Ranger <code>multi</code> pipeline output: load <code>crispr_analysis/protospacer_calls_per_cell.csv</code>. Illustrative UMI thresholds only (&ge;5 standard, &ge;10 high-ambient) — use the assay/caller-specific assignment model for the actual cutoff. For low-MOI: assign top guide by UMI count; for high-MOI combinatorial: assign all guides above threshold per cell.</li>
+                        <li><strong>Compute guide assignment statistics.</strong> Calculate: (a) assignment rate — % cells with &ge;1 called guide; (b) multi-guide rate — % cells with &gt;1 guide; (c) cell counts per guide. Flag samples with an unusually low assignment rate or elevated multi-guide rate (illustrative, not universal, thresholds) for technical review.</li>
+                        <li><strong>Check perturbation coverage.</strong> Build a cell-count-per-guide bar chart sorted descending. The &lt;10-cell / &lt;20-cell flags below are illustrative heuristics, not requirements — power depends on effect size, dispersion, design, and donor/cell counts. Run SCEPTRE <code>run_power_check()</code> for a principled, design-specific per-guide power estimate rather than relying on a fixed cell count; flagged guides are excluded from downstream testing but kept in AnnData.</li>
+                        <li><strong>Assess target gene knockdown efficiency.</strong> For each CRISPRi/KO guide, compute KD score = (NT median &minus; guide median) / NT SD on log1p-normalised target gene expression — a standardized effect size in SD units, not a percent reduction. Visualise as a ranked bar chart. A KD score below roughly 0.5 SD is an illustrative heuristic for "consider Mixscape," not a hard requirement — for guides near or below it, run <strong>Mixscape</strong> (<code>RunMixscape()</code> in Seurat) to classify each cell's perturbation-response status within the guide pool, then use that classification to define the analysis population rather than discarding the entire guide.</li>
+                        <li><strong>QC the NT controls.</strong> Confirm: (a) NT-cell structure is not associated with batch, using quantitative/design-based diagnostics alongside any embedding — mixing in a UMAP is not proof of successful correction, nor is separation proof that correction failed; (b) NT cells do not have elevated doublet scores on average; (c) NT target-gene expression matches an untreated baseline. If batch is estimable separately from guide identity, include it as a covariate in the DE model; if a guide appears only in one batch, guide and batch are confounded and no model adjustment can separate them.</li>
+                        <li><strong>Compile a per-perturbation QC report.</strong> For each guide record: n_cells (after full QC), assignment_rate, KD_score, escape_fraction (Mixscape NP fraction), power_estimate (SCEPTRE). Guides passing all thresholds proceed to differential analysis; underpowered or low-KD guides are flagged in the report, not silently dropped.</li>
+                    </ol>
+                </div>
+
+                <h3>Minimal code walkthrough &mdash; Perturb-seq guide QC (Python / Scanpy)</h3>
+                <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import pandas as pd
+import numpy as np
+
+# ── Assumes adata has already passed standard cell QC + doublet removal ──────────
+# adata.obs will receive guide assignment columns.
+# Cell Ranger multi output directory structure:
+#   /outs/per_sample_outs/&lt;sample&gt;/count/crispr_analysis/protospacer_calls_per_cell.csv
+
+# ── 1. Load guide assignments from Cell Ranger protospacer calls ─────────────────
+guide_calls = pd.read_csv(
+    "crispr_analysis/protospacer_calls_per_cell.csv",
+    index_col="cell_barcode"
+)
+# Columns: cell_barcode | num_features | feature_call | num_umis
+adata.obs = adata.obs.join(guide_calls[["feature_call", "num_umis"]], how="left")
+adata.obs["guide_id"] = adata.obs["feature_call"].fillna("unassigned")
+
+# ── 2. Guide assignment QC ────────────────────────────────────────────────────────
+n_cells = adata.n_obs
+assignment_rate = (adata.obs["guide_id"] != "unassigned").mean()
+multi_guide_rate = adata.obs["feature_call"].str.contains("|", na=False, regex=False).mean()
+# Thresholds below are illustrative starting points, not universal cutoffs —
+# use assay/caller-specific values for your library and chemistry.
+print(f"Guide assignment rate: {assignment_rate:.1%}  (illustrative reference: &gt; 85 %)")
+print(f"Multi-guide rate:      {multi_guide_rate:.1%}  (illustrative reference: &lt; 5 % in low-MOI)")
+
+# ── 3. Perturbation coverage ──────────────────────────────────────────────────────
+coverage = adata.obs["guide_id"].value_counts()
+low_coverage = coverage[coverage &lt; 10]
+print(f"
+{len(low_coverage)} guides with &lt; 10 cells (will be flagged):")
+print(low_coverage.to_string())
+adata.obs["low_coverage_guide"] = adata.obs["guide_id"].isin(low_coverage.index)
+
+# ── 4. Target gene knockdown score ────────────────────────────────────────────────
+# guide_target_map: dict {guide_id: "TARGET_GENE"} — from your library design file
+# Assumes adata.X is log1p-normalised
+
+nt_mask = adata.obs["guide_id"].str.startswith("NT")
+kd_scores = {}
+for guide, target_gene in guide_target_map.items():
+    if target_gene not in adata.var_names:
+        continue
+    guide_mask = adata.obs["guide_id"] == guide
+    if guide_mask.sum() &lt; 5:
+        continue
+    gene_idx = adata.var_names.get_loc(target_gene)
+    nt_vals   = np.asarray(adata.X[nt_mask,    gene_idx]).flatten()
+    guide_vals = np.asarray(adata.X[guide_mask, gene_idx]).flatten()
+    nt_med, nt_sd = np.median(nt_vals), np.std(nt_vals)
+    kd_scores[guide] = float((nt_med - np.median(guide_vals)) / (nt_sd + 1e-6))
+
+# kd_scores are standardized effect sizes in SD units (NOT percent reduction)
+kd_df = pd.Series(kd_scores, name="KD_score_sd").sort_values()
+low_kd = kd_df[kd_df &lt; 0.5].index.tolist()
+print(f"
+Guides with KD score &lt; 0.5 SD (consider Mixscape): {len(low_kd)}")
+
+adata.obs["kd_score"]   = adata.obs["guide_id"].map(kd_scores)
+
+# ── 5. NT control UMAP sanity check ─────────────────────────────────────────────
+# If UMAP is already computed upstream:
+nt_adata = adata[nt_mask].copy()
+# Inspect for a batch association; mixing here is not proof of correction,
+# and separation is not proof it failed — pair with a quantitative diagnostic.
+sc.pl.umap(nt_adata, color="batch",
+           title="NT controls by batch — inspect for batch association")
+
+# ── 6. Save QC-annotated object ──────────────────────────────────────────────────
+adata.write_h5ad("adata_perturbseq_qc.h5ad")
+print("Saved: adata_perturbseq_qc.h5ad")</code></pre>
+
+                <div style="background:linear-gradient(135deg,#fffaf0 0%,#fff5e6 100%); border:2px solid #ffa726; border-left:6px solid #f57c00; padding:25px; margin:25px 0; border-radius:10px;">
+                    <h4 style="color:#e65100; margin-top:0; font-size:1.2em; font-weight:700;">Perturb-seq Specific Pitfalls</h4>
+                    <ul>
+                        <li><strong>Guide RNA ambient contamination inflates multi-guide rate.</strong> In pooled CRISPR libraries, guide RNA sequences can leak into the ambient solution and be captured in unrelated droplets. This looks like multi-guide cells but is ambient contamination of the FB library — fix: raise the UMI threshold to &ge;10 rather than treating every low-UMI barcode hit as a true guide assignment.</li>
+                        <li><strong>Do not use standard doublet detection on the FB matrix alone.</strong> Standard doublet detectors are calibrated on transcriptome UMI patterns. A multi-guide cell in the FB matrix is not necessarily a transcriptome doublet — it may be a real single cell that received two guides at high MOI. Validate doublet calls against the transcriptome data independently before removing.</li>
+                        <li><strong>Escape cells pass standard QC metrics.</strong> Escape cells have perfectly normal gene count, mito%, and UMI count — they cannot be identified by standard cell-level filtering. They can only be detected by comparing their transcriptome to NT controls (Mixscape LPS) or by checking target gene expression directly. Do not conflate escape cells with low-quality cells.</li>
+                        <li><strong>Per-perturbation batch effects are real and common.</strong> Different guides are often transduced in different wells or batches. If batch and guide identity are confounded, what looks like a perturbation effect is batch variation. Always check whether any guide appears exclusively in one batch, and account for batch as a covariate in the DE model.</li>
+                        <li><strong>Coverage loss compounds through the QC pipeline.</strong> Standard QC removes ~10&ndash;20 %, doublet removal ~5&ndash;15 %, guide assignment filtering ~10 %, escape cell removal another 5&ndash;30 % per guide. A guide that entered with 50 cells may have &lt;10 surviving. Track coverage at each step — <code>adata.obs["guide_id"].value_counts()</code> after every filter is the essential audit trail.</li>
+                    </ul>
+                </div>
+            </section>
+
             <!-- Side-by-Side Comparison -->
             <section class="content-section" id="compare">
     <h2>⚖️ Side-by-Side: Ambient RNA Removal — Subtraction vs Bayesian Mixture</h2>
-    <p>SoupX and DecontX both correct ambient RNA contamination in droplet-based scRNA-seq, but they diverge on the fundamental statistical question: should contamination be estimated via cluster-driven marker subtraction (SoupX) or inferred as a per-cell Bayesian mixture of native and contaminating transcriptomes (DecontX)?</p>
+    <p>SoupX and DecontX both correct ambient RNA contamination in droplet-based scRNA-seq, but they diverge on both their input requirements and the fundamental statistical question: should contamination be estimated via cluster-driven marker subtraction using the empty-droplet soup profile (SoupX), or inferred as a per-cell Bayesian mixture directly from the cell count matrix (DecontX)? Neither is interchangeable with <strong>CellBender</strong>, which instead operates on the <em>raw, unfiltered</em> droplet matrix and jointly performs cell calling — see the <a href="#canonical-order">CellBender branch</a> above.</p>
 
     <div style="background:#15181b;border:1px solid #2a2e33;border-radius:14px;padding:26px 22px;margin:24px 0;font-family:'IBM Plex Sans',system-ui,-apple-system,sans-serif;color:#e7e7f2;">
-        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">The same starting point — a raw UMI count matrix plus an empty-droplet "soup" profile — yields two very different contamination estimates depending on the modeling assumption:</p>
+        <p style="font-size:14.5px;line-height:1.55;margin:0 0 22px;color:#c6cbd0;">The two methods start from different inputs and yield different contamination estimates depending on the modeling assumption — SoupX explicitly consumes the empty-droplet "soup" profile alongside the cell matrix; DecontX works from the cell count matrix alone:</p>
         <div style="display:flex;gap:0;align-items:stretch;flex-wrap:wrap;justify-content:center;">
             <!-- COLUMN A (teal) — SoupX -->
             <div style="flex:1 1 240px;min-width:230px;max-width:360px;padding:0 16px;display:flex;flex-direction:column;align-items:center;">
@@ -797,8 +1366,8 @@
                 </div>
                 <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
                 <div style="width:100%;box-sizing:border-box;background:#1b1f24;border:1px solid #333a41;border-radius:10px;padding:11px 8px;text-align:center;">
-                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Posterior estimate of true expression</div>
-                    <div style="color:#9aa0a6;font-size:11.5px;">ELBO-optimized latent topics; does not require pre-clustering; provides uncertainty estimate &epsilon;</div>
+                    <div style="color:#fff;font-weight:600;font-size:13.5px;">Per-cell contamination fraction + corrected counts</div>
+                    <div style="color:#9aa0a6;font-size:11.5px;">ELBO-optimized; can infer latent cell populations without externally supplied clustering (though cluster labels can also be supplied)</div>
                 </div>
                 <div style="color:#5c6168;font-size:15px;line-height:1;margin:2px 0;">&#8595;</div>
                 <div style="display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap;">
@@ -806,26 +1375,81 @@
                     <span style="background:#2e2310;border:1px solid #8a5a1c;border-radius:8px;color:#e6bd72;font-family:'IBM Plex Mono',monospace;font-size:12.5px;padding:7px 10px;">&epsilon;_per_cell</span>
                     <span style="color:#7a7f86;">&#8230;</span>
                 </div>
-                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">Bayesian &middot; clustering-free &middot; per-cell uncertainty &middot; Bioconductor-native</div>
+                <div style="color:#8a9098;font-size:11.5px;text-align:center;margin-top:14px;line-height:1.5;">Bayesian &middot; no mandatory external clustering &middot; per-cell contamination fraction &middot; Bioconductor-native</div>
             </div>
         </div>
-        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision — <strong style="color:#5ec2a8;">global rate subtraction</strong> vs <strong style="color:#d6a44f;">per-cell mixture inference</strong>. SoupX is faster and integrates directly into Seurat/Seurat-cluster workflows, but its accuracy depends on the quality of the cluster assignment used to select marker genes; DecontX's variational inference sidesteps that dependency and returns a per-cell contamination fraction (&epsilon;) that can itself be used as a QC covariate.</p>
+        <p style="font-size:14.5px;line-height:1.55;margin:24px 0 0;color:#c6cbd0;">The split traces back to one root decision — <strong style="color:#5ec2a8;">global rate subtraction using the soup profile</strong> vs <strong style="color:#d6a44f;">per-cell mixture inference from the cell matrix</strong>. SoupX is faster and integrates directly into Seurat/Seurat-cluster workflows, but its accuracy depends on the quality of the cluster assignment used to select marker genes; DecontX's variational inference returns a per-cell contamination fraction (&epsilon;) that can be used as a QC covariate — but high &epsilon; is a diagnostic to inspect, not an automatic deletion rule.</p>
     </div>
 </section>
+
+            <!-- ANNOTATION & LINEAGE EXTRACTION -->
+            <section class="content-section" id="annotation-extraction">
+                <h2><i class="fas fa-tags"></i> Annotation &amp; Lineage Extraction</h2>
+                <p>Two different annotation layers can coexist without contradiction — a preliminary layer used to <em>calibrate</em> QC, and a final layer used to <em>define</em> the analysis population:</p>
+                <div class="workflow-diagram">
+                    <div class="workflow-steps">
+                        <span class="workflow-step">Called cells</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Preliminary broad lineage (Gate-1 calibration)</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Gate 2 &rarr; ambient correction</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Final harmonized annotation</span><span class="workflow-arrow">&rarr;</span>
+                        <span class="workflow-step">Lineage extraction (e.g. Platelet-only)</span>
+                    </div>
+                </div>
+                <p>A sample-wide lower-tail count threshold can misclassify an entire low-RNA lineage (platelets, for instance) as poor quality if lineage is ignored — that's what the preliminary broad labels are for. But the population used to <em>estimate</em> doublets/ambient contamination should stay full-lineage; only the final, harmonized annotation is used to extract the target population (see <a href="#canonical-order">Off-target / Non-target Lineage Cells</a>), and that extraction happens <em>after</em> Gate 2 and ambient correction, not before.</p>
+            </section>
+
+            <!-- BENCHMARK / ANALYSIS ASSEMBLY -->
+            <section class="content-section" id="benchmark-freeze">
+                <h2><i class="fas fa-lock"></i> Benchmark / Analysis Assembly</h2>
+                <p><strong>QC population freeze.</strong> After Gate 2 (confirmed doublets removed, unresolved cells retained + flagged) and ambient correction, freeze the QC-retained population before any model-specific preprocessing begins. Record a ledger — <code>gate1_pass</code>, <code>doublet_call</code>, <code>doublet_method_status</code>, <code>decontx_contamination</code>, <code>final_qc_status</code>, <code>final_lineage</code> — so "why is cell X absent?" can be answered without rerunning the pipeline.</p>
+                <div class="highlight-box">
+                    <p style="margin:0;"><strong>QC must be outcome-blind.</strong> Clinical outcome, downstream labels (e.g. fatal / survived), and benchmark model performance must never be used to tune cell-retention thresholds, Scrublet cutoffs, or contamination cutoffs. Retention that responds to the label it will later be used to predict is a leakage pathway, not a QC improvement.</p>
+                </div>
+
+                <div class="highlight-box">
+                    <h4>Minimum reproducibility output</h4>
+                    <p style="margin:0 0 10px;">Another researcher should be able to reconstruct what happened without reading your source code. At minimum, QC should produce:</p>
+                    <ol style="margin:0;">
+                        <li>Cell-level QC ledger (per-cell diagnostics + decision columns)</li>
+                        <li>Capture-level QC summary (retention by capture/channel)</li>
+                        <li>Frozen QC configuration (the exact thresholds/parameters used)</li>
+                        <li>Raw-count provenance (where the immutable raw layer came from)</li>
+                        <li>Software versions (Scanpy/Seurat/Scrublet/DecontX etc.)</li>
+                        <li>Final retained-cell IDs</li>
+                        <li>Removal reasons (which decision column excluded each cell)</li>
+                        <li>Corrected-count layer, if applicable (e.g. <code>decontx_counts</code>)</li>
+                    </ol>
+                </div>
+            </section>
 
             <!-- Quick Reference -->
             <section class="content-section" id="quick-ref">
                 <h2><i class="fas fa-compass"></i> Quick Reference: Choosing the Right Tool</h2>
-                <div class="decision-flow" aria-label="Decision path">
-                    <span class="flow-node flow-start">What went wrong at the scene?</span>
+                <p style="color:#5a6b7c; font-size:.92em; margin:-8px 0 16px;">These are independent method-selection questions, not a pipeline — the arrows below name the recommended tool for each problem, not an execution order (see <a href="#canonical-order">Canonical QC Order</a> for that).</p>
+                <div class="decision-flow" aria-label="Problem to recommended method">
+                    <span class="flow-node flow-start">Problem</span>
                     <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
-                    <span class="flow-node">Two profiles, one barcode? <b>DoubletFinder · Scrublet</b></span>
+                    <span class="flow-node">Two profiles, one barcode? <b>DoubletFinder · Scrublet · scDblFinder</b></span>
+                </div>
+                <div class="decision-flow" aria-label="Problem to recommended method">
+                    <span class="flow-node flow-start">Problem</span>
                     <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
-                    <span class="flow-node">Soup in the scene? <b>SoupX · DecontX · scCLEAN</b></span>
+                    <span class="flow-node">Soup in the scene? <b>SoupX · DecontX · CellBender · scCLEAN</b></span>
+                </div>
+                <div class="decision-flow" aria-label="Problem to recommended method">
+                    <span class="flow-node flow-start">Problem</span>
                     <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
-                    <span class="flow-node">Witnesses look unreliable? <b>MAD thresholds, not hard cutoffs</b></span>
+                    <span class="flow-node">Witnesses look unreliable? <b>Adaptive MAD thresholds, not hard cutoffs</b></span>
+                </div>
+                <div class="decision-flow" aria-label="Problem to recommended method">
+                    <span class="flow-node flow-start">Problem</span>
                     <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
                     <span class="flow-node">Scene too big (&gt;1M)? <b>SnapATAC2 · scPRINT · scBaseCount</b></span>
+                </div>
+                <div class="decision-flow" aria-label="Problem to recommended method">
+                    <span class="flow-node flow-start">Problem</span>
+                    <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                    <span class="flow-node">Running a CRISPR screen? <b>Guide QC &rarr; Mixscape &rarr; SCEPTRE</b></span>
                 </div>
 
                 <h3><i class="fas fa-list"></i> All methods at a glance</h3>
@@ -862,6 +1486,13 @@
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.cels.2018.11.005" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/swolock/scrublet" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
+                                    <td><a href="#method-scdblfinder">scDblFinder</a></td>
+                                    <td><span class="family-tag">Doublets</span></td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td class="hide-on-mobile">F1000Research</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.12688/f1000research.73600.2" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://bioconductor.org/packages/scDblFinder" target="_blank" rel="noopener noreferrer">Bioconductor</a></td>
+                                </tr>
+                                <tr>
                                     <td><a href="#method-soupx">SoupX</a></td>
                                     <td><span class="family-tag">Ambient RNA</span></td>
                                     <td class="hide-on-mobile">2020</td>
@@ -888,6 +1519,13 @@
                                     <td class="hide-on-mobile">2022</td>
                                     <td class="hide-on-mobile">Neuron</td>
                                     <td class="hide-on-mobile"><a href="https://www.cell.com/neuron/fulltext/S0896-6273(22)00815-7?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627322008157%3Fshowall%3Dtrue" target="_blank" rel="noopener noreferrer">Paper</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-cellbender">CellBender</a></td>
+                                    <td><span class="family-tag">Ambient RNA</span></td>
+                                    <td class="hide-on-mobile">2023</td>
+                                    <td class="hide-on-mobile">Nat Methods</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-023-01943-7" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/broadinstitute/CellBender" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
                                     <td><a href="#method-delve">DELVE</a></td>
@@ -936,7 +1574,27 @@
                                     <td><span class="family-tag">Repository</span></td>
                                     <td class="hide-on-mobile">2025</td>
                                     <td class="hide-on-mobile">bioRxiv</td>
-                                    <td class="hide-on-mobile"><a href="https://www.biorxiv.org/content/10.1101/2025.02.27.640494v3" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ArcInstitute/SRAgent" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+
+                                <tr>
+                                    <td><a href="#method-mixscape">Mixscape</a></td>
+                                    <td><span class="family-tag">Perturb-seq</span></td>
+                                    <td class="hide-on-mobile">2021</td>
+                                    <td class="hide-on-mobile">Nat Genetics</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41588-021-00778-2" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://satijalab.org/seurat/articles/mixscape_vignette" target="_blank" rel="noopener noreferrer">Vignette</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-sceptre">SCEPTRE</a></td>
+                                    <td><span class="family-tag">Perturb-seq</span></td>
+                                    <td class="hide-on-mobile">2024</td>
+                                    <td class="hide-on-mobile">Nat Biotechnol</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41587-023-01893-7" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/timothy-barry/sceptre" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#method-scperturb">scPerturb</a></td>
+                                    <td><span class="family-tag">Perturb-seq</span></td>
+                                    <td class="hide-on-mobile">2023</td>
+                                    <td class="hide-on-mobile">Nat Methods</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-023-02144-y" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/theislab/scPerturb" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                         </tbody>
                     </table>
@@ -949,6 +1607,7 @@
                         <li><strong>Ambient RNA:</strong> SoupX (simple), DecontX (Bayesian) &mdash; for molecular depletion of abundant transcripts, see scCLEAN</li>
                         <li><strong>Feature Selection:</strong> DELVE for trajectory-preserving gene selection</li>
                         <li><strong>Comprehensive QC:</strong> SCTK for unified pipeline with multiple algorithms</li>
+                        <li><strong>Perturb-seq / CRISPR screens:</strong> Guide assignment QC &rarr; Mixscape (escape detection) &rarr; SCEPTRE (power &amp; calibration)</li>
                     </ul>
                 </div>
 
@@ -967,6 +1626,8 @@
                         <li><strong>10x scRNA-seq:</strong> Full toolkit support</li>
                         <li><strong>snRNA-seq:</strong> Ambient RNA guidelines, specialized parameters</li>
                         <li><strong>scATAC-seq:</strong> SnapATAC2</li>
+                        <li><strong>Perturb-seq / CROP-seq:</strong> Standard cell QC + guide assignment QC + Mixscape escape detection + SCEPTRE power analysis &mdash; <a href="#perturbseq">see Perturb-seq QC section</a></li>
+                        <li><strong>Multiome (RNA+ATAC):</strong> Run modality-specific QC independently; for paired-modality doublet detection consider AMULET</li>
                     </ul>
                 </div>
             </section>
@@ -974,7 +1635,7 @@
             <!-- Hands-On Practice -->
             <section class="content-section" id="hands-on">
                 <h2>🛠️ Hands-On Practice</h2>
-                <p>The steps below walk through a minimal but realistic single-cell QC run using Python/Scanpy — from a cell-called 10x Genomics matrix to a clean, doublet-filtered <code>AnnData</code> object ready for clustering. All code runs in a standard conda environment and is designed to be self-contained.</p>
+                <p>The steps below walk through a minimal but realistic single-cell QC run using Python/Scanpy — from a cell-called 10x Genomics matrix to a QC-annotated, policy-filtered <code>AnnData</code> object ready for clustering. All code runs in a standard conda environment and is designed to be self-contained.</p>
                 <h3>Environment &amp; packages</h3>
                 <p>Install the core Python QC stack into a fresh environment. Scrublet handles doublet detection; miQC (via rpy2) or adaptive MAD thresholds replace hard cutoffs for cell filtering.</p>
                 <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code># conda / mamba recommended
@@ -988,79 +1649,311 @@ pip install scanpy anndata scrublet scvi-tools doubletdetection
                 <p><strong>Hardware.</strong> A standard laptop (8 GB RAM) handles datasets up to ~50k cells; for 100k+ cells use a compute node with 32–64 GB RAM. GPU is only required if running scVI-SOLO doublet detection.</p>
                 <h3>Data structures &amp; formats</h3>
                 <ul>
-                    <li><strong><code>AnnData</code></strong> — central object: <code>adata.X</code> (count matrix), <code>adata.obs</code> (per-cell metadata), <code>adata.var</code> (per-gene metadata)</li>
+                    <li><strong><code>AnnData</code></strong> — central object: <code>adata.X</code> (current working expression matrix), <code>adata.obs</code> (per-cell metadata), <code>adata.var</code> (per-gene metadata)</li>
                     <li><strong>Per-cell QC metrics</strong> computed by <code>sc.pp.calculate_qc_metrics()</code>: <code>n_genes_by_counts</code>, <code>total_counts</code>, <code>pct_counts_mt</code></li>
-                    <li><strong>Raw vs filtered matrix</strong> — 10x output contains <code>raw_feature_bc_matrix/</code> (all barcodes) and <code>filtered_feature_bc_matrix/</code> (cell-called barcodes); load raw for ambient correction, filtered for standard QC</li>
-                    <li><strong>Doublet scores</strong> — stored in <code>adata.obs["doublet_score"]</code> and <code>adata.obs["predicted_doublet"]</code> after Scrublet</li>
+                    <li><strong>Raw vs filtered matrix</strong> — 10x output contains <code>raw_feature_bc_matrix/</code> (all barcodes) and <code>filtered_feature_bc_matrix/</code> (cell-called barcodes). The raw matrix also matters beyond ambient correction: cell calling, EmptyDrops-style approaches, CellBender, and auditing an upstream call all consume it. If only an author-filtered matrix is available, say explicitly that cell calling was performed upstream and cannot be reconstructed from the deposit.</li>
+                    <li><strong>Representation contract</strong> — <code>adata.X</code> is a mutable <em>current working matrix</em>: it gets reassigned as you normalize/transform. <code>adata.layers["raw_counts"]</code> is the immutable raw-count representation, set once and never overwritten. <code>adata.raw</code> is <em>not</em> a reliable stand-in for this — it is just Scanpy's snapshot of whatever was in <code>.X</code> at the time you called it, not a guarantee of untouched sequencer counts.</li>
+                    <li><strong>Doublet scores</strong> — stored in <code>adata.obs["doublet_score"]</code> and <code>adata.obs["predicted_doublet"]</code> after Scrublet; a diagnostic, not yet a filtering decision (see the anti-patterns box below)</li>
                     <li><strong>h5ad</strong> — HDF5-backed <code>AnnData</code> format; save with <code>adata.write_h5ad()</code> for downstream sharing</li>
                 </ul>
-                <h3>Minimal code walkthrough</h3>
-                <p>Load the cell-called (filtered) 10x matrix, apply a basic floor filter, annotate mitochondrial genes, compute QC metrics, visualise distributions, apply log-space MAD adaptive thresholds, run Scrublet, and write a clean h5ad.</p>
+
+                <div style="background:linear-gradient(135deg,#fffaf0 0%,#fff5e6 100%); border:2px solid #ffa726; border-left:6px solid #f57c00; padding:25px; margin:25px 0; border-radius:10px;">
+                    <h4 style="color:#e65100; margin-top:0; font-size:1.2em; font-weight:700;">Common QC anti-patterns</h4>
+                    <ul style="margin:0;">
+                        <li>&#10007; Treat 200 genes / 500 UMIs as universal biological thresholds</li>
+                        <li>&#10007; Use symmetric upper + lower count MAD as a doublet-removal rule</li>
+                        <li>&#10007; Run Scrublet on normalized, log1p, scaled, integrated, or decontaminated data</li>
+                        <li>&#10007; Pool unrelated captures and run one Scrublet model across all of them</li>
+                        <li>&#10007; Force the predicted-doublet fraction to equal the expected-doublet rate</li>
+                        <li>&#10007; Convert failed/too-small-capture doublet calls into singlets by default</li>
+                        <li>&#10007; Run DecontX/SoupX before doublet handling, or re-run doublet detection on a public deposit that already had doublets removed without treating it as a distinct methodological decision</li>
+                        <li>&#10007; Overwrite raw counts with corrected or normalized counts</li>
+                        <li>&#10007; Tune any QC threshold using phenotype/outcome or downstream model performance</li>
+                        <li>&#10007; Treat a valid non-target lineage (e.g. a monocyte in a platelet study) as a QC failure</li>
+                    </ul>
+                </div>
+                <h3>Minimal code walkthrough — as a module graph, not a recipe</h3>
+                <p>This walkthrough follows the <a href="#canonical-order">Canonical QC Workflow</a>, split into named modules. Each module's comment states its <strong>INPUT</strong>, <strong>OUTPUT</strong>, and — the part a linear recipe hides — whether the <strong>cell population can change</strong>. Only 02/03/08/11 are allowed to change which cells are present; 05 (Gate 1) only ever adds a <code>gate1_pass</code> column — filtering is deferred to the caller so the full ledger survives (see <code>master_adata</code> below). Filtering always happens on a decision column, never inline on a raw metric.</p>
                 <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
 import numpy as np
+import pandas as pd
 from scipy.stats import median_abs_deviation
 
-# 1. Load the CELL-CALLED matrix for standard QC.
-#    Use filtered_feature_bc_matrix (CellRanger's called cells). The
-#    raw_feature_bc_matrix holds ALL barcodes (mostly empty droplets) and is
-#    only needed for ambient-RNA correction (SoupX / decontX), not cell QC.
-#    read_10x_mtx loads genes x barcodes and returns it as cells x genes.
-adata = sc.read_10x_mtx(
-    "filtered_feature_bc_matrix/",
-    var_names="gene_symbols",
-    cache=True,
-)
-adata.var_names_make_unique()
+def _mad_bounds(metric, n_mads=5):
+    med, mad = np.median(metric), median_abs_deviation(metric)
+    return med - n_mads * mad, med + n_mads * mad
 
-# 2. Basic floor filter: drop near-empty cells and never-detected genes
-sc.pp.filter_cells(adata, min_genes=200)
-sc.pp.filter_genes(adata, min_cells=3)
+MIN_STRATUM_SIZE = 30                 # capture x lineage strata smaller than this fall back to capture-only MAD
+DIAGNOSTIC_MIN_GENES_REFERENCE = 200  # illustrative reference only — never a deletion rule
+EXPECTED_DOUBLET_RATE_BY_CAPTURE = {
+    # Illustrative starting points, one per capture's own loading/recovery target —
+    # NOT a single global constant. If demultiplexing (03) already removed
+    # cross-donor doublets for a capture, lower its value: residual prevalence
+    # after demux is not the same as the raw loading-chart rate.
+    "capture_1": 0.06,
+}
+DEFAULT_EXPECTED_DOUBLET_RATE = 0.06  # fallback only for captures missing from the dict above
 
-# 3. Annotate mitochondrial genes (human "MT-"; mouse uses lowercase "mt-")
-adata.var["mt"] = adata.var_names.str.startswith("MT-")
 
-# 4. Compute per-cell QC metrics (log1p=True adds the log-scaled columns used below)
-sc.pp.calculate_qc_metrics(
-    adata, qc_vars=["mt"], percent_top=None, log1p=True, inplace=True
-)
+def module_00_validate_input(path):
+    # 00_validate_input — INPUT: raw file(s) / OUTPUT: validated raw matrix / NO CELLS REMOVED
+    adata = sc.read_10x_mtx(path, var_names="gene_symbols", cache=True)
+    adata.var_names_make_unique()
+    # Representation contract: raw_counts is set ONCE, here, and never overwritten.
+    # adata.X is a mutable "current working matrix"; adata.raw is NOT a reliable
+    # stand-in for this — it only snapshots whatever was in .X when called.
+    adata.layers["raw_counts"] = adata.X.copy()
+    raw = adata.layers["raw_counts"].data if hasattr(adata.layers["raw_counts"], "data") else adata.layers["raw_counts"]
+    assert (raw &gt;= 0).all(), "raw_counts must be non-negative"
+    assert np.allclose(raw, np.round(raw)), "raw_counts must be integer-like"
+    # Gene filtering is a feature-availability filter — conceptually separate from
+    # cell QC; it changes which genes are represented, not which cells survive.
+    sc.pp.filter_genes(adata, min_cells=3)
+    return adata
 
-# 5. Visualise distributions (spot outlier thresholds)
-sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
-             jitter=0.4, multi_panel=True)
 
-# 6. MAD-based adaptive filtering. Count metrics are right-skewed, so threshold
-#    on the log1p values; 5 MADs from the median is the common sc convention.
-def is_outlier(metric, n_mads=5):
-    med = np.median(metric)
-    mad = median_abs_deviation(metric)
-    return (metric &lt; med - n_mads * mad) | (metric &gt; med + n_mads * mad)
+def module_01_build_provenance(adata):
+    # 01_build_provenance — INPUT: validated matrix / OUTPUT: + capture/donor/sample cols / NO CELLS REMOVED
+    # Real run: pull these from sample metadata / CellRanger multi manifests.
+    adata.obs["capture_id"] = adata.obs.get("capture_id", "capture_1")
+    adata.obs["donor_id"]   = adata.obs.get("donor_id", "unknown")
+    adata.obs["sample_id"]  = adata.obs.get("sample_id", "sample_1")
+    # Preliminary broad-lineage label for Gate-1 calibration ONLY (e.g. from a
+    # coarse marker-based pass upstream) — distinct from the final, post-decontam
+    # lineage assigned in module_10. Placeholder here if none is supplied.
+    adata.obs["broad_lineage"] = adata.obs.get("broad_lineage", "unassigned")
+    return adata
 
-outlier = (
-    is_outlier(adata.obs["log1p_total_counts"]) |
-    is_outlier(adata.obs["log1p_n_genes_by_counts"])
-)
-keep = ~outlier &amp; (adata.obs["pct_counts_mt"] &lt; 20)   # hard upper cap for mito
-adata = adata[keep].copy()
-print(f"Cells after QC filter: {adata.n_obs}")
 
-# 7. Doublet detection with Scrublet (scanpy wrapper). Needs RAW counts —
-#    adata.X has not been normalised yet. Set expected_doublet_rate from the
-#    10x loading chart (roughly 0.8% per 1,000 cells recovered).
-sc.pp.scrublet(adata, expected_doublet_rate=0.06)
-adata = adata[~adata.obs["predicted_doublet"]].copy()
-print(f"Cells after doublet removal: {adata.n_obs}")
+def module_02_cell_call_or_record_upstream(adata, called_upstream=True):
+    # 02_cell_call_or_record_upstream — INPUT: provenance-tagged matrix /
+    # OUTPUT: called_cell flag (or upstream-provenance note) / CELL POPULATION MAY CHANGE
+    if called_upstream:
+        # filtered_feature_bc_matrix was already cell-called by CellRanger — say so,
+        # don't pretend this pipeline reconstructed cell calling from raw droplets.
+        adata.obs["called_cell"] = True
+        adata.uns["cell_calling_provenance"] = "upstream (CellRanger filtered matrix)"
+    else:
+        adata.obs["called_cell"] = True  # a real EmptyDrops-style caller would run here
+        adata.uns["cell_calling_provenance"] = "this pipeline"
+    return adata[adata.obs["called_cell"]].copy()
 
-# 8. Save QC-filtered object
-adata.write_h5ad("adata_qc.h5ad")
-print("Saved adata_qc.h5ad")</code></pre>
+
+def module_03_demultiplex_or_record_upstream(adata, demuxed_upstream=False):
+    # 03_demultiplex_or_record_upstream — INPUT: called cells /
+    # OUTPUT: SNG/DBL/AMB status (or upstream note) / CELL POPULATION MAY CHANGE (AMB/DBL removed if applicable)
+    if not demuxed_upstream:
+        adata.obs["demux_status"] = "SNG"  # single-sample capture — nothing to resolve
+        adata.uns["demultiplex_provenance"] = "not applicable"
+        return adata
+    # Genotype/HTO demultiplexing would populate SNG/DBL/AMB here. Once cross-donor
+    # doublets are removed, P(doublet | survived demux) != P(doublet) — module_06's
+    # per-capture expected rate should reflect that, not the raw loading-chart number.
+    return adata[adata.obs["demux_status"] == "SNG"].copy()
+
+
+def module_04_compute_gate1_metrics(adata):
+    # 04_compute_gate1_metrics — INPUT: called/demuxed cells + raw counts /
+    # OUTPUT: same cells + QC metrics (diagnostics) / NO CELLS REMOVED
+    adata.var["mt"] = adata.var_names.str.startswith("MT-")
+    sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], percent_top=None, log1p=True, inplace=True)
+    sc.pl.violin(adata, ["n_genes_by_counts", "total_counts", "pct_counts_mt"],
+                 jitter=0.4, multi_panel=True)
+    return adata
+
+
+def module_05_apply_gate1_policy(adata):
+    # 05_apply_gate1_policy — INPUT: metrics + frozen config / OUTPUT: gate1_pass column on ALL called cells /
+    # NO CELLS REMOVED (filtering is deferred to the caller — see master_adata pattern below)
+    # Stratified by capture x broad_lineage, per the prose above ("capture ± broad
+    # lineage"). A stratum below MIN_STRATUM_SIZE falls back to capture-only bounds
+    # rather than an unstable per-lineage MAD.
+    low_counts = pd.Series(False, index=adata.obs.index)
+    low_genes  = pd.Series(False, index=adata.obs.index)
+    high_mito  = pd.Series(False, index=adata.obs.index)
+
+    for cap, cap_group in adata.obs.groupby("capture_id"):
+        cap_counts_bounds = _mad_bounds(cap_group["log1p_total_counts"])
+        cap_genes_bounds  = _mad_bounds(cap_group["log1p_n_genes_by_counts"])
+        cap_mito_bounds   = _mad_bounds(cap_group["pct_counts_mt"])
+        for lineage, stratum in cap_group.groupby("broad_lineage"):
+            if len(stratum) &gt;= MIN_STRATUM_SIZE:
+                counts_lo, counts_hi = _mad_bounds(stratum["log1p_total_counts"])
+                genes_lo,  genes_hi  = _mad_bounds(stratum["log1p_n_genes_by_counts"])
+                _,         mito_hi   = _mad_bounds(stratum["pct_counts_mt"])
+            else:
+                # Too few cells in this capture x lineage stratum — fall back to
+                # capture-only bounds instead of an unstable per-lineage MAD.
+                counts_lo, counts_hi = cap_counts_bounds
+                genes_lo,  genes_hi  = cap_genes_bounds
+                _,         mito_hi   = cap_mito_bounds
+            idx = stratum.index
+            low_counts.loc[idx] = stratum["log1p_total_counts"] &lt; counts_lo
+            low_genes.loc[idx]  = stratum["log1p_n_genes_by_counts"] &lt; genes_lo
+            high_mito.loc[idx]  = stratum["pct_counts_mt"] &gt; mito_hi
+            # High counts/genes are Gate-2 diagnostic evidence — NOT filtered here.
+
+    # Optional extreme safety net — NOT part of the canonical policy. Opt in only
+    # for a specific, stated reason (e.g. known multiplet-prone capture):
+    # MITO_HARD_SAFETY_CAP = 50
+    # high_mito |= (adata.obs["pct_counts_mt"] &gt; MITO_HARD_SAFETY_CAP)
+
+    adata.obs["gate1_low_counts"] = low_counts
+    adata.obs["gate1_low_genes"]  = low_genes
+    adata.obs["gate1_high_mito"]  = high_mito
+    # DECISION: an explicit policy built by OR-ing named diagnostics — never an
+    # opaque single outlier() call applied straight to a raw metric.
+    adata.obs["gate1_pass"] = ~(
+        adata.obs["gate1_low_counts"] | adata.obs["gate1_low_genes"] | adata.obs["gate1_high_mito"]
+    )
+    print("Gate 1 retention by capture (audit habit — check every grouping variable):")
+    print(adata.obs.groupby("capture_id")["gate1_pass"].mean())
+    return adata  # FULL population retained — gate1_pass is a column, not a subset
+
+
+def module_06_run_doublet_scoring(adata, expected_rate_by_capture=None):
+    # 06_run_doublet_scoring — INPUT: Gate-1-retained cells, raw counts, per capture /
+    # OUTPUT: doublet_score, doublet_method_status / NO CELLS REMOVED
+    expected_rate_by_capture = expected_rate_by_capture or EXPECTED_DOUBLET_RATE_BY_CAPTURE
+    raw = adata.layers["raw_counts"]
+    raw_values = raw.data if hasattr(raw, "data") else raw
+    assert (raw_values &gt;= 0).all() and np.allclose(raw_values, np.round(raw_values)), \
+        "Scrublet requires raw, non-negative, integer-like counts"
+
+    adata.obs["doublet_score"] = np.nan
+    # Nullable boolean: an unresolved (too_small / runtime_failed) capture must
+    # read as "no call made", not as a genuine negative — plain False would be
+    # indistinguishable from an actual singlet call.
+    adata.obs["predicted_doublet"] = pd.Series(pd.NA, index=adata.obs_names, dtype="boolean")
+    adata.obs["doublet_method_status"] = "not_run"  # reliable | too_small | runtime_failed
+
+    for cap in adata.obs["capture_id"].unique():
+        sub = adata[adata.obs["capture_id"] == cap].copy()
+        sub.X = sub.layers["raw_counts"]
+        if sub.n_obs &lt; 50:
+            # Too few cells for a reliable simulated-doublet model. Do NOT
+            # silently coerce this into "singlet" — leave it explicit/unresolved.
+            adata.obs.loc[sub.obs_names, "doublet_method_status"] = "too_small"
+            continue
+        try:
+            rate = expected_rate_by_capture.get(cap, DEFAULT_EXPECTED_DOUBLET_RATE)
+            sc.pp.scrublet(sub, expected_doublet_rate=rate)
+            adata.obs.loc[sub.obs_names, "doublet_score"] = sub.obs["doublet_score"].values
+            adata.obs.loc[sub.obs_names, "predicted_doublet"] = sub.obs["predicted_doublet"].values.astype("boolean")
+            adata.obs.loc[sub.obs_names, "doublet_method_status"] = "reliable"
+        except Exception:
+            # No silent numeric-threshold fallback if Scrublet's automatic call fails.
+            adata.obs.loc[sub.obs_names, "doublet_method_status"] = "runtime_failed"
+    return adata
+
+
+def module_07_review_doublet_status(adata):
+    # 07_review_doublet_status — INPUT: doublet scores/status /
+    # OUTPUT: confirmed_doublet, unresolved flags / NO CELLS REMOVED (decision only)
+    adata.obs["confirmed_doublet"] = (
+        (adata.obs["doublet_method_status"] == "reliable") &amp; adata.obs["predicted_doublet"]
+    ).astype("boolean")
+    adata.obs["doublet_unresolved"] = adata.obs["doublet_method_status"].isin(["too_small", "runtime_failed"])
+    return adata
+
+
+def module_08_freeze_qc_population(adata):
+    # 08_freeze_qc_population — INPUT: master ledger (gate1_pass + confirmed_doublet, ALL called cells) /
+    # OUTPUT: final_qc_pass column on the ledger, plus a derived frozen population /
+    # CELL POPULATION CHANGES (freeze point) — only in the returned derived view; the input ledger is untouched
+    # Outcome-blind: nothing above this line may be tuned using downstream labels
+    # (e.g. fatal/survived) or model performance — that is leakage, not QC.
+    adata.obs["final_qc_pass"] = adata.obs["gate1_pass"] &amp; ~adata.obs["confirmed_doublet"].fillna(False)
+    print("Final QC retention by capture:")
+    print(adata.obs.groupby("capture_id")["final_qc_pass"].mean())
+    frozen = adata[adata.obs["final_qc_pass"]].copy()
+    frozen.uns["qc_freeze_config"] = {                       # frozen QC configuration
+        "gate1_n_mads": 5, "gate1_min_stratum_size": MIN_STRATUM_SIZE,
+        "scrublet_expected_rate_by_capture": EXPECTED_DOUBLET_RATE_BY_CAPTURE,
+        "min_capture_size_for_doublet_calling": 50,
+    }
+    return frozen
+
+
+def module_09_run_decontamination(adata):
+    # 09_run_decontamination — INPUT: frozen population, full lineage, raw counts /
+    # OUTPUT: decontx_counts (new layer), decontx_contamination / NO CELLS REMOVED, raw_counts untouched
+    # adata.layers["decontx_counts"], contamination = run_decontx(adata.layers["raw_counts"])
+    adata.obs["decontx_contamination"] = np.nan  # populate from DecontX/SoupX output
+    return adata
+
+
+def module_10_harmonize_lineage(adata):
+    # 10_harmonize_lineage — INPUT: frozen population / OUTPUT: broad_lineage / final_lineage cols /
+    # NO CELLS REMOVED
+    adata.obs["final_lineage"] = adata.obs.get("final_lineage", adata.obs["broad_lineage"])  # post-decontam label
+    return adata
+
+
+def module_11_build_analysis_population(adata, target_lineage=None):
+    # 11_build_analysis_population — INPUT: harmonized population /
+    # OUTPUT: target-lineage-extracted analysis object / CELL POPULATION CHANGES (lineage extraction)
+    if target_lineage is None:
+        return adata
+    return adata[adata.obs["final_lineage"] == target_lineage].copy()
+
+
+# ── run the module graph ──────────────────────────────────────────────────────
+master_adata = module_00_validate_input("filtered_feature_bc_matrix/")
+master_adata = module_01_build_provenance(master_adata)
+master_adata = module_02_cell_call_or_record_upstream(master_adata, called_upstream=True)
+master_adata = module_03_demultiplex_or_record_upstream(master_adata, demuxed_upstream=False)
+master_adata = module_04_compute_gate1_metrics(master_adata)
+master_adata = module_05_apply_gate1_policy(master_adata)
+# master_adata now holds ALL called/demuxed cells with a gate1_pass column —
+# no rows dropped yet. "Why was cell X absent?" is answerable from this ledger
+# all the way to the end of the pipeline.
+
+# Derived VIEW: only Gate-1-retained cells continue into Gate 2 — master_adata
+# itself is not replaced.
+gate1_adata = master_adata[master_adata.obs["gate1_pass"]].copy()
+gate1_adata = module_06_run_doublet_scoring(gate1_adata, expected_rate_by_capture=EXPECTED_DOUBLET_RATE_BY_CAPTURE)
+gate1_adata = module_07_review_doublet_status(gate1_adata)
+
+# Write Gate-2 columns back onto the master ledger. Gate-1 failures never ran
+# through Gate 2 — they get an explicit "gate1_excluded" status, not a blank.
+doublet_cols = ["doublet_score", "predicted_doublet", "doublet_method_status",
+                "confirmed_doublet", "doublet_unresolved"]
+master_adata.obs = master_adata.obs.join(gate1_adata.obs[doublet_cols], how="left")
+master_adata.obs["doublet_method_status"] = master_adata.obs["doublet_method_status"].fillna("gate1_excluded")
+
+adata_frozen = module_08_freeze_qc_population(master_adata)
+adata_frozen = module_09_run_decontamination(adata_frozen)
+adata_frozen = module_10_harmonize_lineage(adata_frozen)
+adata_platelets = module_11_build_analysis_population(adata_frozen, target_lineage="Platelet")
+
+# doublet_score, doublet_method_status, and decontx_contamination survive into
+# the frozen object (and into adata_platelets); master_adata still holds the
+# FULL ledger — including Gate-1 failures — for auditing "why was cell X absent?"
+adata_frozen.write_h5ad("adata_qc.h5ad")
+master_adata.obs.to_csv("qc_ledger_full.csv")  # complete audit trail, every called cell
+print(f"Saved adata_qc.h5ad — {adata_frozen.n_obs} cells (master ledger: {master_adata.n_obs} called cells)")</code></pre>
+
+                <h3>Diagnostics vs. decisions in this walkthrough</h3>
+                <div style="display:flex; gap:20px; flex-wrap:wrap; margin:14px 0 22px;">
+                    <div style="flex:1 1 260px; min-width:230px; background:#f5fbff; border:1.5px solid #005a9c; border-radius:10px; padding:16px 18px;">
+                        <div style="font-weight:700; color:#005a9c; margin-bottom:8px;"><i class="fas fa-magnifying-glass-chart"></i> Diagnostics — evidence</div>
+                        <p style="margin:0; font-size:.9em; color:#4a463b;"><code>n_counts</code>, <code>n_genes</code>, <code>pct_counts_mt</code>, <code>doublet_score</code>, MAD distance, <code>decontx_contamination</code>, barcode rank, simulated-doublet recall — none of these are, by themselves, a reason to drop a cell.</p>
+                    </div>
+                    <div style="flex:1 1 260px; min-width:230px; background:#fff5e6; border:1.5px solid #f57c00; border-radius:10px; padding:16px 18px;">
+                        <div style="font-weight:700; color:#e65100; margin-bottom:8px;"><i class="fas fa-gavel"></i> Decisions — policy applied to evidence</div>
+                        <p style="margin:0; font-size:.9em; color:#4a463b;"><code>gate1_pass</code>, <code>confirmed_doublet</code>, <code>final_qc_pass</code> — each is derived from named diagnostics through an explicit rule, and only decision columns are ever used to filter.</p>
+                    </div>
+                </div>
+
                 <h3>Common pitfalls &amp; tips</h3>
                 <ul>
-                    <li><strong>One-size-fits-all thresholds hurt.</strong> A hard cutoff of &gt;200 genes / &lt;5% mito fails for hepatocytes (high mito) or RBCs (few genes). Use MAD-based adaptive thresholds per sample or per cell type.</li>
-                    <li><strong>Ambient correction before cell filtering.</strong> Run SoupX or decontX on the raw (unfiltered) matrix first; correcting already-filtered data underestimates the ambient profile from empty droplets.</li>
-                    <li><strong>Doublet rate scales with cell loading.</strong> Scrublet's default expected doublet rate (~5%) underestimates for high-density 10x runs (&gt;10k cells loaded); set <code>expected_doublet_rate</code> explicitly based on the 10x loading chart.</li>
-                    <li><strong>Batch-wise QC is essential.</strong> Pool-level thresholds mask lane-specific technical artifacts; run QC independently per sample/batch before integration.</li>
-                    <li><strong>Do not remove biologically high-mito cells blindly.</strong> Cardiomyocytes, platelets, and cells under oxidative stress have genuinely high mitochondrial fractions; inspect marker genes before discarding.</li>
-                    <li><strong>Scrublet needs unnormalised counts.</strong> Always pass raw integer counts (<code>adata.X</code> before <code>sc.pp.normalize_total</code>) to Scrublet or SOLO; normalised or log-transformed input distorts the simulated doublet distribution.</li>
+                    <li><strong>One-size-fits-all thresholds hurt.</strong> A hard cutoff of &gt;200 genes / &lt;5% mito fails for hepatocytes (high mito) or RBCs (few genes). Use asymmetric, MAD-based adaptive thresholds per capture, and calibrate with broad lineage where available.</li>
+                    <li><strong>Ambient correction follows doublet handling, not the reverse.</strong> Run SoupX/DecontX on the doublet-cleared, full-lineage population — see <a href="#canonical-order">why ambient correction follows doublet handling</a>. (CellBender is the exception: it is a joint cell-calling + background-removal step on the raw, unfiltered matrix — a separate branch, not a substitute for this order.)</li>
+                    <li><strong>Doublet rate depends on your loading design, not a global default.</strong> Derive <code>expected_doublet_rate</code> from your own 10x loading chart; do not force the predicted-doublet fraction to match it exactly.</li>
+                    <li><strong>Run doublet detection per capture/channel, never pooled.</strong> Doublets arise during physical loading — pooling unrelated captures into one Scrublet model teaches the wrong default.</li>
+                    <li><strong>Do not remove biologically high-mito cells blindly.</strong> Cardiomyocytes, platelets, and cells under oxidative stress have genuinely high mitochondrial fractions; inspect marker genes before discarding, and keep any hard mito cap as an extreme safety net only.</li>
+                    <li><strong>Scrublet needs unnormalised, raw integer counts.</strong> Always pass <code>adata.layers["raw_counts"]</code>, never normalised/log/scaled/decontaminated data — and assert the non-negative, integer-like contract before calling it.</li>
                 </ul>
             </section>
 
