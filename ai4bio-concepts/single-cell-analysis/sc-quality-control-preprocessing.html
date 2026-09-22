@@ -462,15 +462,15 @@ same cells across models
                             <tr><td>Gate 1</td><td>called / demuxed cells</td><td>raw integer counts</td><td>capture &plusmn; broad lineage</td></tr>
                             <tr><td>Scrublet / scDblFinder</td><td>Gate-1 retained, <strong>all lineages</strong></td><td>raw integer counts</td><td><strong>capture / channel</strong></td></tr>
                             <tr><td>Doublet decision</td><td>same population</td><td>score + method-status flags</td><td>capture</td></tr>
-                            <tr><td>DecontX</td><td>retained cells (post doublet-decision), all lineages</td><td>cell raw counts &rarr; corrected counts</td><td>capture</td></tr>
-                            <tr><td>SoupX &mdash; soup estimation</td><td>all/raw droplets</td><td>unfiltered droplet matrix</td><td>capture</td></tr>
-                            <tr><td>SoupX &mdash; correction</td><td>retained cells (post doublet-decision), all lineages</td><td>cell counts + estimated soup &rarr; corrected counts</td><td>capture</td></tr>
+                            <tr><td>DecontX</td><td>retained cells, all lineages</td><td>raw cell counts &rarr; corrected counts</td><td>capture</td></tr>
+                            <tr><td>SoupX</td><td>raw droplets <strong>+</strong> retained cells, all lineages</td><td>soup profile + cell counts &rarr; corrected counts</td><td>capture</td></tr>
                             <tr><td>Final lineage annotation</td><td>QC-retained</td><td>corrected / appropriate expression</td><td>cohort / capture</td></tr>
                             <tr><td>Lineage extraction (e.g. Platelet-only)</td><td>annotated cells</td><td>corrected / appropriate expression</td><td>lineage</td></tr>
                             <tr><td>FM / model preprocessing</td><td>final benchmark cells</td><td>model-specific representation</td><td>model</td></tr>
                         </tbody>
                     </table>
                 </div>
+                <p><strong>SoupX uses raw droplets to estimate the soup profile, then applies that estimate to retained cells</strong> — the table lists both inputs on one row because both feed the same correction step, not two separate pipeline stages.</p>
                 <p>Two rules follow directly from this table: <strong>do not subset to the target lineage before Scrublet or DecontX</strong> unless the method specifically requires it (a monocyte is not a QC failure just because the final benchmark is platelet-only — it is valid background context for artifact modeling), and <strong>the unit of QC (capture/channel) and the unit of inference (donor/patient) can differ</strong> — cell QC determines which measurements are trustworthy, it does not turn cells into independent biological replicates.</p>
             </section>
 
