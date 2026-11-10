@@ -4,10 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff7e9">
-  <title>Lab in the Loop — AI4Bio with Healshu</title>
-  <meta name="description" content="Learn AI for biology through a lab-in-the-loop journey shaped by reasoning, AI, sports, aesthetics, creation, and long-term growth.">
-  <meta property="og:title" content="Lab in the Loop — AI4Bio with Healshu">
-  <meta property="og:description" content="From evidence to model to experiment to feedback update.">
+  <title>AI4Bio | Single-Cell &amp; AI</title>
+  <meta name="description" content="Research and learning notes by Xinru Qiu on single-cell biology, immune disease, spatial and multi-omics data, and reliable AI for biological discovery.">
+  <meta property="og:title" content="AI4Bio | Single-Cell &amp; AI">
+  <meta property="og:description" content="Single-cell biology, multi-omics, and reliable AI for biological discovery — research and learning notes by Xinru Qiu.">
   <meta property="og:image" content="og-image.jpg">
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-KSMFMG4TD5"></script>
@@ -214,6 +214,7 @@
     .interest-atlas {
       padding: clamp(5rem, 10vw, 9rem) clamp(1.25rem, 7vw, 8rem);
       background: var(--paper);
+      scroll-margin-top: 4.2rem;
     }
     .atlas-header {
       display: grid;
@@ -764,19 +765,17 @@
   <a class="skip-link" href="#main">Skip to content</a>
 
   <header class="nav">
-    <a class="brand" href="#top" aria-label="Lab in the Loop home">
+    <a class="brand" href="#top" aria-label="AI4Bio | Single-Cell &amp; AI home">
       <span class="brand-mark">↻</span>
-      <span>LAB IN THE LOOP</span>
+      <span>SINGLE-CELL &amp; AI NOTES</span>
     </a>
     <nav class="nav-links" aria-label="Main navigation">
       <a class="nav-home" href="https://xqiu625.github.io/" aria-label="Back to homepage">← Home</a>
-      <a href="#measure">Measure</a>
-      <a href="#model">Model</a>
-      <a href="#design">Design</a>
-      <a href="#coordinate">Coordinate</a>
-      <a href="#monitor">Monitor</a>
-      <a href="#readout">Readout</a>
-      <a href="#update">Update</a>
+      <a href="#start">Start Here</a>
+      <a href="#measure">Single-Cell</a>
+      <a href="#model">AI Models</a>
+      <a href="#coordinate">Spatial</a>
+      <a href="https://xqiu625.github.io/publication/">Research</a>
       <button class="search-toggle" type="button" aria-label="Search tutorials">⌕ Search</button>
     </nav>
   </header>
@@ -805,12 +804,18 @@
         <span class="lw-8 lore-en">Classic of Mountains &amp; Seas</span>
       </div>
       <div class="hero-content reveal">
-        <span class="eyebrow mono"><span class="pulse-dot"></span> AI × Biology × Everyday Analogies</span>
-        <h1>Lab in the <em>Loop.</em></h1>
-        <p class="hero-copy">This page turns the AI4Bio loop into a guided tour: Measure → Model → Experiment → Update. Each stage explains a core concept through a familiar analogy — detective fiction, LEGO builds, sports, and pop culture — so the science is easier to browse, remember, and extend. Your guide is <strong>Healshu</strong>, an ear-rat spirit out of the <em>Classic of Mountains and Seas</em>, and it chirps “hew hew!” whenever the loop turns up a new discovery.</p>
+        <span class="eyebrow mono"><span class="pulse-dot"></span> AI4Bio · Notes by Xinru Qiu</span>
+        <h1>Single-Cell <em>&amp; AI.</em></h1>
+        <p class="hero-copy">
+          I study immune disease through single-cell and spatial omics.
+          These notes connect biological questions, data platforms, computational methods,
+          and the evidence needed to trust a result. I am also exploring how reliable AI
+          agents can support biological discovery.
+        </p>
         <div class="hero-actions">
-          <a class="button primary" href="#measure">Enter the loop <span>↓</span></a>
-          <button class="button search-toggle" type="button">Browse 16 tutorials</button>
+          <a class="button primary" href="#start">Start exploring <span>↓</span></a>
+          <a class="button" href="https://xqiu625.github.io/publication/">See my research</a>
+          <button class="button search-toggle" type="button">Browse 10 tutorials</button>
         </div>
         <p class="loop-note mono">MEASURE → MODEL → DESIGN → COORDINATE → MONITOR → READOUT → UPDATE</p>
       </div>
@@ -824,6 +829,42 @@
         <div class="loop-chip chip-model">02 / reason with models</div>
         <div class="loop-chip chip-lab">03 / refine the system</div>
         <div class="loop-chip chip-lore">耳鼠 Er Shu · mascot from 《山海经》 Shan Hai Jing</div>
+      </div>
+    </section>
+
+    <section class="interest-atlas" id="start">
+      <div class="atlas-header">
+        <div>
+          <span class="section-kicker mono">START HERE</span>
+          <h2>Follow the evidence.</h2>
+        </div>
+        <p>
+          My starting point is single-cell immunology. These three paths lead
+          from cell-level measurements to spatial context and AI models for biology.
+        </p>
+      </div>
+
+      <div class="atlas-grid">
+        <article class="interest-card">
+          <div class="interest-top"><span class="interest-icon">🔬</span></div>
+          <h3>Single-cell biology</h3>
+          <p>Start with assay limitations, quality control, cell identity, and the immune biology behind each dataset.</p>
+          <a href="single-cell-analysis/sc-quality-control-preprocessing.html">Explore the notes →</a>
+        </article>
+
+        <article class="interest-card">
+          <div class="interest-top"><span class="interest-icon">🧩</span></div>
+          <h3>Spatial biology</h3>
+          <p>Connect cell states to tissue context and learn what spatial transcriptomics can measure.</p>
+          <a href="single-cell-analysis/spatial-transcriptomics-technologies.html">Explore the notes →</a>
+        </article>
+
+        <article class="interest-card">
+          <div class="interest-top"><span class="interest-icon">✓</span></div>
+          <h3>AI models for biology</h3>
+          <p>Learn how biological data becomes tokens and how transformers use them to model context.</p>
+          <a href="foundation-models-deep-learning/tokenization-strategies.html">Explore the notes →</a>
+        </article>
       </div>
     </section>
 
@@ -860,8 +901,6 @@
           <div class="topic-list">
             <a class="topic" href="single-cell-analysis/sc-quality-control-preprocessing.html"><span class="topic-index">01.1</span><span><strong>Quality Control &amp; Preprocessing</strong><small>Clean the case file first: remove low-quality samples, doublets, contamination, and batch artifacts before they enter the reasoning chain.</small></span><span class="topic-arrow">→</span></a>
             <a class="topic" href="single-cell-analysis/cell-annotation_type-identification.html"><span class="topic-index">01.2</span><span><strong>Cell Annotation &amp; Type Identification</strong><small>Identify each witness: cell type determines what the evidence means and how the model should interpret the signal.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="single-cell-analysis/causal-inference.html"><span class="topic-index">01.3</span><span><strong>Causal Inference</strong><small>Separate real causes from confounded associations: reconstruct causal structure from observational data, perturbations, and genetic instruments.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="biomedical-imaging/biomedical-imaging.html"><span class="topic-index">01.4</span><span><strong>Biomedical Imaging &amp; CV</strong><small>Cell segmentation, H&amp;E→spatial expression, pathology foundation models, and agentic cancer pathology — from raw pixel to clinical inference.</small></span><span class="topic-arrow">→</span></a>
           </div>
         </div>
       </section>
@@ -892,15 +931,11 @@
         <div class="sport-copy reveal">
           <div class="section-kicker mono">LEGO plan · Representation</div>
           <h2>Sort the bricks before the build.</h2>
-          <p class="analogy">This is the Model stage of the lab loop: understand the structure, variables, and causal constraints of the biological system before the next experiment. From tokens to attention and pretraining objectives, each method assembles the parts list before the next brick.</p>
+          <p class="analogy">This is the Model stage of the lab loop: understand the structure, variables, and causal constraints of the biological system before the next experiment. From tokens to transformers and attention, each method assembles the parts list before the next brick.</p>
           <div class="topic-list">
             <a class="topic" href="foundation-models-deep-learning/tokenization-strategies.html"><span class="topic-index">02.1</span><span><strong>Tokenization Strategies</strong><small>Break DNA, RNA, or protein sequences into basic units a model can learn.</small></span><span class="topic-arrow">→</span></a>
             <a class="topic" href="foundation-models-deep-learning/transformer-architecture.html"><span class="topic-index">02.2</span><span><strong>Transformer Architecture</strong><small>Encoder, decoder, and hybrid designs powering single-cell, genomic, and protein foundation models.</small></span><span class="topic-arrow">→</span></a>
             <a class="topic" href="foundation-models-deep-learning/attention-mechanisms.html"><span class="topic-index">02.3</span><span><strong>Attention Mechanisms</strong><small>Decide which signals matter most in a complex context.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="foundation-models-deep-learning/pretraining.html"><span class="topic-index">02.4</span><span><strong>Pretraining Objectives</strong><small>Masked, causal, and denoising objectives that teach models from unlabeled data.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="foundation-models-deep-learning/contrastive-learning.html"><span class="topic-index">02.5</span><span><strong>Contrastive Learning</strong><small>Learn embeddings by pulling similar samples together and pushing different ones apart.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="foundation-models-deep-learning/generative-models.html"><span class="topic-index">02.6</span><span><strong>Generative Models</strong><small>VAE, diffusion, flow matching, GNN, and GAN architectures that generate new cells, proteins, and perturbation outcomes.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="foundation-models-deep-learning/fine-tuning.html"><span class="topic-index">02.7</span><span><strong>Fine-Tuning &amp; Adaptation</strong><small>Full fine-tuning, LoRA, adapters, and task head design for scRNA-seq, genomics, and protein tasks.</small></span><span class="topic-arrow">→</span></a>
           </div>
         </div>
       </section>
@@ -917,7 +952,7 @@
           <div class="phase-sports"><a href="#golf-design">⛳ Golf · choose the next experiment</a></div>
         </div>
       </header>
-      <section class="sport-section track pending" id="golf-design">
+      <section class="sport-section track" id="golf-design">
         <div class="field-lines" aria-hidden="true"></div>
         <div class="sport-art reveal">
           <span class="sport-number">03</span>
@@ -932,7 +967,6 @@
           <div class="section-kicker mono">Experimental design · Decision under uncertainty</div>
           <h2>Choose the next shot.</h2>
           <p class="analogy">This is the Design stage of the lab loop: turn model output into the next experimental choice while balancing uncertainty, cost, risk, and information value.</p>
-          <div class="development-note">CONTENT IN DEVELOPMENT</div>
         </div>
       </section>
       <div class="phase-connector">The selected experiment becomes an organized system</div>
@@ -964,9 +998,8 @@
           <h2>Set the formation.</h2>
           <p class="analogy">This is the Coordinate stage of the lab loop: organize different experimental components into an executable system where every data modality, spatial position, and cell role has context.</p>
           <div class="topic-list">
-            <a class="topic" href="single-cell-analysis/single-cell-multiomics-integration.html"><span class="topic-index">04.1</span><span><strong>Multi-Omics Integration</strong><small>Place RNA, chromatin, protein, and other modalities into one experimental interpretation frame.</small></span><span class="topic-arrow">→</span></a>
+            <a class="topic" href="single-cell-analysis/optimal-transport-and-wasserstein-distance.html"><span class="topic-index">04.1</span><span><strong>Optimal Transport &amp; Wasserstein</strong><small>Use mathematics to compare and align different cell populations.</small></span><span class="topic-arrow">→</span></a>
             <a class="topic" href="single-cell-analysis/spatial-transcriptomics-technologies.html"><span class="topic-index">04.2</span><span><strong>Spatial Transcriptomics</strong><small>Preserve tissue location so the experimental system has a field and formation.</small></span><span class="topic-arrow">→</span></a>
-            <a class="topic" href="single-cell-analysis/optimal-transport-and-wasserstein-distance.html"><span class="topic-index">04.3</span><span><strong>Optimal Transport &amp; Wasserstein</strong><small>Use mathematics to compare and align different cell populations.</small></span><span class="topic-arrow">→</span></a>
           </div>
         </div>
       </section>
@@ -1065,9 +1098,6 @@
           <div class="section-kicker mono">Daily refinement · Iteration</div>
           <h2>Improve through feedback.</h2>
           <p class="analogy">This is the Update stage of the lab loop: experimental results act like rehearsal notes, turning mismatch into model revision and a sharper next question.</p>
-          <div class="topic-list">
-            <a class="topic" href="single-cell-analysis/post-training.html"><span class="topic-index">07.1</span><span><strong>Post-Training</strong><small>SFT, PEFT/LoRA, RL elicitation, multi-agent verification, active learning, and quantization recipes.</small></span><span class="topic-arrow">→</span></a>
-          </div>
         </div>
       </section>
       <div class="phase-connector">Enter the next loop with a better question</div>
@@ -1089,7 +1119,7 @@
   </main>
 
   <footer class="footer">
-    <div><strong>Healshu's Lab in the Loop</strong><br><span class="mono">AI4BIO LEARNING NOTES · 2026</span></div>
+    <div><strong>Healshu's Lab in the Loop</strong><br><span class="mono">SINGLE-CELL &amp; AI NOTES · 2026</span></div>
     <div><a href="https://github.com/xqiu625">GitHub</a> · <a href="https://www.linkedin.com/in/xinru-qiu">LinkedIn</a> · <a href="https://scholar.google.com/citations?hl=en&user=6D6P1MQAAAAJ">Scholar</a></div>
     <div style="font-size:.85em; opacity:.75; margin-top:8px;">© 2026 Xinru Qiu. Educational text, illustrations, animations, and the Healshu character are all rights reserved. Brief quotations with attribution are welcome — see <a href="https://xqiu625.github.io/licensing.html">licensing</a>.</div>
   </footer>
