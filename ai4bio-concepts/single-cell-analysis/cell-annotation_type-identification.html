@@ -1028,6 +1028,26 @@
         .story-hero { float: right; width: min(240px, 32vw); margin: 4px 0 14px 22px; border-radius: 14px; overflow: hidden; border: 2px solid var(--case-line, rgba(0,90,156,.18)); box-shadow: 0 10px 28px rgba(0,59,104,.18); }
         .story-hero img { width: 100%; height: auto; display: block; }
         @media (max-width: 768px) { .story-hero { float: none; width: min(320px, 82%); margin: 0 auto 18px; } }
+        .stats-bar {
+            background: linear-gradient(135deg, #f4f8f0 0%, #fcfdfb 100%);
+            padding: 24px;
+            border-radius: 14px;
+            margin: 20px 0 28px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 18px;
+            box-shadow: 0 3px 14px rgba(70,103,10,.1);
+            border: 1px solid var(--border-base);
+        }
+        .stat-item {
+            text-align: center;
+            padding: 16px;
+            border-left: 4px solid var(--secondary-color);
+            background: white;
+            border-radius: 8px;
+        }
+        .stat-number { display: block; color: var(--primary-color); font-size: 2em; font-weight: 700; letter-spacing: -1px; }
+        .stat-label  { display: block; color: var(--secondary-color); font-size: .88em; margin-top: 6px; font-weight: 600; }
     </style>
 </head>
 <body data-sport="measure">
@@ -1061,6 +1081,24 @@
         </header>
 
         
+        <div class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-number">24</span>
+                <div class="stat-label">Curated Tools</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">5</span>
+                <div class="stat-label">Method Families</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">2018&ndash;2026</span>
+                <div class="stat-label">Years Covered</div>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number">3</span>
+                <div class="stat-label">Perturb-seq Strategies</div>
+            </div>
+        </div>
         <p class="curation-note">Last reviewed: July 2026 · Inclusion: maintained, benchmarked, or widely cited tools · Found an issue? <a href="https://github.com/xqiu625" target="_blank" rel="noopener noreferrer">Suggest a fix on GitHub</a></p>
 
         <section class="casework-banner" aria-label="Agatha Christie inspired cell annotation casework">
@@ -1144,6 +1182,8 @@
                     <li><a href="#foundation-models"><i class="fas fa-chevron-right"></i> Foundation Models</a></li>
                     <li><a href="#specialized"><i class="fas fa-chevron-right"></i> Specialized Methods</a></li>
                     <li><a href="#decision-guide"><i class="fas fa-chevron-right"></i> <strong>Selection Guide</strong></a></li>
+                    <li><a href="#perturbseq-annotation"><i class="fas fa-chevron-right"></i> Perturb-seq Annotation</a></li>
+                    <li><a href="#related"><i class="fas fa-chevron-right"></i> Related Modules</a></li>
                     <li><a href="#hands-on"><i class="fas fa-chevron-right"></i> Hands-On Practice</a></li>
                 </ul>
             </details>
@@ -1159,111 +1199,8 @@
                         <figcaption class="case-file-caption">From anonymous profiles to identified witnesses: annotation assigns interpretable identities — and leaves low-evidence cells unassigned rather than forcing a label.</figcaption>
                     </figure>
 
-                    <div class="case-analogy-grid" aria-label="Agatha Christie analogy examples for cell annotation">
-                        <article class="case-card">
-                            <svg viewBox="0 0 320 150" role="img" aria-label="Case file and witnesses">
-                                <rect x="22" y="28" width="116" height="86" rx="10" fill="#fff" stroke="#005A9C" stroke-width="3"/>
-                                <path d="M34 48h78M34 68h56M34 88h70" stroke="#8ab9da" stroke-width="6" stroke-linecap="round"/>
-                                <circle cx="206" cy="56" r="20" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
-                                <circle cx="252" cy="56" r="20" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
-                                <circle cx="230" cy="101" r="20" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
-                                <path d="M138 72C162 58 172 56 186 56M138 82C164 96 184 102 210 101" stroke="#005A9C" stroke-width="3" fill="none" stroke-dasharray="6 6"/>
-                                <text x="80" y="130" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">case file</text>
-                                <text x="230" y="130" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">witness lineup</text>
-                            </svg>
-                            <h3>St. Mary Mead logic</h3>
-                            <p>When many witnesses are plausible, compare multiple evidence sources: reference labels, marker genes, cluster context, and confidence scores.</p>
-                        </article>
-                        <article class="case-card">
-                            <svg viewBox="0 0 320 150" role="img" aria-label="Marker gene clues">
-                                <rect x="34" y="34" width="252" height="82" rx="14" fill="#fff" stroke="#005A9C" stroke-width="3"/>
-                                <circle cx="74" cy="75" r="18" fill="#cfe5f5"/>
-                                <circle cx="132" cy="75" r="18" fill="#cfe5f5"/>
-                                <circle cx="190" cy="75" r="18" fill="#cfe5f5"/>
-                                <circle cx="248" cy="75" r="18" fill="#f4d6d6" stroke="#d24747" stroke-width="3"/>
-                                <path d="M63 75h22M121 75h22M179 75h22M237 75h22" stroke="#003B68" stroke-width="4" stroke-linecap="round"/>
-                                <path d="M248 55v40M228 75h40" stroke="#d24747" stroke-width="4" stroke-linecap="round"/>
-                                <text x="160" y="132" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">pattern or red herring?</text>
-                            </svg>
-                            <h3>Bitten nails &amp; red herrings</h3>
-                            <p>A strong marker pattern can be a clue, but the method still has to test whether it is biology, batch structure, or an annotation artifact.</p>
-                        </article>
-                        <article class="case-card">
-                            <svg viewBox="0 0 320 150" role="img" aria-label="Elimination and final label">
-                                <g fill="#fff" stroke="#005A9C" stroke-width="3">
-                                    <rect x="34" y="34" width="56" height="56" rx="10"/>
-                                    <rect x="106" y="34" width="56" height="56" rx="10"/>
-                                    <rect x="178" y="34" width="56" height="56" rx="10"/>
-                                    <rect x="250" y="34" width="36" height="56" rx="10"/>
-                                </g>
-                                <path d="M46 46l32 32M78 46L46 78M118 46l32 32M150 46l-32 32" stroke="#d24747" stroke-width="4" stroke-linecap="round"/>
-                                <path d="M191 63l14 14l23-30" stroke="#0D6938" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                                <text x="160" y="128" text-anchor="middle" font-size="13" fill="#003B68" font-weight="700">eliminate impossible labels</text>
-                            </svg>
-                            <h3>The wrong name on the tag</h3>
-                            <p>Good annotation is often elimination: reject impossible labels, keep uncertainty visible, then validate the final identity with independent evidence.</p>
-                        </article>
-                    </div>
 
-                    <!-- Workflow Diagram -->
-                    <div class="workflow-diagram">
-                        <h3><i class="fas fa-project-diagram"></i> General Annotation Workflow</h3>
-                        <div class="workflow-steps">
-                            <div class="workflow-step">
-                                <i class="fas fa-filter"></i>
-                                <h4>Preprocess</h4>
-                                <p>QC & normalize</p>
-                            </div>
-                            <span class="workflow-arrow"><i class="fas fa-arrow-right"></i></span>
-                            <div class="workflow-step">
-                                <i class="fas fa-cogs"></i>
-                                <h4>Select Tool</h4>
-                                <p>Based on data & needs</p>
-                            </div>
-                            <span class="workflow-arrow"><i class="fas fa-arrow-right"></i></span>
-                            <div class="workflow-step">
-                                <i class="fas fa-tag"></i>
-                                <h4>Annotate</h4>
-                                <p>Run classification</p>
-                            </div>
-                            <span class="workflow-arrow"><i class="fas fa-arrow-right"></i></span>
-                            <div class="workflow-step">
-                                <i class="fas fa-check-circle"></i>
-                                <h4>Validate</h4>
-                                <p>Check markers</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <figure class="case-file-figure">
-                        <svg viewBox="0 0 920 280" role="img" aria-label="Cell annotation as a case-file workflow">
-                            <defs>
-                                <marker id="arrowBlue" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#005A9C"/></marker>
-                            </defs>
-                            <rect x="24" y="28" width="180" height="190" rx="16" fill="#f5fbff" stroke="#005A9C" stroke-width="3"/>
-                            <text x="114" y="62" text-anchor="middle" font-size="18" fill="#003B68" font-weight="700">Unknown cell</text>
-                            <circle cx="76" cy="112" r="16" fill="#8ab9da"/>
-                            <circle cx="119" cy="104" r="12" fill="#8ab9da"/>
-                            <circle cx="149" cy="136" r="19" fill="#cfe5f5"/>
-                            <path d="M62 170h104M72 188h78" stroke="#005A9C" stroke-width="7" stroke-linecap="round" opacity=".5"/>
-                            <path d="M210 122h86" stroke="#005A9C" stroke-width="4" marker-end="url(#arrowBlue)"/>
-                            <rect x="306" y="40" width="160" height="164" rx="16" fill="#fff" stroke="#8ab9da" stroke-width="3"/>
-                            <text x="386" y="72" text-anchor="middle" font-size="17" fill="#003B68" font-weight="700">Evidence</text>
-                            <path d="M340 106h92M340 132h76M340 158h104" stroke="#8ab9da" stroke-width="8" stroke-linecap="round"/>
-                            <path d="M476 122h86" stroke="#005A9C" stroke-width="4" marker-end="url(#arrowBlue)"/>
-                            <rect x="572" y="40" width="160" height="164" rx="16" fill="#fff" stroke="#8ab9da" stroke-width="3"/>
-                            <text x="652" y="72" text-anchor="middle" font-size="17" fill="#003B68" font-weight="700">Suspects</text>
-                            <circle cx="616" cy="118" r="18" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
-                            <circle cx="652" cy="118" r="18" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
-                            <circle cx="688" cy="118" r="18" fill="#e8f3fa" stroke="#005A9C" stroke-width="3"/>
-                            <path d="M600 164h104" stroke="#8ab9da" stroke-width="8" stroke-linecap="round"/>
-                            <path d="M742 122h56" stroke="#005A9C" stroke-width="4" marker-end="url(#arrowBlue)"/>
-                            <rect x="808" y="56" width="88" height="132" rx="16" fill="#005A9C"/>
-                            <path d="M830 122l18 18l31-46" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-                            <text x="852" y="222" text-anchor="middle" font-size="17" fill="#003B68" font-weight="700">Label + confidence</text>
-                        </svg>
-                        <figcaption class="case-file-caption">Annotation is a chain of evidence: expression profile -> marker/reference evidence -> candidate labels -> final identity with confidence and uncertainty.</figcaption>
-                    </figure>
+                  
 
                     <div class="validate-panel" id="validate">
                         <h3><i class="fas fa-scale-balanced"></i> Validate the verdict</h3>
@@ -1290,7 +1227,7 @@
                     <h2><i class="fas fa-table"></i> Quick Reference</h2>
                     <figure class="content-figure">
                         <img src="figures/cell-annotation-tool-subway-map.webp" width="1672" height="941" loading="lazy" decoding="async" alt="Subway map of all 21 cell annotation tools: five colored lines for reference-based, marker-based, machine learning, foundation model, and specialized methods, with each tool as a station">
-                        <figcaption class="case-file-caption">All 21 tools on one map, grouped by methodological concept — curated family assignments and full details in the table below.</figcaption>
+                        <figcaption class="case-file-caption">All 24 tools on one map, grouped by methodological concept — curated family assignments and full details in the table below.</figcaption>
                     </figure>
                     <div style="overflow-x: auto;">
                         <table class="quick-ref-table">
@@ -1410,6 +1347,14 @@
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1016/j.isci.2020.100882" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/ZJUFanLab/scCATCH" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                                 <tr>
+                                    <td><a href="#tool-sctype">scType</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag">Marker genes</span></td>
+                                    <td class="hide-on-mobile">2022</td>
+                                    <td>Marker enrichment score</td>
+                                    <td>No training, no reference</td>
+                                    <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41467-022-28803-w" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/IanevskiAleksandr/sc-type" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
                                     <td><a href="#tool-scdeepsort">scDeepSort</a></td>
                                     <td class="hide-on-mobile"><span class="family-tag family-ml">ML classifier</span></td>
                                     <td class="hide-on-mobile">2021</td>
@@ -1480,6 +1425,14 @@
                                     <td>Spatial + dissociated FM</td>
                                     <td>Spatial context prediction</td>
                                     <td class="hide-on-mobile"><a href="https://doi.org/10.1038/s41592-025-02814-z" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/theislab/nicheformer" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+                                </tr>
+                                <tr>
+                                    <td><a href="#tool-cassia">CASSIA</a></td>
+                                    <td class="hide-on-mobile"><span class="family-tag">Foundation</span></td>
+                                    <td class="hide-on-mobile">2025</td>
+                                    <td>LLM batch-level reasoning</td>
+                                    <td>LLM annotation with QA scoring</td>
+                                    <td class="hide-on-mobile"><a href="https://www.biorxiv.org/content/10.1101/2025.04.07.647773" target="_blank" rel="noopener noreferrer">Paper</a> | <a href="https://github.com/yeyuan98/CASSIA" target="_blank" rel="noopener noreferrer">GitHub</a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1818,6 +1771,43 @@
                     <div class="back-to-top-container">
                         <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
                     </div>
+
+                        <!-- scType -->
+                        <div class="tool-card" id="tool-sctype">
+                            <div class="tool-header">
+                                <span class="tool-name">scType</span>
+                                <span class="tool-best-for">Best for: Fully automatic, no training</span>
+                                <span class="tool-year">2022</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> Nature Communications | CityUHK · Karolinska
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">No Training</span>
+                                <span class="tool-tag">Marker DB</span>
+                                <span class="tool-tag">Fast</span>
+                            </div>
+                            <div class="tool-description">
+                                Fully automated, unsupervised cell type annotation driven by a manually curated marker database (3,980 markers for 194 cell types across 15 tissues). Computes a per-cluster enrichment score from a cell type marker matrix and reports the top-scoring identity — no reference dataset or model training required. One of the most widely adopted methods in published scRNA-seq analyses, 2022–2026.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Marker enrichment score (row-sparse dot product between log-normalized matrix and binary marker matrix) — interpretable and computationally cheap</li>
+                                    <li>ScTypeDB covers 194 cell types, 15 tissues; user-customizable via simple Excel sheet — no retraining when adding new types</li>
+                                    <li>Runs in R (&lt;1 min for 20k cells on a laptop); Python wrapper available; integrates directly with Seurat clusters</li>
+                                    <li class="limitation-item">Database-dependent: novel cell types absent from ScTypeDB receive the nearest spurious label; always cross-check confidence scores</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://doi.org/10.1038/s41467-022-28803-w" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/IanevskiAleksandr/sc-type" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
                 </section>
 
                 <!-- Machine Learning Classifiers -->
@@ -2292,6 +2282,44 @@
                     <div class="back-to-top-container">
                         <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
                     </div>
+
+                        <!-- CASSIA -->
+                        <div class="tool-card" id="tool-cassia">
+                            <div class="tool-header">
+                                <span class="tool-name">CASSIA</span>
+                                <span class="tool-best-for">Best for: LLM batch annotation with QA</span>
+                                <span class="tool-year">2025</span>
+                            </div>
+                            <div class="tool-journal">
+                                <i class="fas fa-book"></i> bioRxiv | Stanford · Broad
+                            </div>
+                            <div class="tool-tags">
+                                <span class="tool-tag highlight">LLM Native</span>
+                                <span class="tool-tag">Batch-Level</span>
+                                <span class="tool-tag">QA Scoring</span>
+                                <span class="tool-tag">970 Cell Types</span>
+                            </div>
+                            <div class="tool-description">
+                                Reformulates cell annotation from cell-by-cell classification to <em>batch-level</em> reasoning: 8&ndash;15 cells from the same cluster are jointly assigned to N candidate types under a one-to-one constraint, mirroring expert workflow. Two-stage post-training on Qwen2.5-7B: reasoning distillation from o1 (3,912 traces) &rarr; SFT cold-start, then preference optimization. Outperforms GPTCelltype, CellTypist, and SingleR across 970 cell types and 5 human tissue atlases, and ships a 0&ndash;100 quality score that flags low-confidence batches (&lt;75) before results reach downstream analysis.
+                            </div>
+                            <div class="tool-features">
+                                <ul>
+                                    <li>Fully Correct Rate +12&ndash;41% over GPTCelltype / CellTypist / SingleR on 970 cell types across 5 atlases</li>
+                                    <li>Batch-level one-to-one constraint prevents the same type from being assigned to multiple clusters simultaneously — mirrors how a human expert annotates a UMAP rather than each cell in isolation</li>
+                                    <li>Built-in QA score (0&ndash;100): a batch scoring &lt;75 is flagged for expert review rather than passed silently downstream — the first annotation tool with a native confidence-gated output</li>
+                                    <li class="limitation-item">Requires LLM API access (or local Qwen2.5-7B deployment); runtime scales with batch size and number of candidate types; preprint as of 2025</li>
+                                </ul>
+                            </div>
+                            <div class="tool-links">
+                                <a href="https://www.biorxiv.org/content/10.1101/2025.04.07.647773" target="_blank" rel="noopener noreferrer" class="tool-link paper">
+                                    <i class="fas fa-file-alt"></i> Paper
+                                </a>
+                                <a href="https://github.com/yeyuan98/CASSIA" target="_blank" rel="noopener noreferrer" class="tool-link github">
+                                    <i class="fab fa-github"></i> GitHub
+                                </a>
+                            </div>
+                        </div>
+
                 </section>
 
                 <!-- Specialized Methods -->
@@ -2386,6 +2414,198 @@
                     </div>
                 </section>
 
+
+                <!-- Perturb-seq Annotation -->
+                <section class="category-section" id="perturbseq-annotation">
+                    <div class="category-header">
+                        <i class="fas fa-crosshairs"></i>
+                        <div>
+                            <h2>Perturb-seq Annotation — CRISPR Screen-Specific</h2>
+                            <p>How to annotate cell identity when every cell also carries a perturbation identity</p>
+                        </div>
+                    </div>
+
+                    <p>Standard cell annotation treats each cell as an independent query against a reference. In a CRISPR perturbation screen, every cell has two overlapping identities: its <strong>biological cell type</strong> (what it was before the guide arrived) and its <strong>perturbation state</strong> (what the guide did to it). Conflating these two sources of variation — or ignoring one — produces annotation artifacts that propagate into every downstream DE test, composition analysis, and mechanistic claim. The three strategies below resolve this.</p>
+
+                    <div class="library-grid">
+                        <div class="library-card">
+                            <div class="book-meta">Strategy 1 &middot; NT-first annotation</div>
+                            <h4>Annotate the controls, then project outward</h4>
+                            <p class="plot">Non-targeting (NT) control cells are the most reference-like cells in a Perturb-seq experiment — no guide has altered their transcriptome. Annotate NT cells first, then use those cluster centroids or a trained model to transfer labels to guide-assigned cells.</p>
+                            <p class="echo"><strong>Why it matters:</strong> If you annotate all cells jointly, strongly perturbed cells shift cluster assignments and contaminate the reference centroids you are measuring against. NT-first annotation produces a clean baseline; deviations in the guide-assigned cells become the biological signal, not noise in the reference. In practice: run CellTypist or Azimuth on <code>adata[NT_mask]</code>, store the model or centroids, then apply to <code>adata[guide_mask]</code> separately.</p>
+                        </div>
+                        <div class="library-card">
+                            <div class="book-meta">Strategy 2 &middot; Composite labeling</div>
+                            <h4>cell_type | guide_id as first-class metadata</h4>
+                            <p class="plot">After annotation, each cell needs both its cell type label and its perturbation identity recorded. Neither is optional: cell type without guide gives you an atlas; guide without cell type gives you an undifferentiated differential expression readout.</p>
+                            <p class="echo"><strong>Convention:</strong> store <code>adata.obs["cell_type"]</code> and <code>adata.obs["guide_id"]</code> as separate columns; derive a composite <code>adata.obs["cell_type_guide"] = cell_type + "|" + guide_id</code> for grouped visualizations. UMAP: color by <code>cell_type</code> to see biological identity; facet or shape-encode by <code>guide_id</code> to see perturbation displacement. Density plots per guide, split by cell type, are the most informative diagnostic.</p>
+                        </div>
+                        <div class="library-card">
+                            <div class="book-meta">Strategy 3 &middot; Perturbation-induced novel states</div>
+                            <h4>Some guides push cells off the reference map</h4>
+                            <p class="plot">Strongly acting guides (transcription factor KOs, oncogene activations) can drive cells into states that have no close match in any reference atlas. These cells receive low confidence scores and cluster near but not on a reference type. This is a true biological finding, not an annotation failure.</p>
+                            <p class="echo"><strong>Detection:</strong> flag cells with <code>conf_score &lt; 0.5</code> within a guide pool that are <em>not</em> in the NT low-confidence tail (compare distributions). If the guide pool has a significantly higher rate of low-confidence cells than NT, the guide is driving a novel state. <strong>Characterization tools:</strong> CytoTRACE 2 for developmental shift, Mixscape LPS for perturbation strength, PAGA or scVelo for fate trajectory if time-course data are available.</p>
+                        </div>
+                    </div>
+
+                    <h3><i class="fas fa-table"></i> Cell Type Composition as a Perturbation Readout</h3>
+                    <p>In multi-cell-type experiments (e.g., PBMC or mixed co-culture screens), one of the most powerful Perturb-seq readouts is not differential expression — it is <em>differential composition</em>: which guides deplete or expand specific cell types? This requires clean cell type annotation as a prerequisite.</p>
+
+                    <div style="overflow-x:auto; margin: 18px 0;">
+                        <table class="quick-ref-table">
+                            <thead>
+                                <tr>
+                                    <th>Question</th>
+                                    <th>Method</th>
+                                    <th>Input</th>
+                                    <th>Output</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Which guides shift cell type identity?</td>
+                                    <td>Differential composition (scCODA, propeller, or simple chi-square)</td>
+                                    <td>cell_type × guide_id contingency table</td>
+                                    <td>Per-guide cell type proportion shifts vs NT</td>
+                                </tr>
+                                <tr>
+                                    <td>Is a guide inducing a novel undocumented state?</td>
+                                    <td>Low-confidence fraction comparison</td>
+                                    <td>conf_score per cell, per guide pool</td>
+                                    <td>Guides with significantly elevated "Unknown" fraction</td>
+                                </tr>
+                                <tr>
+                                    <td>How developmentally shifted are perturbed cells?</td>
+                                    <td>CytoTRACE 2</td>
+                                    <td>Guide-assigned cells + NT baseline</td>
+                                    <td>Per-guide potency score delta vs NT</td>
+                                </tr>
+                                <tr>
+                                    <td>Within a cell type, how perturbed is each cell?</td>
+                                    <td>Mixscape LPS</td>
+                                    <td>Guide-assigned cells + NT controls (same annotated type)</td>
+                                    <td>Per-cell perturbation score; escape fraction per guide</td>
+                                </tr>
+                                <tr>
+                                    <td>Which DE genes are cell-type-specific vs shared?</td>
+                                    <td>Pseudobulk DE within cell_type strata</td>
+                                    <td>Counts matrix stratified by cell_type + guide_id</td>
+                                    <td>Cell-type-stratified guide effect sizes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Minimal code walkthrough &mdash; Perturb-seq annotation (Python / Scanpy)</h3>
+                    <pre style="background:#1b1e2b;color:#e7e7f2;padding:18px 20px;border-radius:6px;overflow-x:auto;font-family:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;line-height:1.6;margin:14px 0;"><code>import scanpy as sc
+import celltypist
+from celltypist import models
+import numpy as np
+import pandas as pd
+
+# ── Assumes adata has passed cell QC + guide assignment (from sc-quality-control page)
+# adata.obs: "guide_id", "kd_score", "conf_score_qc" (from QC step)
+# adata.X: log1p-normalized (target_sum=1e4)
+
+# ── 1. NT-FIRST ANNOTATION ─────────────────────────────────────────────────────
+nt_mask = adata.obs["guide_id"].str.startswith("NT")
+adata_nt = adata[nt_mask].copy()
+
+# Download and apply a pretrained model to NT cells only
+models.download_models(model=["Immune_All_Low.pkl"])
+model = models.Model.load(model="Immune_All_Low.pkl")
+
+# Annotate NT cells first
+nt_result = celltypist.annotate(adata_nt, model=model, majority_voting=True,
+                                over_clustering="leiden")
+adata.obs.loc[nt_mask, "cell_type_nt"] = nt_result.predicted_labels["majority_voting"].values
+adata.obs.loc[nt_mask, "conf_score"]   = nt_result.probability_matrix.max(axis=1).values
+
+# ── 2. TRANSFER LABELS TO GUIDE-ASSIGNED CELLS ────────────────────────────────
+# Option A (fast): annotate guide cells with the same pre-trained model
+guide_mask = ~nt_mask
+guide_result = celltypist.annotate(adata[guide_mask], model=model, majority_voting=True,
+                                   over_clustering="leiden")
+adata.obs.loc[guide_mask, "cell_type"]  = guide_result.predicted_labels["majority_voting"].values
+adata.obs.loc[guide_mask, "conf_score"] = guide_result.probability_matrix.max(axis=1).values
+# Copy NT annotations over to the same column
+adata.obs.loc[nt_mask, "cell_type"] = adata.obs.loc[nt_mask, "cell_type_nt"]
+
+# Demote low-confidence to Unknown (NT and guide cells alike)
+LOW_CONF = 0.5
+adata.obs.loc[adata.obs["conf_score"] &lt; LOW_CONF, "cell_type"] = "Unknown"
+
+# ── 3. COMPOSITE LABEL ─────────────────────────────────────────────────────────
+# Convention: cell_type|guide_id — use for grouped analysis, not UMAP coloring
+adata.obs["cell_type_guide"] = (
+    adata.obs["cell_type"].astype(str) + "|" + adata.obs["guide_id"].astype(str)
+)
+
+# ── 4. VISUALIZE ───────────────────────────────────────────────────────────────
+sc.pl.umap(adata, color="cell_type", title="Cell type identity",
+           legend_loc="on data", frameon=False)
+sc.pl.umap(adata, color="guide_id", title="Guide identity",
+           legend_loc="right margin", frameon=False)
+
+# ── 5. COMPOSITION ANALYSIS ───────────────────────────────────────────────────
+# Per-guide cell type proportion: which guides shift cell type composition?
+comp = (
+    adata.obs.groupby(["guide_id", "cell_type"])
+    .size()
+    .reset_index(name="n_cells")
+)
+comp["total"] = comp.groupby("guide_id")["n_cells"].transform("sum")
+comp["frac"]  = comp["n_cells"] / comp["total"]
+
+# NT baseline per cell type
+nt_frac = (
+    comp[comp["guide_id"].str.startswith("NT")]
+    .groupby("cell_type")["frac"].mean()
+    .rename("nt_frac")
+)
+comp = comp.merge(nt_frac, on="cell_type")
+comp["frac_ratio"] = comp["frac"] / (comp["nt_frac"] + 1e-4)
+# Guides with cell types enriched &gt;3× vs NT — composition hits
+hits = comp[(comp["frac_ratio"] &gt; 3) &amp; (~comp["guide_id"].str.startswith("NT"))]
+print("Composition hits (guide shifts cell type &gt;3× vs NT):")
+print(hits[["guide_id", "cell_type", "frac", "nt_frac", "frac_ratio"]].sort_values("frac_ratio", ascending=False).head(20))
+
+# ── 6. NOVEL STATE DETECTION ──────────────────────────────────────────────────
+# Guides with significantly elevated Unknown fraction vs NT pool
+nt_unknown_rate = (adata.obs.loc[nt_mask, "cell_type"] == "Unknown").mean()
+print(f"
+NT Unknown rate: {nt_unknown_rate:.1%}")
+
+guide_unknown = (
+    adata.obs[~nt_mask]
+    .groupby("guide_id")["cell_type"]
+    .apply(lambda s: (s == "Unknown").mean())
+    .rename("unknown_rate")
+)
+# Flag guides with unknown rate &gt; 3× NT baseline
+novel_state_guides = guide_unknown[guide_unknown &gt; 3 * nt_unknown_rate]
+print(f"
+Guides with &gt;3× NT unknown rate (possible novel states): {len(novel_state_guides)}")
+print(novel_state_guides.sort_values(ascending=False).head(10))
+
+# ── 7. SAVE ANNOTATED OBJECT ──────────────────────────────────────────────────
+adata.write_h5ad("adata_perturbseq_annotated.h5ad")
+print("Saved adata_perturbseq_annotated.h5ad")</code></pre>
+
+                    <div style="background:linear-gradient(135deg,#f4f8f0 0%,#fcfdfb 100%); border:2px solid #849E58; border-left:6px solid #46670A; padding:22px 24px; margin:22px 0; border-radius:10px;">
+                        <h4 style="color:#46670A; margin-top:0; font-size:1.15em; font-weight:700;">Perturb-seq Annotation Pitfalls</h4>
+                        <ul>
+                            <li><strong>Do not annotate all cells jointly if strong perturbations are present.</strong> A guide that converts B cells into a plasmablast-like state will shift the shared PCA/UMAP embedding used for over-clustering, pulling the centroid of the B cell cluster. NT-first annotation preserves the clean reference geometry. For mild perturbations (metabolic knockdowns, regulators of known pathways), joint annotation is acceptable; for transcription factor and lineage determinant KOs, always annotate NT first.</li>
+                            <li><strong>Low confidence ≠ noise in a Perturb-seq screen.</strong> A guide pool with elevated Unknown fraction may not be a QC failure — it may be the most interesting guide in the experiment, one that drives cells into a novel state. Distinguish these from genuinely noisy cells by checking: (1) are the Unknown cells clustered together or scattered? (2) do they have a coherent marker signature? (3) is their doublet score elevated? Clustered Unknowns with a coherent marker set are novel state candidates; scattered Unknowns with elevated doublet scores are noise.</li>
+                            <li><strong>Cell type × perturbation confounding is common in plate-based designs.</strong> If cell type and guide identity are confounded (e.g., B cells were only transduced in one batch, T cells in another), differential composition tests will appear to show guide effects that are actually cell-type differences. Always check the <code>guide_id × cell_type</code> co-occurrence matrix for batch-guide confounding before reporting composition hits.</li>
+                            <li><strong>Majority voting can erase guide-induced minority states.</strong> CellTypist's majority voting assigns all cells in a Leiden cluster to the dominant label. In a perturbed experiment, a guide that converts 20% of cells in a cluster to a novel state will have those cells labeled as the dominant type. Use raw per-cell predictions alongside majority-voted labels, and over-cluster (Leiden resolution 2.0+) so perturbed cells have a chance to form their own clusters before voting.</li>
+                        </ul>
+                    </div>
+                    <div class="back-to-top-container">
+                        <a href="#quick-ref" class="back-to-top"><i class="fas fa-arrow-up"></i> Back to Top</a>
+                    </div>
+                </section>
+
                 <!-- Method Selection Guide -->
                 <section class="overview-section decision-section-container" id="decision-guide">
                     <h2><i class="fas fa-compass"></i> Which Tool Should I Use?</h2>
@@ -2399,6 +2619,8 @@
                         <span class="flow-node">Nothing curated yet? <b>scGPT · UCE · scFoundation</b></span>
                         <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
                         <span class="flow-node">Special states? <b>CytoTRACE 2 · TCellSI · Concerto</b></span>
+                        <span class="flow-arrow"><i class="fas fa-arrow-right"></i></span>
+                        <span class="flow-node">Perturb-seq? <b>NT-first annotation &rarr; composite label &rarr; composition analysis</b></span>
                     </div>
                     <div class="decision-grid">
                         <div class="decision-card">
@@ -2438,12 +2660,35 @@
                                 <li>Million-scale mapping: <strong>Concerto</strong></li>
                             </ul>
                         </div>
+                        <div class="decision-card">
+                            <h3><i class="fas fa-crosshairs"></i> Running a Perturb-seq Screen?</h3>
+                            <ul>
+                                <li>NT-first annotation: <strong>CellTypist on NT cells &rarr; transfer to guide cells</strong></li>
+                                <li>Composite labeling: <strong>cell_type | guide_id</strong></li>
+                                <li>Novel state detection: <strong>low-confidence fraction &gt;3&times; NT</strong></li>
+                                <li>Developmental shift: <strong>CytoTRACE 2</strong></li>
+                                <li>Composition analysis: <strong>scCODA or propeller</strong></li>
+                                <li>Escape cell filtering: <strong>Mixscape LPS</strong></li>
+                            </ul>
+                        </div>
                     </div>
+                </section>
+
+
+                <!-- Related Modules -->
+                <section class="overview-section" id="related">
+                    <h2><i class="fas fa-link"></i> Related Modules</h2>
+                    <ul>
+                        <li><a href="sc-quality-control-preprocessing.html">Single-Cell QC &amp; Preprocessing</a> — doublet removal, ambient RNA correction, and Perturb-seq guide assignment QC: the required upstream step before any annotation is trustworthy.</li>
+                        <li><a href="sc-clustering-embedding.html">Clustering &amp; Embedding</a> — UMAP, Leiden clustering, and batch integration produce the neighborhood structure that majority voting and reference mapping both depend on.</li>
+                        <li><a href="trajectory-inference.html">Trajectory Inference</a> — pseudotime and fate analysis assume annotated cell types as endpoints; cell type labels are the covariates trajectory tools reason over.</li>
+                        <li><a href="grn-inference.html">GRN Inference</a> — SCENIC, GRouNdGAN, and BEELINE all require cell type labels to stratify the regulatory landscape; annotation quality directly determines which GRN is inferred.</li>
+                    </ul>
                 </section>
 
                 <!-- Hands-On Practice -->
                 <section class="overview-section" id="hands-on">
-                    <h2><i class="fas fa-wrench"></i> 🛠️ Hands-On Practice</h2>
+                    <h2><i class="fas fa-wrench"></i> Hands-On Practice</h2>
                     <p>The walkthrough below takes a QC'd <code>AnnData</code> object and gives every cell a name, end to end: normalize to the exact scale CellTypist expects, run a pretrained immune model with majority voting over Leiden clusters, keep the per-cell probability as a confidence score, cross-examine the labels against a hand-picked marker panel, and leave low-evidence cells honestly marked <code>Unknown</code>. Everything is computational and retrospective — the only evidence used is the count matrix you already have.</p>
 
                     <h3>Environment &amp; packages</h3>
