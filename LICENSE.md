@@ -32,7 +32,7 @@ and link back to the page quoted.
 ## 4. Requesting permission
 
 For teaching use, translation, republication, or anything beyond brief quotation,
-contact <xinru.reina.qiu@gmail.com>. Non-commercial academic and classroom use is
+contact <xinru.qiu42@gmail.com>. Non-commercial academic and classroom use is
 usually granted — asking is quick.
 
 ---

@@ -73,5 +73,5 @@ open-source components*, not a fully open-source one.
 
 Full terms: [LICENSE.md](LICENSE.md) · [licensing page](https://xqiu625.github.io/licensing.html) · [terms of use](https://xqiu625.github.io/terms.html)
 
-Permission requests: xinru.reina.qiu@gmail.com — non-commercial academic and
+Permission requests: xinru.qiu42@gmail.com — non-commercial academic and
 classroom use is usually granted.
